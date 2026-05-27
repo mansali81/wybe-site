@@ -1,0 +1,16 @@
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FFFFFF;
+  color: #1A2E22;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hairline {
+  height: 1px;
+  background-color: #3D5A47;
+}
+
+/* Ensure Playfair Display loads for font-display class */
+.font-display { font-family: 'Playfair Display', serif; }

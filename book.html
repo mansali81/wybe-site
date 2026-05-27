@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1825 Days — The Book — WYBE</title>
+  <meta name="description" content="1825 Days: the complete nutrition guide for your child from birth to age five. Join the waitlist and be first to know when the book launches.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FFFFFF', 'cream-dark': '#F0F4F1',
+            burgundy: '#3D5A47', 'burgundy-dark': '#2A4033',
+            charcoal: '#1A2E22', 'charcoal-light': '#3D5A47', 'charcoal-muted': '#7A9485',
+          },
+          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-cream font-sans">
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="about.html" data-nav="about.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
+          <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
+          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-burgundy transition-colors">The Book</a>
+          <a href="work-with-me.html" data-nav="work-with-me.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Work With Me</a>
+          <a href="work-with-me.html" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+        </div>
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2">
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
+      <div class="flex flex-col gap-4">
+        <a href="about.html" class="font-sans text-sm text-charcoal">About</a>
+        <a href="services.html" class="font-sans text-sm text-charcoal">Services</a>
+        <a href="book.html" class="font-sans text-sm text-charcoal">The Book</a>
+        <a href="work-with-me.html" class="font-sans text-sm text-charcoal">Work With Me</a>
+        <a href="work-with-me.html" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SECTION 1: HERO -->
+  <section class="bg-charcoal text-white pt-16">
+    <div class="max-w-6xl mx-auto px-6 py-28 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-8">Coming Soon</p>
+      <div class="relative mb-6 select-none">
+        <p class="font-display font-black text-[120px] md:text-[180px] leading-none text-white/5 absolute inset-x-0 -top-6 pointer-events-none">DAYS</p>
+        <p class="font-display font-black text-[80px] md:text-[130px] leading-none text-white relative z-10">1825</p>
+      </div>
+      <div class="w-12 h-px bg-burgundy mx-auto mb-8"></div>
+      <p class="font-display text-xl md:text-2xl text-white/80 max-w-xl mx-auto leading-relaxed">
+        The Complete Nutrition Guide for Your Child, From First Breath to Fifth Birthday
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ABOUT THE BOOK -->
+  <section class="bg-cream py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <div class="md:col-span-4">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">About the Book</p>
+          <div class="w-8 h-px bg-burgundy"></div>
+        </div>
+        <div class="md:col-span-8">
+          <p class="font-display text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-10">
+            The first 1825 days of a child's life represent the most nutritionally critical window of human development. What happens in that window shapes everything that follows.
+          </p>
+          <div class="space-y-6">
+            <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
+              Written by Mansoor Ahamad Ali Mohamed, a certified sports nutritionist with over two decades of practical experience, 1825 Days is a comprehensive, science-backed resource designed to give parents the knowledge and confidence to nourish their children from birth through the first five years of life.
+            </p>
+            <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
+              The book covers every developmental stage: breastfeeding and formula guidance for newborns, the transition to solid foods, navigating toddler nutrition, building healthy eating habits before the age of five, and understanding exactly what the growing body needs at each phase. It is written with the rigour of a nutritionist and the clarity of a practitioner who works with real people every day.
+            </p>
+            <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
+              There are very few resources that bridge the gap between clinical nutritional science and what parents actually need to do at home. This book is that bridge, written for parents, grandparents, and anyone entrusted with feeding a young child through their most important years.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: WHO IT'S FOR -->
+  <section class="bg-cream-dark py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-12 text-center">Who It's For</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-charcoal/15">
+        <!-- New Parents -->
+        <div class="p-10 border-b md:border-b-0 md:border-r border-charcoal/15">
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <p class="font-display text-xl font-semibold text-charcoal mb-3">New Parents</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">
+            From the first days home with a newborn through the first months of feeding, this book answers the questions that matter most when everything is new and every decision feels significant.
+          </p>
+        </div>
+        <!-- Parents of Young Children -->
+        <div class="p-10 border-b md:border-b-0 md:border-r border-charcoal/15">
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <p class="font-display text-xl font-semibold text-charcoal mb-3">Parents of Young Children</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">
+            If your child is already eating solid foods and you want to ensure you are setting the right foundations for their health and relationship with food, this is your practical reference.
+          </p>
+        </div>
+        <!-- Gifting -->
+        <div class="p-10">
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <p class="font-display text-xl font-semibold text-charcoal mb-3">Gifting</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">
+            A meaningful and lasting gift for any expecting parent or family welcoming a new child. A resource they will return to again and again across five years of growth.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: WAITLIST -->
+  <section class="bg-charcoal text-white py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-xl mx-auto text-center mb-12">
+        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Join the Waitlist</p>
+        <div class="w-8 h-px bg-burgundy mx-auto mb-6"></div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+          Be the first to know.
+        </h2>
+        <p class="font-sans text-sm text-white/60 leading-relaxed">
+          The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
+        </p>
+      </div>
+
+      <div class="max-w-md mx-auto">
+        <form
+          data-form
+          data-subject="1825 Days — Waitlist"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          class="space-y-4"
+        >
+          <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+          <input type="hidden" name="subject" value="1825 Days — Waitlist">
+          <input type="hidden" name="redirect" value="false">
+
+          <div>
+            <label for="waitlist-name" class="font-sans text-xs tracking-widest uppercase text-white/50 block mb-2">Full Name</label>
+            <input
+              type="text"
+              id="waitlist-name"
+              name="name"
+              required
+              placeholder="Your name"
+              class="border border-white/20 bg-charcoal-light text-white px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-white/60 placeholder:text-white/30"
+            >
+          </div>
+
+          <div>
+            <label for="waitlist-email" class="font-sans text-xs tracking-widest uppercase text-white/50 block mb-2">Email Address</label>
+            <input
+              type="email"
+              id="waitlist-email"
+              name="email"
+              required
+              placeholder="your@email.com"
+              class="border border-white/20 bg-charcoal-light text-white px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-white/60 placeholder:text-white/30"
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors"
+          >
+            Join the Waitlist
+          </button>
+        </form>
+
+        <!-- Success Message -->
+        <div class="hidden text-center py-8">
+          <div class="w-8 h-px bg-burgundy mx-auto mb-4"></div>
+          <p class="font-display text-xl font-semibold text-white mb-2">You're on the list.</p>
+          <p class="font-sans text-sm text-white/60">We will be in touch as soon as the book is ready. Thank you for your interest.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-charcoal text-white">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div>
+          <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
+          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Level 4 Personal Trainer &amp; Sports Nutritionist.<br>UAE &middot; Global</p>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
+          <ul class="space-y-3">
+            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About Mansoor</a></li>
+            <li><a href="services.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
+            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">1825 Days — The Book</a></li>
+            <li><a href="work-with-me.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Work With Me</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
+          <div class="flex gap-5 mb-6">
+            <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+            </a>
+            <a href="https://youtube.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+          <a href="mailto:mans_ali@hotmail.com" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Email Me</a>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+        <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
+        <p class="font-sans text-xs text-white/40">mansoorahamadali.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
