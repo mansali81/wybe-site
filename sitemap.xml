@@ -105,12 +105,4 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Testimonials submission -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/testimonials.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
 </urlset>

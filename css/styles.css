@@ -106,3 +106,93 @@ body {
     cursor: text;
   }
 }
+
+/* ── DARK-TRANSPARENT SELECT OPTIONS ─────────────
+   The service-panel and calculator selects use a transparent dark
+   background so the photo/video behind shows through. The dropdown
+   list itself, however, is rendered by the OS chrome with a light
+   system background — without an explicit text colour on each option
+   the white select text would carry over and become illegible. Force
+   options inside any service panel or calculator section to use
+   charcoal text on white so the open dropdown menu stays readable. */
+.service-panel select option,
+#calculators select option {
+  color: #1A2E22;
+  background: #FFFFFF;
+}
+
+/* ── ABOUT PORTRAIT ──────────────────────────────
+   Soft left-edge fade so the natural-size portrait blends into the dark
+   canvas the same way the hero image fades into its overlay gradient. */
+.about-portrait {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 12%, #000 30%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 12%, #000 30%);
+}
+
+/* ── INFO TOOLTIP ─────────────────────────────────
+   Small "?" badge that reveals a measurement hint on hover/focus.
+   Used on calculator input labels. */
+.info-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #5A7A65;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  margin-left: 6px;
+  position: relative;
+  cursor: help;
+  user-select: none;
+  vertical-align: middle;
+}
+.info-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 220px;
+  background: #1A2E22;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  z-index: 30;
+  white-space: normal;
+}
+.info-tip::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1A2E22;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  z-index: 30;
+}
+.info-tip:hover::after,
+.info-tip:focus::after,
+.info-tip:hover::before,
+.info-tip:focus::before {
+  opacity: 1;
+  visibility: visible;
+}

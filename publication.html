@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Publication, WYBE</title>
+  <meta name="description" content="Long-form writing on training, form &amp; technique, nutrition, and the practice of coaching. Field notes from two decades of work with real people.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FFFFFF',
+            'cream-dark': '#F0F4F1',
+            'sage-tint': '#EFF5F0',
+            'sage-mist': '#E2EDE5',
+            'charcoal-muted': '#7A9485',
+            burgundy: '#5A7A65',
+            forest: '#446151',
+            'burgundy-dark': '#3D5A47',
+            'charcoal-light': '#3D5A47',
+            charcoal: '#1A2E22',
+          },
+          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-cream text-charcoal">
+
+  <!-- NAVBAR (cross-page links use absolute paths back to index.html#anchor) -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html#home" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <div class="hidden md:flex items-center gap-7">
+          <a href="index.html#home" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
+          <a href="index.html#about" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
+          <a href="index.html#services" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
+          <a href="index.html#calculators" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Calculators</a>
+          <a href="publication.html" class="font-sans text-sm text-burgundy font-semibold">My Publication</a>
+          <a href="index.html#book" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+        </div>
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
+      <div class="flex flex-col gap-4">
+        <a href="index.html#home" class="font-sans text-sm text-charcoal">Home</a>
+        <a href="index.html#about" class="font-sans text-sm text-charcoal">About</a>
+        <a href="index.html#services" class="font-sans text-sm text-charcoal">Services</a>
+        <a href="index.html#calculators" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="publication.html" class="font-sans text-sm text-burgundy font-semibold">My Publication</a>
+        <a href="index.html#book" class="font-sans text-sm text-charcoal">My Book</a>
+        <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO: title + intro -->
+  <header class="bg-cream pt-32 pb-16 border-b border-charcoal/10">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Long-Form Writing</p>
+      <div class="w-12 h-px bg-burgundy mx-auto mb-6"></div>
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-charcoal mb-5 leading-tight">My Publication</h1>
+      <p class="font-sans text-base md:text-lg text-charcoal/75 leading-relaxed">
+        Field notes from two decades of working with real people. Articles grouped by the four services so you can read into whichever conversation is most relevant to where you are right now.
+      </p>
+    </div>
+  </header>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       SECTION 1: FORM & TECHNIQUE (Online Fitness Consultation service)
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bg-cream py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="mb-10 max-w-2xl">
+        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Form &amp; Technique</p>
+        <div class="w-10 h-px bg-burgundy mb-5"></div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">Lifting Without Wrecking Yourself</h2>
+        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+          The lifts that build durable strength &mdash; how to set up, brace, and execute them without leaking force or earning injuries you spend your forties paying for.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- Article 1 -->
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">The Hip Hinge: Why Your Deadlift Stalls Below the Knee</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            Most stalls in the deadlift are not strength problems. They are bracing problems disguised as strength problems. The bar leaves the floor with intent, then drifts forward, the hips shoot back, and the bar stops near the knees. What looks like a weak posterior chain is almost always a hip hinge that has lost its line of force.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <!-- Article 2 -->
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 5 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Bracing for the Bench: Three Cues That Add 10 kg Overnight</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            There are heavier benchers in your gym than there should be. Not because they train more, not because they recover better. Because they brace. The bench press is sold as a chest movement and trained as one, but the strongest pressers in the room understand it as a whole-body event.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <!-- Article 3 -->
+        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 7 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Squat Depth Is a Mobility Conversation, Not a Discipline One</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+            If you cannot hit depth in a back squat, the answer is rarely &ldquo;try harder&rdquo;. The squat is the most honest movement in the gym: it reflects your ankle mobility, your hip mobility, your thoracic position, and your bracing capacity all at once. Forcing depth without the underlying mechanics is how you accumulate the injuries you spend your forties paying for.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+      </div>
+
+      <!-- CTA back to the relevant service -->
+      <div class="bg-cream-dark border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+        <div>
+          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this in practice?</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Book a 1-on-1 form &amp; technique consultation.</p>
+        </div>
+        <a href="index.html?service=fitness#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+          Book a review
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       SECTION 2: TRAINING PROGRAMMES (Workout Program Digital service)
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bg-cream-dark py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="mb-10 max-w-2xl">
+        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Training Programmes</p>
+        <div class="w-10 h-px bg-burgundy mb-5"></div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">How to Build a Year of Training</h2>
+        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+          What separates a programme that compounds from one that wastes a year. Periodisation, progression, and the small decisions that shape a decade of lifting.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 4 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Why Most Beginner Programs Fail in Week 3</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            Beginner training does not fail because the programme is wrong. It fails in week three because the programme is too interesting. The trainee starts adding variety, swapping exercises they have seen online, chasing the next stimulus before they have extracted the value from the first one.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 8 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Periodisation Without the Jargon: Three Blocks That Work</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            Periodisation gets dressed up in language that obscures what it is: a way of sequencing training stress so adaptation outpaces fatigue. You do not need a Russian textbook to do this well. You need three blocks: an accumulation block, an intensification block, and a deload.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 9 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Your First Year of Lifting: The 12 Decisions That Matter</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+            The first year of training shapes the next ten. What you skip you will pay for later; what you over-emphasise you will have to unlearn. Most of what matters in year one is decisions, not workouts &mdash; the small choices about which lifts to commit to, how often to train, what to track, and when to stop chasing personal records and start chasing technical mastery.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+      </div>
+
+      <div class="bg-cream border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+        <div>
+          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Ready for a structured plan?</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Get a personalised Beginner, Intermediate, or Advanced programme.</p>
+        </div>
+        <a href="index.html?service=digital-plan#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+          Find my level
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       SECTION 3: NUTRITION (Human Performance Nutrition service)
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bg-cream py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="mb-10 max-w-2xl">
+        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Nutrition</p>
+        <div class="w-10 h-px bg-burgundy mb-5"></div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">Food Is Science</h2>
+        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+          Beyond macros and meal-prep marketing. What actually moves body composition, performance, and the way you live with food long-term.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Macronutrients Are a Starting Point, Not the Whole Story</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            If your plan for nutrition begins and ends with hitting your protein, you are working with a half-truth. Macros matter &mdash; protein for repair, carbs for performance, fat for hormonal function &mdash; but they are the easiest variable to track and the easiest to over-index on. The deeper conversations are about timing, food quality, micronutrient density, and the gut.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 5 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Why Your Protein Timing Probably Doesn&rsquo;t Matter (and What Does)</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            The &ldquo;anabolic window&rdquo; was useful as a marketing story and not much else. If your daily protein intake is sufficient, distributed across three or four meals, and your training is structured, the precise minute you consume protein post-workout is largely irrelevant. What actually matters is consistency, total volume, and source quality.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Hydration Beyond 8 Glasses: The Three Signals That Matter</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+            Eight glasses of water is the wellness equivalent of one-size-fits-all socks. It works as a baseline and fails everyone at the edges. Real hydration is read from the body, not from a counter on your phone. There are three signals worth paying attention to: urine colour first thing in the morning, performance during your highest-intensity training set, and how your skin behaves.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+      </div>
+
+      <div class="bg-cream-dark border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+        <div>
+          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want a plan that fits how you actually eat?</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Book a Human Performance Nutrition consultation.</p>
+        </div>
+        <a href="index.html?service=nutrition#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+          Book a consultation
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────────
+       SECTION 4: THE 1-ON-1 PRACTICE (Personal Training service)
+       ────────────────────────────────────────────────────────────────── -->
+  <section class="bg-cream-dark py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="mb-10 max-w-2xl">
+        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">The 1-on-1 Practice</p>
+        <div class="w-10 h-px bg-burgundy mb-5"></div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">What Coaching Actually Looks Like</h2>
+        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+          The texture of long-form coaching &mdash; what changes inside a year of dedicated 1-on-1 work, and the patterns I see again and again with high-performing clients.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 8 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">What a Year of 1-on-1 Coaching Actually Looks Like</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            Most people picture personal training as workouts on a calendar. After two decades of coaching, I can tell you that view misses the work. A year of 1-on-1 coaching is a year of small decisions, daily check-ins, monthly recalibrations, and the slow assembly of a body and a routine that hold under pressure.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <article class="border-t border-charcoal/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 5 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">The Five Questions I Ask Every New UAE Client</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+            Before any programme is written, before any session is booked, there are five questions I need answered. Not &ldquo;what are your goals&rdquo; &mdash; that one is rarely useful at intake. The questions that matter are about your last six months of training and how you live the 23 hours outside the gym.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+
+        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Field Note &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Coaching Is About the 23 Hours, Not the One</h3>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+            An hour of coached training is not where transformation happens. Transformation happens in the 23 hours that follow: the meals you choose, the sleep you protect, the stress you fail to manage, the supplements you remember to take. The hour I am with a client is the smallest window in their day, and it is the easiest one. The harder work is what I send them home to.
+          </p>
+          <a href="#" class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-burgundy-dark transition-colors">
+            Continue reading &rarr;
+          </a>
+        </article>
+      </div>
+
+      <div class="bg-cream border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+        <div>
+          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">UAE-based and serious about the work?</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Apply for 1-on-1 personal training.</p>
+        </div>
+        <a href="index.html?service=personal-training#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+          Apply
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (same shape as index.html, all cross-page links absolute) -->
+  <footer class="bg-charcoal text-white">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div>
+          <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
+          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
+          <ul class="space-y-0">
+            <li><a href="index.html#home" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Home</a></li>
+            <li><a href="index.html#about" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
+            <li><a href="index.html#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
+            <li><a href="index.html#calculators" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="publication.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Publication</a></li>
+            <li><a href="index.html#book" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
+            <li><a href="index.html#contact" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
+          <div class="flex gap-5 mb-6">
+            <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+            </a>
+            <a href="https://youtube.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
+          <div class="flex gap-5">
+            <a href="mailto:mans_ali@hotmail.com" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+        <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
+        <p class="font-sans text-xs text-white/40">www.mansoorahamadali.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Minimal mobile menu toggle (no need for the full main.js here) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      if (btn && menu) {
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.add('hidden')));
+      }
+    });
+  </script>
+</body>
+</html>

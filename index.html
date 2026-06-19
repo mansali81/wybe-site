@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WYBE, Wellness You Built Everyday</title>
-  <meta name="description" content="Level 4 Personal Trainer and Sports Nutritionist with over two decades of practice. Online consultations globally. Digital training plans. Private training in the UAE.">
+  <meta name="description" content="Personal Trainer, Human Performance Nutritionist, Fitness Consultant, Mind Coach. Over two decades of practical work building wellness as a daily discipline.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,65 +14,45 @@
       theme: {
         extend: {
           colors: {
+            // Unified green ramp — every token here lives on the same 138° hue, only lightness changes.
+            // Darkest → lightest: charcoal, forest, burgundy, charcoal-muted, sage-mist, sage-tint, cream-dark, cream.
             cream: '#FFFFFF',
             'cream-dark': '#F0F4F1',
-            burgundy: '#5A7A65',
-            'burgundy-dark': '#3D5A47',
-            charcoal: '#1A2E22',
-            'charcoal-light': '#3D5A47',
+            'sage-tint': '#EFF5F0',
+            'sage-mist': '#E2EDE5',
             'charcoal-muted': '#7A9485',
+            burgundy: '#5A7A65',
+            forest: '#446151',
+            'burgundy-dark': '#3D5A47',
+            'charcoal-light': '#3D5A47',
+            charcoal: '#1A2E22',
           },
-          fontFamily: {
-            display: ['"Playfair Display"', 'serif'],
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
         }
       }
     }
   </script>
   <link rel="stylesheet" href="css/styles.css">
+  <!-- jsPDF for client-side PDF generation (calculator results) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 </head>
 <body class="bg-cream text-charcoal">
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR (smooth-scroll anchors) -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="index.html" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <a href="#home" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
         <div class="hidden md:flex items-center gap-7">
-          <a href="index.html" data-nav="index.html" class="font-sans text-sm text-burgundy transition-colors">Home</a>
-          <a href="about.html" data-nav="about.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
-          <div class="relative group">
-            <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
-              Services
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
-            </a>
-            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
-              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
-                <a href="services-digital-plans.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Digital Plans</a>
-                <a href="services-fitness.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Fitness Consultation</a>
-                <a href="services-nutrition.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Human Performance Nutrition Consultation</a>
-                <a href="services-personal-training.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Personal Training (1 on 1)</a>
-              </div>
-            </div>
-          </div>
-          <div class="relative group">
-            <a href="calculators.html" data-nav="calculators.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
-              Calculators
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
-            </a>
-            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
-              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
-                <a href="calculators.html#bfp" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Body Fat Percentage</a>
-                <a href="calculators.html#tdee" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Daily Calorie Needs (TDEE)</a>
-              </div>
-            </div>
-          </div>
-          <a href="blog.html" data-nav="blog.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Blog</a>
-          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
-          <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</button>
+          <a href="#home" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
+          <a href="#about" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
+          <a href="#services" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
+          <a href="#calculators" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Calculators</a>
+          <a href="publication.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Publication</a>
+          <a href="#book" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <a href="#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
         </div>
-        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2">
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
           <span class="w-6 h-px bg-charcoal block"></span>
           <span class="w-6 h-px bg-charcoal block"></span>
           <span class="w-6 h-px bg-charcoal block"></span>
@@ -81,97 +61,885 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
       <div class="flex flex-col gap-4">
-        <a href="index.html" class="font-sans text-sm text-charcoal">Home</a>
-        <a href="about.html" class="font-sans text-sm text-charcoal">About</a>
-        <a href="services.html" class="font-sans text-sm text-charcoal">Services</a>
-        <a href="calculators.html" class="font-sans text-sm text-charcoal">Calculators</a>
-        <a href="blog.html" class="font-sans text-sm text-charcoal">Blog</a>
-        <a href="book.html" class="font-sans text-sm text-charcoal">My Book</a>
-        <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</button>
+        <a href="#home" class="font-sans text-sm text-charcoal">Home</a>
+        <a href="#about" class="font-sans text-sm text-charcoal">About</a>
+        <a href="#services" class="font-sans text-sm text-charcoal">Services</a>
+        <a href="#calculators" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="publication.html" class="font-sans text-sm text-charcoal">My Publication</a>
+        <a href="#book" class="font-sans text-sm text-charcoal">My Book</a>
+        <a href="#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="relative min-h-screen bg-charcoal text-white flex items-center pt-16 overflow-hidden">
-    <!-- Background image: Deadlift 2 (parallax) -->
-    <img src="images/deadlift-2.png" alt="" aria-hidden="true" data-parallax="0.3" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none">
-    <!-- Subtle gradient overlay, just enough to keep the WYBE text and vision/mission legible on the left -->
-    <div class="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/30 to-transparent pointer-events-none" aria-hidden="true"></div>
-
+  <!-- #HOME HERO -->
+  <section id="home" class="relative min-h-screen bg-charcoal text-white flex items-center pt-16 overflow-hidden [perspective:1200px]">
+    <!-- Hero background image. Same parallax + 3D tilt + zoom rig as the video had,
+         so the cinematic scroll effect is preserved. object-top keeps the lifter's
+         upper body anchored at the top so the head stays in frame. -->
+    <img id="hero-image" src="images/Deadlift.png" alt="" aria-hidden="true"
+         data-parallax="0.25" data-parallax-3d="true"
+         style="transform-origin: top center;"
+         class="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none will-change-transform">
+    <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/50 to-transparent pointer-events-none" aria-hidden="true"></div>
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
       <h1 class="font-display text-7xl md:text-9xl font-black leading-none text-white mb-1">WYBE</h1>
-      <p class="font-sans text-sm tracking-widest uppercase text-white/60 mb-6 ml-12">Wellness You Built Everyday</p>
-      <div class="hairline w-16 mb-6"></div>
-      <p class="font-sans text-lg text-white/80 leading-relaxed mb-4 max-w-xl">
-        <span class="text-white font-medium">Our vision:</span> A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
-      </p>
-      <p class="font-sans text-base text-white/60 leading-relaxed max-w-xl">
-        <span class="text-white/80 font-medium">Our mission:</span> To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
-      </p>
-    </div>
-  </section>
-
-  <!-- PHILOSOPHY STRIP -->
-  <section class="bg-cream py-20">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <div class="hairline w-12 mx-auto mb-10"></div>
-      <blockquote class="font-display text-3xl md:text-4xl font-semibold text-charcoal leading-snug">
+      <p class="font-sans text-sm tracking-widest uppercase text-white/60 mb-8 ml-12">Wellness You Built Everyday</p>
+      <div class="hairline w-16 mb-8"></div>
+      <blockquote class="font-display text-2xl md:text-3xl font-semibold text-white/90 leading-snug max-w-xl mb-10">
         &ldquo;Wellness isn&rsquo;t a 30-day challenge.<br>
         It&rsquo;s what you build, every day,<br>
         for the rest of your life.&rdquo;
       </blockquote>
-      <div class="hairline w-12 mx-auto mt-10"></div>
+      <a href="#contact" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">
+        Let&rsquo;s WYBE &rarr;
+      </a>
     </div>
   </section>
 
-  <!-- BOOK TEASER -->
-  <section class="bg-charcoal text-white py-24">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-6">Coming Soon</p>
-      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-white mb-0">1825</h2>
-      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-white/20 mb-8">DAYS</h2>
-      <div class="hairline w-12 mx-auto mb-8"></div>
-      <p class="font-sans text-base text-white/70 leading-relaxed mb-4 max-w-sm mx-auto">The complete nutrition guide for your child, from first breath to fifth birthday.</p>
-      <p class="font-sans text-sm text-white/50 leading-relaxed mb-10 max-w-sm mx-auto">Written for parents. Grounded in science. Built for the real world.</p>
-      <button type="button" data-waitlist class="font-sans text-sm bg-white text-charcoal px-8 py-4 tracking-wide hover:bg-cream-dark transition-colors inline-block">Join the Waitlist</button>
-    </div>
-  </section>
+  <!-- VISION + MISSION (same sage canvas as The Foundation) -->
+  <section class="bg-sage-mist py-4 md:py-6">
+    <div class="max-w-4xl mx-auto px-6">
 
-  <!-- SOCIAL -->
-  <section class="bg-cream py-20">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-      <div>
-        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3">Follow the daily build</p>
-        <p class="font-display text-3xl font-semibold text-charcoal">@wybewithmansoor</p>
+      <!-- Two-column layout: Our Vision on the left, Our Mission on the right -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+
+        <!-- OUR VISION (left side) -->
+        <div class="text-left">
+          <h3 class="font-display text-lg md:text-xl font-bold text-charcoal mb-2">Our Vision</h3>
+          <div class="w-10 h-px bg-burgundy mb-3"></div>
+          <p class="font-display text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
+            &ldquo;A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.&rdquo;
+          </p>
+        </div>
+
+        <!-- OUR MISSION (right column, title left-aligned within it) -->
+        <div class="text-left">
+          <h3 class="font-display text-lg md:text-xl font-bold text-charcoal mb-2">Our Mission</h3>
+          <div class="w-10 h-px bg-burgundy mb-3"></div>
+          <p class="font-display text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
+            &ldquo;To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.&rdquo;
+          </p>
+        </div>
+
       </div>
-      <div class="flex gap-4">
-        <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-charcoal hover:text-burgundy transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="https://tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-charcoal hover:text-burgundy transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
-        </a>
-        <a href="https://youtube.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-charcoal hover:text-burgundy transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
+
+    </div>
+  </section>
+
+  <!-- #CALCULATORS -->
+  <section id="calculators" class="relative bg-charcoal py-14 overflow-hidden">
+    <!-- Background video, autoplay/muted/loop. Browsers require muted to autoplay; the toggle below lets users unmute. -->
+    <video id="calc-video" autoplay muted loop playsinline aria-hidden="true"
+           class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0">
+      <source src="Video/Calculator.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-charcoal/60 pointer-events-none z-0" aria-hidden="true"></div>
+
+
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <div class="text-center mb-10">
+        <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-4 drop-shadow-md">Free Tools</p>
+        <div class="w-8 h-px bg-burgundy mx-auto mb-6"></div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-white drop-shadow-md">Calculators</h2>
+      </div>
+
+      <!-- Tab buttons: 2-on-top, 2-below grid, matching the Services tab layout -->
+      <div class="max-w-3xl mx-auto mb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <button type="button" data-calc-tab="bfp" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+          Body Fat % (US Navy Method)
+        </button>
+        <button type="button" data-calc-tab="tdee" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+          Daily Calorie Needs (TDEE)
+        </button>
+        <button type="button" data-calc-tab="bmi" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+          Body Mass Index (BMI)
+        </button>
+        <button type="button" data-calc-tab="ibw" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+          Ideal Body Weight (IBW)
+        </button>
+      </div>
+
+      <!-- BFP -->
+      <div class="calc-section hidden" data-calc="bfp">
+        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form id="bfp-form" class="space-y-4">
+              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Measurements (in cm)</p>
+              <div>
+                <label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Gender</label>
+                <select id="bfp-gender" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
+                  <option value="male" selected class="text-charcoal">Male</option>
+                  <option value="female" class="text-charcoal">Female</option>
+                </select>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="bfp-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Neck <span class="info-tip" tabindex="0" data-tip="Measure around the narrowest point of your neck, just below the Adam&rsquo;s apple. Keep the tape level and snug, not tight.">?</span></label><input type="number" id="bfp-neck" step="0.1" required placeholder="38" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Waist <span class="info-tip" tabindex="0" data-tip="Men: measure around the navel. Women: measure around the narrowest point of the waist. Relaxed stomach, end of a normal breath.">?</span></label><input type="number" id="bfp-waist" step="0.1" required placeholder="85" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+                <div id="bfp-hip-wrap" class="hidden"><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Hip <span class="info-tip" tabindex="0" data-tip="Measure around the widest part of your hips/buttocks, with feet together. Keep the tape level all the way around.">?</span></label><input type="number" id="bfp-hip" step="0.1" placeholder="95" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+              </div>
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <p id="bfp-error" class="hidden font-sans text-xs text-red-300"></p>
+            </form>
+
+            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
+              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Result</p>
+              <div class="w-8 h-px bg-burgundy mb-4"></div>
+              <div id="bfp-placeholder"><p class="font-sans text-sm text-white/60">Fill in measurements to see your body fat percentage and category.</p></div>
+              <div id="bfp-result" class="hidden">
+                <p class="font-display text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bfp-value">&mdash;</span><span class="text-2xl text-white/50">%</span></p>
+                <p id="bfp-category" class="font-display text-lg font-semibold text-burgundy mb-2">&mdash;</p>
+                <p id="bfp-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
+                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
+                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                  Let&rsquo;s WYBE &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email + CTA after result -->
+          <div id="bfp-email-block" class="hidden mt-8 pt-8 border-t border-white/20">
+            <p class="font-sans text-sm text-white/85 leading-relaxed mb-4 drop-shadow-sm">Want a PDF copy of this result, with category notes, emailed to you?</p>
+            <form id="bfp-email-form" data-pdf-form data-calc="bfp" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
+              <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="hidden" name="subject" value="WYBE, BFP Result PDF Request">
+              <input type="hidden" name="bfp_result" id="bfp-email-result">
+              <input type="hidden" name="bfp_category" id="bfp-email-category">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input type="text" name="name" required placeholder="Full name" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
+                <input type="email" name="email" required placeholder="your@email.com" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
+              </div>
+              <input type="number" name="age" required min="14" max="100" placeholder="Age" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-white placeholder:text-white/40">
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
+              <p class="font-sans text-xs text-white/70 text-center">A simple PDF report will be emailed to you and downloaded to your device.</p>
+            </form>
+            <div class="hidden mt-3 text-sm text-white/80 text-center">Sent. Check your inbox for your PDF result and what to do next.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TDEE -->
+      <div class="calc-section hidden" data-calc="tdee">
+        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form id="tdee-form" class="space-y-4">
+              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Details (metric)</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Gender</label>
+                  <select id="tdee-gender" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
+                    <option value="male" selected class="text-charcoal">Male</option>
+                    <option value="female" class="text-charcoal">Female</option>
+                  </select>
+                </div>
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Age</label><input type="number" id="tdee-age" required min="14" max="100" placeholder="32" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="tdee-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Weight (kg) <span class="info-tip" tabindex="0" data-tip="Weigh yourself first thing in the morning, after using the bathroom, before eating or drinking. Same scale, same time of day for consistency.">?</span></label><input type="number" id="tdee-weight" step="0.1" required placeholder="78" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+              </div>
+              <div>
+                <label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Activity Level</label>
+                <select id="tdee-activity" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
+                  <option value="1.2" class="text-charcoal">Sedentary, desk job, no training</option>
+                  <option value="1.375" class="text-charcoal">Lightly active, 1-3 days/week</option>
+                  <option value="1.55" selected class="text-charcoal">Moderately active, 3-5 days/week</option>
+                  <option value="1.725" class="text-charcoal">Very active, 6-7 days/week</option>
+                  <option value="1.9" class="text-charcoal">Extra active, physical job + daily training</option>
+                </select>
+              </div>
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <p id="tdee-error" class="hidden font-sans text-xs text-red-300"></p>
+            </form>
+
+            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
+              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Numbers</p>
+              <div class="w-8 h-px bg-burgundy mb-4"></div>
+              <div id="tdee-placeholder"><p class="font-sans text-sm text-white/60">Fill in your details to see your daily calorie target and goal-based options.</p></div>
+              <div id="tdee-result" class="hidden">
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70 mb-1">Daily energy expenditure</p>
+                <p class="font-display text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="tdee-value">&mdash;</span> <span class="text-xl text-white/50">kcal</span></p>
+                <p id="tdee-category" class="font-display text-base font-semibold text-burgundy mb-4">&mdash;</p>
+                <div class="space-y-1 text-sm mb-3">
+                  <p class="flex justify-between"><span class="text-white/75">Cut (fat loss)</span><span class="font-semibold text-white"><span id="tdee-cut">&mdash;</span> kcal</span></p>
+                  <p class="flex justify-between"><span class="text-white/75">Maintain</span><span class="font-semibold text-white"><span id="tdee-maintain">&mdash;</span> kcal</span></p>
+                  <p class="flex justify-between"><span class="text-white/75">Lean bulk</span><span class="font-semibold text-white"><span id="tdee-bulk">&mdash;</span> kcal</span></p>
+                </div>
+                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
+                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                  Let&rsquo;s WYBE &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div id="tdee-email-block" class="hidden mt-8 pt-8 border-t border-white/20">
+            <p class="font-sans text-sm text-white/85 leading-relaxed mb-4 drop-shadow-sm">Want a PDF copy of your numbers and a starter nutrition plan emailed to you?</p>
+            <form id="tdee-email-form" data-pdf-form data-calc="tdee" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
+              <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="hidden" name="subject" value="WYBE, TDEE Result PDF Request">
+              <input type="hidden" name="tdee_result" id="tdee-email-result">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input type="text" name="name" required placeholder="Full name" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
+                <input type="email" name="email" required placeholder="your@email.com" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
+              </div>
+              <input type="number" name="age_confirmed" required min="14" max="100" placeholder="Confirm your age" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-white placeholder:text-white/40">
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
+              <p class="font-sans text-xs text-white/70 text-center">A simple PDF report will be emailed to you and downloaded to your device.</p>
+            </form>
+            <div class="hidden mt-3 text-sm text-white/80 text-center">Sent. Check your inbox for your PDF result.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BMI -->
+      <div class="calc-section hidden" data-calc="bmi">
+        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form id="bmi-form" class="space-y-4">
+              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Body Mass Index</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="bmi-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Weight (kg) <span class="info-tip" tabindex="0" data-tip="Weigh yourself first thing in the morning, after using the bathroom, before eating or drinking.">?</span></label><input type="number" id="bmi-weight" step="0.1" required placeholder="78" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
+              </div>
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <p id="bmi-error" class="hidden font-sans text-xs text-red-300"></p>
+            </form>
+
+            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
+              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Result</p>
+              <div class="w-8 h-px bg-burgundy mb-4"></div>
+              <div id="bmi-placeholder"><p class="font-sans text-sm text-white/60">Enter your height and weight to see your BMI and category.</p></div>
+              <div id="bmi-result" class="hidden">
+                <p class="font-display text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bmi-value">&mdash;</span></p>
+                <p id="bmi-category" class="font-display text-lg font-semibold text-burgundy mb-2">&mdash;</p>
+                <p id="bmi-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
+                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* BMI is a screening number, not a body-composition measure. Lean-muscular builds can read &ldquo;overweight&rdquo; without excess fat.</p>
+                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                  Let&rsquo;s WYBE &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IDEAL BODY WEIGHT -->
+      <div class="calc-section hidden" data-calc="ibw">
+        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form id="ibw-form" class="space-y-4">
+              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Ideal Body Weight</p>
+              <div>
+                <label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Gender</label>
+                <select id="ibw-gender" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
+                  <option value="male" selected class="text-charcoal">Male</option>
+                  <option value="female" class="text-charcoal">Female</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label>
+                <input type="number" id="ibw-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
+              </div>
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <p id="ibw-error" class="hidden font-sans text-xs text-red-300"></p>
+            </form>
+
+            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
+              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Result</p>
+              <div class="w-8 h-px bg-burgundy mb-4"></div>
+              <div id="ibw-placeholder"><p class="font-sans text-sm text-white/60">Enter your gender and height to see your ideal body weight range.</p></div>
+              <div id="ibw-result" class="hidden">
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70 mb-1">Ideal weight range</p>
+                <p class="font-display text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="ibw-low">&mdash;</span><span class="text-xl text-white/50">&ndash;</span><span id="ibw-high">&mdash;</span> <span class="text-xl text-white/50">kg</span></p>
+                <p id="ibw-point" class="font-display text-base font-semibold text-burgundy mb-4">IBW &mdash; kg</p>
+                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* Broca&rsquo;s Index. The &plusmn;5&nbsp;kg band is a healthy target for non-exercising clients and women. Exercising men should track body-fat % instead &mdash; muscle is denser than fat and will push weight up without adding fat.</p>
+                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                  Let&rsquo;s WYBE &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- START HERE CTA -->
-  <section class="bg-cream-dark py-20">
+
+  <!-- #ABOUT (text left, image at natural size on the right with parallax + edge fade like the hero) -->
+  <section id="about" class="relative bg-charcoal text-white overflow-hidden">
+    <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-end">
+      <!-- Left column: text -->
+      <div class="md:col-span-7 pt-24 pb-16 md:pb-32 relative z-10">
+        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-5">The Practitioner</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
+        <div class="w-12 h-px bg-burgundy mb-5"></div>
+        <p class="font-sans text-base text-white/85 leading-relaxed mb-6">
+          Personal Trainer, Human Performance Nutritionist, Mind Coach, Author (forthcoming). Over two decades of practical, evidence-based work in health and fitness.
+        </p>
+
+        <p class="font-display text-xl md:text-2xl font-semibold text-white leading-snug mb-5">Most trainers count reps. The work here goes deeper.</p>
+        <p class="font-sans text-sm text-white/85 leading-relaxed text-justify mb-4">
+          Every movement is built on a foundation of Human Biomechanics and Kinesiology, so your form and technique are precise enough to protect you from internal injury, not just push you toward a visible result. You will learn the breathing technique that supports every lift, the kind that turns heavy weight from a struggle into a clean, repeatable effort.
+        </p>
+        <p class="font-sans text-sm text-white/85 leading-relaxed text-justify mb-6">
+          Underneath all of this is the first discipline, Human Performance Nutrition. Food is the fuel that lets the engine of every human organ function optimally. Understanding what you eat, when you eat, the quantity, the quality, and the role of the right supplements is not just a tool for hitting a goal in the mirror, it shapes the way you live, how long you stay well, and the foundation you pass on to your children.
+        </p>
+        <p class="font-display text-2xl md:text-3xl font-bold text-white tracking-wide leading-none">
+          &ldquo;WE ARE WHAT WE EAT&rdquo;
+        </p>
+      </div>
+
+      <!-- Right column: image at natural size, bottom flush with the canvas bottom. Parallax removed so the bottom edge stays pinned at all scroll positions. -->
+      <div class="md:col-span-5 self-end flex justify-center md:justify-end">
+        <img src="images/about/profile-pic.png" alt="Mansoor Ahamad Ali"
+             class="about-portrait block w-auto h-auto max-h-[640px] md:max-h-[820px] max-w-full object-contain">
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FOUNDATION (light sage background) -->
+  <section class="bg-sage-mist py-6">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-2 text-center">The Foundation</p>
+      <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal text-center mb-5">Four Pillars. One System.</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
+        <div>
+          <div class="w-8 h-px bg-burgundy mb-3"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Mindset</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">The discipline to treat your own health as non-negotiable, because the people who matter to you are watching how you live.</p>
+        </div>
+        <div>
+          <div class="w-8 h-px bg-burgundy mb-3"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Nutrition</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Food is science. What you eat consistently shapes who you become and the next generation that comes after you.</p>
+        </div>
+        <div>
+          <div class="w-8 h-px bg-burgundy mb-3"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Training</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Progressive, purposeful movement. Not punishment. Not performance for an audience.</p>
+        </div>
+        <div>
+          <div class="w-8 h-px bg-burgundy mb-3"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Recovery</p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Sleep, rest, and stress management are not optional. They are the mechanism.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- #SERVICES (dropdown-driven panels) -->
+  <section id="services" class="relative bg-cream overflow-hidden md:min-h-[820px]">
+    <!-- Section-frame image: spans the full top-to-bottom height of the
+         section, anchored to the right edge of the max-w-6xl content container
+         (NOT the viewport edge), so it sits right next to the text instead of
+         flying off into the right margin. Hidden on mobile. -->
+    <!-- Section-frame image: displays at its natural aspect ratio, vertically
+         centred on the right side of the max-w-6xl content container. No
+         object-cover (no crop) and no fixed-aspect wrapper (no letterbox) —
+         the image's own dimensions define the canvas around it. -->
+    <div class="hidden md:flex absolute inset-0 pointer-events-none items-center">
+      <div class="relative max-w-6xl mx-auto px-6 w-full flex justify-end">
+        <img id="services-bg-img" src="images/Treadmill.png" alt="" aria-hidden="true"
+             class="block max-h-full max-w-[50vw] w-auto h-auto pointer-events-none select-none transition-opacity duration-300">
+      </div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-14">
+      <!-- EMPTY-STATE HEADER: two-column layout — title + tabs on the left,
+           Treadmill image on the right (right column hidden on mobile). -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
+        <!-- LEFT: title block + tabs + panels. col-span-6 leaves clear space
+             on the right for the 42%-wide section image without overlap. -->
+        <div class="md:col-span-6 flex flex-col">
+          <!-- TITLE. drop-shadow values use white glow so the dark text stays
+               legible wherever it overlaps the image. -->
+          <div class="text-center md:text-left">
+            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3 [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_3px_rgba(255,255,255,0.95)]">Services</p>
+            <div class="w-8 h-px bg-burgundy mx-auto md:mx-0 mb-5"></div>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-3 [text-shadow:0_0_8px_rgba(255,255,255,0.95),0_0_4px_rgba(255,255,255,0.95)]">Find Your Service</h2>
+            <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md mx-auto md:mx-0 [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_3px_rgba(255,255,255,0.95)]">
+              Choose what fits where you are right now. Every service is delivered to the same standard, science-backed, personalised, and accountable.
+            </p>
+          </div>
+
+          <!-- Tabs wrapper — my-auto centres the tabs vertically within the left column. -->
+          <div class="my-auto py-10 w-full">
+            <div class="max-w-md mx-auto md:mx-0 w-full grid grid-cols-1 gap-3">
+              <button type="button" data-service-tab="digital-plan" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+                Work out Program (Digital)
+              </button>
+              <button type="button" data-service-tab="fitness" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+                Fitness Consultation (Online)
+              </button>
+              <button type="button" data-service-tab="nutrition" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+                Nutrition Consultation (Online)
+              </button>
+              <button type="button" data-service-tab="personal-training" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+                Personal Training (1 on 1)
+              </button>
+            </div>
+          </div>
+
+          <!-- Panels live inside this same left column so the right-side image
+               can remain the only image on the page. Only one panel is visible
+               at a time (JS toggles .hidden). -->
+
+      <!-- WORK OUT PROGRAM panel: quiz only — the image lives in the
+           section's right column and is swapped via JS when this tab is
+           active. -->
+      <div id="panel-digital-plan" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+        <div class="relative p-5 md:p-8 pb-8 min-h-[480px]">
+
+          <!-- QUIZ STATE: shown initially, hidden when the result is generated -->
+          <div id="quiz-state" class="relative h-full">
+            <!-- TOP: branding + section heading -->
+            <div>
+              <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-1">Work out Program (Digital)</p>
+              <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal leading-tight">Find Your Level</h3>
+            </div>
+
+            <!-- Hairline separator, sits where "Find Your Level" ends -->
+            <div class="w-16 h-px bg-burgundy mt-6 mb-6"></div>
+
+            <!-- Carousel form: questions appear right after the separator -->
+            <form id="plan-quiz" class="w-full max-w-md">
+
+              <!-- Progress indicator stays at the top of the question stack -->
+              <p id="quiz-progress" class="font-sans text-[11px] font-bold tracking-widest uppercase text-charcoal/60 mb-3">Question 1 of 5</p>
+
+              <!-- Hidden inputs hold the answer values for form submission.
+                   Buttons below set these via data-q + data-value. -->
+              <input type="hidden" name="q1" id="q1-value">
+              <input type="hidden" name="q2" id="q2-value">
+              <input type="hidden" name="q3" id="q3-value">
+              <input type="hidden" name="q4" id="q4-value">
+              <input type="hidden" name="q5" id="q5-value">
+              <input type="hidden" name="q2_consultation" id="q2-consult-value">
+
+              <!-- STEP 1 -->
+              <div class="quiz-step" data-step="q1">
+                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long have you trained consistently?</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" data-q="q1" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never / Sporadic</button>
+                  <button type="button" data-q="q1" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Under 6 Months</button>
+                  <button type="button" data-q="q1" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">6 Mo &ndash; 2 Years</button>
+                  <button type="button" data-q="q1" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">2+ Years</button>
+                </div>
+              </div>
+
+              <!-- STEP 2 -->
+              <div class="quiz-step hidden" data-step="q2">
+                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Are your functional lifts bio-mechanically correct?</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" data-q="q2" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">I Don&rsquo;t Know</button>
+                  <button type="button" data-q="q2" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No, No Help Needed</button>
+                  <button type="button" data-q="q2" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes, I Am Aware</button>
+                  <button type="button" data-q="q2" data-value="1" data-guidance="true" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Need Guidance</button>
+                </div>
+              </div>
+
+              <!-- STEP 2a (consultation follow-up) — only visited when Q2 = "No, Need Guidance" -->
+              <div class="quiz-step hidden" data-step="q2a">
+                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Would you like an online consultation to learn the correct form?</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" data-q="q2_consultation" data-value="Yes" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes, Consult</button>
+                  <button type="button" data-q="q2_consultation" data-value="No" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No, Thanks</button>
+                </div>
+              </div>
+
+              <!-- STEP 3 -->
+              <div class="quiz-step hidden" data-step="q3">
+                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How would you describe yourself today?</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" data-q="q3" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Out Of Shape</button>
+                  <button type="button" data-q="q3" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Lightly Active</button>
+                  <button type="button" data-q="q3" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Moderately Fit</button>
+                  <button type="button" data-q="q3" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Highly Trained</button>
+                </div>
+              </div>
+
+              <!-- STEP 4 -->
+              <div class="quiz-step hidden" data-step="q4">
+                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Have you followed a written programme before?</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" data-q="q4" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never</button>
+                  <button type="button" data-q="q4" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Tried Briefly</button>
+                  <button type="button" data-q="q4" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Completed One</button>
+                  <button type="button" data-q="q4" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">My Own Blocks</button>
+                </div>
+              </div>
+
+              <!-- STEP 5 -->
+              <div class="quiz-step hidden" data-step="q5">
+                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long are you committing for?</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" data-q="q5" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Exploring</button>
+                  <button type="button" data-q="q5" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Few Months</button>
+                  <button type="button" data-q="q5" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Mid-Term</button>
+                  <button type="button" data-q="q5" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">A Year+</button>
+                </div>
+              </div>
+            </form>
+
+            <!-- INLINE NAV: back on the left, next on the right. JS toggles
+                 which one is visible per step. Both are icon-only circles. -->
+            <div class="mt-6 flex items-center justify-between">
+              <button type="button" id="quiz-back" aria-label="Back" class="hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-cream border border-charcoal/20 text-charcoal hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+              <span class="block flex-1"></span>
+              <button type="button" id="quiz-forward" aria-label="Next" class="hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-burgundy text-white border border-burgundy hover:bg-burgundy-dark transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- RESULT STATE: hidden until the quiz is submitted. Vertical flow,
+               sage-mist-friendly colors, no absolute-positioned blocks. -->
+          <div id="quiz-result" class="hidden">
+
+            <!-- Plan title + meta -->
+            <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Your Recommended Plan</p>
+            <div class="w-8 h-px bg-burgundy mb-3"></div>
+            <h3 id="result-plan-title" class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-1">Beginner</h3>
+            <p id="result-plan-meta" class="font-sans text-sm font-semibold text-charcoal/80 mb-5">$100 &middot; one-time payment</p>
+
+            <!-- POST-PAYMENT FORM (hidden until Pay is clicked) -->
+            <div id="result-details-wrap" class="hidden mb-5">
+              <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-3">Payment received. Send my plan to:</p>
+              <form id="result-purchase-form" data-form data-subject="WYBE, Plan Purchase Request" action="https://api.web3forms.com/submit" method="POST" class="space-y-3">
+                <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+                <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+                <input type="hidden" name="subject" value="WYBE, Plan Purchase Request">
+                <input type="hidden" name="redirect" value="false">
+                <input type="hidden" name="recommended_plan" id="result-plan-hidden" value="Beginner">
+                <input type="hidden" name="quiz_score" id="result-score-hidden" value="">
+                <input type="hidden" name="consultation" id="result-consult-hidden" value="No">
+                <input type="hidden" name="total_due" id="result-total-hidden" value="$100">
+
+                <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/50">
+                <input type="email" name="email" required placeholder="your@email.com" class="border border-charcoal/25 bg-cream/80 px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/50">
+                <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center justify-center gap-1.5">
+                  Send My Plan
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </form>
+              <!-- Success state replaces the form (main.js looks for form.nextElementSibling) -->
+              <div class="hidden py-3 text-center mt-3 border border-charcoal/15 bg-cream/60 rounded-md">
+                <p class="font-display text-base font-bold text-charcoal mb-1">Request received.</p>
+                <p class="font-sans text-sm font-semibold text-charcoal/80">PDF will be emailed within 48&ndash;72 hours.</p>
+              </div>
+            </div>
+
+            <!-- Hidden placeholder kept so existing JS that writes to result-plan-desc.textContent still works -->
+            <p id="result-plan-desc" class="hidden"></p>
+
+            <!-- Bottom actions: Retake (left) + Pay (right) -->
+            <div class="mt-2 flex items-center justify-between">
+              <button type="button" id="retake-quiz" class="inline-flex items-center gap-1.5 border border-charcoal/25 text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Retake
+              </button>
+
+              <button type="button" id="result-pay-btn" class="bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center gap-1.5">
+                <span id="result-buy-text">Pay $100</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Footer note -->
+            <p class="mt-5 text-center font-sans text-[11px] text-charcoal/60">
+              Personalised workout + diet PDF emailed within 48&ndash;72 hours of purchase.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    <!-- FITNESS PANEL: form only — image is in the section's right column. -->
+    <div id="panel-fitness" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+      <div class="relative p-6 md:p-10 flex flex-col">
+        <!-- TOP: heading + intro -->
+        <div class="mb-auto">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Online Fitness Consultation</p>
+          <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Form &amp; Technique Review</h3>
+          <div class="w-12 h-px bg-burgundy mb-3"></div>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            A consultation, not coaching. If you already have a trainer and want an independent second opinion, if you train solo at an advanced level and aren&rsquo;t sure your form is right, or if a specific lift is giving you trouble, this is where you bring it. Mansoor reviews your technique through the lens of human biomechanics and kinesiology and tells you exactly what to correct.
+          </p>
+        </div>
+
+        <!-- BOTTOM: compact booking form -->
+        <form data-form data-subject="WYBE, Fitness Consultation Booking" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5 mt-4">
+          <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="subject" value="WYBE, Fitness Consultation Booking">
+          <input type="hidden" name="redirect" value="false">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70">Book Me</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+            <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+          </div>
+          <!-- Format + Package as 2-option tab pickers, side-by-side. Hidden inputs hold the values. -->
+          <input type="hidden" name="format"  id="fitness-format"  required>
+          <input type="hidden" name="package" id="fitness-package" required>
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" data-format="Online"        class="fitness-format-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Online</button>
+              <button type="button" data-format="UAE In-Person" class="fitness-format-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">In-Person</button>
+            </div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" data-package="Single" class="fitness-package-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Single</button>
+              <button type="button" data-package="Bundle" class="fitness-package-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Bundle&nbsp;(3)</button>
+            </div>
+          </div>
+          <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
+          <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
+        </form>
+        <div class="hidden py-4 text-center mt-3">
+          <p class="font-display text-base font-semibold text-charcoal mb-1">Booking received.</p>
+          <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUTRITION PANEL: form only — image is in the section's right column. -->
+    <div id="panel-nutrition" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+      <div class="relative p-6 md:p-10 space-y-5">
+        <!-- intro block -->
+        <div>
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Human Performance Nutrition Consultation</p>
+          <h3 class="font-display text-2xl md:text-4xl font-bold text-charcoal mb-3 leading-tight">Evidence-Based Nutrition</h3>
+          <div class="w-12 h-px bg-burgundy mb-4"></div>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
+            Nutrition advice that goes beyond calorie counting, tailored to your lifestyle, goals, and relationship with food. Choose a single consultation, a three-session bundle, or a monthly programme.
+          </p>
+        </div>
+
+        <!-- form block (stacks under the intro within the left column) -->
+        <div>
+          <form data-form data-subject="WYBE, Nutrition Consultation Booking" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5">
+            <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="subject" value="WYBE, Nutrition Consultation Booking">
+            <input type="hidden" name="redirect" value="false">
+            <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70">Book Me</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+              <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+            </div>
+            <!-- Package picker as inline tabs (3 on one line). Hidden input holds the value. -->
+            <input type="hidden" name="tier" id="nutrition-tier" required>
+            <div class="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Choose your package">
+              <button type="button" data-tier="Single Session"      class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Single</button>
+              <button type="button" data-tier="3-Session Bundle"    class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Bundle&nbsp;(3)</button>
+              <button type="button" data-tier="Monthly Programme"   class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Monthly</button>
+            </div>
+            <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
+            <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
+            <p class="font-sans text-[10px] text-white/80 leading-snug text-center drop-shadow">Payment instructions sent to your email within 24 hours.</p>
+          </form>
+          <div class="hidden py-4 text-center mt-3">
+            <p class="font-display text-base font-semibold text-charcoal mb-1">Booking received.</p>
+            <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONAL TRAINING PANEL: form only — image is in the section's right column. -->
+    <div id="panel-personal-training" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+      <div class="relative p-6 md:p-10 flex flex-col">
+        <!-- TOP: heading + intro -->
+        <div class="mb-auto">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Personal Training (1 on 1)</p>
+          <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Exclusive &middot; UAE</h3>
+          <div class="w-12 h-px bg-burgundy mb-3"></div>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md">
+            For those who require absolute discretion, complete personalisation, and a trainer fully invested in their outcome. By application only.
+          </p>
+        </div>
+
+        <!-- BOTTOM: compact application form -->
+        <form data-form data-subject="WYBE, Personal Training Application" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5 mt-4">
+          <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="subject" value="WYBE, Personal Training Application">
+          <input type="hidden" name="redirect" value="false">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70">Apply</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+            <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            <input type="tel" name="phone" required placeholder="+971 50 000 0000" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+            <input type="text" name="location" required placeholder="City / Country" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+          </div>
+          <textarea name="goals" required rows="2" placeholder="Your goals and any relevant background" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
+          <!-- Submit as a compact round arrow, right-aligned, matching the contact form. -->
+          <div class="flex justify-end">
+            <button type="submit" aria-label="Submit application" class="group flex items-center justify-center w-12 h-12 rounded-full border-2 border-white bg-burgundy hover:bg-burgundy-dark hover:border-burgundy-dark transition-colors shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </form>
+        <div class="hidden py-4 text-center mt-3">
+          <p class="font-display text-base font-semibold text-charcoal mb-1">Application received.</p>
+          <p class="font-sans text-xs text-charcoal/70">Applications are reviewed personally. You will hear back within a few days.</p>
+        </div>
+      </div>
+    </div>
+
+      <!-- MOBILE-ONLY image: shown below the form on mobile (md:hidden).
+           Displays at natural aspect — full image visible, no crop. JS syncs
+           the src with the desktop image so the active tab's photo shows. -->
+      <div class="md:hidden mt-8 text-center">
+        <img id="services-bg-img-mobile" src="images/Treadmill.png" alt="" aria-hidden="true"
+             class="block w-auto h-auto max-w-full max-h-[480px] object-contain mx-auto">
+      </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- #BOOK My Book + Waitlist (inline) -->
+  <section id="book" class="bg-sage-mist py-14">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Start Here</p>
-      <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-6">
-        Ready to start building the body you want?
-      </h2>
-      <p class="font-sans text-sm text-charcoal/70 max-w-lg mx-auto leading-relaxed mb-8">
-        Send a quick message describing where you are now and what you want to achieve. From there, the right path becomes clear.
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-6">Coming Soon</p>
+      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-charcoal mb-0">1825</h2>
+      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-charcoal/20 mb-6">DAYS</h2>
+      <div class="hairline w-12 mx-auto mb-6"></div>
+      <p class="font-display text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-6">Five years that shape a lifetime.</p>
+      <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-2 max-w-xl mx-auto">
+        The complete nutrition guide for your child, from first breath to fifth birthday. Written for parents. Grounded in science. Built for the real world.
       </p>
-      <button type="button" data-book-now class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">
-        Get in Touch
-      </button>
+      <p class="font-sans text-sm text-charcoal/60 leading-relaxed mb-10 max-w-xl mx-auto">
+        The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
+      </p>
+
+      <!-- Stacked waitlist form: Name, Email, Mobile, Join waitlist (one per row). -->
+      <form data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="max-w-md mx-auto space-y-3 text-left">
+        <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="subject" value="1825 Days, Waitlist">
+        <input type="hidden" name="redirect" value="false">
+
+        <input type="text"  name="name"   required placeholder="Full name"        class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+        <input type="email" name="email"  required placeholder="Email"            class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+
+        <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
+      </form>
+      <div class="hidden mt-4 text-center">
+        <p class="font-display text-lg font-semibold text-charcoal mb-1">You&rsquo;re on the list.</p>
+        <p class="font-sans text-sm text-charcoal/60">We will be in touch as soon as the book is ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MY PUBLICATION (text-only canvas, no background image) -->
+  <section id="publication" class="bg-cream py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Long-Form Writing</p>
+      <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
+      <h2 class="font-display text-3xl md:text-5xl font-bold text-charcoal mb-5 leading-tight">My Publication</h2>
+      <p class="font-sans text-base md:text-lg text-charcoal/80 leading-relaxed mb-8 max-w-xl mx-auto">
+        Detailed essays on training, nutrition, and building wellness as a daily discipline. Field notes from two decades of working with real people.
+      </p>
+      <a href="publication.html"
+         class="inline-flex items-center gap-3 bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">
+        <span>Read the Essays</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- #CONTACT (portrait Outside Gym.png 1856x2304 as full uncropped background) -->
+  <section id="contact" class="bg-cream-dark py-14">
+    <div class="max-w-2xl mx-auto px-6">
+      <div class="relative bg-charcoal text-white overflow-hidden aspect-auto md:aspect-[1856/2304]">
+        <!-- Full-bleed portrait background image, panel matches its aspect so the entire image is shown -->
+        <img src="images/Outside Gym.png" alt="" aria-hidden="true"
+             class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none">
+        <!-- Light dark veil for readability without dimming the photo -->
+        <div class="absolute inset-0 bg-charcoal/45 pointer-events-none" aria-hidden="true"></div>
+
+        <div class="relative z-10 h-full p-6 md:p-8 flex flex-col">
+          <!-- FORM GROUP: pushed down so it sits in the lower half of the panel, just above the DM block -->
+          <div class="mt-auto">
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
+
+            <form data-form data-subject="WYBE, Quick Contact" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5">
+              <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="hidden" name="subject" value="WYBE, Quick Contact">
+              <input type="hidden" name="redirect" value="false">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                <input type="text" name="name" required placeholder="Full name" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 drop-shadow-md">
+                <input type="email" name="email" required placeholder="your@email.com" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 drop-shadow-md">
+              </div>
+              <div>
+                <textarea name="message" required rows="3" placeholder="What are you looking for?" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 resize-none drop-shadow-md"></textarea>
+                <!-- Reply-time note sits right under the message box -->
+                <p class="font-sans text-[10px] md:text-[11px] font-normal text-white text-center mt-1 drop-shadow-md">Send a message and team will reply within 48 hours.</p>
+              </div>
+              <!-- Arrow send button: circular icon-only, right-aligned -->
+              <div class="flex justify-end">
+                <button type="submit" aria-label="Send message" class="group flex items-center justify-center w-12 h-12 rounded-full border-2 border-white bg-burgundy hover:bg-burgundy-dark hover:border-burgundy-dark transition-colors shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <div class="hidden mt-3 text-center py-4 border border-white/20 bg-charcoal/55">
+              <p class="font-display text-base font-bold text-white mb-1 drop-shadow-md">Message received.</p>
+              <p class="font-sans text-xs font-semibold text-white drop-shadow-md">Team will reply within 48 hours.</p>
+            </div>
+          </div>
+
+          <!-- BOTTOM: DM icons -->
+          <div class="pt-6 text-center">
+            <p class="font-sans text-xs font-bold tracking-widest uppercase text-white mb-3 drop-shadow-md">Or DM directly</p>
+            <div class="flex justify-center gap-6">
+              <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white hover:text-burgundy transition-colors drop-shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+              </a>
+              <a href="https://ig.me/m/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white hover:text-burgundy transition-colors drop-shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a href="https://www.tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white hover:text-burgundy transition-colors drop-shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -186,12 +954,13 @@
         <div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
           <ul class="space-y-0">
-            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
-            <li><a href="services.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
-            <li><a href="calculators.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
-            <li><a href="blog.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Blog</a></li>
-            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
-            <li><a href="testimonials.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Testimonials</a></li>
+            <li><a href="#home" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Home</a></li>
+            <li><a href="#about" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
+            <li><a href="#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
+            <li><a href="#calculators" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="publication.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Publication</a></li>
+            <li><a href="#book" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
+            <li><a href="#contact" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Contact</a></li>
           </ul>
         </div>
         <div>
@@ -225,74 +994,838 @@
     </div>
   </footer>
 
-  <!-- WAITLIST MODAL -->
-  <div id="waitlist-modal" class="fixed inset-0 z-[100] hidden">
-    <div class="absolute inset-0 bg-charcoal/70" data-waitlist-close></div>
-    <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
-      <div class="relative bg-cream w-full max-w-md max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="waitlist-modal-title">
-        <button type="button" data-waitlist-close aria-label="Close" class="absolute top-4 right-4 z-10 text-charcoal/60 hover:text-charcoal transition-colors p-1 bg-cream rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-        <div class="px-6 md:px-8 pt-12 pb-8">
-          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3">Join the Waitlist</p>
-          <div class="w-8 h-px bg-burgundy mb-5"></div>
-          <h2 id="waitlist-modal-title" class="font-display text-2xl font-bold text-charcoal mb-3">Be the first to know.</h2>
-          <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-6">
-            The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
-          </p>
-
-          <form data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
-            <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
-            <input type="hidden" name="subject" value="1825 Days, Waitlist">
-            <input type="hidden" name="redirect" value="false">
-            <div>
-              <label for="waitlist-name" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Full Name</label>
-              <input type="text" id="waitlist-name" name="name" required placeholder="Your name" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-            </div>
-            <div>
-              <label for="waitlist-email" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Email Address</label>
-              <input type="email" id="waitlist-email" name="email" required placeholder="your@email.com" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-            </div>
-            <div>
-              <label for="waitlist-mobile" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Mobile</label>
-              <input type="tel" id="waitlist-mobile" name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-            </div>
-            <div>
-              <label for="waitlist-who" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Who Are You?</label>
-              <select id="waitlist-who" name="who_you_are" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
-                <option value="" disabled selected>Select one</option>
-                <option value="New parents">New parents</option>
-                <option value="Parents of young children">Parents of young children</option>
-                <option value="Gifting">Gifting</option>
-                <option value="Others">Others</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
-              Join the Waitlist
-            </button>
-          </form>
-
-          <div class="hidden py-6 text-center mt-3 border border-charcoal/15">
-            <div class="w-8 h-px bg-burgundy mx-auto mb-3"></div>
-            <p class="font-display text-lg font-semibold text-charcoal mb-1">You're on the list.</p>
-            <p class="font-sans text-sm text-charcoal/60">We will be in touch as soon as the book is ready. Thank you for your interest.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="js/main.js"></script>
   <script>
+    // ── SERVICE TABS ──────────────────────────────────
+    // Four stacked tabs. Click one to open that service's panel + swap the
+    // single section-level image on the right. Workout Program keeps the
+    // Treadmill image on purpose — only the other three tabs swap it.
     (function() {
-      const modal = document.getElementById('waitlist-modal');
-      if (!modal) return;
-      const open = () => { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
-      const close = () => { modal.classList.add('hidden'); document.body.style.overflow = ''; };
-      document.querySelectorAll('[data-waitlist]').forEach(b => b.addEventListener('click', (e) => { e.preventDefault(); open(); }));
-      modal.querySelectorAll('[data-waitlist-close]').forEach(b => b.addEventListener('click', close));
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      const tabs = document.querySelectorAll('[data-service-tab]');
+      const panels = document.querySelectorAll('.service-panel');
+      const bgImg = document.getElementById('services-bg-img');
+      if (!tabs.length) return;
+      // Per-tab image config.
+      // - shrinkCanvas: shrink the section min-height so it matches the
+      //   image's natural displayed height (used for Fitness only).
+      // - fillCanvas: make the image fill the right column edge-to-edge
+      //   via object-cover. Used for the Workout Rope image which is
+      //   landscape and would otherwise read as a small strip.
+      const imgByTab = {
+        'digital-plan':      { src: 'images/Rope Climbing.png',        fillCanvas: true,  shrinkCanvas: false },
+        'fitness':           { src: 'images/Fitness Consultation.png', fillCanvas: false, shrinkCanvas: true  },
+        'nutrition':         { src: 'images/Nutrition 2.png',          fillCanvas: false, shrinkCanvas: false },
+        'personal-training': { src: 'images/Training Client.png',      fillCanvas: false, shrinkCanvas: false },
+      };
+      const servicesSection = document.getElementById('services');
+      const bgImgMobile = document.getElementById('services-bg-img-mobile');
+      const setBg = (cfg) => {
+        if (!bgImg) return;
+        if (!bgImg.src.endsWith(cfg.src)) {
+          bgImg.style.opacity = '0';
+          const next = new Image();
+          next.onload = () => { bgImg.src = cfg.src; bgImg.style.opacity = '1'; };
+          next.src = cfg.src;
+        }
+        // Mobile twin image stays in sync — natural aspect, no crop.
+        if (bgImgMobile && !bgImgMobile.src.endsWith(cfg.src)) {
+          bgImgMobile.src = cfg.src;
+        }
+        // Fitness: shrink the canvas so the section matches the image height.
+        if (servicesSection) {
+          servicesSection.style.minHeight = cfg.shrinkCanvas
+            ? 'min(820px, 66.67vw)'
+            : '';
+        }
+        // Workout (Rope) fills the right column edge-to-edge (object-cover so
+        // its landscape aspect doesn't read as a tiny strip). Other tabs keep
+        // the natural-aspect display — full image visible, no crop. Use
+        // inline styles so the Tailwind CDN doesn't strip dynamic classes.
+        if (cfg.fillCanvas) {
+          bgImg.style.objectFit = 'cover';
+          bgImg.style.height = '100%';
+          bgImg.style.width = '50vw';
+        } else {
+          bgImg.style.objectFit = '';
+          bgImg.style.height = '';
+          bgImg.style.width = '';
+        }
+      };
+
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          const v = t.dataset.serviceTab;
+          panels.forEach(p => p.classList.add('hidden'));
+          tabs.forEach(other => {
+            const active = other === t;
+            other.classList.toggle('bg-burgundy', active);
+            other.classList.toggle('border-burgundy', active);
+            other.classList.toggle('text-white', active);
+            other.classList.toggle('bg-cream', !active);
+            other.classList.toggle('text-charcoal', !active);
+            other.classList.toggle('border-charcoal/20', !active);
+          });
+          if (imgByTab[v]) setBg(imgByTab[v]);  // cfg object now
+          const panel = document.getElementById('panel-' + v);
+          if (panel) {
+            panel.classList.remove('hidden');
+            setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+          }
+        });
+      });
+    })();
+
+    // ── INLINE PICKER TABS (service-form package/format/tier choices) ──
+    // Each picker has buttons that carry a data-<key> attribute. Clicking a
+    // button writes the value to a sibling hidden input (id="<group>-<key>")
+    // and applies a burgundy active style, clearing any sibling's active state.
+    (function() {
+      const groups = [
+        { cls: '.nutrition-tier-btn',  key: 'tier',    hiddenId: 'nutrition-tier'  },
+        { cls: '.fitness-format-btn',  key: 'format',  hiddenId: 'fitness-format'  },
+        { cls: '.fitness-package-btn', key: 'package', hiddenId: 'fitness-package' },
+      ];
+      const setActive = (btn, active) => {
+        btn.classList.toggle('bg-burgundy', active);
+        btn.classList.toggle('text-white', active);
+        btn.classList.toggle('bg-cream-dark', !active);
+        btn.classList.toggle('text-charcoal', !active);
+      };
+      groups.forEach(g => {
+        const buttons = document.querySelectorAll(g.cls);
+        const hidden  = document.getElementById(g.hiddenId);
+        if (!buttons.length || !hidden) return;
+        buttons.forEach(b => {
+          b.addEventListener('click', () => {
+            hidden.value = b.dataset[g.key];
+            buttons.forEach(o => setActive(o, o === b));
+          });
+        });
+      });
+    })();
+
+    // ── PLAN QUIZ ─────────────────────────────────────
+    (function() {
+      const form = document.getElementById('plan-quiz');
+      const quizState = document.getElementById('quiz-state');
+      const result = document.getElementById('quiz-result');
+      const titleEl = document.getElementById('result-plan-title');
+      const metaEl = document.getElementById('result-plan-meta');
+      const descEl = document.getElementById('result-plan-desc');
+      const planHidden = document.getElementById('result-plan-hidden');
+      const scoreHidden = document.getElementById('result-score-hidden');
+      const retake = document.getElementById('retake-quiz');
+      if (!form) return;
+
+      const PLANS = {
+        Beginner:    { fee: 100, meta: '$100, one-time payment',  desc: 'Start where you are. A structured training and personalised diet plan built around your level and your schedule. The foundation everything else is built on.' },
+        Intermediate:{ fee: 150, meta: '$150, one-time payment',  desc: 'You have a base. A periodised programme designed to push past your current plateau, with progressive overload and a diet plan that matches your training phase.' },
+        Advanced:    { fee: 200, meta: '$200, one-time payment',  desc: 'A carefully periodised performance programme built for trainees who are already strong and want focused, sustained progress.' },
+      };
+      const CONSULT_FEE = 75;
+
+      // References to the consultation block elements (revealed only when user opts in)
+      const consultBlock      = document.getElementById('consult-block');
+      const consultPlanLabel  = document.getElementById('consult-plan-label');
+      const consultPlanFeeEl  = document.getElementById('consult-plan-fee');
+      const consultConsultFee = document.getElementById('consult-consult-fee');
+      const consultTotalEl    = document.getElementById('consult-total');
+      const consultHidden     = document.getElementById('result-consult-hidden');
+      const totalHidden       = document.getElementById('result-total-hidden');
+      const buyBtn            = document.getElementById('result-buy-btn');
+      const buyTextEl         = document.getElementById('result-buy-text');
+      const purchaseForm      = document.getElementById('result-purchase-form');
+      const calendlyLink      = document.getElementById('consult-calendly-link');
+
+      // Tracks whether we're in the "consult required" branch and the running total to charge
+      let consultMode = false;
+      let lastTotal = 0;
+
+      const backBtn = document.getElementById('quiz-back');
+      const forwardBtn = document.getElementById('quiz-forward');
+      const detailsWrap = document.getElementById('result-details-wrap');
+      const progressEl = document.getElementById('quiz-progress');
+
+      // Map: step-id → id of the hidden input that holds that step's answer.
+      // The forward button checks the current step's input — empty = no answer
+      // yet → forward stays disabled.
+      const stepInputMap = {
+        q1: 'q1-value', q2: 'q2-value', q2a: 'q2-consult-value',
+        q3: 'q3-value', q4: 'q4-value', q5: 'q5-value',
+      };
+      const isStepAnswered = (stepId) => {
+        const el = document.getElementById(stepInputMap[stepId]);
+        return !!(el && el.value);
+      };
+      // Back is shown on every step (Q1 back = exit quiz, later steps pop the
+      // nav stack). Next is shown on the middle steps (Q2 / Q2a / Q3 / Q4);
+      // Q1 has only back (nothing to advance to until an answer is picked,
+      // and the answer click handles it), Q5 has only back because clicking
+      // an answer there triggers the result screen automatically.
+      const refreshNav = () => {
+        const cur = currentStepId();
+        if (backBtn)    backBtn.classList.remove('hidden');
+        if (forwardBtn) {
+          const hasNext = cur !== 'q1' && cur !== 'q5';
+          forwardBtn.classList.toggle('hidden', !hasNext);
+          forwardBtn.disabled = !isStepAnswered(cur);
+        }
+      };
+      const refreshForwardBtn = refreshNav;
+
+      // ── Carousel state ──
+      // Steps are addressed by string id (data-step): q1, q2, q2a, q3, q4, q5.
+      // Q2a is only entered when Q2's "No, Need Guidance" button is picked.
+      // navStack tracks the visited path so Back walks back through the same
+      // sequence the user took going forward.
+      const stepMap = {};
+      form.querySelectorAll('.quiz-step').forEach(el => {
+        stepMap[el.dataset.step] = el;
+      });
+      const navStack = ['q1'];
+      let needsGuidance = false;
+      const currentStepId = () => navStack[navStack.length - 1];
+
+      const setActiveStyle = (btn, active) => {
+        btn.classList.toggle('bg-burgundy', active);
+        btn.classList.toggle('text-white', active);
+        btn.classList.toggle('bg-cream-dark', !active);
+        btn.classList.toggle('text-charcoal', !active);
+      };
+      const clearGroup = (btn) => {
+        const q = btn.dataset.q;
+        const scope = btn.closest('.grid');
+        if (!scope) return;
+        scope.querySelectorAll(`button[data-q="${q}"]`).forEach(b => setActiveStyle(b, false));
+      };
+
+      const renderStep = () => {
+        const cur = currentStepId();
+        Object.entries(stepMap).forEach(([id, el]) => el.classList.toggle('hidden', id !== cur));
+        if (progressEl) {
+          const totalSteps = needsGuidance ? 6 : 5;
+          const posMap = needsGuidance
+            ? { q1: 1, q2: 2, q2a: 3, q3: 4, q4: 5, q5: 6 }
+            : { q1: 1, q2: 2, q3: 3, q4: 4, q5: 5 };
+          progressEl.textContent = 'Question ' + (posMap[cur] || 1) + ' of ' + totalSteps;
+        }
+        refreshNav();
+      };
+
+      const nextStepId = (cur) => {
+        if (cur === 'q1') return 'q2';
+        if (cur === 'q2') return needsGuidance ? 'q2a' : 'q3';
+        if (cur === 'q2a') return 'q3';
+        if (cur === 'q3') return 'q4';
+        if (cur === 'q4') return 'q5';
+        return null;  // end of quiz after q5
+      };
+
+      const advance = () => {
+        const cur = currentStepId();
+        const next = nextStepId(cur);
+        if (next === null) {
+          showResult();
+        } else {
+          navStack.push(next);
+          renderStep();
+        }
+      };
+
+      // Wire every answer button. Click sets hidden input, applies active
+      // style, sets needsGuidance flag for Q2, then advances.
+      form.querySelectorAll('.quiz-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const stepEl = btn.closest('.quiz-step');
+          if (!stepEl || stepEl.classList.contains('hidden')) return;
+          const q = btn.dataset.q;
+          const val = btn.dataset.value;
+          const targetInput = document.getElementById(
+            (q === 'q2_consultation') ? 'q2-consult-value' : q + '-value'
+          );
+          if (targetInput) targetInput.value = val;
+          clearGroup(btn);
+          setActiveStyle(btn, true);
+          refreshForwardBtn();
+          // Q2 special: track the guidance flag so nextStepId routes correctly.
+          if (q === 'q2') {
+            needsGuidance = btn.dataset.guidance === 'true';
+            if (!needsGuidance) {
+              // User picked a non-guidance option, clear any prior consult answer.
+              const c = document.getElementById('q2-consult-value');
+              if (c) c.value = '';
+              document.querySelectorAll('button[data-q="q2_consultation"]').forEach(b => setActiveStyle(b, false));
+            }
+          }
+          setTimeout(advance, 0);
+        });
+      });
+
+      // Closes the workout panel and returns the user to the four service tabs.
+      const closeQuizAndReturnToServices = () => {
+        const panel = document.getElementById('panel-digital-plan');
+        if (panel) panel.classList.add('hidden');
+        document.querySelectorAll('[data-service-tab]').forEach(t => {
+          t.classList.remove('bg-burgundy', 'text-white', 'border-burgundy');
+          t.classList.add('bg-cream', 'text-charcoal', 'border-charcoal/15');
+        });
+        const services = document.getElementById('services');
+        if (services) services.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          if (navStack.length === 1) {
+            closeQuizAndReturnToServices();
+            return;
+          }
+          navStack.pop();
+          renderStep();
+        });
+      }
+      if (forwardBtn) {
+        forwardBtn.addEventListener('click', () => {
+          if (isStepAnswered(currentStepId())) advance();
+        });
+      }
+
+      // ── Compute and show the result ──
+      const showResult = () => {
+        const data = new FormData(form);
+        let score = 0;
+        for (let i = 1; i <= 5; i++) {
+          score += parseInt(data.get('q' + i), 10) || 0;
+        }
+        let plan = 'Beginner';
+        if (score >= 16) plan = 'Advanced';
+        else if (score >= 11) plan = 'Intermediate';
+
+        titleEl.textContent = plan;
+        metaEl.textContent = PLANS[plan].meta;
+        if (descEl) descEl.textContent = PLANS[plan].desc;
+        planHidden.value = plan;
+        scoreHidden.value = score;
+
+        const wantsConsult = data.get('q2_consultation') === 'Yes';
+        const planFee = PLANS[plan].fee;
+        const total = wantsConsult ? planFee + CONSULT_FEE : planFee;
+        lastTotal = total;
+        totalHidden.value = '$' + total;
+
+        if (wantsConsult) {
+          consultMode = true;
+          consultHidden.value = 'Yes';
+          if (consultBlock) {
+            consultBlock.classList.remove('hidden');
+            if (consultPlanLabel)  consultPlanLabel.textContent  = plan + ' programme';
+            if (consultPlanFeeEl)  consultPlanFeeEl.textContent  = '$' + planFee;
+            if (consultConsultFee) consultConsultFee.textContent = '$' + CONSULT_FEE;
+            if (consultTotalEl)    consultTotalEl.textContent    = '$' + total;
+          }
+        } else {
+          consultMode = false;
+          consultHidden.value = 'No';
+          if (consultBlock) consultBlock.classList.add('hidden');
+        }
+
+        // State A: Pay button visible (with total), details form hidden.
+        if (buyBtn) buyBtn.classList.remove('hidden');
+        if (buyTextEl) buyTextEl.textContent = 'Pay $' + total;
+        if (detailsWrap) detailsWrap.classList.add('hidden');
+
+        // Swap quiz off, result on.
+        if (quizState) quizState.classList.add('hidden');
+        result.classList.remove('hidden');
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
+      // Pay button → state B: hide pay UI, reveal the name/email form.
+      if (buyBtn) {
+        buyBtn.addEventListener('click', () => {
+          buyBtn.classList.add('hidden');
+          if (detailsWrap) detailsWrap.classList.remove('hidden');
+        });
+      }
+
+      // The quiz form has no visible submit button anymore; result is triggered
+      // programmatically via advance(). Guard against any accidental submit.
+      form.addEventListener('submit', (e) => e.preventDefault());
+
+      renderStep();
+
+      // Retake → reset everything, restart at q1.
+      retake.addEventListener('click', () => {
+        if (purchaseForm) purchaseForm.reset();
+        form.querySelectorAll('input[type="hidden"]').forEach(inp => { inp.value = ''; });
+        form.querySelectorAll('.quiz-option').forEach(b => setActiveStyle(b, false));
+        if (consultBlock) consultBlock.classList.add('hidden');
+        if (detailsWrap) detailsWrap.classList.add('hidden');
+        if (buyBtn) buyBtn.classList.remove('hidden');
+        consultMode = false;
+        needsGuidance = false;
+        navStack.length = 0;
+        navStack.push('q1');
+        result.classList.add('hidden');
+        if (quizState) quizState.classList.remove('hidden');
+        renderStep();
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
+
+    // ── CALCULATOR VIDEO AUTO-AUDIO ───────────────────
+    // Video autoplays muted on page load (browsers require it). As soon as
+    // the user scrolls the calculators section into view, unmute and play.
+    // When they scroll past, mute again so audio doesn't bleed into the next
+    // section.
+    (function() {
+      const video = document.getElementById('calc-video');
+      const section = document.getElementById('calculators');
+      if (!video || !section || !('IntersectionObserver' in window)) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.muted = false;
+            video.volume = 1;
+            // Browsers may block unmute if the user has not yet interacted with
+            // the page; the catch keeps the page silent in that case.
+            video.play().catch(() => { video.muted = true; });
+          } else {
+            video.muted = true;
+          }
+        });
+      }, { threshold: 0.35 });
+      obs.observe(section);
+    })();
+
+    // ── CALCULATOR TABS ───────────────────────────────
+    // Two tab buttons at the top; clicking one opens that calculator's form.
+    // Initially both calculator sections are hidden so the video background reads cleanly.
+    (function() {
+      const tabs = document.querySelectorAll('[data-calc-tab]');
+      const sections = document.querySelectorAll('.calc-section');
+      if (!tabs.length) return;
+      const showCalc = (v) => {
+        sections.forEach(s => s.classList.toggle('hidden', s.dataset.calc !== v));
+        tabs.forEach(t => {
+          const active = t.dataset.calcTab === v;
+          t.classList.toggle('bg-burgundy', active);
+          t.classList.toggle('text-white', active);
+          t.classList.toggle('bg-cream/95', !active);
+          t.classList.toggle('text-charcoal', !active);
+        });
+      };
+      tabs.forEach(t => t.addEventListener('click', () => showCalc(t.dataset.calcTab)));
+    })();
+
+    // Shared store of the most recent calculator outputs so the PDF handler can read them
+    const CalcStore = { bfp: null, tdee: null };
+
+    // ── BFP CALCULATOR ────────────────────────────────
+    (function() {
+      const form = document.getElementById('bfp-form');
+      if (!form) return;
+      const gender = document.getElementById('bfp-gender');
+      const hipWrap = document.getElementById('bfp-hip-wrap');
+      const heightI = document.getElementById('bfp-height');
+      const neckI = document.getElementById('bfp-neck');
+      const waistI = document.getElementById('bfp-waist');
+      const hipI = document.getElementById('bfp-hip');
+      const errorEl = document.getElementById('bfp-error');
+      const placeholder = document.getElementById('bfp-placeholder');
+      const resultEl = document.getElementById('bfp-result');
+      const valueEl = document.getElementById('bfp-value');
+      const catEl = document.getElementById('bfp-category');
+      const interpEl = document.getElementById('bfp-interpretation');
+      const emailBlock = document.getElementById('bfp-email-block');
+      const emailResult = document.getElementById('bfp-email-result');
+      const emailCategory = document.getElementById('bfp-email-category');
+
+      const toggleHip = () => {
+        const f = gender.value === 'female';
+        hipWrap.classList.toggle('hidden', !f);
+        hipI.required = f;
+      };
+      gender.addEventListener('change', toggleHip);
+      toggleHip();
+
+      const categorise = (bfp, isFemale) => {
+        if (isFemale) {
+          if (bfp < 14) return { name: 'Essential fat range', note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
+          if (bfp < 19) return { name: 'Athletes range', note: 'Highly trained, competition-lean. Requires careful nutrition and recovery to maintain.' };
+          if (bfp < 21) return { name: 'Fitness range', note: 'Visibly trained, healthy, sustainable. A strong target for most active women.' };
+          if (bfp < 32) return { name: 'Average / Acceptable', note: 'Within the healthy adult range. Resistance training and nutrition can move this lower if that is your goal.' };
+          return { name: 'Above average', note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this.' };
+        }
+        if (bfp < 6) return { name: 'Essential fat range', note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
+        if (bfp < 13) return { name: 'Athletes range', note: 'Competition-lean. Requires careful nutrition and recovery to maintain.' };
+        if (bfp < 16) return { name: 'Fitness range', note: 'Visibly trained and healthy. A strong target for most active men.' };
+        if (bfp < 25) return { name: 'Average / Acceptable', note: 'Within the healthy adult range. Resistance training and a diet plan can move this lower if that is your goal.' };
+        return { name: 'Above average', note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this.' };
+      };
+
+      const showErr = (msg) => {
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+        resultEl.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        emailBlock.classList.add('hidden');
+      };
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+        const isFemale = gender.value === 'female';
+        const h = parseFloat(heightI.value), n = parseFloat(neckI.value), w = parseFloat(waistI.value);
+        const hip = isFemale ? parseFloat(hipI.value) : 0;
+        if (isNaN(h) || h <= 0) return showErr('Enter a valid height.');
+        if (isNaN(n) || n <= 0) return showErr('Enter a valid neck measurement.');
+        if (isNaN(w) || w <= 0) return showErr('Enter a valid waist measurement.');
+        if (isFemale && (isNaN(hip) || hip <= 0)) return showErr('Enter a valid hip measurement.');
+
+        let bfp;
+        if (isFemale) {
+          const diff = w + hip - n;
+          if (diff <= 0) return showErr('Waist plus hip must be greater than neck.');
+          const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(h);
+          bfp = 495 / denom - 450;
+        } else {
+          const diff = w - n;
+          if (diff <= 0) return showErr('Waist must be greater than neck.');
+          const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(h);
+          bfp = 495 / denom - 450;
+        }
+        if (!isFinite(bfp)) return showErr('Calculation failed, check measurements.');
+
+        const rounded = Math.round(bfp * 10) / 10;
+        valueEl.textContent = rounded.toFixed(1);
+        let cat;
+        if (rounded < 2 || rounded > 60) {
+          cat = { name: 'Outside plausible range', note: 'The formula returned a value outside the realistic 2 to 60 percent band. One of your measurements is likely off.' };
+        } else {
+          cat = categorise(rounded, isFemale);
+        }
+        catEl.textContent = cat.name;
+        interpEl.textContent = cat.note;
+        placeholder.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+        emailBlock.classList.remove('hidden');
+        emailResult.value = rounded.toFixed(1) + '%';
+        emailCategory.value = cat.name;
+        CalcStore.bfp = {
+          bfp: rounded.toFixed(1),
+          category: cat.name,
+          note: cat.note,
+          gender: isFemale ? 'Female' : 'Male',
+          height: h, neck: n, waist: w, hip: isFemale ? hip : null,
+        };
+      });
+    })();
+
+    // ── TDEE CALCULATOR ───────────────────────────────
+    (function() {
+      const form = document.getElementById('tdee-form');
+      if (!form) return;
+      const g = document.getElementById('tdee-gender');
+      const a = document.getElementById('tdee-age');
+      const h = document.getElementById('tdee-height');
+      const w = document.getElementById('tdee-weight');
+      const act = document.getElementById('tdee-activity');
+      const errorEl = document.getElementById('tdee-error');
+      const placeholder = document.getElementById('tdee-placeholder');
+      const resultEl = document.getElementById('tdee-result');
+      const valueEl = document.getElementById('tdee-value');
+      const catEl = document.getElementById('tdee-category');
+      const cutEl = document.getElementById('tdee-cut');
+      const mEl = document.getElementById('tdee-maintain');
+      const bEl = document.getElementById('tdee-bulk');
+      const emailBlock = document.getElementById('tdee-email-block');
+      const emailResult = document.getElementById('tdee-email-result');
+
+      const showErr = (msg) => { errorEl.textContent = msg; errorEl.classList.remove('hidden'); resultEl.classList.add('hidden'); placeholder.classList.remove('hidden'); emailBlock.classList.add('hidden'); };
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+        const hcm = parseFloat(h.value), wkg = parseFloat(w.value), age = parseInt(a.value, 10), mult = parseFloat(act.value);
+        if (!hcm || !wkg || !age || !mult) return showErr('Fill in all fields.');
+        const bmr = g.value === 'male'
+          ? 10 * wkg + 6.25 * hcm - 5 * age + 5
+          : 10 * wkg + 6.25 * hcm - 5 * age - 161;
+        if (!isFinite(bmr) || bmr < 500) return showErr('Calculation failed, check inputs.');
+        const tdee = bmr * mult;
+        const round = (n) => Math.round(n / 5) * 5;
+
+        valueEl.textContent = round(tdee).toLocaleString();
+        cutEl.textContent = round(tdee - 500).toLocaleString();
+        mEl.textContent = round(tdee).toLocaleString();
+        bEl.textContent = round(tdee + 250).toLocaleString();
+
+        let cat = 'Steady metabolic range';
+        if (tdee < 1700) cat = 'Low energy needs, careful with cuts';
+        else if (tdee < 2500) cat = 'Moderate metabolic range';
+        else if (tdee < 3200) cat = 'High energy needs';
+        else cat = 'Very high energy needs, athlete tier';
+        catEl.textContent = cat;
+
+        placeholder.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+        emailBlock.classList.remove('hidden');
+        emailResult.value = round(tdee) + ' kcal (' + cat + ')';
+        CalcStore.tdee = {
+          tdee: round(tdee),
+          category: cat,
+          cut: round(tdee - 500),
+          maintain: round(tdee),
+          bulk: round(tdee + 250),
+          gender: g.value, age, height: hcm, weight: wkg, activity: act.options[act.selectedIndex].text,
+        };
+      });
+    })();
+
+    // ── BMI CALCULATOR ────────────────────────────────
+    (function() {
+      const form = document.getElementById('bmi-form');
+      if (!form) return;
+      const h = document.getElementById('bmi-height');
+      const w = document.getElementById('bmi-weight');
+      const errorEl = document.getElementById('bmi-error');
+      const placeholder = document.getElementById('bmi-placeholder');
+      const resultEl = document.getElementById('bmi-result');
+      const valueEl = document.getElementById('bmi-value');
+      const catEl = document.getElementById('bmi-category');
+      const interpEl = document.getElementById('bmi-interpretation');
+      const showErr = (msg) => { errorEl.textContent = msg; errorEl.classList.remove('hidden'); resultEl.classList.add('hidden'); placeholder.classList.remove('hidden'); };
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+        const hcm = parseFloat(h.value), wkg = parseFloat(w.value);
+        if (!hcm || !wkg) return showErr('Fill in height and weight.');
+        const hm = hcm / 100;
+        const bmi = wkg / (hm * hm);
+        if (!isFinite(bmi) || bmi < 5 || bmi > 80) return showErr('Calculation failed, check inputs.');
+        valueEl.textContent = bmi.toFixed(1);
+        let cat = 'Normal weight', interp = 'Healthy range for most adults. Composition and habits matter more than this number alone.';
+        if (bmi < 18.5) { cat = 'Underweight'; interp = 'Below the typical healthy range. Build muscle, not just weight, with progressive training and a calorie surplus.'; }
+        else if (bmi < 25) { cat = 'Normal weight'; interp = 'Within the healthy adult range. Focus on body composition and strength rather than this single number.'; }
+        else if (bmi < 30) { cat = 'Overweight'; interp = 'Above the healthy range. A structured plan with progressive training and a small calorie deficit can move this down.'; }
+        else { cat = 'Obese'; interp = 'Long-term health risks rise sharply here. A structured plan and consistent execution change this faster than you think.'; }
+        catEl.textContent = cat;
+        interpEl.textContent = interp;
+        placeholder.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+      });
+    })();
+
+    // ── IDEAL BODY WEIGHT CALCULATOR ──────────────────
+    (function() {
+      const form = document.getElementById('ibw-form');
+      if (!form) return;
+      const g = document.getElementById('ibw-gender');
+      const h = document.getElementById('ibw-height');
+      const errorEl = document.getElementById('ibw-error');
+      const placeholder = document.getElementById('ibw-placeholder');
+      const resultEl = document.getElementById('ibw-result');
+      const lowEl = document.getElementById('ibw-low');
+      const highEl = document.getElementById('ibw-high');
+      const pointEl = document.getElementById('ibw-point');
+      const showErr = (msg) => { errorEl.textContent = msg; errorEl.classList.remove('hidden'); resultEl.classList.add('hidden'); placeholder.classList.remove('hidden'); };
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+        const hcm = parseFloat(h.value);
+        if (!hcm) return showErr('Enter your height.');
+        // Broca's Index (metric):
+        //   Male IBW   = Height (cm) - 100        (e.g. 170 cm → 70 kg)
+        //   Female IBW = Male IBW * 0.9 (10% less) (e.g. 160 cm → 54 kg)
+        // Healthy target band = IBW ± 5 kg for non-exercising / female clients.
+        const maleIBW = hcm - 100;
+        const target = g.value === 'male' ? maleIBW : maleIBW * 0.9;
+        if (!isFinite(target) || target < 20 || target > 160) return showErr('Calculation failed, check height.');
+        const low = target - 5;
+        const high = target + 5;
+        lowEl.textContent = Math.round(low);
+        highEl.textContent = Math.round(high);
+        pointEl.textContent = 'IBW ' + Math.round(target) + ' kg';
+        placeholder.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+      });
+    })();
+
+    // ── CALCULATOR PDF EMAIL HANDLER ──────────────────
+    // Generates a simple PDF of the result, downloads it locally, and POSTs the
+    // form to web3forms as multipart/form-data with the PDF attached.
+    (function() {
+      const drawHeader = (doc, title) => {
+        doc.setFillColor(26, 46, 34); // charcoal
+        doc.rect(0, 0, 210, 28, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
+        doc.text('WYBE', 18, 16);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('Wellness You Built Everyday', 18, 22);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text(title, 192, 16, { align: 'right' });
+      };
+
+      const drawFooter = (doc) => {
+        doc.setTextColor(120, 120, 120);
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.text('Generated at mansoorahamadali.com — for educational reference only. DEXA Scan and BIA are gold standards.', 105, 285, { align: 'center' });
+      };
+
+      const buildBfpPdf = (name, age, email) => {
+        const data = CalcStore.bfp;
+        if (!data) return null;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        drawHeader(doc, 'BODY FAT PERCENTAGE');
+        doc.setTextColor(26, 46, 34);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        let y = 42;
+        doc.text('Name:  ' + name, 18, y); y += 6;
+        doc.text('Age:   ' + age, 18, y); y += 6;
+        doc.text('Email: ' + email, 18, y); y += 10;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(36);
+        doc.setTextColor(90, 122, 101);
+        doc.text(data.bfp + ' %', 18, y + 6); y += 14;
+        doc.setFontSize(13);
+        doc.setTextColor(26, 46, 34);
+        doc.text('Category: ' + data.category, 18, y); y += 9;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        const noteLines = doc.splitTextToSize(data.note, 174);
+        doc.text(noteLines, 18, y); y += noteLines.length * 5 + 6;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text('Measurements used', 18, y); y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text('Gender: ' + data.gender, 18, y); y += 5;
+        doc.text('Height: ' + data.height + ' cm', 18, y); y += 5;
+        doc.text('Neck:   ' + data.neck + ' cm', 18, y); y += 5;
+        doc.text('Waist:  ' + data.waist + ' cm', 18, y); y += 5;
+        if (data.hip != null) { doc.text('Hip:    ' + data.hip + ' cm', 18, y); y += 5; }
+
+        y += 6;
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(9);
+        const next = 'Next step: book a session with Mansoor to translate this number into a concrete training and nutrition plan. Reply to this email or visit the contact section on the website.';
+        doc.text(doc.splitTextToSize(next, 174), 18, y);
+
+        drawFooter(doc);
+        return doc;
+      };
+
+      const buildTdeePdf = (name, age, email) => {
+        const data = CalcStore.tdee;
+        if (!data) return null;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        drawHeader(doc, 'DAILY ENERGY NEEDS');
+        doc.setTextColor(26, 46, 34);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        let y = 42;
+        doc.text('Name:  ' + name, 18, y); y += 6;
+        doc.text('Age:   ' + age, 18, y); y += 6;
+        doc.text('Email: ' + email, 18, y); y += 10;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(32);
+        doc.setTextColor(90, 122, 101);
+        doc.text(data.tdee.toLocaleString() + ' kcal / day', 18, y + 6); y += 16;
+        doc.setFontSize(13);
+        doc.setTextColor(26, 46, 34);
+        doc.text(data.category, 18, y); y += 10;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text('Goal-based targets', 18, y); y += 7;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text('Cut (fat loss):  ' + data.cut.toLocaleString() + ' kcal', 18, y); y += 5;
+        doc.text('Maintain:        ' + data.maintain.toLocaleString() + ' kcal', 18, y); y += 5;
+        doc.text('Lean bulk:       ' + data.bulk.toLocaleString() + ' kcal', 18, y); y += 9;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text('Inputs used', 18, y); y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text('Gender:   ' + data.gender, 18, y); y += 5;
+        doc.text('Height:   ' + data.height + ' cm', 18, y); y += 5;
+        doc.text('Weight:   ' + data.weight + ' kg', 18, y); y += 5;
+        doc.text('Activity: ' + data.activity, 18, y); y += 9;
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(9);
+        const next = 'Next step: pair these calorie targets with a structured plan. Reply to this email or visit the contact section on the website to start.';
+        doc.text(doc.splitTextToSize(next, 174), 18, y);
+
+        drawFooter(doc);
+        return doc;
+      };
+
+      document.querySelectorAll('form[data-pdf-form]').forEach((form) => {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const calc = form.dataset.calc;
+          const btn = form.querySelector('button[type="submit"]');
+          const successEl = form.nextElementSibling;
+          const originalText = btn ? btn.textContent : '';
+
+          if (!window.jspdf) {
+            if (btn) { btn.textContent = 'PDF library still loading…'; }
+            return;
+          }
+          const fd = new FormData(form);
+          const name = (fd.get('name') || '').toString().trim();
+          const email = (fd.get('email') || '').toString().trim();
+          const age = (fd.get('age') || fd.get('age_confirmed') || '').toString().trim();
+
+          const doc = calc === 'bfp' ? buildBfpPdf(name, age, email) : buildTdeePdf(name, age, email);
+          if (!doc) {
+            if (btn) { btn.textContent = 'Calculate first, then submit'; }
+            return;
+          }
+
+          if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+
+          const filename = 'wybe-' + calc + '-' + (name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'result') + '.pdf';
+          const blob = doc.output('blob');
+
+          // Download locally as a backup so the user always has the PDF
+          try {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+          } catch (_) { /* ignore download errors */ }
+
+          // Send to web3forms with the PDF attached
+          fd.append('attachment', blob, filename);
+          fd.append('message', 'WYBE ' + calc.toUpperCase() + ' result for ' + name + ' (age ' + age + '), attached as PDF.');
+
+          try {
+            const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
+            if (res.ok) {
+              form.classList.add('hidden');
+              if (successEl) successEl.classList.remove('hidden');
+            } else { throw new Error(); }
+          } catch {
+            if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          }
+        });
       });
     })();
   </script>
