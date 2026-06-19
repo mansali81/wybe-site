@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculators, WYBE</title>
+  <meta name="description" content="Body fat percentage and daily energy needs calculators. Built on the US Navy and Mifflin-St Jeor formulas. Free, no signup, results explained in plain English.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FFFFFF', 'cream-dark': '#F0F4F1',
+            burgundy: '#5A7A65', 'burgundy-dark': '#3D5A47',
+            charcoal: '#1A2E22', 'charcoal-light': '#3D5A47', 'charcoal-muted': '#7A9485',
+          },
+          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-cream font-sans">
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <div class="hidden md:flex items-center gap-7">
+          <a href="index.html" data-nav="index.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
+          <a href="about.html" data-nav="about.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
+          <div class="relative group">
+            <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
+              Services
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="services-digital-plans.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Digital Plans</a>
+                <a href="services-fitness.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Fitness Consultation</a>
+                <a href="services-nutrition.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Human Performance Nutrition Consultation</a>
+                <a href="services-personal-training.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Personal Training (1 on 1)</a>
+              </div>
+            </div>
+          </div>
+          <div class="relative group">
+            <a href="calculators.html" data-nav="calculators.html" class="font-sans text-sm text-burgundy transition-colors inline-flex items-center gap-1">
+              Calculators
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="calculators.html#bfp" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Body Fat Percentage</a>
+                <a href="calculators.html#tdee" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Daily Calorie Needs (TDEE)</a>
+              </div>
+            </div>
+          </div>
+          <a href="blog.html" data-nav="blog.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Blog</a>
+          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</button>
+        </div>
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2">
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
+      <div class="flex flex-col gap-4">
+        <a href="index.html" class="font-sans text-sm text-charcoal">Home</a>
+        <a href="about.html" class="font-sans text-sm text-charcoal">About</a>
+        <a href="services.html" class="font-sans text-sm text-charcoal">Services</a>
+        <a href="calculators.html" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="blog.html" class="font-sans text-sm text-charcoal">Blog</a>
+        <a href="book.html" class="font-sans text-sm text-charcoal">My Book</a>
+        <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="bg-charcoal pt-16">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-6">Free Tools</p>
+      <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Calculators</h1>
+      <div class="w-12 h-px bg-burgundy mb-6"></div>
+      <p class="font-sans text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
+        Your weight tells you very little. Your body fat percentage defines your body aesthetics. Nothing is sent anywhere, every calculation happens in your browser.
+      </p>
+    </div>
+  </section>
+
+  <!-- CALCULATOR SWITCHER -->
+  <section class="bg-cream py-12 border-b border-charcoal/10">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-2">Choose a Calculator</p>
+          <div class="w-8 h-px bg-burgundy"></div>
+        </div>
+        <select id="calc-switcher" class="border border-charcoal/20 bg-cream px-5 py-3 font-sans text-sm w-full md:w-auto md:min-w-[320px] focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+          <option value="bfp" selected>Body Fat Percentage (US Navy)</option>
+          <option value="tdee">Daily Calorie Needs (TDEE)</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: BFP CALCULATOR -->
+  <section class="bg-cream py-24 calc-section" id="bfp" data-calc="bfp">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Educational copy -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+        <div class="md:col-span-4">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Calculator 01</p>
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal leading-snug">Body Fat Percentage</h2>
+        </div>
+        <div class="md:col-span-8 space-y-5">
+          <p class="font-display text-xl md:text-2xl font-semibold text-charcoal leading-snug">
+            Your weight tells you very little. Your body fat percentage tells you almost everything.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            Two people can weigh exactly the same and look completely different. One can be soft and tired, the other lean and strong. The difference is what their weight is made of; muscle, fat, water, and bone. Body fat percentage (BFP) is the share of your total weight that is fat. The lower the percentage, the more muscle and less fat you carry, within reason.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            <span class="font-medium text-charcoal">The US Navy method.</span> This calculator uses the same formula the US Navy has used for decades to estimate body fat from a few simple tape-measure readings. It is not perfect; a DEXA scan is the gold standard; but it is free, takes 30 seconds, and is accurate enough to track your progress month over month. <span class="font-medium text-charcoal">BIA (bioelectrical impedance)</span> is the next-closest at-home alternative; its results come closest to DEXA out of any consumer method.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            <span class="font-medium text-charcoal">How to measure correctly:</span> use a soft tape. Stand relaxed, breathing normally. Measure your <span class="font-medium">neck</span> just below the Adam&rsquo;s apple. Measure your <span class="font-medium">waist</span> at the level of the belly button (men) or at the narrowest point (women). For women, also measure your <span class="font-medium">hips</span> at the widest point. Do not hold your breath in. Honesty beats wishful measuring.
+          </p>
+        </div>
+      </div>
+
+      <!-- BFP Calculator UI -->
+      <div class="border border-charcoal/15 bg-cream-dark p-8 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div>
+            <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Enter Your Measurements</p>
+
+            <!-- Unit toggle -->
+            <div class="inline-flex border border-charcoal/20 mb-6" role="tablist" aria-label="Units">
+              <button type="button" data-bfp-units="metric" class="px-4 py-2 font-sans text-xs tracking-widest uppercase bg-burgundy text-white transition-colors">Metric (cm)</button>
+              <button type="button" data-bfp-units="imperial" class="px-4 py-2 font-sans text-xs tracking-widest uppercase text-charcoal hover:bg-charcoal/5 transition-colors">Imperial (in)</button>
+            </div>
+
+            <form id="bfp-form" class="space-y-4">
+              <div>
+                <label for="bfp-gender" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Gender</label>
+                <select id="bfp-gender" name="gender" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                  <option value="male" selected>Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="bfp-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (<span data-bfp-unit-label>cm</span>)</label>
+                  <input type="number" id="bfp-height" name="height" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+                <div>
+                  <label for="bfp-neck" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Neck (<span data-bfp-unit-label>cm</span>)</label>
+                  <input type="number" id="bfp-neck" name="neck" step="0.1" required placeholder="38" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+                <div>
+                  <label for="bfp-waist" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Waist (<span data-bfp-unit-label>cm</span>)</label>
+                  <input type="number" id="bfp-waist" name="waist" step="0.1" required placeholder="85" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+                <div id="bfp-hip-wrap" class="hidden">
+                  <label for="bfp-hip" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Hip (<span data-bfp-unit-label>cm</span>)</label>
+                  <input type="number" id="bfp-hip" name="hip" step="0.1" placeholder="95" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+              </div>
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors mt-2">
+                Calculate
+              </button>
+              <p id="bfp-error" class="hidden font-sans text-xs text-red-700 mt-2">Please check your measurements, the calculation could not run.</p>
+            </form>
+          </div>
+
+          <!-- Results -->
+          <div class="border border-charcoal/15 bg-cream p-8 flex flex-col">
+            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Your Result</p>
+            <div class="w-8 h-px bg-burgundy mb-6"></div>
+            <div id="bfp-result" class="hidden flex-1 flex flex-col">
+              <p class="font-sans text-xs tracking-widest uppercase text-charcoal/50 mb-2">Body fat percentage</p>
+              <p class="font-display text-6xl md:text-7xl font-bold text-charcoal mb-2"><span id="bfp-value">,</span><span class="text-3xl text-charcoal/40">%</span></p>
+              <p id="bfp-category" class="font-display text-lg font-semibold text-burgundy mb-4">,</p>
+              <p id="bfp-interpretation" class="font-sans text-sm text-charcoal/70 leading-relaxed flex-1">,</p>
+              <p class="font-sans text-xs text-charcoal/40 mt-6 leading-relaxed">Estimate based on US Navy tape-measure method. For clinical accuracy, use a DEXA scan or hydrostatic weighing.</p>
+            </div>
+            <div id="bfp-placeholder" class="flex-1 flex items-center justify-center text-center">
+              <p class="font-sans text-sm text-charcoal/40 max-w-xs">Fill in your measurements and tap calculate. Your result will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reference ranges -->
+      <div class="mt-12">
+        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Reference Ranges</p>
+        <div class="w-8 h-px bg-burgundy mb-6"></div>
+        <div class="border border-charcoal/15 overflow-hidden">
+          <div class="grid grid-cols-3 bg-cream-dark border-b border-charcoal/15">
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-xs tracking-widest uppercase text-charcoal/60">Category</p></div>
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-xs tracking-widest uppercase text-charcoal/60">Men</p></div>
+            <div class="p-4"><p class="font-sans text-xs tracking-widest uppercase text-charcoal/60">Women</p></div>
+          </div>
+          <div class="grid grid-cols-3 border-b border-charcoal/15">
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Essential fat</p><p class="font-sans text-xs text-charcoal/50">The minimum your body needs to function</p></div>
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">2&ndash;5%</p></div>
+            <div class="p-4"><p class="font-sans text-sm text-charcoal">10&ndash;13%</p></div>
+          </div>
+          <div class="grid grid-cols-3 border-b border-charcoal/15">
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Athletes</p><p class="font-sans text-xs text-charcoal/50">Competition-lean</p></div>
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">6&ndash;12%</p></div>
+            <div class="p-4"><p class="font-sans text-sm text-charcoal">14&ndash;18%</p></div>
+          </div>
+          <div class="grid grid-cols-3 border-b border-charcoal/15">
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Fitness</p><p class="font-sans text-xs text-charcoal/50">Visibly trained</p></div>
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">13&ndash;15%</p></div>
+            <div class="p-4"><p class="font-sans text-sm text-charcoal">19&ndash;20%</p></div>
+          </div>
+          <div class="grid grid-cols-3 border-b border-charcoal/15">
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Average</p><p class="font-sans text-xs text-charcoal/50">Healthy but untrained</p></div>
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">16&ndash;24%</p></div>
+            <div class="p-4"><p class="font-sans text-sm text-charcoal">21&ndash;31%</p></div>
+          </div>
+          <div class="grid grid-cols-3">
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Above average</p><p class="font-sans text-xs text-charcoal/50">Health risks increase</p></div>
+            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">25%+</p></div>
+            <div class="p-4"><p class="font-sans text-sm text-charcoal">32%+</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: TDEE CALCULATOR -->
+  <section class="bg-cream py-24 calc-section hidden" id="tdee" data-calc="tdee">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Educational copy -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+        <div class="md:col-span-4">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Calculator 02</p>
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal leading-snug">Daily Calorie Needs (TDEE)</h2>
+        </div>
+        <div class="md:col-span-8 space-y-5">
+          <p class="font-display text-xl md:text-2xl font-semibold text-charcoal leading-snug">
+            If you don&rsquo;t know how many calories you burn in a day, every diet you try is a guess.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            TDEE stands for <span class="font-medium text-charcoal">Total Daily Energy Expenditure</span>. It is the total number of calories your body burns in a 24-hour period, from breathing and digesting food, to walking, training, and everything in between. Knowing this number is the foundation of any sensible diet, cut, or bulk.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            <span class="font-medium text-charcoal">First we calculate your BMR.</span> Your Basal Metabolic Rate is what your body would burn lying in bed all day, doing absolutely nothing. It pays the bills for your heart, brain, organs, and basic cell function. This calculator uses the <span class="font-medium">Mifflin-St Jeor</span> formula, which is currently the most accurate equation for most healthy adults.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            <span class="font-medium text-charcoal">Then we multiply by your activity level.</span> Your real-life daily burn is much higher than your BMR because you also walk, climb stairs, train, fidget, and live. We multiply BMR by a factor based on how active you are, and that gives you your TDEE.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            <span class="font-medium text-charcoal">What do you do with the number?</span> Eat at your TDEE to maintain. Eat ~500 calories below it to lose fat at a steady pace (roughly 0.5 kg / 1 lb per week). Eat ~250 above it to gain lean muscle slowly. The calculator does this math for you below the result.
+          </p>
+        </div>
+      </div>
+
+      <!-- TDEE Calculator UI -->
+      <div class="border border-charcoal/15 bg-cream-dark p-8 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div>
+            <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Enter Your Details</p>
+
+            <div class="inline-flex border border-charcoal/20 mb-6" role="tablist" aria-label="Units">
+              <button type="button" data-tdee-units="metric" class="px-4 py-2 font-sans text-xs tracking-widest uppercase bg-burgundy text-white transition-colors">Metric (cm/kg)</button>
+              <button type="button" data-tdee-units="imperial" class="px-4 py-2 font-sans text-xs tracking-widest uppercase text-charcoal hover:bg-charcoal/5 transition-colors">Imperial (in/lbs)</button>
+            </div>
+
+            <form id="tdee-form" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="tdee-gender" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Gender</label>
+                  <select id="tdee-gender" name="gender" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                    <option value="male" selected>Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="tdee-age" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Age</label>
+                  <input type="number" id="tdee-age" name="age" required min="14" max="100" placeholder="32" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+                <div>
+                  <label for="tdee-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (<span data-tdee-height-label>cm</span>)</label>
+                  <input type="number" id="tdee-height" name="height" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+                <div>
+                  <label for="tdee-weight" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Weight (<span data-tdee-weight-label>kg</span>)</label>
+                  <input type="number" id="tdee-weight" name="weight" step="0.1" required placeholder="78" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                </div>
+              </div>
+              <div>
+                <label for="tdee-activity" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Activity Level</label>
+                <select id="tdee-activity" name="activity" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                  <option value="1.2">Sedentary, desk job, no training</option>
+                  <option value="1.375">Lightly active, light exercise 1&ndash;3 days/week</option>
+                  <option value="1.55" selected>Moderately active, 3&ndash;5 days/week</option>
+                  <option value="1.725">Very active, 6&ndash;7 days/week</option>
+                  <option value="1.9">Extra active, physical job + daily training</option>
+                </select>
+              </div>
+              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors mt-2">
+                Calculate
+              </button>
+              <p id="tdee-error" class="hidden font-sans text-xs text-red-700 mt-2">Please check your inputs, the calculation could not run.</p>
+            </form>
+          </div>
+
+          <!-- Results -->
+          <div class="border border-charcoal/15 bg-cream p-8 flex flex-col">
+            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Your Numbers</p>
+            <div class="w-8 h-px bg-burgundy mb-6"></div>
+            <div id="tdee-result" class="hidden flex-1 flex flex-col">
+              <p class="font-sans text-xs tracking-widest uppercase text-charcoal/50 mb-2">Daily energy expenditure (TDEE)</p>
+              <p class="font-display text-5xl md:text-6xl font-bold text-charcoal mb-1"><span id="tdee-value">,</span> <span class="text-2xl text-charcoal/40">kcal</span></p>
+              <p class="font-sans text-sm text-charcoal/60 mb-6">BMR: <span id="tdee-bmr">,</span> kcal &middot; multiplier <span id="tdee-multiplier">,</span></p>
+
+              <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Targets for common goals</p>
+              <div class="space-y-2 mb-6">
+                <div class="flex items-baseline justify-between border-b border-charcoal/10 py-2">
+                  <p class="font-sans text-sm text-charcoal">Cut (fat loss, ~0.5 kg/week)</p>
+                  <p class="font-display text-lg font-semibold text-charcoal"><span id="tdee-cut">,</span> kcal</p>
+                </div>
+                <div class="flex items-baseline justify-between border-b border-charcoal/10 py-2">
+                  <p class="font-sans text-sm text-charcoal">Maintain</p>
+                  <p class="font-display text-lg font-semibold text-charcoal"><span id="tdee-maintain">,</span> kcal</p>
+                </div>
+                <div class="flex items-baseline justify-between py-2">
+                  <p class="font-sans text-sm text-charcoal">Lean bulk (slow muscle gain)</p>
+                  <p class="font-display text-lg font-semibold text-charcoal"><span id="tdee-bulk">,</span> kcal</p>
+                </div>
+              </div>
+              <p class="font-sans text-xs text-charcoal/40 leading-relaxed">Estimates based on the Mifflin-St Jeor BMR equation. Real-world energy needs vary by 5&ndash;10% per person, treat these as a starting point and adjust based on what you see in the mirror over 2&ndash;3 weeks.</p>
+            </div>
+            <div id="tdee-placeholder" class="flex-1 flex items-center justify-center text-center">
+              <p class="font-sans text-sm text-charcoal/40 max-w-xs">Fill in your details and tap calculate. Your numbers will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA: Want help applying this? -->
+  <section class="bg-cream-dark py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Next Step</p>
+      <h2 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-6">Numbers are only useful if you act on them.</h2>
+      <p class="font-sans text-sm text-charcoal/70 max-w-lg mx-auto leading-relaxed mb-8">
+        A nutrition consultation turns these numbers into a real plan, macros, food choices, and weekly adjustments tailored to your body and your life.
+      </p>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="services-nutrition.html" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">Book a Nutrition Consultation</a>
+        <a href="services-digital-plans.html" class="inline-block border border-charcoal/20 text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors">View Digital Plans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-charcoal text-white border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div>
+          <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
+          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
+          <ul class="space-y-0">
+            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
+            <li><a href="services.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
+            <li><a href="calculators.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="blog.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
+            <li><a href="testimonials.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Testimonials</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
+          <div class="flex gap-5 mb-6">
+            <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+            </a>
+            <a href="https://youtube.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
+          <div class="flex gap-5">
+            <a href="mailto:mans_ali@hotmail.com" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+            </a>
+            <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+        <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
+        <p class="font-sans text-xs text-white/40">www.mansoorahamadali.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // ── CALCULATOR SWITCHER ─────────────────────────────
+    (function() {
+      const switcher = document.getElementById('calc-switcher');
+      const sections = document.querySelectorAll('.calc-section');
+      if (!switcher) return;
+      const showCalc = (v) => {
+        sections.forEach(s => s.classList.toggle('hidden', s.dataset.calc !== v));
+      };
+      switcher.addEventListener('change', () => {
+        showCalc(switcher.value);
+        const visible = document.querySelector('.calc-section[data-calc="' + switcher.value + '"]');
+        if (visible) visible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      // On load, respect URL hash so the nav dropdown can jump straight to a calculator
+      const initial = (window.location.hash || '').replace('#', '');
+      if (initial === 'tdee' || initial === 'bfp') {
+        switcher.value = initial;
+        showCalc(initial);
+      }
+    })();
+
+    // ── BFP CALCULATOR ─────────────────────────────────
+    (function() {
+      const form = document.getElementById('bfp-form');
+      const gender = document.getElementById('bfp-gender');
+      const hipWrap = document.getElementById('bfp-hip-wrap');
+      const hipInput = document.getElementById('bfp-hip');
+      const heightInput = document.getElementById('bfp-height');
+      const neckInput = document.getElementById('bfp-neck');
+      const waistInput = document.getElementById('bfp-waist');
+      const unitLabels = document.querySelectorAll('[data-bfp-unit-label]');
+      const unitBtns = document.querySelectorAll('[data-bfp-units]');
+      const resultEl = document.getElementById('bfp-result');
+      const placeholderEl = document.getElementById('bfp-placeholder');
+      const valueEl = document.getElementById('bfp-value');
+      const categoryEl = document.getElementById('bfp-category');
+      const interpretationEl = document.getElementById('bfp-interpretation');
+      const errorEl = document.getElementById('bfp-error');
+
+      let units = 'metric';
+
+      const setUnits = (u) => {
+        units = u;
+        unitLabels.forEach(el => el.textContent = u === 'metric' ? 'cm' : 'in');
+        unitBtns.forEach(b => {
+          const active = b.dataset.bfpUnits === u;
+          b.classList.toggle('bg-burgundy', active);
+          b.classList.toggle('text-white', active);
+          b.classList.toggle('text-charcoal', !active);
+        });
+        // Update placeholders to sensible defaults per unit
+        if (u === 'metric') {
+          heightInput.placeholder = '178';
+          neckInput.placeholder = '38';
+          waistInput.placeholder = '85';
+          hipInput.placeholder = '95';
+        } else {
+          heightInput.placeholder = '70';
+          neckInput.placeholder = '15';
+          waistInput.placeholder = '33.5';
+          hipInput.placeholder = '37.4';
+        }
+      };
+
+      unitBtns.forEach(b => b.addEventListener('click', () => setUnits(b.dataset.bfpUnits)));
+
+      const toggleHip = () => {
+        const isFemale = gender.value === 'female';
+        hipWrap.classList.toggle('hidden', !isFemale);
+        hipInput.required = isFemale;
+      };
+      gender.addEventListener('change', toggleHip);
+      toggleHip();
+
+      const categorise = (bfp, isFemale) => {
+        // Men thresholds: <6 essential, 6-12 athletes, 13-15 fitness, 16-24 average, 25+ above average
+        // Women thresholds: <14 essential, 14-18 athletes, 19-20 fitness, 21-31 average, 32+ above average
+        if (isFemale) {
+          if (bfp < 14) return { name: 'Essential fat range', note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
+          if (bfp < 19) return { name: 'Athletes range', note: 'Highly trained, competition-lean. Requires careful nutrition and recovery to maintain long-term.' };
+          if (bfp < 21) return { name: 'Fitness range', note: 'Visibly trained, healthy, sustainable. A strong target for most active women.' };
+          if (bfp < 32) return { name: 'Average / Acceptable', note: 'Within the healthy adult range. Resistance training and nutrition can move this lower if that is your goal.' };
+          return { name: 'Above average', note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this. Consider a consultation.' };
+        }
+        if (bfp < 6) return { name: 'Essential fat range', note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
+        if (bfp < 13) return { name: 'Athletes range', note: 'Competition-lean. Requires careful nutrition and recovery to maintain long-term.' };
+        if (bfp < 16) return { name: 'Fitness range', note: 'Visibly trained and healthy. A strong target for most active men.' };
+        if (bfp < 25) return { name: 'Average / Acceptable', note: 'Within the healthy adult range. Resistance training and a diet plan can move this lower if that is your goal.' };
+        return { name: 'Above average', note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this. Consider a consultation.' };
+      };
+
+      const showBfpError = (msg) => {
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+        resultEl.classList.add('hidden');
+        placeholderEl.classList.remove('hidden');
+      };
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+
+        const isFemale = gender.value === 'female';
+        const heightRaw = parseFloat(heightInput.value);
+        const neckRaw = parseFloat(neckInput.value);
+        const waistRaw = parseFloat(waistInput.value);
+        const hipRaw = isFemale ? parseFloat(hipInput.value) : 0;
+
+        if (isNaN(heightRaw) || heightRaw <= 0) return showBfpError('Please enter a valid height.');
+        if (isNaN(neckRaw) || neckRaw <= 0) return showBfpError('Please enter a valid neck measurement.');
+        if (isNaN(waistRaw) || waistRaw <= 0) return showBfpError('Please enter a valid waist measurement.');
+        if (isFemale && (isNaN(hipRaw) || hipRaw <= 0)) return showBfpError('Please enter a valid hip measurement.');
+
+        // US Navy formula via Siri equation, metric form. Inputs in cm.
+        // Men:   BFP = 495 / (1.0324 - 0.19077*log10(waist - neck) + 0.15456*log10(height)) - 450
+        // Women: BFP = 495 / (1.29579 - 0.35004*log10(waist + hip - neck) + 0.22100*log10(height)) - 450
+        const toCm = (v) => units === 'metric' ? v : v * 2.54;
+        const heightCm = toCm(heightRaw);
+        const neckCm = toCm(neckRaw);
+        const waistCm = toCm(waistRaw);
+        const hipCm = toCm(hipRaw);
+
+        let bfp;
+        if (isFemale) {
+          const diff = waistCm + hipCm - neckCm;
+          if (diff <= 0) return showBfpError('Waist plus hip must be greater than your neck measurement.');
+          const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(heightCm);
+          bfp = 495 / denom - 450;
+        } else {
+          const diff = waistCm - neckCm;
+          if (diff <= 0) return showBfpError('Waist must be greater than your neck measurement.');
+          const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(heightCm);
+          bfp = 495 / denom - 450;
+        }
+
+        if (!isFinite(bfp)) return showBfpError('Calculation failed. Please double-check your measurements.');
+
+        // Show the raw result, even if negative or outside the typical 2 to 60 band.
+        // A negative or >60 result is mathematically what the formula returns and signals
+        // that the measurements are likely outside human plausibility (e.g. waist far smaller than neck).
+        const rounded = Math.round(bfp * 10) / 10;
+        valueEl.textContent = rounded.toFixed(1);
+        if (rounded < 2 || rounded > 60) {
+          categoryEl.textContent = 'Outside plausible range';
+          interpretationEl.textContent = 'The formula returned a value outside the realistic 2 to 60 percent band. This usually means one of your measurements is off, double-check that waist is measured at navel level and that all measurements are in the selected units.';
+        } else {
+          const cat = categorise(rounded, isFemale);
+          categoryEl.textContent = cat.name;
+          interpretationEl.textContent = cat.note;
+        }
+        placeholderEl.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+      });
+    })();
+
+    // ── TDEE CALCULATOR ────────────────────────────────
+    (function() {
+      const form = document.getElementById('tdee-form');
+      const gender = document.getElementById('tdee-gender');
+      const age = document.getElementById('tdee-age');
+      const height = document.getElementById('tdee-height');
+      const weight = document.getElementById('tdee-weight');
+      const activity = document.getElementById('tdee-activity');
+      const heightLabel = document.querySelector('[data-tdee-height-label]');
+      const weightLabel = document.querySelector('[data-tdee-weight-label]');
+      const unitBtns = document.querySelectorAll('[data-tdee-units]');
+      const resultEl = document.getElementById('tdee-result');
+      const placeholderEl = document.getElementById('tdee-placeholder');
+      const valueEl = document.getElementById('tdee-value');
+      const bmrEl = document.getElementById('tdee-bmr');
+      const multiplierEl = document.getElementById('tdee-multiplier');
+      const cutEl = document.getElementById('tdee-cut');
+      const maintainEl = document.getElementById('tdee-maintain');
+      const bulkEl = document.getElementById('tdee-bulk');
+      const errorEl = document.getElementById('tdee-error');
+
+      let units = 'metric';
+
+      const setUnits = (u) => {
+        units = u;
+        heightLabel.textContent = u === 'metric' ? 'cm' : 'in';
+        weightLabel.textContent = u === 'metric' ? 'kg' : 'lbs';
+        unitBtns.forEach(b => {
+          const active = b.dataset.tdeeUnits === u;
+          b.classList.toggle('bg-burgundy', active);
+          b.classList.toggle('text-white', active);
+          b.classList.toggle('text-charcoal', !active);
+        });
+        if (u === 'metric') {
+          height.placeholder = '178';
+          weight.placeholder = '78';
+        } else {
+          height.placeholder = '70';
+          weight.placeholder = '172';
+        }
+      };
+
+      unitBtns.forEach(b => b.addEventListener('click', () => setUnits(b.dataset.tdeeUnits)));
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+        try {
+          // Convert to metric for Mifflin-St Jeor
+          const heightCm = units === 'metric' ? parseFloat(height.value) : parseFloat(height.value) * 2.54;
+          const weightKg = units === 'metric' ? parseFloat(weight.value) : parseFloat(weight.value) / 2.2046;
+          const ageYrs = parseInt(age.value, 10);
+          const multiplier = parseFloat(activity.value);
+          if (!heightCm || !weightKg || !ageYrs || !multiplier) throw new Error('missing');
+
+          const bmr = gender.value === 'male'
+            ? 10 * weightKg + 6.25 * heightCm - 5 * ageYrs + 5
+            : 10 * weightKg + 6.25 * heightCm - 5 * ageYrs - 161;
+
+          if (!isFinite(bmr) || bmr < 500) throw new Error('range');
+
+          const tdee = bmr * multiplier;
+          const round = (n) => Math.round(n / 5) * 5; // round to nearest 5 kcal
+
+          valueEl.textContent = round(tdee).toLocaleString();
+          bmrEl.textContent = round(bmr).toLocaleString();
+          multiplierEl.textContent = '×' + multiplier;
+          cutEl.textContent = round(tdee - 500).toLocaleString();
+          maintainEl.textContent = round(tdee).toLocaleString();
+          bulkEl.textContent = round(tdee + 250).toLocaleString();
+          placeholderEl.classList.add('hidden');
+          resultEl.classList.remove('hidden');
+        } catch (err) {
+          resultEl.classList.add('hidden');
+          placeholderEl.classList.remove('hidden');
+          errorEl.classList.remove('hidden');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

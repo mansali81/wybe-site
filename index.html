@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WYBE — Wellness You Built Everyday</title>
+  <title>WYBE, Wellness You Built Everyday</title>
   <meta name="description" content="Level 4 Personal Trainer and Sports Nutritionist with over two decades of practice. Online consultations globally. Digital training plans. Private training in the UAE.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +16,8 @@
           colors: {
             cream: '#FFFFFF',
             'cream-dark': '#F0F4F1',
-            burgundy: '#3D5A47',
-            'burgundy-dark': '#2A4033',
+            burgundy: '#5A7A65',
+            'burgundy-dark': '#3D5A47',
             charcoal: '#1A2E22',
             'charcoal-light': '#3D5A47',
             'charcoal-muted': '#7A9485',
@@ -39,12 +39,38 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
         <a href="index.html" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-7">
+          <a href="index.html" data-nav="index.html" class="font-sans text-sm text-burgundy transition-colors">Home</a>
           <a href="about.html" data-nav="about.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
-          <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
-          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">The Book</a>
-          <a href="work-with-me.html" data-nav="work-with-me.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Work With Me</a>
-          <a href="work-with-me.html" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+          <div class="relative group">
+            <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
+              Services
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="services-digital-plans.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Digital Plans</a>
+                <a href="services-fitness.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Fitness Consultation</a>
+                <a href="services-nutrition.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Human Performance Nutrition Consultation</a>
+                <a href="services-personal-training.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Personal Training (1 on 1)</a>
+              </div>
+            </div>
+          </div>
+          <div class="relative group">
+            <a href="calculators.html" data-nav="calculators.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
+              Calculators
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="calculators.html#bfp" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Body Fat Percentage</a>
+                <a href="calculators.html#tdee" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Daily Calorie Needs (TDEE)</a>
+              </div>
+            </div>
+          </div>
+          <a href="blog.html" data-nav="blog.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Blog</a>
+          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</button>
         </div>
         <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2">
           <span class="w-6 h-px bg-charcoal block"></span>
@@ -55,31 +81,34 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
       <div class="flex flex-col gap-4">
+        <a href="index.html" class="font-sans text-sm text-charcoal">Home</a>
         <a href="about.html" class="font-sans text-sm text-charcoal">About</a>
         <a href="services.html" class="font-sans text-sm text-charcoal">Services</a>
-        <a href="book.html" class="font-sans text-sm text-charcoal">The Book</a>
-        <a href="work-with-me.html" class="font-sans text-sm text-charcoal">Work With Me</a>
-        <a href="work-with-me.html" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
+        <a href="calculators.html" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="blog.html" class="font-sans text-sm text-charcoal">Blog</a>
+        <a href="book.html" class="font-sans text-sm text-charcoal">My Book</a>
+        <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</button>
       </div>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section class="min-h-screen bg-charcoal text-white flex items-center pt-16">
-    <div class="max-w-6xl mx-auto px-6 py-24 w-full">
-      <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-6">Wellness You Built Everyday</p>
-      <h1 class="font-display text-7xl md:text-9xl font-black leading-none text-white mb-6">WYBE</h1>
+  <section class="relative min-h-screen bg-charcoal text-white flex items-center pt-16 overflow-hidden">
+    <!-- Background image: Deadlift 2 (parallax) -->
+    <img src="images/deadlift-2.png" alt="" aria-hidden="true" data-parallax="0.3" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none">
+    <!-- Subtle gradient overlay, just enough to keep the WYBE text and vision/mission legible on the left -->
+    <div class="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/30 to-transparent pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
+      <h1 class="font-display text-7xl md:text-9xl font-black leading-none text-white mb-1">WYBE</h1>
+      <p class="font-sans text-sm tracking-widest uppercase text-white/60 mb-6 ml-12">Wellness You Built Everyday</p>
       <div class="hairline w-16 mb-6"></div>
-      <p class="font-sans text-lg text-white/80 leading-relaxed mb-4 max-w-md">
-        Level 4 Personal Trainer and Sports Nutritionist with over two decades of practice.
+      <p class="font-sans text-lg text-white/80 leading-relaxed mb-4 max-w-xl">
+        <span class="text-white font-medium">Our vision:</span> A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
       </p>
-      <p class="font-sans text-base text-white/60 leading-relaxed mb-10 max-w-md">
-        Online consultations globally. Digital training plans for every level. Private in-person training in the UAE, by application only.
+      <p class="font-sans text-base text-white/60 leading-relaxed max-w-xl">
+        <span class="text-white/80 font-medium">Our mission:</span> To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
       </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="services.html" class="font-sans text-sm bg-white text-charcoal px-8 py-4 tracking-wide hover:bg-cream-dark transition-colors">Explore Services</a>
-        <a href="work-with-me.html" class="font-sans text-sm border border-white/40 text-white px-8 py-4 tracking-wide hover:border-white transition-colors">Work With Me</a>
-      </div>
     </div>
   </section>
 
@@ -96,61 +125,16 @@
     </div>
   </section>
 
-  <!-- SERVICES OVERVIEW -->
-  <section class="bg-cream-dark py-24">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="mb-14">
-        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3">What WYBE Offers</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold text-charcoal">How We Work Together</h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 border border-charcoal/10">
-        <div class="p-10 md:border-r border-charcoal/10">
-          <p class="font-sans text-xs text-charcoal-muted tracking-widest uppercase mb-6">01</p>
-          <h3 class="font-display text-2xl font-semibold text-charcoal mb-4">Digital Plans</h3>
-          <p class="font-sans text-sm text-charcoal-light leading-relaxed mb-8">Workout programme, personalised diet plan, and supplement guide. Beginner, Intermediate, and Advanced. Available globally.</p>
-          <a href="services.html#plans" class="font-sans text-xs text-burgundy tracking-widest uppercase hover:underline">View Plans →</a>
-        </div>
-        <div class="p-10 md:border-r border-t md:border-t-0 border-charcoal/10">
-          <p class="font-sans text-xs text-charcoal-muted tracking-widest uppercase mb-6">02</p>
-          <h3 class="font-display text-2xl font-semibold text-charcoal mb-4">Consultations</h3>
-          <p class="font-sans text-sm text-charcoal-light leading-relaxed mb-8">Fitness and nutrition consultations available globally via video call. One session, a bundle, or a monthly package. Outcomes over generic advice.</p>
-          <a href="work-with-me.html" class="font-sans text-xs text-burgundy tracking-widest uppercase hover:underline">Book a Session →</a>
-        </div>
-        <div class="p-10 border-t md:border-t-0 border-charcoal/10">
-          <p class="font-sans text-xs text-charcoal-muted tracking-widest uppercase mb-6">03</p>
-          <h3 class="font-display text-2xl font-semibold text-charcoal mb-4">Private Training</h3>
-          <p class="font-sans text-sm text-charcoal-light leading-relaxed mb-8">In-person personal training in the UAE. A small number of clients per quarter, by application only. International by arrangement.</p>
-          <a href="work-with-me.html#private-training" class="font-sans text-xs text-burgundy tracking-widest uppercase hover:underline">Apply →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GALLERY STRIP -->
-  <section class="grid grid-cols-2 h-48 md:h-72">
-    <div class="relative overflow-hidden">
-      <img src="images/training-pushup.jpg" alt="Training" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
-    </div>
-    <div class="relative overflow-hidden">
-      <img src="images/training-rope.jpg" alt="Training" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
-    </div>
-  </section>
-
   <!-- BOOK TEASER -->
   <section class="bg-charcoal text-white py-24">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-      <div>
-        <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-6">Coming Soon</p>
-        <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-white mb-0">1825</h2>
-        <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-white/20 mb-8">DAYS</h2>
-        <div class="hairline w-12 mb-8"></div>
-        <p class="font-sans text-base text-white/70 leading-relaxed mb-4 max-w-sm">The complete nutrition guide for your child, from first breath to fifth birthday.</p>
-        <p class="font-sans text-sm text-white/50 leading-relaxed mb-10 max-w-sm">Written for parents. Grounded in science. Built for the real world.</p>
-        <a href="book.html" class="font-sans text-sm bg-white text-charcoal px-8 py-4 tracking-wide hover:bg-cream-dark transition-colors inline-block">Join the Waitlist</a>
-      </div>
-      <div class="h-80 md:h-96 overflow-hidden">
-        <img src="images/training-rope.jpg" alt="Training" class="w-full h-full object-cover">
-      </div>
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-6">Coming Soon</p>
+      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-white mb-0">1825</h2>
+      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-white/20 mb-8">DAYS</h2>
+      <div class="hairline w-12 mx-auto mb-8"></div>
+      <p class="font-sans text-base text-white/70 leading-relaxed mb-4 max-w-sm mx-auto">The complete nutrition guide for your child, from first breath to fifth birthday.</p>
+      <p class="font-sans text-sm text-white/50 leading-relaxed mb-10 max-w-sm mx-auto">Written for parents. Grounded in science. Built for the real world.</p>
+      <button type="button" data-waitlist class="font-sans text-sm bg-white text-charcoal px-8 py-4 tracking-wide hover:bg-cream-dark transition-colors inline-block">Join the Waitlist</button>
     </div>
   </section>
 
@@ -175,21 +159,39 @@
     </div>
   </section>
 
+  <!-- START HERE CTA -->
+  <section class="bg-cream-dark py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Start Here</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-6">
+        Ready to start building the body you want?
+      </h2>
+      <p class="font-sans text-sm text-charcoal/70 max-w-lg mx-auto leading-relaxed mb-8">
+        Send a quick message describing where you are now and what you want to achieve. From there, the right path becomes clear.
+      </p>
+      <button type="button" data-book-now class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">
+        Get in Touch
+      </button>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="bg-charcoal text-white">
     <div class="max-w-6xl mx-auto px-6 py-16">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
         <div>
           <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
-          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Level 4 Personal Trainer &amp; Sports Nutritionist.<br>UAE &middot; Global</p>
+          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
         </div>
         <div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
-          <ul class="space-y-3">
-            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About Mansoor</a></li>
+          <ul class="space-y-0">
+            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
             <li><a href="services.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
-            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">1825 Days — The Book</a></li>
-            <li><a href="work-with-me.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Work With Me</a></li>
+            <li><a href="calculators.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="blog.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
+            <li><a href="testimonials.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Testimonials</a></li>
           </ul>
         </div>
         <div>
@@ -205,16 +207,94 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
           </div>
-          <a href="mailto:mans_ali@hotmail.com" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Email Me</a>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
+          <div class="flex gap-5">
+            <a href="mailto:mans_ali@hotmail.com" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+            </a>
+            <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+            </a>
+          </div>
         </div>
       </div>
       <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
         <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
-        <p class="font-sans text-xs text-white/40">mansoorahamadali.com</p>
+        <p class="font-sans text-xs text-white/40">www.mansoorahamadali.com</p>
       </div>
     </div>
   </footer>
 
+  <!-- WAITLIST MODAL -->
+  <div id="waitlist-modal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 bg-charcoal/70" data-waitlist-close></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+      <div class="relative bg-cream w-full max-w-md max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="waitlist-modal-title">
+        <button type="button" data-waitlist-close aria-label="Close" class="absolute top-4 right-4 z-10 text-charcoal/60 hover:text-charcoal transition-colors p-1 bg-cream rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <div class="px-6 md:px-8 pt-12 pb-8">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3">Join the Waitlist</p>
+          <div class="w-8 h-px bg-burgundy mb-5"></div>
+          <h2 id="waitlist-modal-title" class="font-display text-2xl font-bold text-charcoal mb-3">Be the first to know.</h2>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-6">
+            The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
+          </p>
+
+          <form data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+            <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+            <input type="hidden" name="subject" value="1825 Days, Waitlist">
+            <input type="hidden" name="redirect" value="false">
+            <div>
+              <label for="waitlist-name" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Full Name</label>
+              <input type="text" id="waitlist-name" name="name" required placeholder="Your name" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="waitlist-email" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Email Address</label>
+              <input type="email" id="waitlist-email" name="email" required placeholder="your@email.com" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="waitlist-mobile" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Mobile</label>
+              <input type="tel" id="waitlist-mobile" name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="waitlist-who" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Who Are You?</label>
+              <select id="waitlist-who" name="who_you_are" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                <option value="" disabled selected>Select one</option>
+                <option value="New parents">New parents</option>
+                <option value="Parents of young children">Parents of young children</option>
+                <option value="Gifting">Gifting</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
+              Join the Waitlist
+            </button>
+          </form>
+
+          <div class="hidden py-6 text-center mt-3 border border-charcoal/15">
+            <div class="w-8 h-px bg-burgundy mx-auto mb-3"></div>
+            <p class="font-display text-lg font-semibold text-charcoal mb-1">You're on the list.</p>
+            <p class="font-sans text-sm text-charcoal/60">We will be in touch as soon as the book is ready. Thank you for your interest.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/main.js"></script>
+  <script>
+    (function() {
+      const modal = document.getElementById('waitlist-modal');
+      if (!modal) return;
+      const open = () => { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
+      const close = () => { modal.classList.add('hidden'); document.body.style.overflow = ''; };
+      document.querySelectorAll('[data-waitlist]').forEach(b => b.addEventListener('click', (e) => { e.preventDefault(); open(); }));
+      modal.querySelectorAll('[data-waitlist-close]').forEach(b => b.addEventListener('click', close));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      });
+    })();
+  </script>
 </body>
 </html>

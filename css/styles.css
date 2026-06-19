@@ -9,8 +9,100 @@ body {
 
 .hairline {
   height: 1px;
-  background-color: #3D5A47;
+  background-color: #5A7A65;
 }
 
 /* Ensure Playfair Display loads for font-display class */
 .font-display { font-family: 'Playfair Display', serif; }
+
+/* ── SCROLL ANIMATIONS ────────────────────────────
+   Sections fade and rise into view as the user scrolls. JS adds
+   .section-pre-animate to every non-hero section and swaps it for
+   .section-in-view once it crosses the IntersectionObserver threshold.
+   Hairlines draw in from 0 width, headings and body copy stagger.
+   All of this is suppressed when the user prefers reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .section-pre-animate > div,
+  .section-pre-animate > section {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .section-in-view > div,
+  .section-in-view > section {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Grids inside an in-view section stagger their children */
+  .section-in-view .grid > * {
+    animation: wybe-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .section-in-view .grid > *:nth-child(1) { animation-delay: 0.05s; }
+  .section-in-view .grid > *:nth-child(2) { animation-delay: 0.15s; }
+  .section-in-view .grid > *:nth-child(3) { animation-delay: 0.25s; }
+  .section-in-view .grid > *:nth-child(4) { animation-delay: 0.35s; }
+  .section-in-view .grid > *:nth-child(5) { animation-delay: 0.45s; }
+  .section-in-view .grid > *:nth-child(6) { animation-delay: 0.55s; }
+  .section-in-view .grid > *:nth-child(7) { animation-delay: 0.65s; }
+  .section-in-view .grid > *:nth-child(8) { animation-delay: 0.75s; }
+  .section-in-view .grid > *:nth-child(9) { animation-delay: 0.85s; }
+  .section-in-view .grid > *:nth-child(10) { animation-delay: 0.95s; }
+
+  /* Burgundy/sage hairlines draw in from 0 width */
+  .section-in-view .w-8.h-px,
+  .section-in-view .w-12.h-px,
+  .section-in-view .w-16.h-px {
+    animation: wybe-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+
+  @keyframes wybe-rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes wybe-draw {
+    from { transform: scaleX(0); transform-origin: left center; }
+    to   { transform: scaleX(1); transform-origin: left center; }
+  }
+
+  /* Parallax target marker. JS writes a transform; we just want will-change. */
+  [data-parallax] {
+    will-change: transform;
+  }
+}
+
+/* ── HOVER LIFT (pointer devices only) ───────────
+   Cards across the site (services overview, blog posts, plan cards,
+   pricing tiles) lift slightly on hover for a tactile feel. */
+@media (hover: hover) and (pointer: fine) {
+  .group:hover,
+  article.post-card:hover,
+  a.block.border:hover,
+  a.group.block:hover {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+  }
+  a.group.block:hover,
+  article.post-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* ── BRANDED CURSOR ──────────────────────────────
+   Small sage dumbbell replacing the default arrow site-wide.
+   Interactive elements get the same dumbbell with a faint ring to feel responsive.
+   Inputs/textareas keep the native text cursor for clarity. */
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23B8BCC0'/><stop offset='0.5' stop-color='%234A5560'/><stop offset='1' stop-color='%23B8BCC0'/></linearGradient></defs><ellipse cx='5' cy='14' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><ellipse cx='23' cy='14' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><rect x='8' y='13' width='12' height='2' rx='0.5' fill='url(%23s)'/></svg>") 14 14, auto;
+  }
+  a, button, [role='button'], select, [data-book-now], [data-bfp-units], [data-tdee-units], summary, label {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23B8BCC0'/><stop offset='0.5' stop-color='%234A5560'/><stop offset='1' stop-color='%23B8BCC0'/></linearGradient></defs><circle cx='16' cy='16' r='14' fill='none' stroke='%234A5560' stroke-width='1' opacity='0.45'/><ellipse cx='7' cy='16' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><ellipse cx='25' cy='16' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><rect x='10' y='15' width='12' height='2' rx='0.5' fill='url(%23s)'/></svg>") 16 16, pointer;
+  }
+  input[type='text'], input[type='email'], input[type='tel'], input[type='number'], input[type='password'], textarea {
+    cursor: text;
+  }
+}

@@ -1,0 +1,8 @@
+# WYBE — robots.txt
+# Reference: https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.mansoorahamadali.com/sitemap.xml

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intermediate Plan, WYBE</title>
+  <meta name="description" content="WYBE Intermediate digital training plan: a 9-month, questionnaire-driven workout and diet programme for those with a consistent training foundation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FFFFFF', 'cream-dark': '#F0F4F1',
+            burgundy: '#5A7A65', 'burgundy-dark': '#3D5A47',
+            charcoal: '#1A2E22', 'charcoal-light': '#3D5A47', 'charcoal-muted': '#7A9485',
+          },
+          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-cream font-sans">
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <div class="hidden md:flex items-center gap-7">
+          <a href="index.html" data-nav="index.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
+          <a href="about.html" data-nav="about.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
+          <div class="relative group">
+            <a href="services.html" data-nav="services.html" class="font-sans text-sm text-burgundy transition-colors inline-flex items-center gap-1">
+              Services
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="services-digital-plans.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Digital Plans</a>
+                <a href="services-fitness.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Fitness Consultation</a>
+                <a href="services-nutrition.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Human Performance Nutrition Consultation</a>
+                <a href="services-personal-training.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Personal Training (1 on 1)</a>
+              </div>
+            </div>
+          </div>
+          <div class="relative group">
+            <a href="calculators.html" data-nav="calculators.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
+              Calculators
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="calculators.html#bfp" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Body Fat Percentage</a>
+                <a href="calculators.html#tdee" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Daily Calorie Needs (TDEE)</a>
+              </div>
+            </div>
+          </div>
+          <a href="blog.html" data-nav="blog.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Blog</a>
+          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</button>
+        </div>
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2">
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-charcoal block"></span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
+      <div class="flex flex-col gap-4">
+        <a href="index.html" class="font-sans text-sm text-charcoal">Home</a>
+        <a href="about.html" class="font-sans text-sm text-charcoal">About</a>
+        <a href="services.html" class="font-sans text-sm text-charcoal">Services</a>
+        <a href="calculators.html" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="blog.html" class="font-sans text-sm text-charcoal">Blog</a>
+        <a href="book.html" class="font-sans text-sm text-charcoal">My Book</a>
+        <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SECTION 1: HEADER -->
+  <section class="bg-charcoal pt-16">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-6">
+        <a href="services.html" class="hover:text-white transition-colors">Services</a> &nbsp;/&nbsp; Digital Plans &nbsp;/&nbsp; Level Two
+      </p>
+      <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Intermediate</h1>
+      <div class="w-12 h-px bg-burgundy mb-6"></div>
+      <p class="font-sans text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
+        A nine-month, questionnaire-driven plan for those with a real training base, ready to progress with structure and intent.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: WHO IS THIS FOR -->
+  <section class="bg-cream py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Who It's For</p>
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <h2 class="font-display text-3xl font-bold text-charcoal mb-6">Is the Intermediate plan right for you?</h2>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-6">
+            The Intermediate plan is built for those who already train consistently and understand the basics. You know your way around a gym, you have a foundation in the main lifts or movement patterns, and the easy gains have already come and gone.
+          </p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">
+            What you need now is structure that respects your level, periodises across nine months, and pushes you beyond the plateau you have probably been sitting on for a while.
+          </p>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">You'll Recognise Yourself If</p>
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">You have 1–3 years of consistent training experience</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">You are competent in the main compound lifts</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">Progress has slowed or stopped on your current routine</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">You want progressive overload, periodisation, and a real diet plan</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">You are committed to nine months of intentional work</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: WHAT YOU GET / PROCESS -->
+  <section class="bg-cream-dark py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="mb-12 max-w-2xl">
+        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">How It Works</p>
+        <div class="w-8 h-px bg-burgundy mb-6"></div>
+        <h2 class="font-display text-3xl font-bold text-charcoal mb-6">From questionnaire to delivery</h2>
+        <p class="font-sans text-sm text-charcoal/70 leading-relaxed">
+          Your plan is written from your answers and your training history. No templates, no recycled blocks.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-0 border border-charcoal/15 bg-cream">
+        <div class="p-8 border-b md:border-b-0 md:border-r border-charcoal/15">
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Step 01</p>
+          <div class="w-6 h-px bg-burgundy mb-4"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Pay $150</p>
+          <p class="font-sans text-sm text-charcoal/60 leading-relaxed">A one-time payment to unlock the questionnaire and your nine-month plan. Secure checkout via Stripe.</p>
+        </div>
+        <div class="p-8 border-b md:border-b-0 md:border-r border-charcoal/15">
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Step 02</p>
+          <div class="w-6 h-px bg-burgundy mb-4"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Complete the questionnaire</p>
+          <p class="font-sans text-sm text-charcoal/60 leading-relaxed">A detailed form covering your training history, current lifts, goals, schedule, and lifestyle. Included with your plan, no extra charge.</p>
+        </div>
+        <div class="p-8 border-b md:border-b-0 md:border-r border-charcoal/15">
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Step 03</p>
+          <div class="w-6 h-px bg-burgundy mb-4"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Receive your plan</p>
+          <p class="font-sans text-sm text-charcoal/60 leading-relaxed">Within 5 working days, you receive a digital copy of your 9-month periodised programme and diet plan, built around your answers.</p>
+        </div>
+        <div class="p-8">
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Step 04</p>
+          <div class="w-6 h-px bg-burgundy mb-4"></div>
+          <p class="font-display text-lg font-semibold text-charcoal mb-2">Add a consultation <span class="text-charcoal/40">(optional)</span></p>
+          <p class="font-sans text-sm text-charcoal/60 leading-relaxed">For supplements, training adjustments, or nutrition refinement, add a 1-hour fitness or nutrition consultation. Booked via Calendly, paid in advance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: PRICING -->
+  <section class="bg-cream py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Investment</p>
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <h2 class="font-display text-3xl font-bold text-charcoal mb-6">One payment. Nine months of progression.</h2>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-4">
+            The Intermediate plan is a one-time purchase covering the full nine-month programme. No subscription, no rolling fees.
+          </p>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">
+            On completion, you can progress to the Advanced plan (12 months) for the next phase of your development.
+          </p>
+        </div>
+        <div class="border border-charcoal/15 p-10 bg-cream-dark">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3">Level Two &middot; Intermediate</p>
+          <div class="w-8 h-px bg-burgundy mb-6"></div>
+          <div class="flex items-baseline gap-3 mb-2">
+            <p class="font-display text-5xl font-bold text-charcoal">$150</p>
+            <p class="font-sans text-sm text-charcoal/60">USD</p>
+          </div>
+          <p class="font-sans text-sm text-charcoal/60 mb-8">One-time payment &middot; 9-month plan</p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-3">
+              <span class="w-1 h-1 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">9-month periodised workout programme</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1 h-1 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">Personalised diet plan</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1 h-1 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">Built from your questionnaire responses</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1 h-1 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/80">Delivered as a digital copy</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-1 h-1 rounded-full bg-burgundy mt-2 shrink-0"></span>
+              <span class="font-sans text-sm text-charcoal/60">Supplements available via separate consultation</span>
+            </li>
+          </ul>
+          <button type="button" data-questionnaire class="block w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 text-center hover:bg-burgundy-dark transition-colors">
+            Pay $150 &amp; Begin
+          </button>
+          <p class="font-sans text-xs text-charcoal/50 mt-3 text-center leading-relaxed">
+            Stripe checkout launches soon. In the interim, submit the questionnaire and you will receive payment instructions by email within 24 hours.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUESTIONNAIRE MODAL -->
+  <div id="questionnaire-modal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 bg-charcoal/70" data-questionnaire-close></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+      <div class="relative bg-cream w-full max-w-2xl max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="q-modal-title">
+        <button type="button" data-questionnaire-close aria-label="Close" class="absolute top-4 right-4 z-10 text-charcoal/60 hover:text-charcoal transition-colors p-1 bg-cream rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <div class="px-6 md:px-8 pt-12 pb-8">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3">Step Two</p>
+          <div class="w-8 h-px bg-burgundy mb-5"></div>
+          <h2 id="q-modal-title" class="font-display text-2xl font-bold text-charcoal mb-4">Intermediate Questionnaire</h2>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-4">
+            Be specific. The more accurate your training history and current numbers, the sharper the plan that comes back. The questionnaire itself is free once your $150 payment is complete.
+          </p>
+          <div class="border-l-2 border-burgundy bg-cream-dark pl-4 py-3 mb-6">
+            <p class="font-sans text-xs text-charcoal/70 leading-relaxed">
+              <span class="font-medium text-charcoal">Stripe checkout launches soon.</span> For now, submit this questionnaire and you will receive payment instructions by email within 24 hours.
+            </p>
+          </div>
+
+      <form
+        data-form
+        data-subject="WYBE, Intermediate Plan Questionnaire"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        class="space-y-6"
+      >
+        <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
+        <input type="hidden" name="subject" value="WYBE, Intermediate Plan Questionnaire">
+        <input type="hidden" name="plan" value="Intermediate ($150, 9 months)">
+        <input type="hidden" name="redirect" value="false">
+
+        <!-- About You -->
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">About You</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="i-name" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Full Name</label>
+              <input type="text" id="i-name" name="name" required placeholder="Your full name" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="i-email" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Email</label>
+              <input type="email" id="i-email" name="email" required placeholder="your@email.com" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="i-phone" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Phone / WhatsApp</label>
+              <input type="tel" id="i-phone" name="phone" required placeholder="+971 50 000 0000" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="i-country" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Country / Timezone</label>
+              <input type="text" id="i-country" name="country" required placeholder="e.g. UAE, GMT+4" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="i-age" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Age</label>
+              <input type="number" id="i-age" name="age" required min="14" max="100" placeholder="e.g. 32" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="i-gender" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Gender</label>
+              <select id="i-gender" name="gender" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                <option value="" disabled selected>Select one</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+            <div>
+              <label for="i-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (cm)</label>
+              <input type="number" id="i-height" name="height_cm" required placeholder="e.g. 178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+            <div>
+              <label for="i-weight" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Weight (kg)</label>
+              <input type="number" step="0.1" id="i-weight" name="weight_kg" required placeholder="e.g. 80.0" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+            </div>
+          </div>
+        </div>
+
+        <!-- Training History -->
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Training History</p>
+          <div class="space-y-4">
+            <div>
+              <label for="i-experience" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Years of Consistent Training</label>
+              <select id="i-experience" name="experience" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                <option value="" disabled selected>Select one</option>
+                <option value="1 year">1 year</option>
+                <option value="1–2 years">1–2 years</option>
+                <option value="2–3 years">2–3 years</option>
+                <option value="3+ years">3+ years</option>
+              </select>
+            </div>
+            <div>
+              <label for="i-current-routine" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Current Routine</label>
+              <textarea id="i-current-routine" name="current_routine" required rows="3" placeholder="What does your current training week look like? Split, frequency, sample sessions." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+            <div>
+              <label for="i-lifts" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Current Numbers</label>
+              <textarea id="i-lifts" name="current_lifts" required rows="3" placeholder="Approximate working weights or recent PRs: squat, bench, deadlift, overhead press, pull-up reps, etc." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="i-equipment" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Equipment Access</label>
+                <select id="i-equipment" name="equipment" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                  <option value="" disabled selected>Select one</option>
+                  <option value="Full gym">Full commercial gym</option>
+                  <option value="Home gym">Home gym (weights / rack)</option>
+                  <option value="Minimal home">Minimal home equipment</option>
+                </select>
+              </div>
+              <div>
+                <label for="i-days" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Days Per Week Available</label>
+                <select id="i-days" name="days_per_week" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                  <option value="" disabled selected>Select one</option>
+                  <option value="3">3 days</option>
+                  <option value="4">4 days</option>
+                  <option value="5">5 days</option>
+                  <option value="6">6 days</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="i-goal" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Primary Goal Over the Next Nine Months</label>
+              <textarea id="i-goal" name="goal" required rows="3" placeholder="Be specific: strength, hypertrophy, body composition, performance milestone." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health & Lifestyle -->
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Health &amp; Lifestyle</p>
+          <div class="space-y-4">
+            <div>
+              <label for="i-medical" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Injuries, Conditions or Medications</label>
+              <textarea id="i-medical" name="medical" rows="3" placeholder="List any current or past injuries, medical conditions, or medications. Write 'None' if not applicable." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+            <div>
+              <label for="i-diet" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Current Nutrition</label>
+              <textarea id="i-diet" name="diet" required rows="3" placeholder="A typical day of eating, approximate calories or macros if tracked, preferences, restrictions, allergies." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+            <div>
+              <label for="i-sleep" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Sleep, Recovery &amp; Schedule</label>
+              <textarea id="i-sleep" name="sleep_schedule" required rows="3" placeholder="Average hours of sleep, work pattern, stress levels, when you typically train." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+            <div>
+              <label for="i-notes" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Anything Else <span class="normal-case text-charcoal/30">(optional)</span></label>
+              <textarea id="i-notes" name="notes" rows="3" placeholder="Past programmes that worked or didn't, anything else relevant to your plan." class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30 resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cross-sell: Optional Consultation -->
+        <div class="border-t border-charcoal/15 pt-8">
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Optional &middot; Add-On</p>
+          <h3 class="font-display text-2xl font-semibold text-charcoal mb-3">Add a 1-hour consultation?</h3>
+          <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-6">
+            Your plan covers a full nine-month programme. If you would also like one-to-one guidance, on supplements, training adjustments, or nutrition refinement, you can add a 1-hour consultation. Booked via Calendly, paid in advance.
+          </p>
+          <div class="space-y-4">
+            <div>
+              <label for="i-add-consult" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Would you like to add a consultation?</label>
+              <select id="i-add-consult" name="add_consultation" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                <option value="No" selected>No, thank you</option>
+                <option value="Yes">Yes, I would like to add a consultation</option>
+              </select>
+            </div>
+            <div data-show-when="#i-add-consult|Yes" class="hidden space-y-4">
+              <div>
+                <label for="i-consult-type" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Type of consultation</label>
+                <select id="i-consult-type" name="consultation_type" class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
+                  <option value="" disabled selected>Select one</option>
+                  <option value="Fitness">Fitness, training, technique, programming</option>
+                  <option value="Nutrition">Nutrition, diet, macros, sports nutrition</option>
+                  <option value="Either">Either / Not sure, let Mansoor advise</option>
+                </select>
+                <p class="font-sans text-xs text-charcoal/50 mt-2 leading-relaxed">
+                  Learn what each consultation covers:
+                  <a href="services-fitness.html" class="text-burgundy underline hover:text-burgundy-dark">Fitness</a>
+                  &middot;
+                  <a href="services-nutrition.html" class="text-burgundy underline hover:text-burgundy-dark">Nutrition</a>
+                </p>
+              </div>
+              <!-- TODO: replace placeholder Calendly URL with the real booking link once the Calendly account is set up. -->
+              <a href="https://calendly.com/wybewithmansoor/consultation" target="_blank" rel="noopener noreferrer" class="block w-full border border-burgundy text-burgundy font-sans text-sm tracking-widest uppercase py-4 text-center hover:bg-burgundy hover:text-white transition-colors">
+                Book on Calendly &rarr;
+              </a>
+              <p class="font-sans text-xs text-charcoal/50 text-center">1 hour &middot; Paid in advance via Calendly</p>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
+          Submit Questionnaire
+        </button>
+      </form>
+
+          <!-- Success Message -->
+          <div class="hidden py-10 text-center border border-charcoal/15 mt-4 bg-cream-dark">
+            <div class="w-8 h-px bg-burgundy mx-auto mb-4"></div>
+            <p class="font-display text-xl font-semibold text-charcoal mb-2">Questionnaire received.</p>
+            <p class="font-sans text-sm text-charcoal/60 max-w-md mx-auto leading-relaxed">
+              Thank you. Payment instructions will be sent to your email within 24 hours. Once payment is confirmed, your nine-month plan will be delivered within five working days.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const modal = document.getElementById('questionnaire-modal');
+      if (!modal) return;
+      const open = () => { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
+      const close = () => { modal.classList.add('hidden'); document.body.style.overflow = ''; };
+      document.querySelectorAll('[data-questionnaire]').forEach(b => b.addEventListener('click', open));
+      modal.querySelectorAll('[data-questionnaire-close]').forEach(b => b.addEventListener('click', close));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      });
+    })();
+  </script>
+
+  <!-- SECTION 6: NEXT STEPS -->
+  <section class="bg-cream-dark py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Start Here</p>
+      <h2 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-6">Not sure Intermediate is the right fit?</h2>
+      <p class="font-sans text-sm text-charcoal/70 max-w-lg mx-auto leading-relaxed mb-8">
+        If Intermediate isn't quite the right fit, look at where you sit on either side.
+      </p>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="plan-beginner.html" class="inline-block border border-charcoal/20 text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors">Beginner &middot; $100</a>
+        <a href="plan-advanced.html" class="inline-block border border-charcoal/20 text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors">Advanced &middot; $200</a>      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-charcoal text-white border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div>
+          <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
+          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
+          <ul class="space-y-0">
+            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
+            <li><a href="services.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
+            <li><a href="calculators.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="blog.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
+            <li><a href="testimonials.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Testimonials</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
+          <div class="flex gap-5 mb-6">
+            <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+            </a>
+            <a href="https://youtube.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
+          <div class="flex gap-5">
+            <a href="mailto:mans_ali@hotmail.com" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+            </a>
+            <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+        <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
+        <p class="font-sans text-xs text-white/40">www.mansoorahamadali.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

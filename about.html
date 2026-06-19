@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Mansoor — WYBE</title>
+  <title>About Mansoor, WYBE</title>
   <meta name="description" content="Meet Mansoor Ahamad Ali Mohamed, Level 4 Personal Trainer and Sports Nutritionist with over two decades of experience in the UAE and globally.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
         extend: {
           colors: {
             cream: '#FFFFFF', 'cream-dark': '#F0F4F1',
-            burgundy: '#3D5A47', 'burgundy-dark': '#2A4033',
+            burgundy: '#5A7A65', 'burgundy-dark': '#3D5A47',
             charcoal: '#1A2E22', 'charcoal-light': '#3D5A47', 'charcoal-muted': '#7A9485',
           },
           fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
@@ -32,12 +32,38 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
         <a href="index.html" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-7">
+          <a href="index.html" data-nav="index.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
           <a href="about.html" data-nav="about.html" class="font-sans text-sm text-burgundy transition-colors">About</a>
-          <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
-          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">The Book</a>
-          <a href="work-with-me.html" data-nav="work-with-me.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Work With Me</a>
-          <a href="work-with-me.html" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+          <div class="relative group">
+            <a href="services.html" data-nav="services.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
+              Services
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="services-digital-plans.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Digital Plans</a>
+                <a href="services-fitness.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Fitness Consultation</a>
+                <a href="services-nutrition.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Human Performance Nutrition Consultation</a>
+                <a href="services-personal-training.html" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Personal Training (1 on 1)</a>
+              </div>
+            </div>
+          </div>
+          <div class="relative group">
+            <a href="calculators.html" data-nav="calculators.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors inline-flex items-center gap-1">
+              Calculators
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            </a>
+            <div class="absolute top-full left-0 pt-3 hidden group-hover:block min-w-[260px] z-50">
+              <div class="bg-cream border border-charcoal/15 shadow-lg py-2">
+                <a href="calculators.html#bfp" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Body Fat Percentage</a>
+                <a href="calculators.html#tdee" class="block px-5 py-[0.05cm] font-sans text-sm text-charcoal hover:bg-cream-dark hover:text-burgundy transition-colors">Daily Calorie Needs (TDEE)</a>
+              </div>
+            </div>
+          </div>
+          <a href="blog.html" data-nav="blog.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Blog</a>
+          <a href="book.html" data-nav="book.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</button>
         </div>
         <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2">
           <span class="w-6 h-px bg-charcoal block"></span>
@@ -48,34 +74,36 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
       <div class="flex flex-col gap-4">
+        <a href="index.html" class="font-sans text-sm text-charcoal">Home</a>
         <a href="about.html" class="font-sans text-sm text-charcoal">About</a>
         <a href="services.html" class="font-sans text-sm text-charcoal">Services</a>
-        <a href="book.html" class="font-sans text-sm text-charcoal">The Book</a>
-        <a href="work-with-me.html" class="font-sans text-sm text-charcoal">Work With Me</a>
-        <a href="work-with-me.html" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
+        <a href="calculators.html" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="blog.html" class="font-sans text-sm text-charcoal">Blog</a>
+        <a href="book.html" class="font-sans text-sm text-charcoal">My Book</a>
+        <button type="button" data-book-now class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</button>
       </div>
     </div>
   </nav>
 
   <!-- SECTION 1: HERO -->
   <section class="bg-charcoal pt-16">
-    <div class="max-w-6xl mx-auto px-6 py-24">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-        <div>
-          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-6">The Practitioner</p>
-          <h1 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-            Mansoor Ahamad Ali Mohamed
+    <div class="max-w-6xl mx-auto px-6 pt-10 md:pt-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
+        <div class="pb-12 md:pb-16">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-5">The Practitioner</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
+            Mansoor Ahamad Ali
           </h1>
-          <div class="w-12 h-px bg-burgundy mb-6"></div>
+          <div class="w-12 h-px bg-burgundy mb-5"></div>
           <p class="font-sans text-base text-white/70 leading-relaxed">
-            Level 4 Personal Trainer. Certified Sports Nutritionist. Author. Over two decades of practical, evidence-based work in health and fitness.
+            Personal Trainer, Human Performance Nutritionist, Fitness Consultant, Mind Coach, Author. Over two decades of practical, evidence-based work in health and fitness.
           </p>
         </div>
-        <div class="relative">
+        <div class="relative flex items-end justify-center md:justify-end overflow-hidden">
           <img
-            src="images/about/IMG_1147_.jpeg"
+            src="images/about/profile-pic.png"
             alt="Mansoor Ahamad Ali Mohamed"
-            class="w-full h-[500px] object-cover object-top"
+            class="h-[440px] md:h-[640px] w-auto max-w-none object-contain"
           >
         </div>
       </div>
@@ -146,6 +174,38 @@
     </div>
   </section>
 
+  <!-- SECTION 3.5: WHAT MAKES THIS DIFFERENT -->
+  <section class="bg-cream py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <div class="md:col-span-4">
+          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">What Sets the Work Apart</p>
+          <div class="w-8 h-px bg-burgundy"></div>
+        </div>
+        <div class="md:col-span-8 space-y-6">
+          <p class="font-display text-2xl md:text-3xl font-semibold text-charcoal leading-snug">
+            Most trainers count reps. The work here goes deeper.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            Every movement is built on a foundation of Human Biomechanics and Kinesiology, so your form and technique are precise enough to protect you from internal injury, not just push you toward a visible result. You will learn the breathing technique that supports every lift, the kind that turns heavy weight from a struggle into a clean, repeatable effort. Done correctly, this is what builds true muscular strength without quietly damaging the joints and spine that carry it.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            Beyond strength, the programmes are designed to develop muscular and cardiovascular endurance in parallel, because real fitness is the body&rsquo;s ability to sustain output across systems, not isolate one at the cost of another. Structured flexibility work and stretching protocols address muscle stiffness and posture correction before they become long-term problems.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            Where most stop at the physical, the work here extends to the mind. Training is also a chance to change perspective, to elevate the way you think about your body, your day, and your future. That shift in mindset shapes more than the gym, it shapes the rest of your life.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            Underneath all of this is the first discipline, Human Performance Nutrition. Food is the fuel that lets the engine of every human organ function optimally. Understanding what you eat, when you eat, the quantity, the quality, and the role of the right supplements is not just a tool for hitting a goal in the mirror, it shapes the way you live, how long you stay well, and the foundation you pass on to your children.
+          </p>
+          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
+            You and your offspring are what you eat, how you live, how you sleep, and the genetics you carry from your ancestors based on the wellness they built before you.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SECTION 4: PHILOSOPHY -->
   <section class="bg-charcoal text-white py-24">
     <div class="max-w-6xl mx-auto px-6">
@@ -153,25 +213,25 @@
       <h2 class="font-display text-3xl md:text-4xl font-bold text-white text-center mb-16">
         Four Pillars. One System.
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-white/10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <!-- Mindset -->
-        <div class="p-10 border-b md:border-b-0 md:border-r border-white/10">
+        <div>
           <div class="w-8 h-px bg-burgundy mb-6"></div>
           <p class="font-display text-xl font-semibold text-white mb-3">Mindset</p>
           <p class="font-sans text-sm text-white/70 leading-relaxed">
-            Identity drives behaviour. Build the identity of someone who does the work daily.
+            The conviction that your health is worth your time, and worth setting an example for. Why you train, why you eat well, why you sleep, and why you carry that message to the people you love.
           </p>
         </div>
         <!-- Nutrition -->
-        <div class="p-10 border-b border-white/10">
+        <div>
           <div class="w-8 h-px bg-burgundy mb-6"></div>
           <p class="font-display text-xl font-semibold text-white mb-3">Nutrition</p>
           <p class="font-sans text-sm text-white/70 leading-relaxed">
-            Food is information. What you eat consistently shapes who you become physically.
+            Food is science. What you eat consistently shapes who you become mentally, physically, and the offspring you bring into the world.
           </p>
         </div>
         <!-- Training -->
-        <div class="p-10 border-b md:border-b-0 md:border-r border-white/10">
+        <div>
           <div class="w-8 h-px bg-burgundy mb-6"></div>
           <p class="font-display text-xl font-semibold text-white mb-3">Training</p>
           <p class="font-sans text-sm text-white/70 leading-relaxed">
@@ -179,7 +239,7 @@
           </p>
         </div>
         <!-- Recovery -->
-        <div class="p-10">
+        <div>
           <div class="w-8 h-px bg-burgundy mb-6"></div>
           <p class="font-display text-xl font-semibold text-white mb-3">Recovery</p>
           <p class="font-sans text-sm text-white/70 leading-relaxed">
@@ -190,19 +250,19 @@
     </div>
   </section>
 
-  <!-- SECTION 5: CTA -->
-  <section class="bg-cream py-20">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Take the First Step</p>
-      <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-8">
-        Ready to begin?
+  <!-- START HERE CTA -->
+  <section class="bg-cream-dark py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Start Here</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-6">
+        Want to train with someone who has done the work for two decades?
       </h2>
       <p class="font-sans text-sm text-charcoal/70 mb-8 max-w-md mx-auto leading-relaxed">
         Start the conversation. Whether you are based in the UAE or anywhere in the world, there is a path forward.
       </p>
-      <a href="work-with-me.html" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">
-        Let's Begin
-      </a>
+      <button type="button" data-book-now class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">
+        Get in Touch
+      </button>
     </div>
   </section>
 
@@ -212,15 +272,17 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
         <div>
           <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
-          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Level 4 Personal Trainer &amp; Sports Nutritionist.<br>UAE &middot; Global</p>
+          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Built Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
         </div>
         <div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
-          <ul class="space-y-3">
-            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About Mansoor</a></li>
+          <ul class="space-y-0">
+            <li><a href="about.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
             <li><a href="services.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
-            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">1825 Days — The Book</a></li>
-            <li><a href="work-with-me.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Work With Me</a></li>
+            <li><a href="calculators.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="blog.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="book.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
+            <li><a href="testimonials.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Testimonials</a></li>
           </ul>
         </div>
         <div>
@@ -236,12 +298,20 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
           </div>
-          <a href="mailto:mans_ali@hotmail.com" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Email Me</a>
+          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
+          <div class="flex gap-5">
+            <a href="mailto:mans_ali@hotmail.com" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+            </a>
+            <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+            </a>
+          </div>
         </div>
       </div>
       <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
         <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
-        <p class="font-sans text-xs text-white/40">mansoorahamadali.com</p>
+        <p class="font-sans text-xs text-white/40">www.mansoorahamadali.com</p>
       </div>
     </div>
   </footer>
