@@ -1117,12 +1117,32 @@
       const retake = document.getElementById('retake-quiz');
       if (!form) return;
 
+      // Pricing — launch (founding) prices shown live, standard prices struck
+      // through alongside. `combo` adds the bundled 1-hour form consultation
+      // ($49 bundled rate, half the $99 list price).
       const PLANS = {
-        Beginner:    { fee: 100, meta: '$100, one-time payment',  desc: 'Start where you are. A structured training and personalised diet plan built around your level and your schedule. The foundation everything else is built on.' },
-        Intermediate:{ fee: 150, meta: '$150, one-time payment',  desc: 'You have a base. A periodised programme designed to push past your current plateau, with progressive overload and a diet plan that matches your training phase.' },
-        Advanced:    { fee: 200, meta: '$200, one-time payment',  desc: 'A carefully periodised performance programme built for trainees who are already strong and want focused, sustained progress.' },
+        Beginner:    {
+          length: '3 months',
+          launch: 39, standard: 59,
+          comboLaunch: 88, comboStandard: 108,
+          desc: 'Start where you are. A structured training and personalised diet plan built around your level and your schedule. The foundation everything else is built on.',
+        },
+        Intermediate:{
+          length: '6 months',
+          launch: 69, standard: 99,
+          comboLaunch: 118, comboStandard: 148,
+          desc: 'You have a base. A periodised programme designed to push past your current plateau, with progressive overload and a diet plan that matches your training phase.',
+        },
+        Advanced:    {
+          length: '12 months',
+          launch: 119, standard: 169,
+          comboLaunch: 168, comboStandard: 218,
+          desc: 'A carefully periodised performance programme built for trainees who are already strong and want focused, sustained progress.',
+        },
       };
-      const CONSULT_FEE = 75;
+      // Bundled-with-programme consultation rate. Half the $99 standalone list,
+      // tracks the list price (rises if Fitness consultation list moves).
+      const CONSULT_FEE = 49;
 
       // References to the consultation block elements (revealed only when user opts in)
       const consultBlock      = document.getElementById('consult-block');
@@ -1301,13 +1321,13 @@
         else if (score >= 11) plan = 'Intermediate';
 
         titleEl.textContent = plan;
-        metaEl.textContent = PLANS[plan].meta;
+        metaEl.textContent = '$' + PLANS[plan].launch + ' · ' + PLANS[plan].length + ' · one-time';
         if (descEl) descEl.textContent = PLANS[plan].desc;
         planHidden.value = plan;
         scoreHidden.value = score;
 
         const wantsConsult = data.get('q2_consultation') === 'Yes';
-        const planFee = PLANS[plan].fee;
+        const planFee = PLANS[plan].launch;
         const total = wantsConsult ? planFee + CONSULT_FEE : planFee;
         lastTotal = total;
         totalHidden.value = '$' + total;
