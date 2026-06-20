@@ -606,11 +606,28 @@
                sage-mist-friendly colors, no absolute-positioned blocks. -->
           <div id="quiz-result" class="hidden">
 
-            <!-- Plan title + meta -->
+            <!-- Plan title + meta + launch-vs-standard price -->
             <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Your Recommended Plan</p>
             <div class="w-8 h-px bg-burgundy mb-3"></div>
             <h3 id="result-plan-title" class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-1">Beginner</h3>
-            <p id="result-plan-meta" class="font-sans text-sm font-semibold text-charcoal/80 mb-5">$100 &middot; one-time payment</p>
+            <p id="result-plan-length" class="font-sans text-xs tracking-widest uppercase text-charcoal/60 mb-3">3 MONTHS &middot; ONE-TIME</p>
+
+            <!-- Big price line: launch (live) + standard (struck through) -->
+            <div class="flex items-baseline gap-3 mb-5">
+              <span id="result-price-launch" class="font-display text-3xl md:text-4xl font-bold text-burgundy">$88</span>
+              <span id="result-price-standard" class="font-display text-lg md:text-xl font-semibold text-charcoal/40 line-through">$108</span>
+              <span class="font-sans text-[10px] tracking-widest uppercase text-burgundy/80 ml-1">Founding</span>
+            </div>
+
+            <!-- Combo toggle: default ON for everyone except when user picked
+                 "No, Thanks" at Q2a. Adds $49 bundled form consultation. -->
+            <label id="combo-toggle-wrap" class="flex items-start gap-3 cursor-pointer mb-5 p-3 border border-charcoal/15 bg-cream/50 rounded-md hover:border-burgundy/40 transition-colors">
+              <input type="checkbox" id="combo-toggle" class="mt-0.5 accent-burgundy w-4 h-4 cursor-pointer" checked>
+              <span class="flex-1">
+                <span class="block font-sans text-sm font-semibold text-charcoal leading-snug">Add 1-hour online form consultation</span>
+                <span class="block font-sans text-xs text-charcoal/70 leading-snug mt-1">Biomechanics + technique review with Mansoor before your programme starts. <span class="font-semibold text-burgundy">+$49</span> bundled.</span>
+              </span>
+            </label>
 
             <!-- POST-PAYMENT FORM (hidden until Pay is clicked) -->
             <div id="result-details-wrap" class="hidden mb-5">
@@ -1321,32 +1338,40 @@
         else if (score >= 11) plan = 'Intermediate';
 
         titleEl.textContent = plan;
-        metaEl.textContent = '$' + PLANS[plan].launch + ' · ' + PLANS[plan].length + ' · one-time';
+        // Tier length line: "3 MONTHS · ONE-TIME"
+        const lengthEl = document.getElementById('result-plan-length');
+        if (lengthEl) lengthEl.textContent = PLANS[plan].length.toUpperCase() + ' · ONE-TIME';
         if (descEl) descEl.textContent = PLANS[plan].desc;
         planHidden.value = plan;
         scoreHidden.value = score;
 
-        const wantsConsult = data.get('q2_consultation') === 'Yes';
-        const planFee = PLANS[plan].launch;
-        const total = wantsConsult ? planFee + CONSULT_FEE : planFee;
-        lastTotal = total;
-        totalHidden.value = '$' + total;
+        // Combo default = ON unless user explicitly said "No, Thanks" at Q2a.
+        const explicitlyDeclined = data.get('q2_consultation') === 'No';
+        const comboToggle = document.getElementById('combo-toggle');
+        if (comboToggle) comboToggle.checked = !explicitlyDeclined;
 
-        if (wantsConsult) {
-          consultMode = true;
-          consultHidden.value = 'Yes';
-          if (consultBlock) {
-            consultBlock.classList.remove('hidden');
-            if (consultPlanLabel)  consultPlanLabel.textContent  = plan + ' programme';
-            if (consultPlanFeeEl)  consultPlanFeeEl.textContent  = '$' + planFee;
-            if (consultConsultFee) consultConsultFee.textContent = '$' + CONSULT_FEE;
-            if (consultTotalEl)    consultTotalEl.textContent    = '$' + total;
-          }
-        } else {
-          consultMode = false;
-          consultHidden.value = 'No';
-          if (consultBlock) consultBlock.classList.add('hidden');
+        // Render launch + standard prices based on combo state.
+        const renderPrice = () => {
+          const wantsConsult = comboToggle ? comboToggle.checked : true;
+          const launch   = wantsConsult ? PLANS[plan].comboLaunch   : PLANS[plan].launch;
+          const standard = wantsConsult ? PLANS[plan].comboStandard : PLANS[plan].standard;
+          const launchEl   = document.getElementById('result-price-launch');
+          const standardEl = document.getElementById('result-price-standard');
+          if (launchEl)   launchEl.textContent   = '$' + launch;
+          if (standardEl) standardEl.textContent = '$' + standard;
+          // Hidden form fields + Pay button text
+          consultMode = wantsConsult;
+          consultHidden.value = wantsConsult ? 'Yes' : 'No';
+          lastTotal = launch;
+          totalHidden.value = '$' + launch;
+          if (buyTextEl) buyTextEl.textContent = 'Pay $' + launch;
+        };
+        if (comboToggle) {
+          comboToggle.removeEventListener('change', renderPrice);
+          comboToggle.addEventListener('change', renderPrice);
         }
+        renderPrice();
+        const total = lastTotal;
 
         // State A: Pay button visible (with total), details form hidden.
         if (buyBtn) buyBtn.classList.remove('hidden');
