@@ -745,7 +745,7 @@
           <h3 class="font-display text-2xl md:text-4xl font-bold text-charcoal mb-3 leading-tight">Evidence-Based Nutrition</h3>
           <div class="w-12 h-px bg-burgundy mb-4"></div>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
-            Nutrition advice that goes beyond calorie counting, tailored to your lifestyle, goals, and relationship with food. Choose a single consultation, a three-session bundle, or a monthly programme.
+            Sports and general nutrition, with a tailored plan in every tier. Choose a single 1-hour consult, a 2-hour extended block, or a monthly programme with 4 hours of flexible time. Clinical or disordered-eating cases are referred out.
           </p>
         </div>
 
@@ -761,12 +761,21 @@
               <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
               <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
             </div>
-            <!-- Package picker as inline tabs (3 on one line). Hidden input holds the value. -->
+            <!-- Tier picker — three options, each shows label + price + (founding flag on Single). -->
             <input type="hidden" name="tier" id="nutrition-tier" required>
             <div class="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Choose your package">
-              <button type="button" data-tier="Single Session"      class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Single</button>
-              <button type="button" data-tier="3-Session Bundle"    class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Bundle&nbsp;(3)</button>
-              <button type="button" data-tier="Monthly Programme"   class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Monthly</button>
+              <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+                <span class="text-[9px] md:text-[10px]">Single</span>
+                <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through">$149</span></span>
+              </button>
+              <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+                <span class="text-[9px] md:text-[10px]">Extended</span>
+                <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal font-bold">$229</span>
+              </button>
+              <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+                <span class="text-[9px] md:text-[10px]">Monthly</span>
+                <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal font-bold">$349</span>
+              </button>
             </div>
             <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
             <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
