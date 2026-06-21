@@ -713,22 +713,53 @@
             <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
             <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
           </div>
-          <!-- Format + Package as 2-option tab pickers, side-by-side. Hidden inputs hold the values. -->
+          <!-- 4 main option buttons (2×2 grid). Hidden input holds the value. -->
           <input type="hidden" name="format"  id="fitness-format"  required>
-          <input type="hidden" name="package" id="fitness-package" required>
-          <div class="grid grid-cols-2 gap-2.5">
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" data-format="Online"        class="fitness-format-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Online</button>
-              <button type="button" data-format="UAE In-Person" class="fitness-format-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">In-Person</button>
-            </div>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" data-package="Single" class="fitness-package-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Single</button>
-              <button type="button" data-package="Bundle" class="fitness-package-btn bg-cream-dark text-charcoal font-sans text-[9px] md:text-[10px] font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Bundle&nbsp;(3)</button>
-            </div>
+          <input type="hidden" name="package" id="fitness-package" required value="Single">
+          <input type="hidden" name="bundle_size" id="fitness-bundle-size">
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <span class="text-[9px] md:text-[10px]">Online</span>
+              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through">$99</span></span>
+            </button>
+            <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <span class="text-[9px] md:text-[10px]">Live · UAE</span>
+              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal font-bold">$159</span>
+            </button>
+            <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <span class="text-[9px] md:text-[10px]">Bundle Online</span>
+              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal text-charcoal/60">from $169</span>
+            </button>
+            <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <span class="text-[9px] md:text-[10px]">Bundle Live</span>
+              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal text-charcoal/60">from $269</span>
+            </button>
           </div>
+
+          <!-- Conditional bundle dropdown — revealed when a Bundle option is picked. -->
+          <div id="fitness-bundle-wrap" class="hidden">
+            <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">How many sessions?</label>
+            <select id="fitness-bundle-select" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy appearance-none cursor-pointer">
+              <option value="2">2 sessions</option>
+              <option value="3">3 sessions</option>
+            </select>
+          </div>
+
           <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
+          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total"></span></button>
         </form>
+
+        <!-- POST-PAY confirmation: shows the amount + a date picker placeholder until
+             a real booking widget is wired up. -->
+        <div id="fitness-postpay" class="hidden mt-4 border border-burgundy/30 bg-cream/70 rounded-md p-4">
+          <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Booking confirmed</p>
+          <div class="w-8 h-px bg-burgundy mb-3"></div>
+          <p class="font-sans text-sm text-charcoal/80 mb-3">Amount due: <span id="fitness-postpay-amount" class="font-bold text-burgundy"></span></p>
+          <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">Pick your session date</label>
+          <input type="date" id="fitness-postpay-date" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy mb-2">
+          <p class="font-sans text-[11px] text-charcoal/60">Mansoor will email confirmation + payment instructions within 24 hours.</p>
+        </div>
+
         <div class="hidden py-4 text-center mt-3">
           <p class="font-display text-base font-semibold text-charcoal mb-1">Booking received.</p>
           <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
@@ -1101,32 +1132,105 @@
       });
     })();
 
-    // ── INLINE PICKER TABS (service-form package/format/tier choices) ──
-    // Each picker has buttons that carry a data-<key> attribute. Clicking a
-    // button writes the value to a sibling hidden input (id="<group>-<key>")
-    // and applies a burgundy active style, clearing any sibling's active state.
+    // ── INLINE PICKER TABS ─────────────────────────────
+    // Generic active-state toggler used by all picker buttons.
+    const setActive = (btn, active) => {
+      btn.classList.toggle('bg-burgundy', active);
+      btn.classList.toggle('text-white', active);
+      btn.classList.toggle('bg-cream-dark', !active);
+      btn.classList.toggle('text-charcoal', !active);
+    };
+
+    // Nutrition tier picker (single button per tier).
     (function() {
-      const groups = [
-        { cls: '.nutrition-tier-btn',  key: 'tier',    hiddenId: 'nutrition-tier'  },
-        { cls: '.fitness-format-btn',  key: 'format',  hiddenId: 'fitness-format'  },
-        { cls: '.fitness-package-btn', key: 'package', hiddenId: 'fitness-package' },
-      ];
-      const setActive = (btn, active) => {
-        btn.classList.toggle('bg-burgundy', active);
-        btn.classList.toggle('text-white', active);
-        btn.classList.toggle('bg-cream-dark', !active);
-        btn.classList.toggle('text-charcoal', !active);
-      };
-      groups.forEach(g => {
-        const buttons = document.querySelectorAll(g.cls);
-        const hidden  = document.getElementById(g.hiddenId);
-        if (!buttons.length || !hidden) return;
-        buttons.forEach(b => {
-          b.addEventListener('click', () => {
-            hidden.value = b.dataset[g.key];
-            buttons.forEach(o => setActive(o, o === b));
-          });
+      const buttons = document.querySelectorAll('.nutrition-tier-btn');
+      const hidden  = document.getElementById('nutrition-tier');
+      if (!buttons.length || !hidden) return;
+      buttons.forEach(b => {
+        b.addEventListener('click', () => {
+          hidden.value = b.dataset.tier;
+          buttons.forEach(o => setActive(o, o === b));
         });
+      });
+    })();
+
+    // Fitness picker — 4 buttons combine format + package. Bundle options reveal
+    // a session-count dropdown. The Book & Pay button shows the live total.
+    (function() {
+      const buttons = document.querySelectorAll('.fitness-option-btn');
+      const formatHidden  = document.getElementById('fitness-format');
+      const packageHidden = document.getElementById('fitness-package');
+      const bundleHidden  = document.getElementById('fitness-bundle-size');
+      const bundleWrap    = document.getElementById('fitness-bundle-wrap');
+      const bundleSelect  = document.getElementById('fitness-bundle-select');
+      const submitBtn     = document.getElementById('fitness-submit');
+      const submitTotal   = document.getElementById('fitness-submit-total');
+      if (!buttons.length || !formatHidden) return;
+
+      // Price table: format + package + bundle size → total USD.
+      const PRICE = {
+        'Online|Single':            69,   // founding
+        'UAE In-Person|Single':     159,
+        'Online|Bundle|2':          169,
+        'Online|Bundle|3':          239,
+        'UAE In-Person|Bundle|2':   269,
+        'UAE In-Person|Bundle|3':   379,
+      };
+
+      const computeTotal = () => {
+        const fmt = formatHidden.value;
+        const pkg = packageHidden.value;
+        if (!fmt) return null;
+        if (pkg === 'Bundle') {
+          const size = bundleSelect ? bundleSelect.value : '2';
+          return PRICE[`${fmt}|Bundle|${size}`];
+        }
+        return PRICE[`${fmt}|Single`];
+      };
+
+      const refreshSubmit = () => {
+        const total = computeTotal();
+        if (submitTotal) submitTotal.textContent = total ? `· $${total}` : '';
+      };
+
+      buttons.forEach(b => {
+        b.addEventListener('click', () => {
+          formatHidden.value  = b.dataset.format;
+          packageHidden.value = b.dataset.package;
+          buttons.forEach(o => setActive(o, o === b));
+          // Show bundle dropdown only when a Bundle option is selected.
+          if (bundleWrap) bundleWrap.classList.toggle('hidden', b.dataset.package !== 'Bundle');
+          if (b.dataset.package === 'Bundle' && bundleSelect) {
+            bundleHidden.value = bundleSelect.value;
+          } else {
+            bundleHidden.value = '';
+          }
+          refreshSubmit();
+        });
+      });
+      if (bundleSelect) {
+        bundleSelect.addEventListener('change', () => {
+          bundleHidden.value = bundleSelect.value;
+          refreshSubmit();
+        });
+      }
+    })();
+
+    // Fitness post-pay: when the booking form posts successfully, the success
+    // sibling div is unhidden by the main.js form handler. We hijack the same
+    // form's submit to also reveal the date-picker confirmation block.
+    (function() {
+      const form        = document.querySelector('form[data-subject="WYBE, Fitness Consultation Booking"]');
+      const postpay     = document.getElementById('fitness-postpay');
+      const amountEl    = document.getElementById('fitness-postpay-amount');
+      const submitTotal = document.getElementById('fitness-submit-total');
+      if (!form || !postpay) return;
+      form.addEventListener('submit', () => {
+        // Extract current total from the submit-button suffix.
+        const m = (submitTotal && submitTotal.textContent || '').match(/\$(\d+)/);
+        if (amountEl && m) amountEl.textContent = '$' + m[1];
+        // Show the post-pay block after a tick (let the form handler run first).
+        setTimeout(() => postpay.classList.remove('hidden'), 50);
       });
     })();
 
