@@ -614,9 +614,9 @@
 
             <!-- Big price line: launch (live) + standard (struck through) -->
             <div class="flex items-baseline gap-3 mb-5">
-              <span id="result-price-launch" class="font-display text-3xl md:text-4xl font-bold text-burgundy">$88</span>
-              <span id="result-price-standard" class="font-display text-lg md:text-xl font-semibold text-charcoal/40 line-through">$108</span>
-              <span class="font-sans text-[10px] tracking-widest uppercase text-burgundy/80 ml-1">Founding</span>
+              <span id="result-price-launch" class="font-display text-4xl md:text-5xl font-bold text-burgundy">$88</span>
+              <span id="result-price-standard" class="font-display text-xl md:text-2xl font-semibold text-charcoal/40 line-through">$108</span>
+              <span class="font-sans text-xs tracking-widest uppercase text-burgundy/80 ml-1">Founding</span>
             </div>
 
             <!-- Combo toggle: default ON for everyone except when user picked
@@ -624,8 +624,8 @@
             <label id="combo-toggle-wrap" class="flex items-start gap-3 cursor-pointer mb-5 p-3 border border-charcoal/15 bg-cream/50 rounded-md hover:border-burgundy/40 transition-colors">
               <input type="checkbox" id="combo-toggle" class="mt-0.5 accent-burgundy w-4 h-4 cursor-pointer" checked>
               <span class="flex-1">
-                <span class="block font-sans text-sm font-semibold text-charcoal leading-snug">Add 1-hour online form consultation</span>
-                <span class="block font-sans text-xs text-charcoal/70 leading-snug mt-1">Biomechanics + technique review with Mansoor before your programme starts. <span class="font-semibold text-burgundy">+$49</span> bundled.</span>
+                <span class="block font-sans text-base font-semibold text-charcoal leading-snug">Add 1-hour online form consultation <span class="font-display text-xl font-bold text-burgundy ml-1">+$49</span></span>
+                <span class="block font-sans text-sm text-charcoal/70 leading-snug mt-1">Biomechanics + technique review with Mansoor before your programme starts.</span>
               </span>
             </label>
 
@@ -720,19 +720,19 @@
           <div class="grid grid-cols-2 gap-1.5">
             <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Online</span>
-              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through">$99</span></span>
+              <span class="text-base md:text-lg font-display normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through text-sm">$99</span></span>
             </button>
             <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Live · UAE</span>
-              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal font-bold">$159</span>
+              <span class="text-base md:text-lg font-display normal-case tracking-normal font-bold">$159</span>
             </button>
             <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Bundle Online</span>
-              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal text-charcoal/60">from $169</span>
+              <span class="text-base md:text-lg font-display normal-case tracking-normal font-semibold text-charcoal/80">from $169</span>
             </button>
             <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Bundle Live</span>
-              <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal text-charcoal/60">from $269</span>
+              <span class="text-base md:text-lg font-display normal-case tracking-normal font-semibold text-charcoal/80">from $269</span>
             </button>
           </div>
 
@@ -746,7 +746,7 @@
           </div>
 
           <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total"></span></button>
+          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total" class="font-display text-base ml-1"></span></button>
         </form>
 
         <!-- POST-PAY confirmation: shows the amount + a date picker placeholder until
@@ -754,7 +754,7 @@
         <div id="fitness-postpay" class="hidden mt-4 border border-burgundy/30 bg-cream/70 rounded-md p-4">
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Booking confirmed</p>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-sm text-charcoal/80 mb-3">Amount due: <span id="fitness-postpay-amount" class="font-bold text-burgundy"></span></p>
+          <p class="font-sans text-sm text-charcoal/80 mb-3">Amount due: <span id="fitness-postpay-amount" class="font-display text-xl md:text-2xl font-bold text-burgundy"></span></p>
           <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">Pick your session date</label>
           <input type="date" id="fitness-postpay-date" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy mb-2">
           <p class="font-sans text-[11px] text-charcoal/60">Mansoor will email confirmation + payment instructions within 24 hours.</p>
@@ -797,15 +797,15 @@
             <div class="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Choose your package">
               <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Single</span>
-                <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through">$149</span></span>
+                <span class="text-base md:text-lg font-display normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through text-sm">$149</span></span>
               </button>
               <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Extended</span>
-                <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal font-bold">$229</span>
+                <span class="text-base md:text-lg font-display normal-case tracking-normal font-bold">$229</span>
               </button>
               <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Monthly</span>
-                <span class="text-[10px] md:text-[11px] font-display normal-case tracking-normal font-bold">$349</span>
+                <span class="text-base md:text-lg font-display normal-case tracking-normal font-bold">$349</span>
               </button>
             </div>
             <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
@@ -829,9 +829,9 @@
           <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Exclusive &middot; UAE</h3>
           <div class="w-12 h-px bg-burgundy mb-3"></div>
           <!-- Price meta: launch UAE pricing, 12 sessions / month, application-only. -->
-          <p class="font-sans text-sm font-semibold text-burgundy mb-2">
-            From <span class="font-display font-bold">~$5,000</span> / month
-            <span class="text-charcoal/70 font-normal"> &middot; 12 sessions &middot; 3-month minimum &middot; application only</span>
+          <p class="font-sans text-base font-semibold text-burgundy mb-2 leading-snug">
+            From <span class="font-display text-2xl md:text-3xl font-bold">~$5,000</span> <span class="text-base">/ month</span>
+            <span class="block text-charcoal/70 font-normal text-sm mt-1">12 sessions &middot; 3-month minimum &middot; application only</span>
           </p>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md">
             For those who require absolute discretion, complete personalisation, and a trainer fully invested in their outcome. Roster is capped; new applications are reviewed personally.
