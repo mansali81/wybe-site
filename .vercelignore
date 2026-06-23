@@ -1,0 +1,16 @@
+# Files that should never be shipped to Vercel deploys.
+
+# Large videos — heavy and only one is referenced (Calculator.mp4).
+# Everything else in Video/ was either superseded or an unused draft.
+Video/Deadlift.mov
+Video/Deadlift 2.mp4
+Video/deadlift.mp4
+
+# Internal-only image folders (cleanup pipeline artefacts, not referenced).
+images/_originals_backup/
+images/cleaned/
+
+# Scripts, OS metadata, editor cruft.
+scripts/
+.DS_Store
+**/.DS_Store

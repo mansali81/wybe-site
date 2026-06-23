@@ -77,7 +77,7 @@
     <!-- Hero background image. Same parallax + 3D tilt + zoom rig as the video had,
          so the cinematic scroll effect is preserved. object-top keeps the lifter's
          upper body anchored at the top so the head stays in frame. -->
-    <img id="hero-image" src="images/Deadlift.png" alt="" aria-hidden="true"
+    <img id="hero-image" src="images/Deadlift.webp" alt="" aria-hidden="true"
          data-parallax="0.25" data-parallax-3d="true"
          style="transform-origin: top center;"
          class="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none will-change-transform">
@@ -441,7 +441,7 @@
          the image's own dimensions define the canvas around it. -->
     <div class="hidden md:flex absolute inset-0 pointer-events-none items-center">
       <div class="relative max-w-6xl mx-auto px-6 w-full flex justify-end">
-        <img id="services-bg-img" src="images/Treadmill.png" alt="" aria-hidden="true"
+        <img id="services-bg-img" src="images/Treadmill.webp" alt="" aria-hidden="true"
              class="block max-h-full max-w-[50vw] w-auto h-auto pointer-events-none select-none transition-opacity duration-300">
       </div>
     </div>
@@ -875,7 +875,7 @@
            Displays at natural aspect — full image visible, no crop. JS syncs
            the src with the desktop image so the active tab's photo shows. -->
       <div class="md:hidden mt-8 text-center">
-        <img id="services-bg-img-mobile" src="images/Treadmill.png" alt="" aria-hidden="true"
+        <img id="services-bg-img-mobile" src="images/Treadmill.webp" alt="" aria-hidden="true"
              class="block w-auto h-auto max-w-full max-h-[480px] object-contain mx-auto">
       </div>
 
@@ -945,7 +945,7 @@
     <div class="max-w-2xl mx-auto px-6">
       <div class="relative bg-charcoal text-white overflow-hidden aspect-auto md:aspect-[1856/2304]">
         <!-- Full-bleed portrait background image, panel matches its aspect so the entire image is shown -->
-        <img src="images/Outside Gym.png" alt="" aria-hidden="true"
+        <img src="images/Outside Gym.webp" alt="" aria-hidden="true"
              class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none">
         <!-- Light dark veil for readability without dimming the photo -->
         <div class="absolute inset-0 bg-charcoal/45 pointer-events-none" aria-hidden="true"></div>
@@ -1074,10 +1074,10 @@
       //   via object-cover. Used for the Workout Rope image which is
       //   landscape and would otherwise read as a small strip.
       const imgByTab = {
-        'digital-plan':      { src: 'images/Rope Climbing.png',        fillCanvas: true,  shrinkCanvas: false },
-        'fitness':           { src: 'images/Fitness Consultation.png', fillCanvas: false, shrinkCanvas: true  },
-        'nutrition':         { src: 'images/Nutrition 2.png',          fillCanvas: false, shrinkCanvas: false },
-        'personal-training': { src: 'images/Training Client.png',      fillCanvas: false, shrinkCanvas: false },
+        'digital-plan':      { src: 'images/Rope Climbing.webp',        fillCanvas: true,  shrinkCanvas: false },
+        'fitness':           { src: 'images/Fitness Consultation.webp', fillCanvas: false, shrinkCanvas: true  },
+        'nutrition':         { src: 'images/Nutrition 2.webp',          fillCanvas: false, shrinkCanvas: false },
+        'personal-training': { src: 'images/Training Client.webp',      fillCanvas: false, shrinkCanvas: false },
       };
       const servicesSection = document.getElementById('services');
       const bgImgMobile = document.getElementById('services-bg-img-mobile');
