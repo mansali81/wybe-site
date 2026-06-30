@@ -1,108 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Home -->
   <url>
-    <loc>https://www.mansoorahamadali.com/</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://wybe.fit/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- About -->
   <url>
-    <loc>https://www.mansoorahamadali.com/about.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Services overview -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/services.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Service: Digital Plans (parent) -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/services-digital-plans.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Service: Fitness Consultation -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/services-fitness.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Service: Human Performance Nutrition Consultation -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/services-nutrition.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Service: Personal Training (1 on 1) -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/services-personal-training.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Digital Plan: Beginner -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/plan-beginner.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Digital Plan: Intermediate -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/plan-intermediate.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Digital Plan: Advanced -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/plan-advanced.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Calculators -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/calculators.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Blog -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/blog.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- My Book / 1825 Days waitlist -->
-  <url>
-    <loc>https://www.mansoorahamadali.com/book.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://wybe.fit/publication.html</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
 </urlset>
