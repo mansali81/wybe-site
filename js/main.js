@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
 
       const data = Object.fromEntries(new FormData(form));
-      data.access_key = '8611ac93-789d-40d9-b9d8-a15c6af4b94e';
+      data.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
       data.subject = form.dataset.subject || 'WYBE Enquiry';
 
       try {
