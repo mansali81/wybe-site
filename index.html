@@ -189,7 +189,7 @@
   <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="#home" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <a href="#home" class="font-sans text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
         <div class="hidden md:flex items-center gap-7">
           <a href="#home" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
           <a href="#about" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
@@ -230,12 +230,9 @@
          class="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none will-change-transform">
     <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/50 to-transparent pointer-events-none" aria-hidden="true"></div>
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
-      <!-- Brand wordmark (visual only; the H1 below carries the page topic for SEO). -->
-      <div class="font-display text-7xl md:text-9xl font-black leading-none text-white mb-1 wybe-3d-mark">WYBE</div>
-      <p class="font-sans text-sm tracking-widest uppercase text-white/60 mb-8 ml-12">Wellness You Build Everyday</p>
       <div class="hairline w-16 mb-8"></div>
-      <h1 class="font-display text-2xl md:text-3xl font-bold text-white leading-tight max-w-xl mb-8">Evidence Based Personal Training, Fitness &amp; Nutrition Consultation</h1>
-      <blockquote class="font-display text-2xl md:text-3xl font-semibold text-white/90 leading-snug max-w-xl mb-10">
+      <h1 class="font-sans text-2xl md:text-3xl font-bold text-white leading-tight max-w-xl mb-8">Evidence Based Personal Training, Fitness &amp; Nutrition Consultation</h1>
+      <blockquote class="font-sans text-2xl md:text-3xl font-semibold text-white/90 leading-snug max-w-xl mb-10">
         &ldquo;Wellness is more than a 30 day challenge<br>
         It&rsquo;s what you build, every day,<br>
         for the rest of your life.&rdquo;
@@ -246,59 +243,32 @@
     </div>
   </section>
 
-  <!-- CREDENTIAL MARQUEE, endless-scroll strip below the hero. Two copies of the list flow back to back so the loop feels seamless. -->
-  <section aria-label="Credentials" class="bg-charcoal border-y border-white/10 py-4 overflow-hidden">
-    <div class="flex whitespace-nowrap wybe-marquee">
-      <div class="flex items-center gap-10 shrink-0 pr-10">
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">REPS Level 4 Certified Personal Trainer</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">UAE REPS Member</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified Human Performance Nutritionist</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">CPR, AED and First Aid Certified</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified PT for Special Populations</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-      </div>
-      <div class="flex items-center gap-10 shrink-0 pr-10" aria-hidden="true">
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">REPS Level 4 Certified Personal Trainer</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">UAE REPS Member</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified Human Performance Nutritionist</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">CPR, AED and First Aid Certified</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified PT for Special Populations</span>
-        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
-      </div>
-    </div>
-  </section>
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
-  <!-- VISION + MISSION (same sage canvas as The Foundation) hsfjhsgdjhgsjhdgfs -->
-  <section class="relative bg-sage-mist py-4 md:py-6 overflow-hidden">
+  <!-- BELIEF + PRACTICE (same cream canvas as The Foundation) -->
+  <section class="relative bg-cream py-4 md:py-6 overflow-hidden">
     <!-- Slow ambient wash: two radial gradients drift back and forth on a 14s loop. Pointer-events off so nothing else is affected. -->
     <div class="absolute inset-0 wybe-breathe-bg pointer-events-none" aria-hidden="true"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-6">
 
-      <!-- Two-column layout: Our Vision on the left, Our Mission on the right -->
+      <!-- Two-column layout: The Belief on the left, The Practice on the right -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
 
         <!-- OUR VISION (left side) -->
         <div class="text-left">
-          <h3 class="font-display text-lg md:text-xl font-bold text-charcoal mb-2">Our Vision</h3>
+          <h3 class="font-sans text-lg md:text-xl font-bold text-charcoal mb-2">The Belief</h3>
           <div class="w-10 h-px bg-burgundy mb-3"></div>
-          <p class="font-display text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
+          <p class="font-sans text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
             &ldquo;A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.&rdquo;
           </p>
         </div>
 
         <!-- OUR MISSION (right column, title left-aligned within it) -->
         <div class="text-left">
-          <h3 class="font-display text-lg md:text-xl font-bold text-charcoal mb-2">Our Mission</h3>
+          <h3 class="font-sans text-lg md:text-xl font-bold text-charcoal mb-2">The Practice</h3>
           <div class="w-10 h-px bg-burgundy mb-3"></div>
-          <p class="font-display text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
+          <p class="font-sans text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
             &ldquo;To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.&rdquo;
           </p>
         </div>
@@ -307,6 +277,9 @@
 
     </div>
   </section>
+
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
   <!-- #CALCULATORS -->
   <section id="calculators" class="relative bg-charcoal py-14 overflow-hidden">
@@ -322,7 +295,7 @@
       <div class="text-center mb-10">
         <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-4 drop-shadow-md">Free Tools</p>
         <div class="w-8 h-px bg-burgundy mx-auto mb-6"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-white drop-shadow-md">Calculators</h2>
+        <h2 class="font-sans text-3xl md:text-4xl font-bold text-white drop-shadow-md">Calculators</h2>
       </div>
 
       <!-- Tab buttons: 2-on-top, 2-below grid, matching the Services tab layout -->
@@ -369,8 +342,8 @@
               <div class="w-8 h-px bg-burgundy mb-4"></div>
               <div id="bfp-placeholder"><p class="font-sans text-sm text-white/60">Fill in measurements to see your body fat percentage and category.</p></div>
               <div id="bfp-result" class="hidden">
-                <p class="font-display text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bfp-value">&mdash;</span><span class="text-2xl text-white/50">%</span></p>
-                <p id="bfp-category" class="font-display text-lg font-semibold text-burgundy mb-2">&mdash;</p>
+                <p class="font-sans text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bfp-value">&mdash;</span><span class="text-2xl text-white/50">%</span></p>
+                <p id="bfp-category" class="font-sans text-lg font-semibold text-burgundy mb-2">&mdash;</p>
                 <p id="bfp-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
                 <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
@@ -439,8 +412,8 @@
               <div id="tdee-placeholder"><p class="font-sans text-sm text-white/60">Fill in your details to see your daily calorie target and goal-based options.</p></div>
               <div id="tdee-result" class="hidden">
                 <p class="font-sans text-xs tracking-widest uppercase text-white/70 mb-1">Daily energy expenditure</p>
-                <p class="font-display text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="tdee-value">&mdash;</span> <span class="text-xl text-white/50">kcal</span></p>
-                <p id="tdee-category" class="font-display text-base font-semibold text-burgundy mb-4">&mdash;</p>
+                <p class="font-sans text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="tdee-value">&mdash;</span> <span class="text-xl text-white/50">kcal</span></p>
+                <p id="tdee-category" class="font-sans text-base font-semibold text-burgundy mb-4">&mdash;</p>
                 <div class="space-y-1 text-sm mb-3">
                   <p class="flex justify-between"><span class="text-white/75">Cut (fat loss)</span><span class="font-semibold text-white"><span id="tdee-cut">&mdash;</span> kcal</span></p>
                   <p class="flex justify-between"><span class="text-white/75">Maintain</span><span class="font-semibold text-white"><span id="tdee-maintain">&mdash;</span> kcal</span></p>
@@ -493,8 +466,8 @@
               <div class="w-8 h-px bg-burgundy mb-4"></div>
               <div id="bmi-placeholder"><p class="font-sans text-sm text-white/60">Enter your height and weight to see your BMI and category.</p></div>
               <div id="bmi-result" class="hidden">
-                <p class="font-display text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bmi-value">&mdash;</span></p>
-                <p id="bmi-category" class="font-display text-lg font-semibold text-burgundy mb-2">&mdash;</p>
+                <p class="font-sans text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bmi-value">&mdash;</span></p>
+                <p id="bmi-category" class="font-sans text-lg font-semibold text-burgundy mb-2">&mdash;</p>
                 <p id="bmi-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* BMI is a screening number, not a body-composition measure. Lean-muscular builds can read &ldquo;overweight&rdquo; without excess fat.</p>
                 <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
@@ -533,8 +506,8 @@
               <div id="ibw-placeholder"><p class="font-sans text-sm text-white/60">Enter your gender and height to see your ideal body weight range.</p></div>
               <div id="ibw-result" class="hidden">
                 <p class="font-sans text-xs tracking-widest uppercase text-white/70 mb-1">Ideal weight range</p>
-                <p class="font-display text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="ibw-low">&mdash;</span><span class="text-xl text-white/50">&ndash;</span><span id="ibw-high">&mdash;</span> <span class="text-xl text-white/50">kg</span></p>
-                <p id="ibw-point" class="font-display text-base font-semibold text-burgundy mb-4">IBW &mdash; kg</p>
+                <p class="font-sans text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="ibw-low">&mdash;</span><span class="text-xl text-white/50">&ndash;</span><span id="ibw-high">&mdash;</span> <span class="text-xl text-white/50">kg</span></p>
+                <p id="ibw-point" class="font-sans text-base font-semibold text-burgundy mb-4">IBW &mdash; kg</p>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* Broca&rsquo;s Index. The &plusmn;5&nbsp;kg band is a healthy target for non-exercising clients and women. Exercising men should track body-fat % instead &mdash; muscle is denser than fat and will push weight up without adding fat.</p>
                 <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
                   Let&rsquo;s WYBE &rarr;
@@ -547,6 +520,9 @@
     </div>
   </section>
 
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+
 
   <!-- #ABOUT (text left, image at natural size on the right with parallax + edge fade like the hero) -->
   <section id="about" class="relative bg-charcoal text-white overflow-hidden">
@@ -554,37 +530,29 @@
       <!-- Left column: text -->
       <div class="md:col-span-7 pt-24 pb-16 md:pb-32 relative z-10">
         <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-5">The Practitioner</p>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
+        <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
         <div class="w-12 h-px bg-burgundy mb-5"></div>
         <p class="font-sans text-base text-white/85 leading-relaxed mb-6">
-          Personal Trainer, Human Performance Nutritionist, Mind Coach, Author (forthcoming). Over two decades of practical, evidence-based work in health and fitness.
-        </p>
-
-        <p class="font-display text-xl md:text-2xl font-semibold text-white leading-snug mb-5">Most trainers count reps. The work here goes deeper.</p>
-        <p class="font-sans text-sm text-white/85 leading-relaxed text-justify mb-4">
-          Every movement is built on a foundation of Human Biomechanics and Kinesiology, so your form and technique are precise enough to protect you from internal injury, not just push you toward a visible result. You will learn the breathing technique that supports every lift, the kind that turns heavy weight from a struggle into a clean, repeatable effort.
-        </p>
-        <p class="font-sans text-sm text-white/85 leading-relaxed text-justify mb-6">
-          Underneath all of this is the first discipline, Human Performance Nutrition. Food is the fuel that lets the engine of every human organ function optimally. Understanding what you eat, when you eat, the quantity, the quality, and the role of the right supplements is not just a tool for hitting a goal in the mirror, it shapes the way you live, how long you stay well, and the foundation you pass on to your children.
-        </p>
-        <p class="font-display text-2xl md:text-3xl font-bold text-white tracking-wide leading-none">
-          &ldquo;WE ARE WHAT WE EAT&rdquo;
+          Personal Trainer, Human Performance Nutritionist, Personal Coach, and Author (forthcoming), with over two decades of practical, evidence-based work in health and fitness grounded in Human Biomechanics, Kinesiology, and breathing technique, guided by a simple principle: &ldquo;we are what we eat&rdquo;.
         </p>
       </div>
 
-      <!-- Right column: image at natural size, bottom flush with the canvas bottom. Parallax removed so the bottom edge stays pinned at all scroll positions. -->
+      <!-- Right column: Treadmill image at natural size, bottom flush with the canvas bottom. -->
       <div class="md:col-span-5 self-end flex justify-center md:justify-end">
-        <img src="images/about/profile-pic.png" alt="Mansoor Ahamad Ali"
+        <img src="images/Treadmill.webp" alt="Mansoor Ahamad Ali coaching at the treadmill"
              class="about-portrait block w-auto h-auto max-h-[640px] md:max-h-[820px] max-w-full object-contain">
       </div>
     </div>
   </section>
 
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+
   <!-- THE FOUNDATION (light sage background) -->
-  <section class="bg-sage-mist py-6">
+  <section class="bg-cream py-6">
     <div class="max-w-6xl mx-auto px-6">
       <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-2 text-center">The Foundation</p>
-      <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal text-center mb-5">Four Pillars. One System.</h3>
+      <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal text-center mb-5">Four Pillars. One System.</h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
         <div>
           <!-- Mindset: spiral (thought) -->
@@ -592,7 +560,7 @@
             <path d="M16 4 C10 4 6 8 6 14 C6 20 10 24 16 24 C20 24 22 22 22 18 C22 15 20 13 17 13 C15 13 14 14 14 16"/>
           </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-display text-lg font-semibold text-charcoal mb-2">Mindset</p>
+          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Mindset</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">The discipline to treat your own health as non-negotiable, because the people who matter to you are watching how you live.</p>
         </div>
         <div>
@@ -601,7 +569,7 @@
             <path d="M8 24 C8 14 16 6 26 6 C26 16 20 24 12 26 C10 26 8 26 8 24 M12 24 L22 10"/>
           </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-display text-lg font-semibold text-charcoal mb-2">Nutrition</p>
+          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Nutrition</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Food is science. What you eat consistently shapes who you become and the next generation that comes after you.</p>
         </div>
         <div>
@@ -610,7 +578,7 @@
             <path d="M4 12 L4 20 M8 8 L8 24 M8 16 L24 16 M24 8 L24 24 M28 12 L28 20"/>
           </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-display text-lg font-semibold text-charcoal mb-2">Training</p>
+          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Training</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Progressive, purposeful movement. Not punishment. Not performance for an audience.</p>
         </div>
         <div>
@@ -619,12 +587,15 @@
             <path d="M22 6 A11 11 0 1 0 22 26 A8 8 0 1 1 22 6 Z"/>
           </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-display text-lg font-semibold text-charcoal mb-2">Recovery</p>
+          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Recovery</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Sleep, rest, and stress management are not optional. They are the mechanism.</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
   <!-- #SERVICES (dropdown-driven panels) -->
   <section id="services" class="relative bg-cream overflow-hidden md:min-h-[820px]">
@@ -638,7 +609,8 @@
          the image's own dimensions define the canvas around it. -->
     <div class="hidden md:flex absolute inset-0 pointer-events-none items-center">
       <div class="relative max-w-6xl mx-auto px-6 w-full flex justify-end">
-        <img id="services-bg-img" src="images/Treadmill.webp" alt="" aria-hidden="true"
+        <img id="services-bg-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" aria-hidden="true"
+             style="opacity: 0;"
              class="block max-h-full max-w-[50vw] w-auto h-auto pointer-events-none select-none transition-opacity duration-300">
       </div>
     </div>
@@ -655,7 +627,7 @@
           <div class="text-center md:text-left">
             <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3 [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_3px_rgba(255,255,255,0.95)]">Services</p>
             <div class="w-8 h-px bg-burgundy mx-auto md:mx-0 mb-5"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-3 [text-shadow:0_0_8px_rgba(255,255,255,0.95),0_0_4px_rgba(255,255,255,0.95)]">Find Your Service</h2>
+            <h2 class="font-sans text-3xl md:text-4xl font-bold text-charcoal mb-3 [text-shadow:0_0_8px_rgba(255,255,255,0.95),0_0_4px_rgba(255,255,255,0.95)]">Find Your Service</h2>
             <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md mx-auto md:mx-0 [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_3px_rgba(255,255,255,0.95)]">
               Choose what fits where you are right now. Every service is delivered to the same standard, science-backed, personalised, and accountable.
             </p>
@@ -686,7 +658,7 @@
       <!-- WORK OUT PROGRAM panel: quiz only — the image lives in the
            section's right column and is swapped via JS when this tab is
            active. -->
-      <div id="panel-digital-plan" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+      <div id="panel-digital-plan" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
         <div class="relative p-5 md:p-8 pb-8 min-h-[480px]">
 
           <!-- QUIZ STATE: shown initially, hidden when the result is generated -->
@@ -694,7 +666,7 @@
             <!-- TOP: branding + section heading -->
             <div>
               <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-1">Work out Program (Digital)</p>
-              <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal leading-tight">Find Your Level</h3>
+              <h3 class="font-sans text-xl md:text-2xl font-bold text-charcoal leading-tight">Find Your Level</h3>
             </div>
 
             <!-- Hairline separator, sits where "Find Your Level" ends -->
@@ -717,65 +689,65 @@
 
               <!-- STEP 1 -->
               <div class="quiz-step" data-step="q1">
-                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long have you trained consistently?</p>
+                <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long have you trained consistently?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q1" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never / Sporadic</button>
-                  <button type="button" data-q="q1" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Under 6 Months</button>
-                  <button type="button" data-q="q1" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">6 Mo &ndash; 2 Years</button>
-                  <button type="button" data-q="q1" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">2+ Years</button>
+                  <button type="button" data-q="q1" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never / Sporadic</button>
+                  <button type="button" data-q="q1" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Under 6 Months</button>
+                  <button type="button" data-q="q1" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">6 Mo &ndash; 2 Years</button>
+                  <button type="button" data-q="q1" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">2+ Years</button>
                 </div>
               </div>
 
               <!-- STEP 2 -->
               <div class="quiz-step hidden" data-step="q2">
-                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Are your functional lifts bio-mechanically correct?</p>
+                <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Are your functional lifts bio-mechanically correct?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q2" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes</button>
-                  <button type="button" data-q="q2" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No</button>
-                  <button type="button" data-q="q2" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Not Sure</button>
-                  <button type="button" data-q="q2" data-value="1" data-guidance="true" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Need Guidance</button>
+                  <button type="button" data-q="q2" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes</button>
+                  <button type="button" data-q="q2" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No</button>
+                  <button type="button" data-q="q2" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Not Sure</button>
+                  <button type="button" data-q="q2" data-value="1" data-guidance="true" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Need Guidance</button>
                 </div>
               </div>
 
               <!-- STEP 2a (consultation follow-up) — only visited when Q2 = "No, Need Guidance" -->
               <div class="quiz-step hidden" data-step="q2a">
-                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Would you like an online consultation to learn the correct form?</p>
+                <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Would you like an online consultation to learn the correct form?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q2_consultation" data-value="Yes" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes, Consult</button>
-                  <button type="button" data-q="q2_consultation" data-value="No" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No, Thanks</button>
+                  <button type="button" data-q="q2_consultation" data-value="Yes" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes, Consult</button>
+                  <button type="button" data-q="q2_consultation" data-value="No" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No, Thanks</button>
                 </div>
               </div>
 
               <!-- STEP 3 -->
               <div class="quiz-step hidden" data-step="q3">
-                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How would you describe yourself today?</p>
+                <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How would you describe yourself today?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q3" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Out Of Shape</button>
-                  <button type="button" data-q="q3" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Lightly Active</button>
-                  <button type="button" data-q="q3" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Moderately Fit</button>
-                  <button type="button" data-q="q3" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Highly Trained</button>
+                  <button type="button" data-q="q3" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Out Of Shape</button>
+                  <button type="button" data-q="q3" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Lightly Active</button>
+                  <button type="button" data-q="q3" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Moderately Fit</button>
+                  <button type="button" data-q="q3" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Highly Trained</button>
                 </div>
               </div>
 
               <!-- STEP 4 -->
               <div class="quiz-step hidden" data-step="q4">
-                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Have you followed a written programme before?</p>
+                <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Have you followed a written programme before?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q4" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never</button>
-                  <button type="button" data-q="q4" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Tried Briefly</button>
-                  <button type="button" data-q="q4" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Completed One</button>
-                  <button type="button" data-q="q4" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">My Own Blocks</button>
+                  <button type="button" data-q="q4" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never</button>
+                  <button type="button" data-q="q4" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Tried Briefly</button>
+                  <button type="button" data-q="q4" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Completed One</button>
+                  <button type="button" data-q="q4" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">My Own Blocks</button>
                 </div>
               </div>
 
               <!-- STEP 5 -->
               <div class="quiz-step hidden" data-step="q5">
-                <p class="font-display text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long are you committing for?</p>
+                <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long are you committing for?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q5" data-value="1" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Exploring</button>
-                  <button type="button" data-q="q5" data-value="2" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Few Months</button>
-                  <button type="button" data-q="q5" data-value="3" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Mid-Term</button>
-                  <button type="button" data-q="q5" data-value="4" class="quiz-option bg-cream-dark text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">A Year+</button>
+                  <button type="button" data-q="q5" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Exploring</button>
+                  <button type="button" data-q="q5" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Few Months</button>
+                  <button type="button" data-q="q5" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Mid-Term</button>
+                  <button type="button" data-q="q5" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">A Year+</button>
                 </div>
               </div>
             </form>
@@ -806,13 +778,13 @@
             <!-- Plan title + meta + launch-vs-standard price -->
             <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Your Recommended Plan</p>
             <div class="w-8 h-px bg-burgundy mb-3"></div>
-            <h3 id="result-plan-title" class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-1">Beginner</h3>
+            <h3 id="result-plan-title" class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-1">Beginner</h3>
             <p id="result-plan-length" class="font-sans text-xs tracking-widest uppercase text-charcoal/60 mb-3">3 MONTHS &middot; ONE-TIME</p>
 
             <!-- Big price line: launch (live) + standard (struck through) -->
             <div class="flex items-baseline gap-3 mb-5">
-              <span id="result-price-launch" class="font-display text-4xl md:text-5xl font-bold text-burgundy">$88</span>
-              <span id="result-price-standard" class="font-display text-xl md:text-2xl font-semibold text-charcoal/40 line-through">$108</span>
+              <span id="result-price-launch" class="font-sans text-4xl md:text-5xl font-bold text-burgundy">$88</span>
+              <span id="result-price-standard" class="font-sans text-xl md:text-2xl font-semibold text-charcoal/40 line-through">$108</span>
               <span class="font-sans text-xs tracking-widest uppercase text-burgundy/80 ml-1">Founding</span>
             </div>
 
@@ -821,7 +793,7 @@
             <label id="combo-toggle-wrap" class="flex items-start gap-3 cursor-pointer mb-5 p-3 border border-charcoal/15 bg-cream/50 rounded-md hover:border-burgundy/40 transition-colors">
               <input type="checkbox" id="combo-toggle" class="mt-0.5 accent-burgundy w-4 h-4 cursor-pointer" checked>
               <span class="flex-1">
-                <span class="block font-sans text-base font-semibold text-charcoal leading-snug">Add 1-hour online form consultation <span class="font-display text-xl font-bold text-burgundy ml-1">+$49</span></span>
+                <span class="block font-sans text-base font-semibold text-charcoal leading-snug">Add 1-hour online form consultation <span class="font-sans text-xl font-bold text-burgundy ml-1">+$49</span></span>
                 <span class="block font-sans text-sm text-charcoal/70 leading-snug mt-1">Biomechanics + technique review with Mansoor before your programme starts.</span>
               </span>
             </label>
@@ -851,7 +823,7 @@
               </form>
               <!-- Success state replaces the form (main.js looks for form.nextElementSibling) -->
               <div class="hidden py-3 text-center mt-3 border border-charcoal/15 bg-cream/60 rounded-md">
-                <p class="font-display text-base font-bold text-charcoal mb-1">Request received.</p>
+                <p class="font-sans text-base font-bold text-charcoal mb-1">Request received.</p>
                 <p class="font-sans text-sm font-semibold text-charcoal/80">PDF will be emailed within 48&ndash;72 hours.</p>
               </div>
             </div>
@@ -887,12 +859,12 @@
       </div>
 
     <!-- FITNESS PANEL: form only — image is in the section's right column. -->
-    <div id="panel-fitness" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+    <div id="panel-fitness" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 flex flex-col">
         <!-- TOP: heading + intro -->
         <div class="mb-auto">
           <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Online Fitness Consultation</p>
-          <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Form &amp; Technique Review</h3>
+          <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Form &amp; Technique Review</h3>
           <div class="w-12 h-px bg-burgundy mb-3"></div>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
             A consultation, not coaching. If you already have a trainer and want an independent second opinion, if you train solo at an advanced level and aren&rsquo;t sure your form is right, or if a specific lift is giving you trouble, this is where you bring it. Mansoor reviews your technique through the lens of human biomechanics and kinesiology and tells you exactly what to correct.
@@ -915,21 +887,21 @@
           <input type="hidden" name="package" id="fitness-package" required value="Single">
           <input type="hidden" name="bundle_size" id="fitness-bundle-size">
           <div class="grid grid-cols-2 gap-1.5">
-            <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Online</span>
-              <span class="text-base md:text-lg font-display normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through text-sm">$99</span></span>
+              <span class="text-base md:text-lg font-sans normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through text-sm">$99</span></span>
             </button>
-            <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Live · UAE</span>
-              <span class="text-base md:text-lg font-display normal-case tracking-normal font-bold">$159</span>
+              <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$159</span>
             </button>
-            <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Bundle Online</span>
-              <span class="text-base md:text-lg font-display normal-case tracking-normal font-semibold text-charcoal/80">from $169</span>
+              <span class="text-base md:text-lg font-sans normal-case tracking-normal font-semibold text-charcoal/80">from $169</span>
             </button>
-            <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Bundle Live</span>
-              <span class="text-base md:text-lg font-display normal-case tracking-normal font-semibold text-charcoal/80">from $269</span>
+              <span class="text-base md:text-lg font-sans normal-case tracking-normal font-semibold text-charcoal/80">from $269</span>
             </button>
           </div>
 
@@ -943,7 +915,7 @@
           </div>
 
           <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total" class="font-display text-base ml-1"></span></button>
+          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total" class="font-sans text-base ml-1"></span></button>
         </form>
 
         <!-- POST-PAY confirmation: shows the amount + a date picker placeholder until
@@ -951,26 +923,26 @@
         <div id="fitness-postpay" class="hidden mt-4 border border-burgundy/30 bg-cream/70 rounded-md p-4">
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Booking confirmed</p>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-sm text-charcoal/80 mb-3">Amount due: <span id="fitness-postpay-amount" class="font-display text-xl md:text-2xl font-bold text-burgundy"></span></p>
+          <p class="font-sans text-sm text-charcoal/80 mb-3">Amount due: <span id="fitness-postpay-amount" class="font-sans text-xl md:text-2xl font-bold text-burgundy"></span></p>
           <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">Pick your session date</label>
           <input type="date" id="fitness-postpay-date" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy mb-2">
           <p class="font-sans text-[11px] text-charcoal/60">Mansoor will email confirmation + payment instructions within 24 hours.</p>
         </div>
 
         <div class="hidden py-4 text-center mt-3">
-          <p class="font-display text-base font-semibold text-charcoal mb-1">Booking received.</p>
+          <p class="font-sans text-base font-semibold text-charcoal mb-1">Booking received.</p>
           <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
         </div>
       </div>
     </div>
 
     <!-- NUTRITION PANEL: form only — image is in the section's right column. -->
-    <div id="panel-nutrition" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+    <div id="panel-nutrition" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 space-y-5">
         <!-- intro block -->
         <div>
           <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Human Performance Nutrition Consultation</p>
-          <h3 class="font-display text-2xl md:text-4xl font-bold text-charcoal mb-3 leading-tight">Evidence-Based Nutrition</h3>
+          <h3 class="font-sans text-2xl md:text-4xl font-bold text-charcoal mb-3 leading-tight">Evidence-Based Nutrition</h3>
           <div class="w-12 h-px bg-burgundy mb-4"></div>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
             Sports and general nutrition, with a tailored plan in every tier. Choose a single 1-hour consult, a 2-hour extended block, or a monthly programme with 4 hours of flexible time. Clinical or disordered-eating cases are referred out.
@@ -992,17 +964,17 @@
             <!-- Tier picker — three options, each shows label + price + (founding flag on Single). -->
             <input type="hidden" name="tier" id="nutrition-tier" required>
             <div class="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Choose your package">
-              <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Single</span>
-                <span class="text-base md:text-lg font-display normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through text-sm">$149</span></span>
+                <span class="text-base md:text-lg font-sans normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through text-sm">$149</span></span>
               </button>
-              <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Extended</span>
-                <span class="text-base md:text-lg font-display normal-case tracking-normal font-bold">$229</span>
+                <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$229</span>
               </button>
-              <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream-dark text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Monthly</span>
-                <span class="text-base md:text-lg font-display normal-case tracking-normal font-bold">$349</span>
+                <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$349</span>
               </button>
             </div>
             <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
@@ -1010,7 +982,7 @@
             <p class="font-sans text-[10px] text-white/80 leading-snug text-center drop-shadow">Payment instructions sent to your email within 24 hours.</p>
           </form>
           <div class="hidden py-4 text-center mt-3">
-            <p class="font-display text-base font-semibold text-charcoal mb-1">Booking received.</p>
+            <p class="font-sans text-base font-semibold text-charcoal mb-1">Booking received.</p>
             <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
           </div>
         </div>
@@ -1018,16 +990,16 @@
     </div>
 
     <!-- PERSONAL TRAINING PANEL: form only — image is in the section's right column. -->
-    <div id="panel-personal-training" class="service-panel hidden relative bg-sage-mist text-charcoal overflow-hidden rounded-md">
+    <div id="panel-personal-training" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 flex flex-col">
         <!-- TOP: heading + intro -->
         <div class="mb-auto">
           <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Personal Training (1 on 1)</p>
-          <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Exclusive &middot; UAE</h3>
+          <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Exclusive &middot; UAE</h3>
           <div class="w-12 h-px bg-burgundy mb-3"></div>
           <!-- Price meta: launch UAE pricing, 12 sessions / month, application-only. -->
           <p class="font-sans text-base font-semibold text-burgundy mb-2 leading-snug">
-            From <span class="font-display text-2xl md:text-3xl font-bold">~$5,000</span> <span class="text-base">/ month</span>
+            From <span class="font-sans text-2xl md:text-3xl font-bold">~$5,000</span> <span class="text-base">/ month</span>
             <span class="block text-charcoal/70 font-normal text-sm mt-1">12 sessions &middot; 3-month minimum &middot; application only</span>
           </p>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md">
@@ -1062,7 +1034,7 @@
           </div>
         </form>
         <div class="hidden py-4 text-center mt-3">
-          <p class="font-display text-base font-semibold text-charcoal mb-1">Application received.</p>
+          <p class="font-sans text-base font-semibold text-charcoal mb-1">Application received.</p>
           <p class="font-sans text-xs text-charcoal/70">Applications are reviewed personally. You will hear back within a few days.</p>
         </div>
       </div>
@@ -1072,8 +1044,9 @@
            Displays at natural aspect — full image visible, no crop. JS syncs
            the src with the desktop image so the active tab's photo shows. -->
       <div class="md:hidden mt-8 text-center">
-        <img id="services-bg-img-mobile" src="images/Treadmill.webp" alt="" aria-hidden="true"
-             class="block w-auto h-auto max-w-full max-h-[480px] object-contain mx-auto">
+        <img id="services-bg-img-mobile" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" aria-hidden="true"
+             style="opacity: 0;"
+             class="block w-auto h-auto max-w-full max-h-[480px] object-contain mx-auto transition-opacity duration-300">
       </div>
 
         </div>
@@ -1081,15 +1054,18 @@
     </div>
   </section>
 
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+
 
   <!-- #BOOK My Book + Waitlist (inline) -->
-  <section id="book" class="bg-sage-mist py-14">
+  <section id="book" class="bg-cream py-14">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-6">Coming Soon</p>
-      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-charcoal mb-0">1825</h2>
-      <h2 class="font-display text-7xl md:text-8xl font-black leading-none text-charcoal/20 mb-6">DAYS</h2>
+      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-charcoal mb-0">1825</h2>
+      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-charcoal/20 mb-6">DAYS</h2>
       <div class="hairline w-12 mx-auto mb-6"></div>
-      <p class="font-display text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-6">Five years that shape a lifetime.</p>
+      <p class="font-sans text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-6">Five years that shape a lifetime.</p>
       <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-2 max-w-xl mx-auto">
         The complete nutrition guide for your child, from first breath to fifth birthday. Written for parents. Grounded in science. Built for the real world.
       </p>
@@ -1111,18 +1087,21 @@
         <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
       </form>
       <div class="hidden mt-4 text-center">
-        <p class="font-display text-lg font-semibold text-charcoal mb-1">You&rsquo;re on the list.</p>
+        <p class="font-sans text-lg font-semibold text-charcoal mb-1">You&rsquo;re on the list.</p>
         <p class="font-sans text-sm text-charcoal/60">We will be in touch as soon as the book is ready.</p>
       </div>
     </div>
   </section>
+
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
   <!-- MY PUBLICATION (text-only canvas, no background image) -->
   <section id="publication" class="bg-cream py-16 md:py-20">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Long-Form Writing</p>
       <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-      <h2 class="font-display text-3xl md:text-5xl font-bold text-charcoal mb-5 leading-tight">My Publication</h2>
+      <h2 class="font-sans text-3xl md:text-5xl font-bold text-charcoal mb-5 leading-tight">My Publication</h2>
       <p class="font-sans text-base md:text-lg text-charcoal/80 leading-relaxed mb-8 max-w-xl mx-auto">
         Detailed essays on training, nutrition, and building wellness as a daily discipline. Field notes from two decades of working with real people.
       </p>
@@ -1137,8 +1116,11 @@
     </div>
   </section>
 
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+
   <!-- #CONTACT (portrait Outside Gym.png 1856x2304 as full uncropped background) -->
-  <section id="contact" class="bg-cream-dark py-14">
+  <section id="contact" class="bg-cream py-14">
     <div class="max-w-2xl mx-auto px-6">
       <div class="relative bg-charcoal text-white overflow-hidden aspect-auto md:aspect-[1856/2304]">
         <!-- Full-bleed portrait background image, panel matches its aspect so the entire image is shown -->
@@ -1150,7 +1132,7 @@
         <div class="relative z-10 h-full p-6 md:p-8 flex flex-col">
           <!-- FORM GROUP: pushed down so it sits in the lower half of the panel, just above the DM block -->
           <div class="mt-auto">
-            <h2 class="font-display text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
+            <h2 class="font-sans text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
 
             <form data-form data-subject="WYBE, Quick Contact" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5">
               <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
@@ -1177,7 +1159,7 @@
               </div>
             </form>
             <div class="hidden mt-3 text-center py-4 border border-white/20 bg-charcoal/55">
-              <p class="font-display text-base font-bold text-white mb-1 drop-shadow-md">Message received.</p>
+              <p class="font-sans text-base font-bold text-white mb-1 drop-shadow-md">Message received.</p>
               <p class="font-sans text-xs font-semibold text-white drop-shadow-md">Team will reply within 48 hours.</p>
             </div>
           </div>
@@ -1202,12 +1184,15 @@
     </div>
   </section>
 
+  <!-- Section divider -->
+  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+
   <!-- FOOTER -->
   <footer class="bg-charcoal text-white">
     <div class="max-w-6xl mx-auto px-6 py-16">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
         <div>
-          <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
+          <p class="font-sans text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
           <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Build Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
         </div>
         <div>
@@ -1286,9 +1271,11 @@
           next.onload = () => { bgImg.src = cfg.src; bgImg.style.opacity = '1'; };
           next.src = cfg.src;
         }
-        // Mobile twin image stays in sync — natural aspect, no crop.
+        // Mobile twin image stays in sync — natural aspect, no crop. Fade in
+        // like the desktop version, in case the initial state was hidden.
         if (bgImgMobile && !bgImgMobile.src.endsWith(cfg.src)) {
           bgImgMobile.src = cfg.src;
+          bgImgMobile.style.opacity = '1';
         }
         // Fitness: shrink the canvas so the section matches the image height.
         if (servicesSection) {
@@ -1339,7 +1326,7 @@
     const setActive = (btn, active) => {
       btn.classList.toggle('bg-burgundy', active);
       btn.classList.toggle('text-white', active);
-      btn.classList.toggle('bg-cream-dark', !active);
+      btn.classList.toggle('bg-cream', !active);
       btn.classList.toggle('text-charcoal', !active);
     };
 
@@ -1541,7 +1528,7 @@
       const setActiveStyle = (btn, active) => {
         btn.classList.toggle('bg-burgundy', active);
         btn.classList.toggle('text-white', active);
-        btn.classList.toggle('bg-cream-dark', !active);
+        btn.classList.toggle('bg-cream', !active);
         btn.classList.toggle('text-charcoal', !active);
       };
       const clearGroup = (btn) => {
