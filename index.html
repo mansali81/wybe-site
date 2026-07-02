@@ -59,6 +59,55 @@
     }
   </script>
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Inline motion styles for hero marquee, Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
+  <style>
+    /* 1. Credential marquee (below hero) */
+    @keyframes wybe-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .wybe-marquee { animation: wybe-marquee 45s linear infinite; }
+
+    /* 2. Vision + Mission breathing ambient wash */
+    .wybe-breathe-bg {
+      background: radial-gradient(circle at 20% 30%, rgba(90,122,101,0.18) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 70%, rgba(90,122,101,0.12) 0%, transparent 55%);
+      animation: wybe-breathe 14s ease-in-out infinite;
+    }
+    @keyframes wybe-breathe {
+      0%, 100% { background-position: 0% 0%, 0% 0%; }
+      50%      { background-position: 30% 20%, -30% -20%; }
+    }
+
+    /* 3. Pillar SVG stroke draw-in (uses existing .section-in-view class) */
+    .wybe-icon path {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-in-view .wybe-icon path { stroke-dashoffset: 0; }
+
+    /* 5. 3D WYBE wordmark breathe */
+    .wybe-3d-mark {
+      transform-style: preserve-3d;
+      animation: wybe-mark-breathe 14s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes wybe-mark-breathe {
+      0%, 100% { transform: perspective(1200px) rotateY(0deg) rotateX(0deg) scale(1); }
+      50%      { transform: perspective(1200px) rotateY(6deg) rotateX(-2deg) scale(1.015); }
+    }
+
+    /* Universal accessibility guard */
+    @media (prefers-reduced-motion: reduce) {
+      .wybe-marquee,
+      .wybe-breathe-bg,
+      .wybe-3d-mark { animation: none; }
+      .wybe-icon path { transition: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- GSAP (for launch price count-up animation on quiz result) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+
   <!-- jsPDF for client-side PDF generation (calculator results) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
@@ -182,7 +231,7 @@
     <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/50 to-transparent pointer-events-none" aria-hidden="true"></div>
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
       <!-- Brand wordmark (visual only; the H1 below carries the page topic for SEO). -->
-      <div class="font-display text-7xl md:text-9xl font-black leading-none text-white mb-1">WYBE</div>
+      <div class="font-display text-7xl md:text-9xl font-black leading-none text-white mb-1 wybe-3d-mark">WYBE</div>
       <p class="font-sans text-sm tracking-widest uppercase text-white/60 mb-8 ml-12">Wellness You Build Everyday</p>
       <div class="hairline w-16 mb-8"></div>
       <h1 class="font-display text-2xl md:text-3xl font-bold text-white leading-tight max-w-xl mb-8">Evidence Based Personal Training, Fitness &amp; Nutrition Consultation</h1>
@@ -197,9 +246,41 @@
     </div>
   </section>
 
+  <!-- CREDENTIAL MARQUEE, endless-scroll strip below the hero. Two copies of the list flow back to back so the loop feels seamless. -->
+  <section aria-label="Credentials" class="bg-charcoal border-y border-white/10 py-4 overflow-hidden">
+    <div class="flex whitespace-nowrap wybe-marquee">
+      <div class="flex items-center gap-10 shrink-0 pr-10">
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">REPS Level 4 Certified Personal Trainer</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">UAE REPS Member</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified Human Performance Nutritionist</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">CPR, AED and First Aid Certified</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified PT for Special Populations</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+      </div>
+      <div class="flex items-center gap-10 shrink-0 pr-10" aria-hidden="true">
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">REPS Level 4 Certified Personal Trainer</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">UAE REPS Member</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified Human Performance Nutritionist</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">CPR, AED and First Aid Certified</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+        <span class="font-sans text-[11px] tracking-widest uppercase text-white/70">Certified PT for Special Populations</span>
+        <span class="w-1 h-1 rounded-full bg-burgundy shrink-0"></span>
+      </div>
+    </div>
+  </section>
+
   <!-- VISION + MISSION (same sage canvas as The Foundation) hsfjhsgdjhgsjhdgfs -->
-  <section class="bg-sage-mist py-4 md:py-6">
-    <div class="max-w-4xl mx-auto px-6">
+  <section class="relative bg-sage-mist py-4 md:py-6 overflow-hidden">
+    <!-- Slow ambient wash: two radial gradients drift back and forth on a 14s loop. Pointer-events off so nothing else is affected. -->
+    <div class="absolute inset-0 wybe-breathe-bg pointer-events-none" aria-hidden="true"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
 
       <!-- Two-column layout: Our Vision on the left, Our Mission on the right -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
@@ -506,21 +587,37 @@
       <h3 class="font-display text-2xl md:text-3xl font-bold text-charcoal text-center mb-5">Four Pillars. One System.</h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
         <div>
+          <!-- Mindset: spiral (thought) -->
+          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M16 4 C10 4 6 8 6 14 C6 20 10 24 16 24 C20 24 22 22 22 18 C22 15 20 13 17 13 C15 13 14 14 14 16"/>
+          </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
           <p class="font-display text-lg font-semibold text-charcoal mb-2">Mindset</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">The discipline to treat your own health as non-negotiable, because the people who matter to you are watching how you live.</p>
         </div>
         <div>
+          <!-- Nutrition: leaf -->
+          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 24 C8 14 16 6 26 6 C26 16 20 24 12 26 C10 26 8 26 8 24 M12 24 L22 10"/>
+          </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
           <p class="font-display text-lg font-semibold text-charcoal mb-2">Nutrition</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Food is science. What you eat consistently shapes who you become and the next generation that comes after you.</p>
         </div>
         <div>
+          <!-- Training: dumbbell -->
+          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M4 12 L4 20 M8 8 L8 24 M8 16 L24 16 M24 8 L24 24 M28 12 L28 20"/>
+          </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
           <p class="font-display text-lg font-semibold text-charcoal mb-2">Training</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Progressive, purposeful movement. Not punishment. Not performance for an audience.</p>
         </div>
         <div>
+          <!-- Recovery: crescent moon -->
+          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 6 A11 11 0 1 0 22 26 A8 8 0 1 1 22 6 Z"/>
+          </svg>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
           <p class="font-display text-lg font-semibold text-charcoal mb-2">Recovery</p>
           <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Sleep, rest, and stress management are not optional. They are the mechanism.</p>
@@ -1575,7 +1672,20 @@
           const standard = wantsConsult ? PLANS[plan].comboStandard : PLANS[plan].standard;
           const launchEl   = document.getElementById('result-price-launch');
           const standardEl = document.getElementById('result-price-standard');
-          if (launchEl)   launchEl.textContent   = '$' + launch;
+          // Animate the launch price counting up from 0 with GSAP when available;
+          // fall back to instant text if GSAP hasn't loaded yet (defer script).
+          if (launchEl && typeof gsap !== 'undefined') {
+            const state = { n: 0 };
+            gsap.killTweensOf(state);
+            gsap.to(state, {
+              n: launch,
+              duration: 1.2,
+              ease: 'power2.out',
+              onUpdate: () => { launchEl.textContent = '$' + Math.round(state.n); }
+            });
+          } else if (launchEl) {
+            launchEl.textContent = '$' + launch;
+          }
           if (standardEl) standardEl.textContent = '$' + standard;
           // Hidden form fields + Pay button text
           consultMode = wantsConsult;
