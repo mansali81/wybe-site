@@ -33,30 +33,40 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            cream: '#FFFFFF',
-            'cream-dark': '#F0F4F1',
-            'sage-tint': '#EFF5F0',
-            'sage-mist': '#E2EDE5',
-            'charcoal-muted': '#7A9485',
-            burgundy: '#5A7A65',
-            forest: '#446151',
-            'burgundy-dark': '#3D5A47',
-            'charcoal-light': '#3D5A47',
-            charcoal: '#1A2E22',
+            // New brand palette from Wybe_colorpalette.pdf. Token names kept.
+            cream: '#F6F2E8',
+            'cream-dark': '#EDE7D8',
+            'sage-tint': '#F0EDDF',
+            'sage-mist': '#E9E4CE',
+            'charcoal-muted': '#4A6070',
+            burgundy: '#DDFF55',
+            forest: '#001A24',
+            'burgundy-dark': '#C4E63C',
+            'charcoal-light': '#003348',
+            charcoal: '#002233',
           },
-          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
+          fontFamily: {
+            sans:    ['Raleway', 'Inter', 'sans-serif'],
+            heading: ['Inter', 'Raleway', 'sans-serif'],
+          }
         }
       }
     }
   </script>
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Global typography per brand palette. -->
+  <style>
+    body { font-family: 'Raleway', 'Inter', sans-serif; font-weight: 300; }
+    h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
+  </style>
 </head>
 <body class="bg-cream text-charcoal">
 
@@ -72,7 +82,7 @@
           <a href="index.html#calculators" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Calculators</a>
           <a href="publication.html" class="font-sans text-sm text-burgundy font-semibold">My Publication</a>
           <a href="index.html#book" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
-          <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+          <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
         </div>
         <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
           <span class="w-6 h-px bg-charcoal block"></span>
@@ -89,7 +99,7 @@
         <a href="index.html#calculators" class="font-sans text-sm text-charcoal">Calculators</a>
         <a href="publication.html" class="font-sans text-sm text-burgundy font-semibold">My Publication</a>
         <a href="index.html#book" class="font-sans text-sm text-charcoal">My Book</a>
-        <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
+        <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-3 text-center">Book Now</a>
       </div>
     </div>
   </nav>
@@ -180,7 +190,7 @@
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this work in practice?</p>
           <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Start with a 1-on-1 conversation about where your training and mind are right now.</p>
         </div>
-        <a href="index.html#contact" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+        <a href="index.html#contact" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Get in touch
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
@@ -245,7 +255,7 @@
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want a plan that fits how you actually eat?</p>
           <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Book a Human Performance Nutrition consultation.</p>
         </div>
-        <a href="index.html?service=nutrition#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+        <a href="index.html?service=nutrition#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Book a consultation
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
@@ -310,7 +320,7 @@
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Ready for a structured plan?</p>
           <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Get a personalised Beginner, Intermediate, or Advanced programme.</p>
         </div>
-        <a href="index.html?service=digital-plan#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+        <a href="index.html?service=digital-plan#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Find my level
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
@@ -375,7 +385,7 @@
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this in practice?</p>
           <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Book a 1-on-1 form &amp; technique consultation.</p>
         </div>
-        <a href="index.html?service=fitness#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+        <a href="index.html?service=fitness#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Book a review
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
@@ -440,7 +450,7 @@
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">UAE-based and serious about the work?</p>
           <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Apply for 1-on-1 personal training.</p>
         </div>
-        <a href="index.html?service=personal-training#services" class="inline-flex items-center gap-2 bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
+        <a href="index.html?service=personal-training#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Apply
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>

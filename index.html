@@ -33,34 +33,44 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            // Unified green ramp — every token here lives on the same 138° hue, only lightness changes.
-            // Darkest → lightest: charcoal, forest, burgundy, charcoal-muted, sage-mist, sage-tint, cream-dark, cream.
-            cream: '#FFFFFF',
-            'cream-dark': '#F0F4F1',
-            'sage-tint': '#EFF5F0',
-            'sage-mist': '#E2EDE5',
-            'charcoal-muted': '#7A9485',
-            burgundy: '#5A7A65',
-            forest: '#446151',
-            'burgundy-dark': '#3D5A47',
-            'charcoal-light': '#3D5A47',
-            charcoal: '#1A2E22',
+            // New brand palette (from Wybe_colorpalette.pdf):
+            //   #002233 dark navy (was 'charcoal'), #F6F2E8 warm off-white (was 'cream'), #DDFF55 lime (was 'burgundy').
+            //   Older token names kept so existing class names don't have to be renamed everywhere.
+            cream: '#F6F2E8',
+            'cream-dark': '#EDE7D8',
+            'sage-tint': '#F0EDDF',
+            'sage-mist': '#E9E4CE',
+            'charcoal-muted': '#4A6070',
+            burgundy: '#DDFF55',
+            forest: '#001A24',
+            'burgundy-dark': '#C4E63C',
+            'charcoal-light': '#003348',
+            charcoal: '#002233',
           },
-          fontFamily: { display: ['"Playfair Display"', 'serif'], sans: ['Inter', 'sans-serif'] }
+          fontFamily: {
+            sans:    ['Raleway', 'Inter', 'sans-serif'],   // body default (Raleway light)
+            heading: ['Inter', 'Raleway', 'sans-serif'],   // headings (Inter black)
+          }
         }
       }
     }
   </script>
   <link rel="stylesheet" href="css/styles.css">
 
-  <!-- Inline motion styles for hero marquee, Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
+  <!-- Global typography per brand palette: Raleway light for body, Inter black for headings + heavy weight elements. -->
+  <style>
+    body { font-family: 'Raleway', 'Inter', sans-serif; font-weight: 300; }
+    h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
+  </style>
+
+  <!-- Inline motion styles for Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
   <style>
     /* 1. Credential marquee (below hero) */
     @keyframes wybe-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -197,7 +207,7 @@
           <a href="#calculators" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Calculators</a>
           <a href="publication.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Publication</a>
           <a href="#book" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
-          <a href="#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+          <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
         </div>
         <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
           <span class="w-6 h-px bg-charcoal block"></span>
@@ -214,31 +224,24 @@
         <a href="#calculators" class="font-sans text-sm text-charcoal">Calculators</a>
         <a href="publication.html" class="font-sans text-sm text-charcoal">My Publication</a>
         <a href="#book" class="font-sans text-sm text-charcoal">My Book</a>
-        <a href="#contact" class="font-sans text-sm bg-burgundy text-white px-5 py-3 text-center">Book Now</a>
+        <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-3 text-center">Book Now</a>
       </div>
     </div>
   </nav>
 
-  <!-- #HOME HERO -->
-  <section id="home" class="relative min-h-screen bg-charcoal text-white flex items-center pt-16 overflow-hidden [perspective:1200px]">
-    <!-- Hero background image. Same parallax + 3D tilt + zoom rig as the video had,
-         so the cinematic scroll effect is preserved. object-top keeps the lifter's
-         upper body anchored at the top so the head stays in frame. -->
-    <img id="hero-image" src="images/Deadlift.webp" alt="" aria-hidden="true"
-         data-parallax="0.25" data-parallax-3d="true"
-         style="transform-origin: top center;"
-         class="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none will-change-transform">
-    <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/50 to-transparent pointer-events-none" aria-hidden="true"></div>
+  <!-- #HOME HERO — solid dark-navy canvas, no image. Layout matches the brand
+       palette PDF: heavy Inter Black headline, small Raleway light subtitle,
+       big lime pill CTA in the accent color. -->
+  <section id="home" class="relative min-h-screen bg-charcoal text-cream flex items-center pt-16 overflow-hidden">
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
-      <div class="hairline w-16 mb-8"></div>
-      <h1 class="font-sans text-2xl md:text-3xl font-bold text-white leading-tight max-w-xl mb-8">Evidence Based Personal Training, Fitness &amp; Nutrition Consultation</h1>
-      <blockquote class="font-sans text-2xl md:text-3xl font-semibold text-white/90 leading-snug max-w-xl mb-10">
-        &ldquo;Wellness is more than a 30 day challenge<br>
-        It&rsquo;s what you build, every day,<br>
-        for the rest of your life.&rdquo;
-      </blockquote>
-      <a href="#contact" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">
-        Let&rsquo;s WYBE &rarr;
+      <h1 class="text-cream uppercase leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-8xl mb-8 max-w-4xl">
+        Evidence Based Personal Training, Fitness &amp; Nutrition Consultation
+      </h1>
+      <p class="text-cream/80 text-base md:text-lg leading-snug max-w-lg mb-10 font-light">
+        Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
+      </p>
+      <a href="#contact" class="inline-block bg-burgundy text-charcoal font-heading font-black text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
+        Let&rsquo;s WYBE
       </a>
     </div>
   </section>
@@ -300,16 +303,16 @@
 
       <!-- Tab buttons: 2-on-top, 2-below grid, matching the Services tab layout -->
       <div class="max-w-3xl mx-auto mb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <button type="button" data-calc-tab="bfp" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+        <button type="button" data-calc-tab="bfp" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
           Body Fat % (US Navy Method)
         </button>
-        <button type="button" data-calc-tab="tdee" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+        <button type="button" data-calc-tab="tdee" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
           Daily Calorie Needs (TDEE)
         </button>
-        <button type="button" data-calc-tab="bmi" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+        <button type="button" data-calc-tab="bmi" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
           Body Mass Index (BMI)
         </button>
-        <button type="button" data-calc-tab="ibw" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+        <button type="button" data-calc-tab="ibw" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
           Ideal Body Weight (IBW)
         </button>
       </div>
@@ -333,7 +336,7 @@
                 <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Waist <span class="info-tip" tabindex="0" data-tip="Men: measure around the navel. Women: measure around the narrowest point of the waist. Relaxed stomach, end of a normal breath.">?</span></label><input type="number" id="bfp-waist" step="0.1" required placeholder="85" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
                 <div id="bfp-hip-wrap" class="hidden"><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Hip <span class="info-tip" tabindex="0" data-tip="Measure around the widest part of your hips/buttocks, with feet together. Keep the tape level all the way around.">?</span></label><input type="number" id="bfp-hip" step="0.1" placeholder="95" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
               </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
               <p id="bfp-error" class="hidden font-sans text-xs text-red-300"></p>
             </form>
 
@@ -346,7 +349,7 @@
                 <p id="bfp-category" class="font-sans text-lg font-semibold text-burgundy mb-2">&mdash;</p>
                 <p id="bfp-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
                   Let&rsquo;s WYBE &rarr;
                 </a>
               </div>
@@ -367,7 +370,7 @@
                 <input type="email" name="email" required placeholder="your@email.com" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
               </div>
               <input type="number" name="age" required min="14" max="100" placeholder="Age" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-white placeholder:text-white/40">
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
               <p class="font-sans text-xs text-white/70 text-center">A simple PDF report will be emailed to you and downloaded to your device.</p>
             </form>
             <div class="hidden mt-3 text-sm text-white/80 text-center">Sent. Check your inbox for your PDF result and what to do next.</div>
@@ -402,7 +405,7 @@
                   <option value="1.9" class="text-charcoal">Extra active, physical job + daily training</option>
                 </select>
               </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
               <p id="tdee-error" class="hidden font-sans text-xs text-red-300"></p>
             </form>
 
@@ -420,7 +423,7 @@
                   <p class="flex justify-between"><span class="text-white/75">Lean bulk</span><span class="font-semibold text-white"><span id="tdee-bulk">&mdash;</span> kcal</span></p>
                 </div>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
                   Let&rsquo;s WYBE &rarr;
                 </a>
               </div>
@@ -439,7 +442,7 @@
                 <input type="email" name="email" required placeholder="your@email.com" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
               </div>
               <input type="number" name="age_confirmed" required min="14" max="100" placeholder="Confirm your age" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-white placeholder:text-white/40">
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
               <p class="font-sans text-xs text-white/70 text-center">A simple PDF report will be emailed to you and downloaded to your device.</p>
             </form>
             <div class="hidden mt-3 text-sm text-white/80 text-center">Sent. Check your inbox for your PDF result.</div>
@@ -457,7 +460,7 @@
                 <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="bmi-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
                 <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Weight (kg) <span class="info-tip" tabindex="0" data-tip="Weigh yourself first thing in the morning, after using the bathroom, before eating or drinking.">?</span></label><input type="number" id="bmi-weight" step="0.1" required placeholder="78" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
               </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
               <p id="bmi-error" class="hidden font-sans text-xs text-red-300"></p>
             </form>
 
@@ -470,7 +473,7 @@
                 <p id="bmi-category" class="font-sans text-lg font-semibold text-burgundy mb-2">&mdash;</p>
                 <p id="bmi-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* BMI is a screening number, not a body-composition measure. Lean-muscular builds can read &ldquo;overweight&rdquo; without excess fat.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
                   Let&rsquo;s WYBE &rarr;
                 </a>
               </div>
@@ -496,7 +499,7 @@
                 <label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label>
                 <input type="number" id="ibw-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
               </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
               <p id="ibw-error" class="hidden font-sans text-xs text-red-300"></p>
             </form>
 
@@ -509,7 +512,7 @@
                 <p class="font-sans text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="ibw-low">&mdash;</span><span class="text-xl text-white/50">&ndash;</span><span id="ibw-high">&mdash;</span> <span class="text-xl text-white/50">kg</span></p>
                 <p id="ibw-point" class="font-sans text-base font-semibold text-burgundy mb-4">IBW &mdash; kg</p>
                 <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* Broca&rsquo;s Index. The &plusmn;5&nbsp;kg band is a healthy target for non-exercising clients and women. Exercising men should track body-fat % instead &mdash; muscle is denser than fat and will push weight up without adding fat.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
+                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
                   Let&rsquo;s WYBE &rarr;
                 </a>
               </div>
@@ -636,16 +639,16 @@
           <!-- Tabs wrapper — my-auto centres the tabs vertically within the left column. -->
           <div class="my-auto py-10 w-full">
             <div class="max-w-md mx-auto md:mx-0 w-full grid grid-cols-1 gap-3">
-              <button type="button" data-service-tab="digital-plan" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+              <button type="button" data-service-tab="digital-plan" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
                 Work out Program (Digital)
               </button>
-              <button type="button" data-service-tab="fitness" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+              <button type="button" data-service-tab="fitness" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
                 Fitness Consultation (Online)
               </button>
-              <button type="button" data-service-tab="nutrition" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+              <button type="button" data-service-tab="nutrition" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
                 Nutrition Consultation (Online)
               </button>
-              <button type="button" data-service-tab="personal-training" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-md">
+              <button type="button" data-service-tab="personal-training" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
                 Personal Training (1 on 1)
               </button>
             </div>
@@ -691,10 +694,10 @@
               <div class="quiz-step" data-step="q1">
                 <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long have you trained consistently?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q1" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never / Sporadic</button>
-                  <button type="button" data-q="q1" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Under 6 Months</button>
-                  <button type="button" data-q="q1" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">6 Mo &ndash; 2 Years</button>
-                  <button type="button" data-q="q1" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">2+ Years</button>
+                  <button type="button" data-q="q1" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Never / Sporadic</button>
+                  <button type="button" data-q="q1" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Under 6 Months</button>
+                  <button type="button" data-q="q1" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">6 Mo &ndash; 2 Years</button>
+                  <button type="button" data-q="q1" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">2+ Years</button>
                 </div>
               </div>
 
@@ -702,10 +705,10 @@
               <div class="quiz-step hidden" data-step="q2">
                 <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Are your functional lifts bio-mechanically correct?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q2" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes</button>
-                  <button type="button" data-q="q2" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No</button>
-                  <button type="button" data-q="q2" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Not Sure</button>
-                  <button type="button" data-q="q2" data-value="1" data-guidance="true" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Need Guidance</button>
+                  <button type="button" data-q="q2" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Yes</button>
+                  <button type="button" data-q="q2" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">No</button>
+                  <button type="button" data-q="q2" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Not Sure</button>
+                  <button type="button" data-q="q2" data-value="1" data-guidance="true" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Need Guidance</button>
                 </div>
               </div>
 
@@ -713,8 +716,8 @@
               <div class="quiz-step hidden" data-step="q2a">
                 <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Would you like an online consultation to learn the correct form?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q2_consultation" data-value="Yes" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Yes, Consult</button>
-                  <button type="button" data-q="q2_consultation" data-value="No" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">No, Thanks</button>
+                  <button type="button" data-q="q2_consultation" data-value="Yes" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Yes, Consult</button>
+                  <button type="button" data-q="q2_consultation" data-value="No" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">No, Thanks</button>
                 </div>
               </div>
 
@@ -722,10 +725,10 @@
               <div class="quiz-step hidden" data-step="q3">
                 <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How would you describe yourself today?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q3" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Out Of Shape</button>
-                  <button type="button" data-q="q3" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Lightly Active</button>
-                  <button type="button" data-q="q3" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Moderately Fit</button>
-                  <button type="button" data-q="q3" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Highly Trained</button>
+                  <button type="button" data-q="q3" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Out Of Shape</button>
+                  <button type="button" data-q="q3" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Lightly Active</button>
+                  <button type="button" data-q="q3" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Moderately Fit</button>
+                  <button type="button" data-q="q3" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Highly Trained</button>
                 </div>
               </div>
 
@@ -733,10 +736,10 @@
               <div class="quiz-step hidden" data-step="q4">
                 <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">Have you followed a written programme before?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q4" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Never</button>
-                  <button type="button" data-q="q4" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Tried Briefly</button>
-                  <button type="button" data-q="q4" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Completed One</button>
-                  <button type="button" data-q="q4" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">My Own Blocks</button>
+                  <button type="button" data-q="q4" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Never</button>
+                  <button type="button" data-q="q4" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Tried Briefly</button>
+                  <button type="button" data-q="q4" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Completed One</button>
+                  <button type="button" data-q="q4" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">My Own Blocks</button>
                 </div>
               </div>
 
@@ -744,10 +747,10 @@
               <div class="quiz-step hidden" data-step="q5">
                 <p class="font-sans text-base md:text-lg font-bold text-charcoal mb-3 leading-snug">How long are you committing for?</p>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" data-q="q5" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Exploring</button>
-                  <button type="button" data-q="q5" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Few Months</button>
-                  <button type="button" data-q="q5" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">Mid-Term</button>
-                  <button type="button" data-q="q5" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight">A Year+</button>
+                  <button type="button" data-q="q5" data-value="1" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Exploring</button>
+                  <button type="button" data-q="q5" data-value="2" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Few Months</button>
+                  <button type="button" data-q="q5" data-value="3" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">Mid-Term</button>
+                  <button type="button" data-q="q5" data-value="4" class="quiz-option bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-3 rounded-full hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight">A Year+</button>
                 </div>
               </div>
             </form>
@@ -755,14 +758,14 @@
             <!-- INLINE NAV: back on the left, next on the right. JS toggles
                  which one is visible per step. Both are icon-only circles. -->
             <div class="mt-6 flex items-center justify-between">
-              <button type="button" id="quiz-back" aria-label="Back" class="hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-cream border border-charcoal/20 text-charcoal hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors shadow-sm">
+              <button type="button" id="quiz-back" aria-label="Back" class="hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-cream border border-charcoal/20 text-charcoal hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                   <line x1="19" y1="12" x2="5" y2="12"></line>
                   <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
               </button>
               <span class="block flex-1"></span>
-              <button type="button" id="quiz-forward" aria-label="Next" class="hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-burgundy text-white border border-burgundy hover:bg-burgundy-dark transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+              <button type="button" id="quiz-forward" aria-label="Next" class="hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-burgundy text-charcoal border border-burgundy hover:bg-burgundy-dark transition-colors shadow-md disabled:opacity-40 disabled:cursor-not-allowed" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
@@ -813,7 +816,7 @@
 
                 <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/50">
                 <input type="email" name="email" required placeholder="your@email.com" class="border border-charcoal/25 bg-cream/80 px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/50">
-                <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center justify-center gap-1.5">
+                <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center justify-center gap-1.5">
                   Send My Plan
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -833,7 +836,7 @@
 
             <!-- Bottom actions: Retake (left) + Pay (right) -->
             <div class="mt-2 flex items-center justify-between">
-              <button type="button" id="retake-quiz" class="inline-flex items-center gap-1.5 border border-charcoal/25 text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors">
+              <button type="button" id="retake-quiz" class="inline-flex items-center gap-1.5 border border-charcoal/25 text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
                   <line x1="19" y1="12" x2="5" y2="12"></line>
                   <polyline points="12 19 5 12 12 5"></polyline>
@@ -841,7 +844,7 @@
                 Retake
               </button>
 
-              <button type="button" id="result-pay-btn" class="bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center gap-1.5">
+              <button type="button" id="result-pay-btn" class="bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center gap-1.5">
                 <span id="result-buy-text">Pay $100</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -887,19 +890,19 @@
           <input type="hidden" name="package" id="fitness-package" required value="Single">
           <input type="hidden" name="bundle_size" id="fitness-bundle-size">
           <div class="grid grid-cols-2 gap-1.5">
-            <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Online</span>
               <span class="text-base md:text-lg font-sans normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through text-sm">$99</span></span>
             </button>
-            <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Live · UAE</span>
               <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$159</span>
             </button>
-            <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Bundle Online</span>
               <span class="text-base md:text-lg font-sans normal-case tracking-normal font-semibold text-charcoal/80">from $169</span>
             </button>
-            <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+            <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
               <span class="text-[9px] md:text-[10px]">Bundle Live</span>
               <span class="text-base md:text-lg font-sans normal-case tracking-normal font-semibold text-charcoal/80">from $269</span>
             </button>
@@ -915,7 +918,7 @@
           </div>
 
           <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total" class="font-sans text-base ml-1"></span></button>
+          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total" class="font-sans text-base ml-1"></span></button>
         </form>
 
         <!-- POST-PAY confirmation: shows the amount + a date picker placeholder until
@@ -964,21 +967,21 @@
             <!-- Tier picker — three options, each shows label + price + (founding flag on Single). -->
             <input type="hidden" name="tier" id="nutrition-tier" required>
             <div class="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Choose your package">
-              <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Single</span>
                 <span class="text-base md:text-lg font-sans normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through text-sm">$149</span></span>
               </button>
-              <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Extended</span>
                 <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$229</span>
               </button>
-              <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-white transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
+              <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
                 <span class="text-[9px] md:text-[10px]">Monthly</span>
                 <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$349</span>
               </button>
             </div>
             <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-            <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
+            <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
             <p class="font-sans text-[10px] text-white/80 leading-snug text-center drop-shadow">Payment instructions sent to your email within 24 hours.</p>
           </form>
           <div class="hidden py-4 text-center mt-3">
@@ -1084,7 +1087,7 @@
         <input type="email" name="email"  required placeholder="Email"            class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
         <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
 
-        <button type="submit" class="w-full bg-burgundy text-white font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
+        <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
       </form>
       <div class="hidden mt-4 text-center">
         <p class="font-sans text-lg font-semibold text-charcoal mb-1">You&rsquo;re on the list.</p>
@@ -1106,7 +1109,7 @@
         Detailed essays on training, nutrition, and building wellness as a daily discipline. Field notes from two decades of working with real people.
       </p>
       <a href="publication.html"
-         class="inline-flex items-center gap-3 bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">
+         class="inline-flex items-center gap-3 bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">
         <span>Read the Essays</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
           <line x1="5" y1="12" x2="19" y2="12"></line>
