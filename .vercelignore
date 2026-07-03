@@ -14,3 +14,6 @@ images/cleaned/
 scripts/
 .DS_Store
 **/.DS_Store
+
+# Local-only photo scratch folder (large PNGs, not for the site).
+untitled folder/

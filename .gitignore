@@ -2,3 +2,6 @@
 **/.DS_Store
 .vercel
 node_modules
+
+# Local-only photo scratch folder (large PNGs, not for the site)
+untitled folder/
