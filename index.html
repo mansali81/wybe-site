@@ -106,12 +106,47 @@
       50%      { transform: perspective(1200px) rotateY(6deg) rotateX(-2deg) scale(1.015); }
     }
 
+    /* 6. Scroll-story: sticky stage + stacked panels (Calculators + Services).
+       The section is 400vh tall (100vh per panel). Inside, a 100vh sticky stage
+       pins to the top and cross-fades the active panel as the user scrolls
+       past each 100vh marker. Non-active panels get pointer-events:none so
+       users can only interact with the visible one. */
+    .wybe-story           { position: relative; }
+    .wybe-story-inner     { position: relative; }
+    .wybe-story-stage     { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .wybe-story-stack     { position: relative; width: 100%; max-height: 100vh; }
+    .wybe-story-panel     { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(calc(-50% + 32px)); opacity: 0; transition: opacity .55s ease, transform .55s ease; pointer-events: none; max-height: 100vh; overflow-y: auto; }
+    .wybe-story-panel.is-active { opacity: 1; transform: translateY(-50%); pointer-events: auto; }
+    .wybe-story-progress-btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease; opacity: 0.55; }
+    .wybe-story-progress-btn.is-active { opacity: 1; background-color: #DDFF55; color: #002233; border-color: #DDFF55; }
+
+    /* 7. About Me: description swaps out, metrics fade in as user scrolls past. */
+    .wybe-about-stage      { position: relative; }
+    .wybe-about-intro,
+    .wybe-about-metrics    { transition: opacity .6s ease, transform .6s ease; }
+    .wybe-about-metrics    { opacity: 0; transform: translateY(24px); pointer-events: none; position: absolute; inset: 0; }
+    .wybe-about-stage.is-metrics .wybe-about-intro    { opacity: 0; transform: translateY(-24px); pointer-events: none; }
+    .wybe-about-stage.is-metrics .wybe-about-metrics  { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
+    .wybe-metric-value     { font-variant-numeric: tabular-nums; }
+
+    /* 8. Four Pillars: minimalist word-mark grid, no icons, no supporting copy. */
+    .wybe-pillar-item      { position: relative; padding: 24px 0; }
+    .wybe-pillar-name      { display: inline-block; font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.02em; color: #002233; position: relative; padding-bottom: 10px; }
+    .wybe-pillar-name::after { content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 28px; background-color: #DDFF55; transition: width .6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .wybe-pillar-item:hover .wybe-pillar-name::after,
+    .wybe-pillar-item:focus-within .wybe-pillar-name::after { width: 100%; }
+    .wybe-pillar-index     { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 0.7rem; letter-spacing: 0.24em; color: #DDFF55; margin-bottom: 12px; display: block; }
+
     /* Universal accessibility guard */
     @media (prefers-reduced-motion: reduce) {
       .wybe-marquee,
       .wybe-breathe-bg,
       .wybe-3d-mark { animation: none; }
       .wybe-icon path { transition: none; stroke-dashoffset: 0; }
+      .wybe-story-panel,
+      .wybe-about-intro,
+      .wybe-about-metrics,
+      .wybe-pillar-name::after { transition: none; }
     }
   </style>
 
@@ -249,35 +284,30 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
-  <!-- BELIEF + PRACTICE (same cream canvas as The Foundation) -->
-  <section class="relative bg-cream py-4 md:py-6 overflow-hidden">
-    <!-- Slow ambient wash: two radial gradients drift back and forth on a 14s loop. Pointer-events off so nothing else is affected. -->
-    <div class="absolute inset-0 wybe-breathe-bg pointer-events-none" aria-hidden="true"></div>
-    <div class="relative z-10 max-w-4xl mx-auto px-6">
+  <!-- OUR PROMISE + OUR COMMITMENT — stacked, framed in a navy-bordered box -->
+  <section class="bg-cream py-12 md:py-16">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="border-2 border-charcoal p-8 md:p-12 space-y-10">
 
-      <!-- Two-column layout: The Belief on the left, The Practice on the right -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-
-        <!-- OUR VISION (left side) -->
-        <div class="text-left">
-          <h3 class="font-sans text-lg md:text-xl font-bold text-charcoal mb-2">The Belief</h3>
-          <div class="w-10 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
-            &ldquo;A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.&rdquo;
+        <!-- Our Promise (top) -->
+        <div>
+          <h3 class="text-lg md:text-xl font-black text-charcoal mb-2 uppercase tracking-tight">Our Promise</h3>
+          <div class="w-10 h-px bg-charcoal mb-4"></div>
+          <p class="font-sans text-base md:text-lg font-light text-charcoal leading-snug">
+            A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
           </p>
         </div>
 
-        <!-- OUR MISSION (right column, title left-aligned within it) -->
-        <div class="text-left">
-          <h3 class="font-sans text-lg md:text-xl font-bold text-charcoal mb-2">The Practice</h3>
-          <div class="w-10 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-base md:text-lg italic font-medium text-charcoal/85 leading-snug">
-            &ldquo;To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.&rdquo;
+        <!-- Our Commitment (below) -->
+        <div>
+          <h3 class="text-lg md:text-xl font-black text-charcoal mb-2 uppercase tracking-tight">Our Commitment</h3>
+          <div class="w-10 h-px bg-charcoal mb-4"></div>
+          <p class="font-sans text-base md:text-lg font-light text-charcoal leading-snug">
+            To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
           </p>
         </div>
 
       </div>
-
     </div>
   </section>
 
@@ -285,40 +315,41 @@
   <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
   <!-- #CALCULATORS -->
-  <section id="calculators" class="relative bg-charcoal py-14 overflow-hidden">
-    <!-- Background video, autoplay/muted/loop. Browsers require muted to autoplay; the toggle below lets users unmute. -->
-    <video id="calc-video" autoplay muted loop playsinline aria-hidden="true"
-           class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0">
-      <source src="Video/Calculator.mp4" type="video/mp4">
-    </video>
-    <div class="absolute inset-0 bg-charcoal/60 pointer-events-none z-0" aria-hidden="true"></div>
+  <!-- CALCULATORS — sticky-snap scroll story. Section is 400vh; a sticky stage
+       stays pinned while user scrolls through 4 panels (BFP, TDEE, BMI, IBW).
+       JS in main-script maps scroll progress inside .wybe-story-inner to the
+       active .wybe-story-panel and progress pill. -->
+  <section id="calculators" class="wybe-story relative bg-charcoal overflow-visible">
+    <div class="wybe-story-inner" data-story="calc" style="min-height: 400vh;">
+      <div class="wybe-story-stage">
+        <div class="w-full max-w-5xl mx-auto px-6 py-10">
+          <div class="text-center mb-6">
+            <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-md">Free Tools</p>
+            <div class="w-8 h-px bg-burgundy mx-auto mb-4"></div>
+            <h2 class="font-sans text-3xl md:text-4xl font-bold text-white drop-shadow-md">Calculators</h2>
+          </div>
 
+          <!-- Progress pills: also serve as scroll-jump buttons. -->
+          <div class="max-w-3xl mx-auto mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button type="button" data-story-jump="0" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
+              Body Fat %
+            </button>
+            <button type="button" data-story-jump="1" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
+              Daily Calorie
+            </button>
+            <button type="button" data-story-jump="2" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
+              BMI
+            </button>
+            <button type="button" data-story-jump="3" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
+              Ideal Weight
+            </button>
+          </div>
 
-    <div class="relative z-10 max-w-5xl mx-auto px-6">
-      <div class="text-center mb-10">
-        <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-4 drop-shadow-md">Free Tools</p>
-        <div class="w-8 h-px bg-burgundy mx-auto mb-6"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-white drop-shadow-md">Calculators</h2>
-      </div>
-
-      <!-- Tab buttons: 2-on-top, 2-below grid, matching the Services tab layout -->
-      <div class="max-w-3xl mx-auto mb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <button type="button" data-calc-tab="bfp" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
-          Body Fat % (US Navy Method)
-        </button>
-        <button type="button" data-calc-tab="tdee" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
-          Daily Calorie Needs (TDEE)
-        </button>
-        <button type="button" data-calc-tab="bmi" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
-          Body Mass Index (BMI)
-        </button>
-        <button type="button" data-calc-tab="ibw" class="calc-tab bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-white/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
-          Ideal Body Weight (IBW)
-        </button>
-      </div>
+          <!-- Stacked panels: absolutely positioned inside .wybe-story-stack. -->
+          <div class="wybe-story-stack" style="min-height: 66vh;">
 
       <!-- BFP -->
-      <div class="calc-section hidden" data-calc="bfp">
+      <div class="wybe-story-panel" data-story-panel="0" data-calc="bfp">
         <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <form id="bfp-form" class="space-y-4">
@@ -379,7 +410,7 @@
       </div>
 
       <!-- TDEE -->
-      <div class="calc-section hidden" data-calc="tdee">
+      <div class="wybe-story-panel" data-story-panel="1" data-calc="tdee">
         <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <form id="tdee-form" class="space-y-4">
@@ -451,7 +482,7 @@
       </div>
 
       <!-- BMI -->
-      <div class="calc-section hidden" data-calc="bmi">
+      <div class="wybe-story-panel" data-story-panel="2" data-calc="bmi">
         <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <form id="bmi-form" class="space-y-4">
@@ -483,7 +514,7 @@
       </div>
 
       <!-- IDEAL BODY WEIGHT -->
-      <div class="calc-section hidden" data-calc="ibw">
+      <div class="wybe-story-panel" data-story-panel="3" data-calc="ibw">
         <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <form id="ibw-form" class="space-y-4">
@@ -520,24 +551,75 @@
           </div>
         </div>
       </div>
-    </div>
+      <!-- /wybe-story-panel IBW -->
+
+          </div><!-- /.wybe-story-stack -->
+        </div><!-- /max-w-5xl -->
+      </div><!-- /.wybe-story-stage -->
+    </div><!-- /.wybe-story-inner -->
   </section>
 
   <!-- Section divider -->
   <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
 
-  <!-- #ABOUT (text left, image at natural size on the right with parallax + edge fade like the hero) -->
+  <!-- #ABOUT — two-state left column: short bio (default) swaps for a metrics
+       grid once user scrolls to it. "Learn More" toggles the same swap on click. -->
   <section id="about" class="relative bg-charcoal text-white overflow-hidden">
     <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-end">
-      <!-- Left column: text -->
+      <!-- Left column: text ↔ metrics -->
       <div class="md:col-span-7 pt-24 pb-16 md:pb-32 relative z-10">
         <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-5">The Practitioner</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
         <div class="w-12 h-px bg-burgundy mb-5"></div>
-        <p class="font-sans text-base text-white/85 leading-relaxed mb-6">
-          Personal Trainer, Human Performance Nutritionist, Personal Coach, and Author (forthcoming), with over two decades of practical, evidence-based work in health and fitness grounded in Human Biomechanics, Kinesiology, and breathing technique, guided by a simple principle: &ldquo;we are what we eat&rdquo;.
-        </p>
+
+        <div class="wybe-about-stage" data-about-stage>
+          <!-- State A: intro copy + Learn More CTA -->
+          <div class="wybe-about-intro">
+            <p class="font-sans text-base text-white/85 leading-relaxed mb-6">
+              Personal Trainer, Human Performance Nutritionist, Personal Coach, and Author (forthcoming), with over two decades of practical, evidence-based work in health and fitness grounded in Human Biomechanics, Kinesiology, and breathing technique, guided by a simple principle: &ldquo;we are what we eat&rdquo;.
+            </p>
+            <button type="button" data-about-toggle
+                    class="inline-block bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full hover:bg-burgundy-dark transition-colors">
+              Learn More
+            </button>
+          </div>
+
+          <!-- State B: metric grid, revealed on scroll or Learn More click -->
+          <div class="wybe-about-metrics">
+            <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-4">By the numbers</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-6 mb-6">
+              <div>
+                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">20<span class="text-xl">+</span></p>
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Years coaching</p>
+              </div>
+              <div>
+                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">500<span class="text-xl">+</span></p>
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Clients transformed</p>
+              </div>
+              <div>
+                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">10,000<span class="text-xl">+</span></p>
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Sessions delivered</p>
+              </div>
+              <div>
+                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">Level 4</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70">REPS Certified PT</p>
+              </div>
+              <div>
+                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">UAE</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70">REPS Member</p>
+              </div>
+              <div>
+                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">5</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Pro Certifications</p>
+              </div>
+            </div>
+            <button type="button" data-about-toggle
+                    class="inline-block bg-transparent text-burgundy font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full border border-burgundy hover:bg-burgundy hover:text-charcoal transition-colors">
+              &larr; Back to Bio
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Right column: Treadmill image at natural size, bottom flush with the canvas bottom. -->
@@ -551,47 +633,31 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
-  <!-- THE FOUNDATION (light sage background) -->
-  <section class="bg-cream py-6">
+  <!-- THE FOUNDATION — Four Pillars, minimalist word-mark grid. No icons, no
+       supporting copy. Each pillar is a numbered, oversized name with a lime
+       underline accent that grows on hover to reinforce the "four pillars, one
+       system" idea without the visual noise. -->
+  <section class="bg-cream py-16 md:py-24">
     <div class="max-w-6xl mx-auto px-6">
-      <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-2 text-center">The Foundation</p>
-      <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal text-center mb-5">Four Pillars. One System.</h3>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
-        <div>
-          <!-- Mindset: spiral (thought) -->
-          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M16 4 C10 4 6 8 6 14 C6 20 10 24 16 24 C20 24 22 22 22 18 C22 15 20 13 17 13 C15 13 14 14 14 16"/>
-          </svg>
-          <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Mindset</p>
-          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">The discipline to treat your own health as non-negotiable, because the people who matter to you are watching how you live.</p>
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-3 text-center">The Foundation</p>
+      <div class="w-10 h-px bg-charcoal mx-auto mb-6"></div>
+      <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal text-center mb-12 md:mb-16">Four Pillars. One System.</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-charcoal/10">
+        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">01</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Mindset</span>
         </div>
-        <div>
-          <!-- Nutrition: leaf -->
-          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 24 C8 14 16 6 26 6 C26 16 20 24 12 26 C10 26 8 26 8 24 M12 24 L22 10"/>
-          </svg>
-          <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Nutrition</p>
-          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Food is science. What you eat consistently shapes who you become and the next generation that comes after you.</p>
+        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">02</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Nutrition</span>
         </div>
-        <div>
-          <!-- Training: dumbbell -->
-          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M4 12 L4 20 M8 8 L8 24 M8 16 L24 16 M24 8 L24 24 M28 12 L28 20"/>
-          </svg>
-          <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Training</p>
-          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Progressive, purposeful movement. Not punishment. Not performance for an audience.</p>
+        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">03</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Training</span>
         </div>
-        <div>
-          <!-- Recovery: crescent moon -->
-          <svg class="wybe-icon w-8 h-8 mb-2 text-burgundy" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 6 A11 11 0 1 0 22 26 A8 8 0 1 1 22 6 Z"/>
-          </svg>
-          <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-lg font-semibold text-charcoal mb-2">Recovery</p>
-          <p class="font-sans text-sm text-charcoal/70 leading-relaxed">Sleep, rest, and stress management are not optional. They are the mechanism.</p>
+        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">04</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Recovery</span>
         </div>
       </div>
     </div>
@@ -601,7 +667,11 @@
   <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
   <!-- #SERVICES (dropdown-driven panels) -->
-  <section id="services" class="relative bg-cream overflow-hidden md:min-h-[820px]">
+  <!-- SERVICES — same sticky-snap pattern as Calculators. The section is
+       400vh; a 100vh sticky stage keeps the tabs + active panel pinned while
+       the user scrolls through 4 breakpoints. Scroll progress drives which
+       tab is "clicked" so each service appears sequentially. -->
+  <section id="services" class="wybe-story relative bg-cream overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs" style="min-height: 400vh;"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
     <!-- Section-frame image: spans the full top-to-bottom height of the
          section, anchored to the right edge of the max-w-6xl content container
          (NOT the viewport edge), so it sits right next to the text instead of
@@ -1055,6 +1125,9 @@
         </div>
       </div>
     </div>
+    </div><!-- /w-full stage inner -->
+    </div><!-- /.wybe-story-stage -->
+    </div><!-- /.wybe-story-inner -->
   </section>
 
   <!-- Section divider -->
@@ -1122,19 +1195,14 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
 
-  <!-- #CONTACT (portrait Outside Gym.png 1856x2304 as full uncropped background) -->
+  <!-- #CONTACT — form-only dark panel. Background image removed; the charcoal
+       panel + icons give the section its identity. -->
   <section id="contact" class="bg-cream py-14">
     <div class="max-w-2xl mx-auto px-6">
-      <div class="relative bg-charcoal text-white overflow-hidden aspect-auto md:aspect-[1856/2304]">
-        <!-- Full-bleed portrait background image, panel matches its aspect so the entire image is shown -->
-        <img src="images/Outside Gym.webp" alt="" aria-hidden="true"
-             class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none">
-        <!-- Light dark veil for readability without dimming the photo -->
-        <div class="absolute inset-0 bg-charcoal/45 pointer-events-none" aria-hidden="true"></div>
-
-        <div class="relative z-10 h-full p-6 md:p-8 flex flex-col">
-          <!-- FORM GROUP: pushed down so it sits in the lower half of the panel, just above the DM block -->
-          <div class="mt-auto">
+      <div class="relative bg-charcoal text-white overflow-hidden">
+        <div class="relative z-10 p-6 md:p-10 flex flex-col">
+          <!-- FORM GROUP -->
+          <div>
             <h2 class="font-sans text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
 
             <form data-form data-subject="WYBE, Quick Contact" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5">
@@ -1316,10 +1384,8 @@
           });
           if (imgByTab[v]) setBg(imgByTab[v]);  // cfg object now
           const panel = document.getElementById('panel-' + v);
-          if (panel) {
-            panel.classList.remove('hidden');
-            setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
-          }
+          if (panel) panel.classList.remove('hidden');
+          // No scrollIntoView: the sticky-snap story controls scroll position.
         });
       });
     })();
@@ -1735,49 +1801,100 @@
       });
     })();
 
-    // ── CALCULATOR VIDEO AUTO-AUDIO ───────────────────
-    // Video autoplays muted on page load (browsers require it). As soon as
-    // the user scrolls the calculators section into view, unmute and play.
-    // When they scroll past, mute again so audio doesn't bleed into the next
-    // section.
+    // ── STICKY-SNAP SCROLL STORY ──────────────────────
+    // For each `.wybe-story-inner` container: as the user scrolls through the
+    // section (which is min-height 400vh), map scroll progress to an active
+    // panel index. Panels are absolutely stacked inside a 100vh sticky stage.
+    // The progress-pill buttons act as jump targets.
     (function() {
-      const video = document.getElementById('calc-video');
-      const section = document.getElementById('calculators');
-      if (!video || !section || !('IntersectionObserver' in window)) return;
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.muted = false;
-            video.volume = 1;
-            // Browsers may block unmute if the user has not yet interacted with
-            // the page; the catch keeps the page silent in that case.
-            video.play().catch(() => { video.muted = true; });
+      const stories = document.querySelectorAll('.wybe-story-inner');
+      if (!stories.length) return;
+
+      stories.forEach(inner => {
+        // Two modes:
+        //  - default: cross-fade absolutely-stacked .wybe-story-panel divs
+        //             (Calculators). Panel count from DOM.
+        //  - tabs:    delegate to an existing tab UI (Services). Scroll
+        //             progress programmatically clicks the corresponding tab
+        //             so the section's existing panel-swap logic runs.
+        const mode    = inner.dataset.storyMode || 'panels';
+        const panels  = inner.querySelectorAll('.wybe-story-panel');
+        const buttons = inner.querySelectorAll('[data-story-jump]');
+        const tabs    = mode === 'tabs' ? inner.querySelectorAll('[data-service-tab]') : [];
+        const count   = mode === 'tabs' ? tabs.length : panels.length;
+        if (!count) return;
+        let activeIdx = -1;
+
+        const setActive = (idx) => {
+          if (idx === activeIdx) return;
+          activeIdx = idx;
+          if (mode === 'tabs') {
+            if (tabs[idx]) tabs[idx].click();
           } else {
-            video.muted = true;
+            panels.forEach((p, i) => p.classList.toggle('is-active', i === idx));
           }
+          buttons.forEach(b => b.classList.toggle('is-active', Number(b.dataset.storyJump) === idx));
+        };
+        // Prime the first panel so it's visible before any scroll.
+        setActive(0);
+
+        // Map scroll progress (0..1) inside .wybe-story-inner to a panel index.
+        const compute = () => {
+          const rect = inner.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const total = inner.offsetHeight - vh; // sticky "scroll range"
+          if (total <= 0) { setActive(0); return; }
+          const scrolled = Math.min(Math.max(-rect.top, 0), total);
+          const progress = scrolled / total;              // 0..1
+          const idx = Math.min(count - 1, Math.floor(progress * count));
+          setActive(idx);
+        };
+
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { compute(); ticking = false; });
+        }, { passive: true });
+        window.addEventListener('resize', compute);
+        compute();
+
+        // Progress-pill jump: scroll to the position that activates that panel.
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = Number(btn.dataset.storyJump);
+            const rect = inner.getBoundingClientRect();
+            const total = inner.offsetHeight - window.innerHeight;
+            // Aim at the middle of that panel's scroll band, offset by nav height.
+            const targetProgress = (idx + 0.5) / count;
+            const targetY = window.scrollY + rect.top + (total * targetProgress);
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+          });
         });
-      }, { threshold: 0.35 });
-      obs.observe(section);
+      });
     })();
 
-    // ── CALCULATOR TABS ───────────────────────────────
-    // Two tab buttons at the top; clicking one opens that calculator's form.
-    // Initially both calculator sections are hidden so the video background reads cleanly.
+    // ── ABOUT ME: BIO ↔ METRICS SWAP ──────────────────
+    // Intro copy is default. Once user has scrolled past the bio, or clicks
+    // the "Learn More" button, metrics take over the same slot. Clicking
+    // "Back to Bio" returns to state A.
     (function() {
-      const tabs = document.querySelectorAll('[data-calc-tab]');
-      const sections = document.querySelectorAll('.calc-section');
-      if (!tabs.length) return;
-      const showCalc = (v) => {
-        sections.forEach(s => s.classList.toggle('hidden', s.dataset.calc !== v));
-        tabs.forEach(t => {
-          const active = t.dataset.calcTab === v;
-          t.classList.toggle('bg-burgundy', active);
-          t.classList.toggle('text-white', active);
-          t.classList.toggle('bg-cream/95', !active);
-          t.classList.toggle('text-charcoal', !active);
-        });
-      };
-      tabs.forEach(t => t.addEventListener('click', () => showCalc(t.dataset.calcTab)));
+      const stage = document.querySelector('[data-about-stage]');
+      if (!stage) return;
+      const toggles = stage.querySelectorAll('[data-about-toggle]');
+      const setMetrics = (on) => stage.classList.toggle('is-metrics', on);
+      toggles.forEach(btn => btn.addEventListener('click', () => setMetrics(!stage.classList.contains('is-metrics'))));
+
+      // Auto-reveal when the About section has been scrolled ~55% into view.
+      const about = document.getElementById('about');
+      if (about && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) setMetrics(true);
+          });
+        }, { threshold: 0.55 });
+        obs.observe(about);
+      }
     })();
 
     // Shared store of the most recent calculator outputs so the PDF handler can read them
