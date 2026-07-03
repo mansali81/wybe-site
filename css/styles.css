@@ -15,20 +15,19 @@ body {
 /* Ensure Playfair Display loads for font-display class */
 .font-display { font-family: 'Playfair Display', serif; }
 
-/* ── SCROLL ANIMATIONS ────────────────────────────
-   Sections fade + rise + settle into view as the user scrolls (godaylight-
-   style). JS adds .section-pre-animate to every non-hero section and swaps
-   it for .section-in-view once it crosses the IntersectionObserver
-   threshold. Hairlines draw in from 0 width; headings, paragraphs, buttons
-   and grid children stagger for a layered reveal. All of this is suppressed
-   when the user prefers reduced motion. */
+/* ── SCROLL ANIMATIONS (Shopify-Editions-inspired) ────
+   Every non-hero section behaves like a "chapter": as it enters the
+   viewport its shell fades + rises + settles from a scaled-down state,
+   then its content elements arrive in choreographed layers — headlines
+   with an oversized scale-in, paragraphs from below, CTAs last, grid
+   children in staggered order. Suppressed for prefers-reduced-motion. */
 @media (prefers-reduced-motion: no-preference) {
   .section-pre-animate > div,
   .section-pre-animate > section {
     opacity: 0;
-    transform: translateY(48px) scale(0.985);
-    transition: opacity 1.15s cubic-bezier(0.19, 1, 0.22, 1),
-                transform 1.15s cubic-bezier(0.19, 1, 0.22, 1);
+    transform: translateY(80px) scale(0.95);
+    transition: opacity 1.4s cubic-bezier(0.19, 1, 0.22, 1),
+                transform 1.4s cubic-bezier(0.19, 1, 0.22, 1);
     will-change: opacity, transform;
   }
   .section-in-view > div,
@@ -37,44 +36,52 @@ body {
     transform: translateY(0) scale(1);
   }
 
-  /* Layered stagger for common content elements inside an in-view section. */
+  /* Big-headline scale-in — start smaller so the arrival is dramatic. */
   .section-in-view h1,
   .section-in-view h2,
-  .section-in-view h3,
+  .section-in-view h3 {
+    animation: wybe-title-in 1.1s cubic-bezier(0.19, 1, 0.22, 1) both;
+    animation-delay: 0.1s;
+    transform-origin: left center;
+  }
+  /* Body copy + CTAs stagger below the headline. */
   .section-in-view h4,
   .section-in-view p,
   .section-in-view a.inline-flex,
   .section-in-view a.inline-block,
   .section-in-view button[type='submit'],
   .section-in-view .grid > * {
-    animation: wybe-rise 0.95s cubic-bezier(0.19, 1, 0.22, 1) both;
+    animation: wybe-rise 1.0s cubic-bezier(0.19, 1, 0.22, 1) both;
   }
-  .section-in-view h1, .section-in-view h2, .section-in-view h3 { animation-delay: 0.08s; }
-  .section-in-view p                                            { animation-delay: 0.18s; }
+  .section-in-view p                                            { animation-delay: 0.28s; }
   .section-in-view a.inline-flex,
   .section-in-view a.inline-block,
-  .section-in-view button[type='submit']                        { animation-delay: 0.28s; }
-  .section-in-view .grid > *:nth-child(1)  { animation-delay: 0.06s; }
-  .section-in-view .grid > *:nth-child(2)  { animation-delay: 0.14s; }
-  .section-in-view .grid > *:nth-child(3)  { animation-delay: 0.22s; }
-  .section-in-view .grid > *:nth-child(4)  { animation-delay: 0.30s; }
-  .section-in-view .grid > *:nth-child(5)  { animation-delay: 0.38s; }
-  .section-in-view .grid > *:nth-child(6)  { animation-delay: 0.46s; }
-  .section-in-view .grid > *:nth-child(7)  { animation-delay: 0.54s; }
-  .section-in-view .grid > *:nth-child(8)  { animation-delay: 0.62s; }
-  .section-in-view .grid > *:nth-child(9)  { animation-delay: 0.70s; }
-  .section-in-view .grid > *:nth-child(10) { animation-delay: 0.78s; }
+  .section-in-view button[type='submit']                        { animation-delay: 0.42s; }
+  .section-in-view .grid > *:nth-child(1)  { animation-delay: 0.10s; }
+  .section-in-view .grid > *:nth-child(2)  { animation-delay: 0.20s; }
+  .section-in-view .grid > *:nth-child(3)  { animation-delay: 0.30s; }
+  .section-in-view .grid > *:nth-child(4)  { animation-delay: 0.40s; }
+  .section-in-view .grid > *:nth-child(5)  { animation-delay: 0.50s; }
+  .section-in-view .grid > *:nth-child(6)  { animation-delay: 0.60s; }
+  .section-in-view .grid > *:nth-child(7)  { animation-delay: 0.70s; }
+  .section-in-view .grid > *:nth-child(8)  { animation-delay: 0.80s; }
+  .section-in-view .grid > *:nth-child(9)  { animation-delay: 0.90s; }
+  .section-in-view .grid > *:nth-child(10) { animation-delay: 1.00s; }
 
-  /* Hairlines draw in from 0 width. */
+  /* Hairlines draw in from 0 width, matched to the new easing. */
   .section-in-view .w-8.h-px,
   .section-in-view .w-10.h-px,
   .section-in-view .w-12.h-px,
   .section-in-view .w-16.h-px {
-    animation: wybe-draw 1.1s cubic-bezier(0.19, 1, 0.22, 1) 0.22s both;
+    animation: wybe-draw 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.32s both;
   }
 
+  @keyframes wybe-title-in {
+    from { opacity: 0; transform: translateY(40px) scale(0.82); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
   @keyframes wybe-rise {
-    from { opacity: 0; transform: translateY(28px) scale(0.99); }
+    from { opacity: 0; transform: translateY(40px) scale(0.98); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
   @keyframes wybe-draw {
@@ -101,6 +108,47 @@ body {
     pointer-events: none;
     transition: width 0.1s linear;
   }
+}
+
+/* ── SITE-WIDE HOVER REACTIVITY ──────────────────
+   Applies to nav + footer text links (skips pill CTAs by class) and any
+   element with .wybe-hover-title. Text lifts 2px, brightens to lime, and
+   a lime underline sweeps in left-to-right. Matches the calc-rail feel so
+   the whole site reads as reactive. */
+nav a:not([class*="bg-burgundy"]),
+footer a:not([class*="bg-burgundy"]),
+.wybe-hover-title {
+  display: inline-block;
+  position: relative;
+  transition: color .3s cubic-bezier(0.19, 1, 0.22, 1),
+              transform .3s cubic-bezier(0.19, 1, 0.22, 1),
+              letter-spacing .3s ease;
+  will-change: transform;
+}
+nav a:not([class*="bg-burgundy"])::after,
+footer a:not([class*="bg-burgundy"])::after,
+.wybe-hover-title::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  height: 2px; width: 100%;
+  background: #DDFF55;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .45s cubic-bezier(0.19, 1, 0.22, 1);
+  pointer-events: none;
+}
+nav a:not([class*="bg-burgundy"]):hover,
+footer a:not([class*="bg-burgundy"]):hover,
+.wybe-hover-title:hover {
+  color: #DDFF55 !important;
+  transform: translateY(-2px);
+  letter-spacing: 0.01em;
+}
+nav a:not([class*="bg-burgundy"]):hover::after,
+footer a:not([class*="bg-burgundy"]):hover::after,
+.wybe-hover-title:hover::after {
+  transform: scaleX(1);
 }
 
 /* ── HOVER LIFT (pointer devices only) ───────────
@@ -140,42 +188,54 @@ body {
     top: 0; left: 0;
     pointer-events: none;
     z-index: 9999;
-    transform: translate3d(-100px, -100px, 0);
+    /* Position via CSS custom properties so JS just writes --tx/--ty and the
+       CSS transform can still add scale/rotate for hover states without
+       clobbering the translate. */
+    --tx: -100px;
+    --ty: -100px;
+    transform: translate3d(var(--tx), var(--ty), 0);
     will-change: transform;
     opacity: 0;
     transition: opacity 0.2s ease;
   }
   .wybe-cursor.is-visible { opacity: 1; }
 
-  .wybe-cursor__dot {
-    width: 8px;
-    height: 8px;
-    background: #DDFF55;
-    border-radius: 50%;
-    margin: -4px 0 0 -4px;
-    box-shadow: 0 0 12px rgba(221, 255, 85, 0.55);
-    transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-                height 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.18s ease;
+  /* Kettlebell cursor. SVG below is a horseshoe-handle over a solid ball,
+     the universally-readable kettlebell silhouette. */
+  .wybe-cursor__kb {
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    filter: drop-shadow(0 0 6px rgba(221, 255, 85, 0.55));
+    transform: translate3d(var(--tx), var(--ty), 0);
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.25s ease;
   }
   .wybe-cursor__ring {
-    width: 34px;
-    height: 34px;
-    border: 1.5px solid rgba(221, 255, 85, 0.55);
+    transform: translate3d(var(--tx), var(--ty), 0);
+  }
+  .wybe-cursor__ring {
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid rgba(221, 255, 85, 0.35);
     border-radius: 50%;
-    margin: -17px 0 0 -17px;
+    margin: -20px 0 0 -20px;
     transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.25s ease,
                 background-color 0.25s ease;
   }
-  /* Generic hover (any interactive element): ring inflates, dot shrinks. */
-  .wybe-cursor.is-hover .wybe-cursor__dot  { width: 4px;  height: 4px;  margin: -2px 0 0 -2px; }
-  .wybe-cursor.is-hover .wybe-cursor__ring { width: 54px; height: 54px; margin: -27px 0 0 -27px;
+  /* Generic hover (any interactive element): kettlebell swings + scales up,
+     ring inflates + lime-tints. Every hover state MUST re-declare the
+     translate so it isn't clobbered by the scale/rotate that follows. */
+  .wybe-cursor.is-hover .wybe-cursor__kb   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.15) rotate(-12deg);
+                                             filter: drop-shadow(0 0 12px rgba(221, 255, 85, 0.85)); }
+  .wybe-cursor.is-hover .wybe-cursor__ring { width: 62px; height: 62px; margin: -31px 0 0 -31px;
                                              border-color: rgba(221, 255, 85, 0.9);
                                              background: rgba(221, 255, 85, 0.10); }
-  /* Title-hover (calc/service tabs): even bigger ring. */
-  .wybe-cursor.is-hover-title .wybe-cursor__ring { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
+  /* Title-hover (tabs, headings, nav links): even bigger swing, big ring. */
+  .wybe-cursor.is-hover-title .wybe-cursor__kb   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.35) rotate(-18deg); }
+  .wybe-cursor.is-hover-title .wybe-cursor__ring { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
 }
 @media (hover: none), (pointer: coarse) {
   .wybe-cursor { display: none; }

@@ -85,7 +85,7 @@
       pointer-events: none;
       background: #002233;
     }
-    body > *:not(#wybe-bg) { position: relative; z-index: 1; }
+    body > *:not(#wybe-bg):not(.wybe-cursor) { position: relative; z-index: 1; }
   </style>
 
   <!-- Inline motion styles for Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
@@ -218,6 +218,8 @@
       transform: translateY(-2px);
     }
     .wybe-story-progress-btn { transform: translateY(0); }
+
+    /* Site-wide hover reactivity lives in css/styles.css. */
 
     /* 6c. Airy split-card calc panel (form left, live result right).
        No box, no backdrop. Thin vertical hairline separates the halves.
@@ -429,27 +431,33 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- OUR PROMISE + OUR COMMITMENT — stacked, framed in a navy-bordered box -->
-  <section class="py-12 md:py-16">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="border-2 border-burgundy/70 p-8 md:p-12 space-y-10 bg-charcoal/40 backdrop-blur-sm">
+  <!-- OUR PROMISE + OUR COMMITMENT — two offset boxes.
+       Our Promise sits top-left; Our Commitment sits bottom-right, staggered
+       one row down and to the right so the pair reads as a staircase. -->
+  <section class="py-14 md:py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
 
-        <!-- Our Promise (top) -->
-        <div>
-          <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Promise</h3>
-          <div class="w-10 h-px bg-burgundy mb-4"></div>
-          <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
-            A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
-          </p>
+        <!-- Our Promise (top-left) -->
+        <div class="md:col-span-6">
+          <div class="border-2 border-burgundy/70 p-8 md:p-10 bg-charcoal/40 backdrop-blur-sm">
+            <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Promise</h3>
+            <div class="w-10 h-px bg-burgundy mb-4"></div>
+            <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
+              A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
+            </p>
+          </div>
         </div>
 
-        <!-- Our Commitment (below) -->
-        <div>
-          <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Commitment</h3>
-          <div class="w-10 h-px bg-burgundy mb-4"></div>
-          <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
-            To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
-          </p>
+        <!-- Our Commitment (bottom-right, offset vertically to form a staircase) -->
+        <div class="md:col-span-6 md:col-start-7 md:mt-16">
+          <div class="border-2 border-burgundy/70 p-8 md:p-10 bg-charcoal/40 backdrop-blur-sm">
+            <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Commitment</h3>
+            <div class="w-10 h-px bg-burgundy mb-4"></div>
+            <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
+              To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
+            </p>
+          </div>
         </div>
 
       </div>
@@ -869,21 +877,6 @@
        the user scrolls through 4 breakpoints. Scroll progress drives which
        tab is "clicked" so each service appears sequentially. -->
   <section id="services" class="wybe-story relative overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs" style="min-height: 400vh;"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
-    <!-- Section-frame image: spans the full top-to-bottom height of the
-         section, anchored to the right edge of the max-w-6xl content container
-         (NOT the viewport edge), so it sits right next to the text instead of
-         flying off into the right margin. Hidden on mobile. -->
-    <!-- Section-frame image: displays at its natural aspect ratio, vertically
-         centred on the right side of the max-w-6xl content container. No
-         object-cover (no crop) and no fixed-aspect wrapper (no letterbox) —
-         the image's own dimensions define the canvas around it. -->
-    <div class="hidden md:flex absolute inset-0 pointer-events-none items-center">
-      <div class="relative max-w-6xl mx-auto px-6 w-full flex justify-end">
-        <img id="services-bg-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" aria-hidden="true"
-             style="opacity: 0;"
-             class="block max-h-full max-w-[50vw] w-auto h-auto pointer-events-none select-none transition-opacity duration-300">
-      </div>
-    </div>
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-14">
       <!-- EMPTY-STATE HEADER: two-column layout — title + tabs on the left,
@@ -1310,15 +1303,6 @@
       </div>
     </div>
 
-      <!-- MOBILE-ONLY image: shown below the form on mobile (md:hidden).
-           Displays at natural aspect — full image visible, no crop. JS syncs
-           the src with the desktop image so the active tab's photo shows. -->
-      <div class="md:hidden mt-8 text-center">
-        <img id="services-bg-img-mobile" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" aria-hidden="true"
-             style="opacity: 0;"
-             class="block w-auto h-auto max-w-full max-h-[480px] object-contain mx-auto transition-opacity duration-300">
-      </div>
-
         </div>
       </div>
     </div>
@@ -1516,57 +1500,7 @@
     (function() {
       const tabs = document.querySelectorAll('[data-service-tab]');
       const panels = document.querySelectorAll('.service-panel');
-      const bgImg = document.getElementById('services-bg-img');
       if (!tabs.length) return;
-      // Per-tab image config.
-      // - shrinkCanvas: shrink the section min-height so it matches the
-      //   image's natural displayed height (used for Fitness only).
-      // - fillCanvas: make the image fill the right column edge-to-edge
-      //   via object-cover. Used for the Workout Rope image which is
-      //   landscape and would otherwise read as a small strip.
-      const imgByTab = {
-        'digital-plan':      { src: 'images/Rope Climbing.webp',        fillCanvas: true,  shrinkCanvas: false },
-        'fitness':           { src: 'images/Fitness Consultation.webp', fillCanvas: false, shrinkCanvas: true  },
-        'nutrition':         { src: 'images/Nutrition 2.webp',          fillCanvas: false, shrinkCanvas: false },
-        'personal-training': { src: 'images/Training Client.webp',      fillCanvas: false, shrinkCanvas: false },
-      };
-      const servicesSection = document.getElementById('services');
-      const bgImgMobile = document.getElementById('services-bg-img-mobile');
-      const setBg = (cfg) => {
-        if (!bgImg) return;
-        if (!bgImg.src.endsWith(cfg.src)) {
-          bgImg.style.opacity = '0';
-          const next = new Image();
-          next.onload = () => { bgImg.src = cfg.src; bgImg.style.opacity = '1'; };
-          next.src = cfg.src;
-        }
-        // Mobile twin image stays in sync — natural aspect, no crop. Fade in
-        // like the desktop version, in case the initial state was hidden.
-        if (bgImgMobile && !bgImgMobile.src.endsWith(cfg.src)) {
-          bgImgMobile.src = cfg.src;
-          bgImgMobile.style.opacity = '1';
-        }
-        // Fitness: shrink the canvas so the section matches the image height.
-        if (servicesSection) {
-          servicesSection.style.minHeight = cfg.shrinkCanvas
-            ? 'min(820px, 66.67vw)'
-            : '';
-        }
-        // Workout (Rope) fills the right column edge-to-edge (object-cover so
-        // its landscape aspect doesn't read as a tiny strip). Other tabs keep
-        // the natural-aspect display — full image visible, no crop. Use
-        // inline styles so the Tailwind CDN doesn't strip dynamic classes.
-        if (cfg.fillCanvas) {
-          bgImg.style.objectFit = 'cover';
-          bgImg.style.height = '100%';
-          bgImg.style.width = '50vw';
-        } else {
-          bgImg.style.objectFit = '';
-          bgImg.style.height = '';
-          bgImg.style.width = '';
-        }
-      };
-
       tabs.forEach(t => {
         t.addEventListener('click', () => {
           const v = t.dataset.serviceTab;
@@ -1580,7 +1514,6 @@
             other.classList.toggle('text-charcoal', !active);
             other.classList.toggle('border-charcoal/20', !active);
           });
-          if (imgByTab[v]) setBg(imgByTab[v]);  // cfg object now
           const panel = document.getElementById('panel-' + v);
           if (panel) panel.classList.remove('hidden');
           // No scrollIntoView: the sticky-snap story controls scroll position.

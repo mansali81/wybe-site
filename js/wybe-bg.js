@@ -32,12 +32,21 @@
   const LIME  = '221, 255, 85';
   const CREAM = '246, 242, 232';
 
-  const AURA          = 220;
+  // Background is intentionally very subtle so the CONTENT is the star.
+  // The cursor pulse rings remain the only overtly visible motion at rest.
+  const AURA          = 260;
   const AURA_SQ       = AURA * AURA;
-  const RING_LIFE     = 1400;   // ms per heartbeat ring
-  const RING_MAX      = 300;    // final radius in px
-  const RING_INTERVAL = 340;    // ms between emitted rings
-  const MAX_RINGS     = 8;
+  const RING_LIFE     = 1800;   // ms per heartbeat ring (slower = more heart-monitor-like)
+  const RING_MAX      = 340;    // final radius in px
+  const RING_INTERVAL = 520;    // ms between emitted rings (~115 bpm feel)
+  const MAX_RINGS     = 6;
+
+  // Fiber + nerve base opacities — dialed way down so it reads as a quiet
+  // navy field with barely-there texture, not a busy tech pattern.
+  const FIBER_ALPHA_MIN  = 0.020;
+  const FIBER_ALPHA_JIT  = 0.020;
+  const NERVE_ALPHA_BASE = 0.025;
+  const NERVE_ALPHA_PULSE = 0.055;
 
   let width  = 0;
   let height = 0;
@@ -55,31 +64,32 @@
   };
 
   function build() {
-    // 1. Fibers — one per ~60 vertical px, jittered baseY, sine wave shape.
+    // 1. Fibers — fewer + thinner + far less opaque than before, so they
+    //    register as "grain" rather than a texture that competes with copy.
     fibers.length = 0;
-    const fiberCount = Math.max(8, Math.floor(height / 58));
+    const fiberCount = Math.max(5, Math.floor(height / 96));
     for (let i = 0; i < fiberCount; i++) {
       const rowH = height / fiberCount;
       fibers.push({
         baseY:      (i + 0.5) * rowH + (Math.random() - 0.5) * rowH * 0.7,
-        ampY:       10 + Math.random() * 26,             // vertical amplitude
-        freqX:      0.0028 + Math.random() * 0.005,      // ~700-1500 px wavelength
+        ampY:       12 + Math.random() * 30,
+        freqX:      0.0022 + Math.random() * 0.004,
         phase:      Math.random() * Math.PI * 2,
-        driftSpeed: 0.18 + Math.random() * 0.28,         // radians per second
-        thickness:  0.9  + Math.random() * 0.9,
-        alphaBase:  0.055 + Math.random() * 0.055
+        driftSpeed: 0.14 + Math.random() * 0.22,
+        thickness:  0.7  + Math.random() * 0.6,
+        alphaBase:  FIBER_ALPHA_MIN + Math.random() * FIBER_ALPHA_JIT
       });
     }
 
-    // 2. Nerve pulses — density scales with viewport area.
+    // 2. Nerve pulses — sparser too. Only ~half the previous density.
     nerves.length = 0;
-    const nerveCount = Math.max(24, Math.floor((width * height) / 26000));
+    const nerveCount = Math.max(14, Math.floor((width * height) / 52000));
     for (let i = 0; i < nerveCount; i++) {
       nerves.push({
         x:      Math.random() * width,
         y:      Math.random() * height,
         phase:  Math.random() * Math.PI * 2,
-        period: 2.6 + Math.random() * 4.5  // seconds
+        period: 3.2 + Math.random() * 5.0
       });
     }
   }
@@ -164,12 +174,12 @@
       const t      = timeSec / n.period + n.phase / (Math.PI * 2);
       const pulse  = 0.5 - 0.5 * Math.cos(t * Math.PI * 2);        // 0..1
       const dSq    = distSq(n.x, n.y, pointer.x, pointer.y);
-      let   alpha  = 0.06 + pulse * 0.14;
+      let   alpha  = NERVE_ALPHA_BASE + pulse * NERVE_ALPHA_PULSE;
       let   color  = CREAM;
-      let   radius = 1.1 + pulse * 0.9;
+      let   radius = 1.0 + pulse * 0.7;
       if (dSq < AURA_SQ) {
         const near = 1 - Math.sqrt(dSq) / AURA;
-        alpha  = Math.min(0.9, alpha + near * 0.55);
+        alpha  = Math.min(0.85, alpha + near * 0.55);
         radius = radius + near * 1.6;
         color  = LIME;
       }
