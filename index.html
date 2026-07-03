@@ -74,18 +74,9 @@
     }
     h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
 
-    /* Animated background layer, cursor-reactive. Sits behind all content
-       and stays fixed to the viewport so the effect is consistent across
-       the entire site. See js/wybe-bg.js for the neural-network + strength
-       + nutrition glyph mix. */
-    #wybe-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background: #002233;
-    }
-    body > *:not(#wybe-bg):not(.wybe-cursor) { position: relative; z-index: 1; }
+    /* Clean navy field — no animated background layer. Cursor kettlebell +
+       lime ring aura are the only reactive elements (see js/wybe-cursor.js). */
+    body > *:not(.wybe-cursor) { position: relative; z-index: 1; }
   </style>
 
   <!-- Inline motion styles for Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
@@ -374,8 +365,6 @@
   </script>
 </head>
 <body class="text-cream">
-<!-- Persistent, cursor-reactive background canvas. Sits behind everything. -->
-<canvas id="wybe-bg" aria-hidden="true"></canvas>
 
   <!-- NAVBAR (smooth-scroll anchors) -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/80 backdrop-blur-md border-b border-cream/10">
@@ -1489,7 +1478,6 @@
     </div>
   </footer>
 
-  <script src="js/wybe-bg.js" defer></script>
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
   <script>

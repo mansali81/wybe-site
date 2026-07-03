@@ -71,14 +71,11 @@
       color: #F6F2E8;
     }
     h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
-    #wybe-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #002233; }
-    body > *:not(#wybe-bg):not(.wybe-cursor) { position: relative; z-index: 1; }
+    body > *:not(.wybe-cursor) { position: relative; z-index: 1; }
   </style>
-  <script src="js/wybe-bg.js" defer></script>
   <script src="js/wybe-cursor.js" defer></script>
 </head>
 <body class="text-cream">
-<canvas id="wybe-bg" aria-hidden="true"></canvas>
 
   <!-- NAVBAR (cross-page links use absolute paths back to index.html#anchor) -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/80 backdrop-blur-md border-b border-cream/10">
