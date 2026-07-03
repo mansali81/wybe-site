@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const navObs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          navLinks.forEach(l => { l.classList.remove('text-burgundy'); l.classList.add('text-charcoal'); });
+          navLinks.forEach(l => { l.classList.remove('text-burgundy'); l.classList.add('text-cream'); });
           const link = sectionMap.get(entry.target);
-          if (link) { link.classList.add('text-burgundy'); link.classList.remove('text-charcoal'); }
+          if (link) { link.classList.add('text-burgundy'); link.classList.remove('text-cream'); }
         }
       });
     }, { rootMargin: '-40% 0px -55% 0px' });

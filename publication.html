@@ -64,53 +64,62 @@
 
   <!-- Global typography per brand palette. -->
   <style>
-    body { font-family: 'Raleway', 'Inter', sans-serif; font-weight: 300; }
+    body {
+      font-family: 'Raleway', 'Inter', sans-serif;
+      font-weight: 300;
+      background-color: #002233;
+      color: #F6F2E8;
+    }
     h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
+    #wybe-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #002233; }
+    body > *:not(#wybe-bg) { position: relative; z-index: 1; }
   </style>
+  <script src="js/wybe-bg.js" defer></script>
 </head>
-<body class="bg-cream text-charcoal">
+<body class="text-cream">
+<canvas id="wybe-bg" aria-hidden="true"></canvas>
 
   <!-- NAVBAR (cross-page links use absolute paths back to index.html#anchor) -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/80 backdrop-blur-md border-b border-cream/10">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="index.html#home" class="font-display text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <a href="index.html#home" class="font-display text-xl font-bold tracking-widest text-cream uppercase">WYBE</a>
         <div class="hidden md:flex items-center gap-7">
-          <a href="index.html#home" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
-          <a href="index.html#about" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
-          <a href="index.html#services" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
-          <a href="index.html#calculators" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Calculators</a>
+          <a href="index.html#home" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Home</a>
+          <a href="index.html#about" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">About</a>
+          <a href="index.html#services" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Services</a>
+          <a href="index.html#calculators" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Calculators</a>
           <a href="publication.html" class="font-sans text-sm text-burgundy font-semibold">My Publication</a>
-          <a href="index.html#book" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
+          <a href="index.html#book" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">My Book</a>
           <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
         </div>
         <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
-          <span class="w-6 h-px bg-charcoal block"></span>
-          <span class="w-6 h-px bg-charcoal block"></span>
-          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-cream block"></span>
+          <span class="w-6 h-px bg-cream block"></span>
+          <span class="w-6 h-px bg-cream block"></span>
         </button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
+    <div id="mobile-menu" class="hidden md:hidden bg-charcoal/95 backdrop-blur-md border-t border-cream/10 px-6 py-6">
       <div class="flex flex-col gap-4">
-        <a href="index.html#home" class="font-sans text-sm text-charcoal">Home</a>
-        <a href="index.html#about" class="font-sans text-sm text-charcoal">About</a>
-        <a href="index.html#services" class="font-sans text-sm text-charcoal">Services</a>
-        <a href="index.html#calculators" class="font-sans text-sm text-charcoal">Calculators</a>
+        <a href="index.html#home" class="font-sans text-sm text-cream">Home</a>
+        <a href="index.html#about" class="font-sans text-sm text-cream">About</a>
+        <a href="index.html#services" class="font-sans text-sm text-cream">Services</a>
+        <a href="index.html#calculators" class="font-sans text-sm text-cream">Calculators</a>
         <a href="publication.html" class="font-sans text-sm text-burgundy font-semibold">My Publication</a>
-        <a href="index.html#book" class="font-sans text-sm text-charcoal">My Book</a>
+        <a href="index.html#book" class="font-sans text-sm text-cream">My Book</a>
         <a href="index.html#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-3 text-center">Book Now</a>
       </div>
     </div>
   </nav>
 
   <!-- PAGE HERO: title + intro -->
-  <header class="bg-cream pt-32 pb-16 border-b border-charcoal/10">
+  <header class="pt-32 pb-16 border-b border-cream/10">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Insights</p>
       <div class="w-12 h-px bg-burgundy mx-auto mb-6"></div>
-      <h1 class="font-display text-4xl md:text-5xl font-bold text-charcoal mb-5 leading-tight">Training, Nutrition &amp; Mindset, Evidence-Based Essays</h1>
-      <p class="font-sans text-base md:text-lg text-charcoal/75 leading-relaxed">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-cream mb-5 leading-tight">Training, Nutrition &amp; Mindset, Evidence-Based Essays</h1>
+      <p class="font-sans text-base md:text-lg text-cream/75 leading-relaxed">
         Field notes from two decades of working with real people. Articles grouped by topic so you can read into whichever conversation is most relevant to where you are right now.
       </p>
     </div>
@@ -118,15 +127,15 @@
     <!-- In-page section nav (sticky-feel anchor links) -->
     <nav class="max-w-4xl mx-auto px-6 mt-10">
       <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-sans text-xs tracking-widest uppercase">
-        <li><a href="#mindset" class="text-charcoal/70 hover:text-burgundy transition-colors">Mindset</a></li>
-        <li class="text-charcoal/30">·</li>
-        <li><a href="#nutrition" class="text-charcoal/70 hover:text-burgundy transition-colors">Nutrition</a></li>
-        <li class="text-charcoal/30">·</li>
-        <li><a href="#workout-programmes" class="text-charcoal/70 hover:text-burgundy transition-colors">Work Out Programmes</a></li>
-        <li class="text-charcoal/30">·</li>
-        <li><a href="#biomechanics" class="text-charcoal/70 hover:text-burgundy transition-colors">Biomechanics &amp; Kinesiology</a></li>
-        <li class="text-charcoal/30">·</li>
-        <li><a href="#one-on-one" class="text-charcoal/70 hover:text-burgundy transition-colors">1-on-1 Practice</a></li>
+        <li><a href="#mindset" class="text-cream/70 hover:text-burgundy transition-colors">Mindset</a></li>
+        <li class="text-cream/30">·</li>
+        <li><a href="#nutrition" class="text-cream/70 hover:text-burgundy transition-colors">Nutrition</a></li>
+        <li class="text-cream/30">·</li>
+        <li><a href="#workout-programmes" class="text-cream/70 hover:text-burgundy transition-colors">Work Out Programmes</a></li>
+        <li class="text-cream/30">·</li>
+        <li><a href="#biomechanics" class="text-cream/70 hover:text-burgundy transition-colors">Biomechanics &amp; Kinesiology</a></li>
+        <li class="text-cream/30">·</li>
+        <li><a href="#one-on-one" class="text-cream/70 hover:text-burgundy transition-colors">1-on-1 Practice</a></li>
       </ul>
     </nav>
   </header>
@@ -134,50 +143,50 @@
   <!-- ─────────────────────────────────────────────────────────────────────
        SECTION 1: MINDSET
        ────────────────────────────────────────────────────────────────── -->
-  <section id="mindset" class="bg-cream py-16 scroll-mt-20">
+  <section id="mindset" class="py-16 scroll-mt-20">
     <div class="max-w-5xl mx-auto px-6">
       <div class="mb-10 max-w-2xl">
         <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Mindset</p>
         <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">Mind First</h2>
-        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Mind First</h2>
+        <p class="font-sans text-base text-cream/75 leading-relaxed">
           The internal work that has to come before the external work. Discipline, identity, attention, and the quiet daily choices that decide whether anything else compounds.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <!-- Placeholder cards — replace with real articles as they are written. -->
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; In progress</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Wellness Is a Daily Identity, Not a 30-Day Challenge</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; In progress</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Wellness Is a Daily Identity, Not a 30-Day Challenge</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             The challenge mindset rewards effort the way a casino rewards spins &mdash; intensely, briefly, and on a schedule that does not survive the rest of life. Identity work is slower, quieter, and the only thing that holds when the gym closes for a week or the kids get sick.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; In progress</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Discipline Beats Motivation Because Motivation Is Weather</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; In progress</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Discipline Beats Motivation Because Motivation Is Weather</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             Motivation is a passing condition, not a strategy. The clients who last are the ones who built systems that work on the days motivation does not show up &mdash; and they built those systems on purpose.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; In progress</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Attention Is the One Resource You Cannot Out-Earn</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+        <article class="border-t border-cream/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; In progress</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Attention Is the One Resource You Cannot Out-Earn</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
             Sleep, food, training, recovery &mdash; everything we coach is downstream of attention. Where you spend it dictates what you build. The clients who change the fastest are not the ones with the most willpower; they are the ones who learned to spend their attention on a smaller number of things.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
@@ -185,10 +194,10 @@
       </div>
 
       <!-- CTA -->
-      <div class="bg-cream-dark border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="bg-charcoal/40 backdrop-blur-sm border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div>
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this work in practice?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Start with a 1-on-1 conversation about where your training and mind are right now.</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Start with a 1-on-1 conversation about where your training and mind are right now.</p>
         </div>
         <a href="index.html#contact" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Get in touch
@@ -206,54 +215,54 @@
       <div class="mb-10 max-w-2xl">
         <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Nutrition</p>
         <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">Food Is Science</h2>
-        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Food Is Science</h2>
+        <p class="font-sans text-base text-cream/75 leading-relaxed">
           Beyond macros and meal-prep marketing. What actually moves body composition, performance, and the way you live with food long-term.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Macronutrients Are a Starting Point, Not the Whole Story</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Macronutrients Are a Starting Point, Not the Whole Story</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             If your plan for nutrition begins and ends with hitting your protein, you are working with a half-truth. Macros matter &mdash; protein for repair, carbs for performance, fat for hormonal function &mdash; but they are the easiest variable to track and the easiest to over-index on. The deeper conversations are about timing, food quality, micronutrient density, and the gut.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 5 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Why Your Protein Timing Probably Doesn&rsquo;t Matter (and What Does)</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 5 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Why Your Protein Timing Probably Doesn&rsquo;t Matter (and What Does)</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             The &ldquo;anabolic window&rdquo; was useful as a marketing story and not much else. If your daily protein intake is sufficient, distributed across three or four meals, and your training is structured, the precise minute you consume protein post-workout is largely irrelevant. What actually matters is consistency, total volume, and source quality.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Hydration Beyond 8 Glasses: The Three Signals That Matter</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+        <article class="border-t border-cream/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Hydration Beyond 8 Glasses: The Three Signals That Matter</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
             Eight glasses of water is the wellness equivalent of one-size-fits-all socks. It works as a baseline and fails everyone at the edges. Real hydration is read from the body, not from a counter on your phone. There are three signals worth paying attention to: urine colour first thing in the morning, performance during your highest-intensity training set, and how your skin behaves.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
       </div>
 
-      <div class="bg-cream border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="bg-cream border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div>
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want a plan that fits how you actually eat?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Book a Human Performance Nutrition consultation.</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Book a Human Performance Nutrition consultation.</p>
         </div>
         <a href="index.html?service=nutrition#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Book a consultation
@@ -266,59 +275,59 @@
   <!-- ─────────────────────────────────────────────────────────────────────
        SECTION 3: WORK OUT PROGRAMMES
        ────────────────────────────────────────────────────────────────── -->
-  <section id="workout-programmes" class="bg-cream py-16 scroll-mt-20">
+  <section id="workout-programmes" class="py-16 scroll-mt-20">
     <div class="max-w-5xl mx-auto px-6">
       <div class="mb-10 max-w-2xl">
         <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Work Out Programmes</p>
         <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">How to Build a Year of Training</h2>
-        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">How to Build a Year of Training</h2>
+        <p class="font-sans text-base text-cream/75 leading-relaxed">
           What separates a programme that compounds from one that wastes a year. Periodisation, progression, and the small decisions that shape a decade of lifting.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 4 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Why Most Beginner Programs Fail in Week 3</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 4 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Why Most Beginner Programs Fail in Week 3</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             Beginner training does not fail because the programme is wrong. It fails in week three because the programme is too interesting. The trainee starts adding variety, swapping exercises they have seen online, chasing the next stimulus before they have extracted the value from the first one.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 8 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Periodisation Without the Jargon: Three Blocks That Work</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 8 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Periodisation Without the Jargon: Three Blocks That Work</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             Periodisation gets dressed up in language that obscures what it is: a way of sequencing training stress so adaptation outpaces fatigue. You do not need a Russian textbook to do this well. You need three blocks: an accumulation block, an intensification block, and a deload.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 9 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Your First Year of Lifting: The 12 Decisions That Matter</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+        <article class="border-t border-cream/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 9 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Your First Year of Lifting: The 12 Decisions That Matter</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
             The first year of training shapes the next ten. What you skip you will pay for later; what you over-emphasise you will have to unlearn. Most of what matters in year one is decisions, not workouts &mdash; the small choices about which lifts to commit to, how often to train, what to track, and when to stop chasing personal records and start chasing technical mastery.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
       </div>
 
-      <div class="bg-cream-dark border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="bg-charcoal/40 backdrop-blur-sm border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div>
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Ready for a structured plan?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Get a personalised Beginner, Intermediate, or Advanced programme.</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Get a personalised Beginner, Intermediate, or Advanced programme.</p>
         </div>
         <a href="index.html?service=digital-plan#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Find my level
@@ -336,54 +345,54 @@
       <div class="mb-10 max-w-2xl">
         <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Human Biomechanics &amp; Kinesiology</p>
         <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">Lifting Without Wrecking Yourself</h2>
-        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Lifting Without Wrecking Yourself</h2>
+        <p class="font-sans text-base text-cream/75 leading-relaxed">
           The lifts that build durable strength &mdash; how to set up, brace, and execute them through the lens of biomechanics and kinesiology, without leaking force or earning injuries you spend your forties paying for.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">The Hip Hinge: Why Your Deadlift Stalls Below the Knee</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">The Hip Hinge: Why Your Deadlift Stalls Below the Knee</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             Most stalls in the deadlift are not strength problems. They are bracing problems disguised as strength problems. The bar leaves the floor with intent, then drifts forward, the hips shoot back, and the bar stops near the knees. What looks like a weak posterior chain is almost always a hip hinge that has lost its line of force.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 5 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Bracing for the Bench: Three Cues That Add 10 kg Overnight</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 5 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Bracing for the Bench: Three Cues That Add 10 kg Overnight</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             There are heavier benchers in your gym than there should be. Not because they train more, not because they recover better. Because they brace. The bench press is sold as a chest movement and trained as one, but the strongest pressers in the room understand it as a whole-body event.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 7 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Squat Depth Is a Mobility Conversation, Not a Discipline One</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+        <article class="border-t border-cream/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 7 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Squat Depth Is a Mobility Conversation, Not a Discipline One</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
             If you cannot hit depth in a back squat, the answer is rarely &ldquo;try harder&rdquo;. The squat is the most honest movement in the gym: it reflects your ankle mobility, your hip mobility, your thoracic position, and your bracing capacity all at once. Forcing depth without the underlying mechanics is how you accumulate the injuries you spend your forties paying for.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
       </div>
 
-      <div class="bg-cream border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="bg-cream border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div>
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this in practice?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Book a 1-on-1 form &amp; technique consultation.</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Book a 1-on-1 form &amp; technique consultation.</p>
         </div>
         <a href="index.html?service=fitness#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Book a review
@@ -396,59 +405,59 @@
   <!-- ─────────────────────────────────────────────────────────────────────
        SECTION 5: 1-ON-1 PRACTICE
        ────────────────────────────────────────────────────────────────── -->
-  <section id="one-on-one" class="bg-cream py-16 scroll-mt-20">
+  <section id="one-on-one" class="py-16 scroll-mt-20">
     <div class="max-w-5xl mx-auto px-6">
       <div class="mb-10 max-w-2xl">
         <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">1-on-1 Practice</p>
         <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">What Coaching Actually Looks Like</h2>
-        <p class="font-sans text-base text-charcoal/75 leading-relaxed">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">What Coaching Actually Looks Like</h2>
+        <p class="font-sans text-base text-cream/75 leading-relaxed">
           The texture of long-form coaching &mdash; what changes inside a year of dedicated 1-on-1 work, and the patterns I see again and again with high-performing clients.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 8 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">What a Year of 1-on-1 Coaching Actually Looks Like</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 8 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">What a Year of 1-on-1 Coaching Actually Looks Like</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             Most people picture personal training as workouts on a calendar. After two decades of coaching, I can tell you that view misses the work. A year of 1-on-1 coaching is a year of small decisions, daily check-ins, monthly recalibrations, and the slow assembly of a body and a routine that hold under pressure.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 5 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">The Five Questions I Ask Every New UAE Client</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4">
+        <article class="border-t border-cream/15 pt-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 5 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">The Five Questions I Ask Every New UAE Client</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
             Before any programme is written, before any session is booked, there are five questions I need answered. Not &ldquo;what are your goals&rdquo; &mdash; that one is rarely useful at intake. The questions that matter are about your last six months of training and how you live the 23 hours outside the gym.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
 
-        <article class="border-t border-charcoal/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal-muted mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-charcoal mb-3 leading-tight">Coaching Is About the 23 Hours, Not the One</h3>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed mb-4 max-w-3xl">
+        <article class="border-t border-cream/15 pt-6 md:col-span-2">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Coaching Is About the 23 Hours, Not the One</h3>
+          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
             An hour of coached training is not where transformation happens. Transformation happens in the 23 hours that follow: the meals you choose, the sleep you protect, the stress you fail to manage, the supplements you remember to take. The hour I am with a client is the smallest window in their day, and it is the easiest one. The harder work is what I send them home to.
           </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream-dark border border-charcoal/15 text-charcoal/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
+          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
             Coming soon
           </span>
         </article>
       </div>
 
-      <div class="bg-cream-dark border border-charcoal/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="bg-charcoal/40 backdrop-blur-sm border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div>
           <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">UAE-based and serious about the work?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-charcoal leading-snug">Apply for 1-on-1 personal training.</p>
+          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Apply for 1-on-1 personal training.</p>
         </div>
         <a href="index.html?service=personal-training#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
           Apply

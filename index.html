@@ -66,8 +66,26 @@
 
   <!-- Global typography per brand palette: Raleway light for body, Inter black for headings + heavy weight elements. -->
   <style>
-    body { font-family: 'Raleway', 'Inter', sans-serif; font-weight: 300; }
+    body {
+      font-family: 'Raleway', 'Inter', sans-serif;
+      font-weight: 300;
+      background-color: #002233;   /* Navy field; all sections are transparent so the animated background canvas is visible everywhere. */
+      color: #F6F2E8;
+    }
     h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
+
+    /* Animated background layer, cursor-reactive. Sits behind all content
+       and stays fixed to the viewport so the effect is consistent across
+       the entire site. See js/wybe-bg.js for the neural-network + strength
+       + nutrition glyph mix. */
+    #wybe-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: #002233;
+    }
+    body > *:not(#wybe-bg) { position: relative; z-index: 1; }
   </style>
 
   <!-- Inline motion styles for Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
@@ -235,6 +253,7 @@
     /* 8. Four Pillars: minimalist word-mark grid, no icons, no supporting copy. */
     .wybe-pillar-item      { position: relative; padding: 24px 0; }
     .wybe-pillar-name      { display: inline-block; font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.02em; color: #002233; position: relative; padding-bottom: 10px; }
+    .wybe-pillar-item--dark .wybe-pillar-name { color: #F6F2E8; }
     .wybe-pillar-name::after { content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 28px; background-color: #DDFF55; transition: width .6s cubic-bezier(0.16, 1, 0.3, 1); }
     .wybe-pillar-item:hover .wybe-pillar-name::after,
     .wybe-pillar-item:focus-within .wybe-pillar-name::after { width: 100%; }
@@ -331,38 +350,40 @@
   }
   </script>
 </head>
-<body class="bg-cream text-charcoal">
+<body class="text-cream">
+<!-- Persistent, cursor-reactive background canvas. Sits behind everything. -->
+<canvas id="wybe-bg" aria-hidden="true"></canvas>
 
   <!-- NAVBAR (smooth-scroll anchors) -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-charcoal/10">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/80 backdrop-blur-md border-b border-cream/10">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="#home" class="font-sans text-xl font-bold tracking-widest text-charcoal uppercase">WYBE</a>
+        <a href="#home" class="font-sans text-xl font-bold tracking-widest text-cream uppercase">WYBE</a>
         <div class="hidden md:flex items-center gap-7">
-          <a href="#home" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Home</a>
-          <a href="#about" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">About</a>
-          <a href="#services" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Services</a>
-          <a href="#calculators" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">Calculators</a>
-          <a href="publication.html" class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Publication</a>
-          <a href="#book" data-nav-link class="font-sans text-sm text-charcoal hover:text-burgundy transition-colors">My Book</a>
-          <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-2 hover:bg-burgundy-dark transition-colors">Book Now</a>
+          <a href="#home" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Home</a>
+          <a href="#about" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">About</a>
+          <a href="#services" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Services</a>
+          <a href="#calculators" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Calculators</a>
+          <a href="publication.html" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">My Publication</a>
+          <a href="#book" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">My Book</a>
+          <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors">Book Now</a>
         </div>
         <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
-          <span class="w-6 h-px bg-charcoal block"></span>
-          <span class="w-6 h-px bg-charcoal block"></span>
-          <span class="w-6 h-px bg-charcoal block"></span>
+          <span class="w-6 h-px bg-cream block"></span>
+          <span class="w-6 h-px bg-cream block"></span>
+          <span class="w-6 h-px bg-cream block"></span>
         </button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-charcoal/10 px-6 py-6">
+    <div id="mobile-menu" class="hidden md:hidden bg-charcoal/95 backdrop-blur-md border-t border-cream/10 px-6 py-6">
       <div class="flex flex-col gap-4">
-        <a href="#home" class="font-sans text-sm text-charcoal">Home</a>
-        <a href="#about" class="font-sans text-sm text-charcoal">About</a>
-        <a href="#services" class="font-sans text-sm text-charcoal">Services</a>
-        <a href="#calculators" class="font-sans text-sm text-charcoal">Calculators</a>
-        <a href="publication.html" class="font-sans text-sm text-charcoal">My Publication</a>
-        <a href="#book" class="font-sans text-sm text-charcoal">My Book</a>
-        <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-3 text-center">Book Now</a>
+        <a href="#home" class="font-sans text-sm text-cream">Home</a>
+        <a href="#about" class="font-sans text-sm text-cream">About</a>
+        <a href="#services" class="font-sans text-sm text-cream">Services</a>
+        <a href="#calculators" class="font-sans text-sm text-cream">Calculators</a>
+        <a href="publication.html" class="font-sans text-sm text-cream">My Publication</a>
+        <a href="#book" class="font-sans text-sm text-cream">My Book</a>
+        <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-3 rounded-full text-center">Book Now</a>
       </div>
     </div>
   </nav>
@@ -370,7 +391,7 @@
   <!-- #HOME HERO — solid dark-navy canvas, no image. Layout matches the brand
        palette PDF: heavy Inter Black headline, small Raleway light subtitle,
        big lime pill CTA in the accent color. -->
-  <section id="home" class="relative min-h-screen bg-charcoal text-cream flex items-center pt-16 overflow-hidden">
+  <section id="home" class="relative min-h-screen text-cream flex items-center pt-16 overflow-hidden">
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
       <h1 class="text-cream uppercase leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-8xl mb-8 max-w-4xl">
         Evidence Based Personal Training, Fitness &amp; Nutrition Consultation
@@ -385,27 +406,27 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- OUR PROMISE + OUR COMMITMENT — stacked, framed in a navy-bordered box -->
-  <section class="bg-cream py-12 md:py-16">
+  <section class="py-12 md:py-16">
     <div class="max-w-3xl mx-auto px-6">
-      <div class="border-2 border-charcoal p-8 md:p-12 space-y-10">
+      <div class="border-2 border-burgundy/70 p-8 md:p-12 space-y-10 bg-charcoal/40 backdrop-blur-sm">
 
         <!-- Our Promise (top) -->
         <div>
-          <h3 class="text-lg md:text-xl font-black text-charcoal mb-2 uppercase tracking-tight">Our Promise</h3>
-          <div class="w-10 h-px bg-charcoal mb-4"></div>
-          <p class="font-sans text-base md:text-lg font-light text-charcoal leading-snug">
+          <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Promise</h3>
+          <div class="w-10 h-px bg-burgundy mb-4"></div>
+          <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
             A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
           </p>
         </div>
 
         <!-- Our Commitment (below) -->
         <div>
-          <h3 class="text-lg md:text-xl font-black text-charcoal mb-2 uppercase tracking-tight">Our Commitment</h3>
-          <div class="w-10 h-px bg-charcoal mb-4"></div>
-          <p class="font-sans text-base md:text-lg font-light text-charcoal leading-snug">
+          <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Commitment</h3>
+          <div class="w-10 h-px bg-burgundy mb-4"></div>
+          <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
             To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
           </p>
         </div>
@@ -415,14 +436,14 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- #CALCULATORS -->
   <!-- CALCULATORS — sticky-snap scroll story. Section is 400vh; a sticky stage
        stays pinned while user scrolls through 4 panels (BFP, TDEE, BMI, IBW).
        JS in main-script maps scroll progress inside .wybe-story-inner to the
        active .wybe-story-panel and progress pill. -->
-  <section id="calculators" class="wybe-story relative bg-charcoal overflow-visible">
+  <section id="calculators" class="wybe-story relative overflow-visible">
     <div class="wybe-story-inner" data-story="calc" style="min-height: 400vh;">
       <div class="wybe-story-stage">
         <div class="w-full max-w-6xl mx-auto px-6">
@@ -715,12 +736,12 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
 
   <!-- #ABOUT — two-state left column: short bio (default) swaps for a metrics
        grid once user scrolls to it. "Learn More" toggles the same swap on click. -->
-  <section id="about" class="relative bg-charcoal text-white overflow-hidden">
+  <section id="about" class="relative text-white overflow-hidden">
     <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-end">
       <!-- Left column: text ↔ metrics -->
       <div class="md:col-span-7 pt-24 pb-16 md:pb-32 relative z-10">
@@ -786,31 +807,31 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- THE FOUNDATION — Four Pillars, minimalist word-mark grid. No icons, no
        supporting copy. Each pillar is a numbered, oversized name with a lime
        underline accent that grows on hover to reinforce the "four pillars, one
        system" idea without the visual noise. -->
-  <section class="bg-cream py-16 md:py-24">
+  <section class="py-16 md:py-24">
     <div class="max-w-6xl mx-auto px-6">
-      <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-3 text-center">The Foundation</p>
-      <div class="w-10 h-px bg-charcoal mx-auto mb-6"></div>
-      <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal text-center mb-12 md:mb-16">Four Pillars. One System.</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-charcoal/10">
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3 text-center">The Foundation</p>
+      <div class="w-10 h-px bg-burgundy mx-auto mb-6"></div>
+      <h3 class="font-sans text-2xl md:text-3xl font-bold text-cream text-center mb-12 md:mb-16">Four Pillars. One System.</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-cream/10">
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
           <span class="wybe-pillar-index">01</span>
           <span class="wybe-pillar-name text-3xl md:text-4xl">Mindset</span>
         </div>
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
           <span class="wybe-pillar-index">02</span>
           <span class="wybe-pillar-name text-3xl md:text-4xl">Nutrition</span>
         </div>
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
           <span class="wybe-pillar-index">03</span>
           <span class="wybe-pillar-name text-3xl md:text-4xl">Training</span>
         </div>
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
           <span class="wybe-pillar-index">04</span>
           <span class="wybe-pillar-name text-3xl md:text-4xl">Recovery</span>
         </div>
@@ -819,14 +840,14 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- #SERVICES (dropdown-driven panels) -->
   <!-- SERVICES — same sticky-snap pattern as Calculators. The section is
        400vh; a 100vh sticky stage keeps the tabs + active panel pinned while
        the user scrolls through 4 breakpoints. Scroll progress drives which
        tab is "clicked" so each service appears sequentially. -->
-  <section id="services" class="wybe-story relative bg-cream overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs" style="min-height: 400vh;"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
+  <section id="services" class="wybe-story relative overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs" style="min-height: 400vh;"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
     <!-- Section-frame image: spans the full top-to-bottom height of the
          section, anchored to the right edge of the max-w-6xl content container
          (NOT the viewport edge), so it sits right next to the text instead of
@@ -1286,21 +1307,21 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
 
   <!-- #BOOK My Book + Waitlist (inline) -->
-  <section id="book" class="bg-cream py-14">
+  <section id="book" class="py-14">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-6">Coming Soon</p>
-      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-charcoal mb-0">1825</h2>
-      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-charcoal/20 mb-6">DAYS</h2>
-      <div class="hairline w-12 mx-auto mb-6"></div>
-      <p class="font-sans text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-6">Five years that shape a lifetime.</p>
-      <p class="font-sans text-sm text-charcoal/70 leading-relaxed mb-2 max-w-xl mx-auto">
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-6">Coming Soon</p>
+      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-cream mb-0">1825</h2>
+      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-cream/25 mb-6">DAYS</h2>
+      <div class="hairline w-12 mx-auto mb-6" style="background:#DDFF55;"></div>
+      <p class="font-sans text-2xl md:text-3xl font-semibold text-cream leading-snug mb-6">Five years that shape a lifetime.</p>
+      <p class="font-sans text-sm text-cream/75 leading-relaxed mb-2 max-w-xl mx-auto">
         The complete nutrition guide for your child, from first breath to fifth birthday. Written for parents. Grounded in science. Built for the real world.
       </p>
-      <p class="font-sans text-sm text-charcoal/60 leading-relaxed mb-10 max-w-xl mx-auto">
+      <p class="font-sans text-sm text-cream/60 leading-relaxed mb-10 max-w-xl mx-auto">
         The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
       </p>
 
@@ -1311,33 +1332,33 @@
         <input type="hidden" name="subject" value="1825 Days, Waitlist">
         <input type="hidden" name="redirect" value="false">
 
-        <input type="text"  name="name"   required placeholder="Full name"        class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-        <input type="email" name="email"  required placeholder="Email"            class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+        <input type="text"  name="name"   required placeholder="Full name"        class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+        <input type="email" name="email"  required placeholder="Email"            class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
 
         <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
       </form>
       <div class="hidden mt-4 text-center">
-        <p class="font-sans text-lg font-semibold text-charcoal mb-1">You&rsquo;re on the list.</p>
-        <p class="font-sans text-sm text-charcoal/60">We will be in touch as soon as the book is ready.</p>
+        <p class="font-sans text-lg font-semibold text-cream mb-1">You&rsquo;re on the list.</p>
+        <p class="font-sans text-sm text-cream/60">We will be in touch as soon as the book is ready.</p>
       </div>
     </div>
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- MY PUBLICATION (text-only canvas, no background image) -->
-  <section id="publication" class="bg-cream py-16 md:py-20">
+  <section id="publication" class="py-16 md:py-20">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Long-Form Writing</p>
       <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-      <h2 class="font-sans text-3xl md:text-5xl font-bold text-charcoal mb-5 leading-tight">My Publication</h2>
-      <p class="font-sans text-base md:text-lg text-charcoal/80 leading-relaxed mb-8 max-w-xl mx-auto">
+      <h2 class="font-sans text-3xl md:text-5xl font-bold text-cream mb-5 leading-tight">My Publication</h2>
+      <p class="font-sans text-base md:text-lg text-cream/75 leading-relaxed mb-8 max-w-xl mx-auto">
         Detailed essays on training, nutrition, and building wellness as a daily discipline. Field notes from two decades of working with real people.
       </p>
       <a href="publication.html"
-         class="inline-flex items-center gap-3 bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">
+         class="inline-flex items-center gap-3 bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
         <span>Read the Essays</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -1348,13 +1369,12 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- #CONTACT — form-only dark panel. Background image removed; the charcoal
-       panel + icons give the section its identity. -->
-  <section id="contact" class="bg-cream py-14">
+  <!-- #CONTACT — form panel over the animated canvas. -->
+  <section id="contact" class="py-14">
     <div class="max-w-2xl mx-auto px-6">
-      <div class="relative bg-charcoal text-white overflow-hidden">
+      <div class="relative bg-charcoal/60 backdrop-blur-sm text-white overflow-hidden border border-burgundy/40">
         <div class="relative z-10 p-6 md:p-10 flex flex-col">
           <!-- FORM GROUP -->
           <div>
@@ -1411,10 +1431,10 @@
   </section>
 
   <!-- Section divider -->
-  <div class="flex justify-center py-6 bg-cream"><div class="w-16 h-px bg-burgundy"></div></div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- FOOTER -->
-  <footer class="bg-charcoal text-white">
+  <footer class="text-white border-t border-cream/10">
     <div class="max-w-6xl mx-auto px-6 py-16">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
         <div>
@@ -1464,6 +1484,7 @@
     </div>
   </footer>
 
+  <script src="js/wybe-bg.js" defer></script>
   <script src="js/main.js"></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
