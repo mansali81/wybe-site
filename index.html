@@ -108,17 +108,120 @@
 
     /* 6. Scroll-story: sticky stage + stacked panels (Calculators + Services).
        The section is 400vh tall (100vh per panel). Inside, a 100vh sticky stage
-       pins to the top and cross-fades the active panel as the user scrolls
-       past each 100vh marker. Non-active panels get pointer-events:none so
+       pins to the top and rotates the active panel in from below (Penguin
+       Capital-style 3D depth). Non-active panels get pointer-events:none so
        users can only interact with the visible one. */
     .wybe-story           { position: relative; }
     .wybe-story-inner     { position: relative; }
     .wybe-story-stage     { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .wybe-story-stack     { position: relative; width: 100%; max-height: 100vh; }
-    .wybe-story-panel     { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(calc(-50% + 32px)); opacity: 0; transition: opacity .55s ease, transform .55s ease; pointer-events: none; max-height: 100vh; overflow-y: auto; }
-    .wybe-story-panel.is-active { opacity: 1; transform: translateY(-50%); pointer-events: auto; }
+    .wybe-story-stack     { position: relative; width: 100%; max-height: 100vh; perspective: 1400px; transform-style: preserve-3d; }
+    /* Default = upcoming state (below the viewport, tilted forward). */
+    .wybe-story-panel     {
+      position: absolute; left: 0; right: 0; top: 50%;
+      opacity: 0;
+      transform: translateY(calc(-50% + 90px)) rotateX(18deg);
+      transform-origin: 50% 100%;
+      transition: opacity .75s cubic-bezier(0.16, 1, 0.3, 1), transform .75s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      max-height: 100vh; overflow-y: auto;
+      will-change: transform, opacity;
+    }
+    .wybe-story-panel.is-active {
+      opacity: 1;
+      transform: translateY(-50%) rotateX(0deg);
+      pointer-events: auto;
+    }
+    /* Past = above the active, tilted back. Fades out receding. */
+    .wybe-story-panel.is-past {
+      opacity: 0;
+      transform: translateY(calc(-50% - 90px)) rotateX(-10deg);
+      transform-origin: 50% 0%;
+    }
     .wybe-story-progress-btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease; opacity: 0.55; }
     .wybe-story-progress-btn.is-active { opacity: 1; background-color: #DDFF55; color: #002233; border-color: #DDFF55; }
+
+    /* 6b. Left-rail (Style 1: big lime text + side bar).
+       Sticky column of 4 label rows. Inactive rows are small, muted, no bar.
+       Active row scales up ~2.5x, turns lime, and grows a 4px lime side bar. */
+    .wybe-rail            { position: sticky; top: 0; padding: 12vh 0; }
+    .wybe-rail-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+    .wybe-rail-list       { display: flex; flex-direction: column; gap: 22px; }
+    .wybe-rail-row        {
+      display: block; width: 100%;
+      background: transparent; border: 0; cursor: pointer;
+      text-align: left;
+      padding: 4px 0 4px 16px;
+      position: relative;
+      opacity: 0.5;
+      transition: opacity .4s cubic-bezier(0.16, 1, 0.3, 1), padding .4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .wybe-rail-row::before {
+      content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
+      width: 4px; background: #DDFF55; border-radius: 2px;
+      transform: scaleY(0); transform-origin: 50% 50%;
+      transition: transform .5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .wybe-rail-num        {
+      display: block; font-family: 'Inter', sans-serif; font-weight: 900;
+      font-size: 10px; letter-spacing: 0.28em; color: rgba(255,255,255,0.45);
+      margin-bottom: 6px; transition: color .4s ease;
+    }
+    .wybe-rail-label      {
+      display: block; font-family: 'Inter', sans-serif; font-weight: 900;
+      letter-spacing: -0.01em; line-height: 1.05;
+      font-size: 16px; color: rgba(255,255,255,0.85);
+      transition: color .4s ease, font-size .4s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing .4s ease;
+    }
+    .wybe-rail-row.is-active           { opacity: 1; padding-left: 22px; }
+    .wybe-rail-row.is-active::before   { transform: scaleY(1); }
+    .wybe-rail-row.is-active .wybe-rail-num   { color: #DDFF55; }
+    .wybe-rail-row.is-active .wybe-rail-label { color: #DDFF55; font-size: 32px; letter-spacing: -0.03em; }
+    @media (min-width: 768px) {
+      .wybe-rail-row.is-active .wybe-rail-label { font-size: 44px; }
+    }
+
+    /* 6c. Airy split-card calc panel (form left, live result right).
+       No box, no backdrop. Thin vertical hairline separates the halves.
+       Each panel carries a data-motif attribute so its top-right corner
+       shows a distinct glyph (caliper / flame / balance / target). */
+    .wybe-calc-card       { display: grid; grid-template-columns: 1fr; gap: 24px; padding: 8px 0; position: relative; }
+    @media (min-width: 768px) {
+      .wybe-calc-card     { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .wybe-calc-card > .wybe-calc-result { border-left: 1px solid rgba(255,255,255,0.15); padding-left: 40px; }
+    }
+    .wybe-calc-motif      {
+      position: absolute; top: -8px; right: 0;
+      width: 44px; height: 44px; color: #DDFF55; opacity: 0.85;
+      pointer-events: none;
+    }
+    .wybe-calc-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+    .wybe-calc-title      { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
+    .wybe-calc-title-rule { width: 40px; height: 3px; background: #DDFF55; margin-bottom: 22px; }
+    /* Airy input rows: hairline underline, no box */
+    .wybe-input-row       { display: block; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.18); transition: border-color .25s ease; }
+    .wybe-input-row:focus-within { border-color: #DDFF55; }
+    .wybe-input-row label { display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 4px; }
+    .wybe-input-row input,
+    .wybe-input-row select {
+      display: block; width: 100%; background: transparent; border: 0; outline: 0;
+      font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px;
+      color: white; padding: 0; letter-spacing: -0.01em;
+    }
+    .wybe-input-row input::placeholder { color: rgba(255,255,255,0.25); }
+    .wybe-input-row select option { color: #002233; background: #F6F2E8; }
+    .wybe-input-row .info-tip { color: rgba(255,255,255,0.4); }
+    .wybe-calc-cta        {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #DDFF55; color: #002233;
+      font-family: 'Inter', sans-serif; font-weight: 900;
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 999px;
+      border: 0; cursor: pointer;
+      transition: background-color .2s ease, transform .2s ease;
+      margin-top: 20px;
+    }
+    .wybe-calc-cta:hover  { background: #C4E63C; transform: translateX(2px); }
+    .wybe-calc-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* 7. About Me: description swaps out, metrics fade in as user scrolls past. */
     .wybe-about-stage      { position: relative; }
@@ -322,192 +425,234 @@
   <section id="calculators" class="wybe-story relative bg-charcoal overflow-visible">
     <div class="wybe-story-inner" data-story="calc" style="min-height: 400vh;">
       <div class="wybe-story-stage">
-        <div class="w-full max-w-5xl mx-auto px-6 py-10">
-          <div class="text-center mb-6">
-            <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-md">Free Tools</p>
-            <div class="w-8 h-px bg-burgundy mx-auto mb-4"></div>
-            <h2 class="font-sans text-3xl md:text-4xl font-bold text-white drop-shadow-md">Calculators</h2>
-          </div>
+        <div class="w-full max-w-6xl mx-auto px-6">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
+            <!-- LEFT RAIL: Style 1 active-label, sticky sidebar of 4 rows. -->
+            <div class="md:col-span-5 wybe-rail">
+              <p class="wybe-rail-eyebrow">Free Tools / Calculators</p>
+              <div class="wybe-rail-list">
+                <button type="button" data-story-jump="0" class="wybe-rail-row is-active">
+                  <span class="wybe-rail-num">01</span>
+                  <span class="wybe-rail-label">Body Fat %</span>
+                </button>
+                <button type="button" data-story-jump="1" class="wybe-rail-row">
+                  <span class="wybe-rail-num">02</span>
+                  <span class="wybe-rail-label">Daily Calorie</span>
+                </button>
+                <button type="button" data-story-jump="2" class="wybe-rail-row">
+                  <span class="wybe-rail-num">03</span>
+                  <span class="wybe-rail-label">BMI</span>
+                </button>
+                <button type="button" data-story-jump="3" class="wybe-rail-row">
+                  <span class="wybe-rail-num">04</span>
+                  <span class="wybe-rail-label">Ideal Weight</span>
+                </button>
+              </div>
+            </div>
 
-          <!-- Progress pills: also serve as scroll-jump buttons. -->
-          <div class="max-w-3xl mx-auto mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button type="button" data-story-jump="0" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
-              Body Fat %
-            </button>
-            <button type="button" data-story-jump="1" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
-              Daily Calorie
-            </button>
-            <button type="button" data-story-jump="2" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
-              BMI
-            </button>
-            <button type="button" data-story-jump="3" class="wybe-story-progress-btn bg-cream/95 text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-3 py-2 rounded-full border border-white/20 shadow-md">
-              Ideal Weight
-            </button>
-          </div>
-
-          <!-- Stacked panels: absolutely positioned inside .wybe-story-stack. -->
-          <div class="wybe-story-stack" style="min-height: 66vh;">
+            <!-- RIGHT STAGE: absolute-stacked panels with rotate-in-from-below 3D. -->
+            <div class="md:col-span-7 wybe-story-stack" style="min-height: 78vh;">
 
       <!-- BFP -->
       <div class="wybe-story-panel" data-story-panel="0" data-calc="bfp">
-        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <form id="bfp-form" class="space-y-4">
-              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Measurements (in cm)</p>
-              <div>
-                <label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Gender</label>
-                <select id="bfp-gender" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
-                  <option value="male" selected class="text-charcoal">Male</option>
-                  <option value="female" class="text-charcoal">Female</option>
-                </select>
-              </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="bfp-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Neck <span class="info-tip" tabindex="0" data-tip="Measure around the narrowest point of your neck, just below the Adam&rsquo;s apple. Keep the tape level and snug, not tight.">?</span></label><input type="number" id="bfp-neck" step="0.1" required placeholder="38" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Waist <span class="info-tip" tabindex="0" data-tip="Men: measure around the navel. Women: measure around the narrowest point of the waist. Relaxed stomach, end of a normal breath.">?</span></label><input type="number" id="bfp-waist" step="0.1" required placeholder="85" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-                <div id="bfp-hip-wrap" class="hidden"><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Hip <span class="info-tip" tabindex="0" data-tip="Measure around the widest part of your hips/buttocks, with feet together. Keep the tape level all the way around.">?</span></label><input type="number" id="bfp-hip" step="0.1" placeholder="95" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-              </div>
-              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
-              <p id="bfp-error" class="hidden font-sans text-xs text-red-300"></p>
-            </form>
+        <div class="wybe-calc-card">
+          <!-- Motif: caliper glyph -->
+          <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M8 14 L40 14 M12 14 L12 22 M36 14 L36 22 M8 30 L40 30 M12 30 L12 22 M36 30 L36 22 M16 14 L16 18 M20 14 L20 18 M24 14 L24 18 M28 14 L28 18 M32 14 L32 18" />
+          </svg>
 
-            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
-              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Result</p>
-              <div class="w-8 h-px bg-burgundy mb-4"></div>
-              <div id="bfp-placeholder"><p class="font-sans text-sm text-white/60">Fill in measurements to see your body fat percentage and category.</p></div>
-              <div id="bfp-result" class="hidden">
-                <p class="font-sans text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bfp-value">&mdash;</span><span class="text-2xl text-white/50">%</span></p>
-                <p id="bfp-category" class="font-sans text-lg font-semibold text-burgundy mb-2">&mdash;</p>
-                <p id="bfp-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
-                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
-                  Let&rsquo;s WYBE &rarr;
-                </a>
-              </div>
+          <!-- FORM COLUMN -->
+          <form id="bfp-form">
+            <p class="wybe-calc-eyebrow">01 &middot; Measurements (cm)</p>
+            <p class="wybe-calc-title">Body Fat %</p>
+            <div class="wybe-calc-title-rule"></div>
+
+            <div class="wybe-input-row">
+              <label for="bfp-gender">Gender</label>
+              <select id="bfp-gender" required>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="wybe-input-row">
+              <label for="bfp-height">Height <span class="info-tip" tabindex="0" data-tip="Barefoot against a wall, floor to top of head, in centimetres.">?</span></label>
+              <input type="number" id="bfp-height" step="0.1" required placeholder="178">
+            </div>
+            <div class="wybe-input-row">
+              <label for="bfp-neck">Neck <span class="info-tip" tabindex="0" data-tip="Narrowest point, just below the Adam&rsquo;s apple. Snug, not tight.">?</span></label>
+              <input type="number" id="bfp-neck" step="0.1" required placeholder="38">
+            </div>
+            <div class="wybe-input-row">
+              <label for="bfp-waist">Waist <span class="info-tip" tabindex="0" data-tip="Men: around the navel. Women: narrowest point. Relaxed, end of a normal breath.">?</span></label>
+              <input type="number" id="bfp-waist" step="0.1" required placeholder="85">
+            </div>
+            <div class="wybe-input-row hidden" id="bfp-hip-wrap">
+              <label for="bfp-hip">Hip <span class="info-tip" tabindex="0" data-tip="Widest point of hips/buttocks, feet together, tape level all the way around.">?</span></label>
+              <input type="number" id="bfp-hip" step="0.1" placeholder="95">
+            </div>
+
+            <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
+            <p id="bfp-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+          </form>
+
+          <!-- RESULT COLUMN -->
+          <div class="wybe-calc-result">
+            <p class="wybe-calc-eyebrow">Your Result</p>
+            <div id="bfp-placeholder">
+              <p class="font-sans text-sm text-white/50 leading-relaxed max-w-xs">Fill the form on the left. Your body fat percentage and category will appear here.</p>
+            </div>
+            <div id="bfp-result" class="hidden">
+              <p class="font-sans text-7xl md:text-8xl font-black text-white leading-none tracking-tight"><span id="bfp-value">&mdash;</span><span class="text-3xl text-white/35 align-top">%</span></p>
+              <p id="bfp-category" class="font-sans text-[11px] tracking-[0.24em] uppercase font-black text-burgundy mt-4">&mdash;</p>
+              <p id="bfp-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mt-3 mb-4"></p>
+              <p class="font-sans text-[10px] text-white/45 leading-snug mb-4">* Estimate, typically &plusmn;4&ndash;5% of DEXA or BIA results.</p>
+              <a href="#contact" class="wybe-calc-cta" style="margin-top:0;">Let&rsquo;s WYBE &rarr;</a>
             </div>
           </div>
+        </div>
 
-          <!-- Email + CTA after result -->
-          <div id="bfp-email-block" class="hidden mt-8 pt-8 border-t border-white/20">
-            <p class="font-sans text-sm text-white/85 leading-relaxed mb-4 drop-shadow-sm">Want a PDF copy of this result, with category notes, emailed to you?</p>
-            <form id="bfp-email-form" data-pdf-form data-calc="bfp" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
-              <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
-              <input type="hidden" name="subject" value="WYBE, BFP Result PDF Request">
-              <input type="hidden" name="bfp_result" id="bfp-email-result">
-              <input type="hidden" name="bfp_category" id="bfp-email-category">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input type="text" name="name" required placeholder="Full name" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
-                <input type="email" name="email" required placeholder="your@email.com" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
-              </div>
-              <input type="number" name="age" required min="14" max="100" placeholder="Age" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-white placeholder:text-white/40">
-              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
-              <p class="font-sans text-xs text-white/70 text-center">A simple PDF report will be emailed to you and downloaded to your device.</p>
-            </form>
-            <div class="hidden mt-3 text-sm text-white/80 text-center">Sent. Check your inbox for your PDF result and what to do next.</div>
-          </div>
+        <!-- Email PDF block -->
+        <div id="bfp-email-block" class="hidden mt-8 pt-6 border-t border-white/15">
+          <p class="font-sans text-sm text-white/80 leading-relaxed mb-4">Want a PDF of this result emailed to you?</p>
+          <form id="bfp-email-form" data-pdf-form data-calc="bfp" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
+            <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
+            <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="subject" value="WYBE, BFP Result PDF Request">
+            <input type="hidden" name="bfp_result" id="bfp-email-result">
+            <input type="hidden" name="bfp_category" id="bfp-email-category">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input type="text" name="name" required placeholder="Full name" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
+              <input type="email" name="email" required placeholder="your@email.com" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
+            </div>
+            <input type="number" name="age" required min="14" max="100" placeholder="Age" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-burgundy placeholder:text-white/30">
+            <button type="submit" class="wybe-calc-cta">Email me my result &rarr;</button>
+          </form>
+          <div class="hidden mt-3 text-sm text-white/80">Sent. Check your inbox for the PDF.</div>
         </div>
       </div>
 
       <!-- TDEE -->
       <div class="wybe-story-panel" data-story-panel="1" data-calc="tdee">
-        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <form id="tdee-form" class="space-y-4">
-              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Details (metric)</p>
-              <div class="grid grid-cols-2 gap-3">
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Gender</label>
-                  <select id="tdee-gender" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
-                    <option value="male" selected class="text-charcoal">Male</option>
-                    <option value="female" class="text-charcoal">Female</option>
-                  </select>
-                </div>
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Age</label><input type="number" id="tdee-age" required min="14" max="100" placeholder="32" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="tdee-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Weight (kg) <span class="info-tip" tabindex="0" data-tip="Weigh yourself first thing in the morning, after using the bathroom, before eating or drinking. Same scale, same time of day for consistency.">?</span></label><input type="number" id="tdee-weight" step="0.1" required placeholder="78" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-              </div>
-              <div>
-                <label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Activity Level</label>
-                <select id="tdee-activity" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
-                  <option value="1.2" class="text-charcoal">Sedentary, desk job, no training</option>
-                  <option value="1.375" class="text-charcoal">Lightly active, 1-3 days/week</option>
-                  <option value="1.55" selected class="text-charcoal">Moderately active, 3-5 days/week</option>
-                  <option value="1.725" class="text-charcoal">Very active, 6-7 days/week</option>
-                  <option value="1.9" class="text-charcoal">Extra active, physical job + daily training</option>
-                </select>
-              </div>
-              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
-              <p id="tdee-error" class="hidden font-sans text-xs text-red-300"></p>
-            </form>
+        <div class="wybe-calc-card">
+          <!-- Motif: flame -->
+          <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 6 C22 14 16 18 16 26 C16 34 20 40 24 40 C28 40 32 34 32 26 C32 22 30 20 28 20 C28 24 26 26 24 26 C24 20 24 12 24 6 Z" />
+          </svg>
 
-            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
-              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Numbers</p>
-              <div class="w-8 h-px bg-burgundy mb-4"></div>
-              <div id="tdee-placeholder"><p class="font-sans text-sm text-white/60">Fill in your details to see your daily calorie target and goal-based options.</p></div>
-              <div id="tdee-result" class="hidden">
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70 mb-1">Daily energy expenditure</p>
-                <p class="font-sans text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="tdee-value">&mdash;</span> <span class="text-xl text-white/50">kcal</span></p>
-                <p id="tdee-category" class="font-sans text-base font-semibold text-burgundy mb-4">&mdash;</p>
-                <div class="space-y-1 text-sm mb-3">
-                  <p class="flex justify-between"><span class="text-white/75">Cut (fat loss)</span><span class="font-semibold text-white"><span id="tdee-cut">&mdash;</span> kcal</span></p>
-                  <p class="flex justify-between"><span class="text-white/75">Maintain</span><span class="font-semibold text-white"><span id="tdee-maintain">&mdash;</span> kcal</span></p>
-                  <p class="flex justify-between"><span class="text-white/75">Lean bulk</span><span class="font-semibold text-white"><span id="tdee-bulk">&mdash;</span> kcal</span></p>
-                </div>
-                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* This is an estimate &mdash; typically within &plusmn;4&ndash;5% of DEXA or BIA results.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
-                  Let&rsquo;s WYBE &rarr;
-                </a>
+          <form id="tdee-form">
+            <p class="wybe-calc-eyebrow">02 &middot; Metric</p>
+            <p class="wybe-calc-title">Daily Calorie Needs</p>
+            <div class="wybe-calc-title-rule"></div>
+
+            <div class="wybe-input-row">
+              <label for="tdee-gender">Gender</label>
+              <select id="tdee-gender" required>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="wybe-input-row">
+              <label for="tdee-age">Age</label>
+              <input type="number" id="tdee-age" required min="14" max="100" placeholder="32">
+            </div>
+            <div class="wybe-input-row">
+              <label for="tdee-height">Height (cm)</label>
+              <input type="number" id="tdee-height" step="0.1" required placeholder="178">
+            </div>
+            <div class="wybe-input-row">
+              <label for="tdee-weight">Weight (kg)</label>
+              <input type="number" id="tdee-weight" step="0.1" required placeholder="78">
+            </div>
+            <div class="wybe-input-row">
+              <label for="tdee-activity">Activity Level</label>
+              <select id="tdee-activity" required>
+                <option value="1.2">Sedentary, desk job, no training</option>
+                <option value="1.375">Lightly active, 1-3 days/week</option>
+                <option value="1.55" selected>Moderately active, 3-5 days/week</option>
+                <option value="1.725">Very active, 6-7 days/week</option>
+                <option value="1.9">Extra active, physical job + daily training</option>
+              </select>
+            </div>
+
+            <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
+            <p id="tdee-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+          </form>
+
+          <div class="wybe-calc-result">
+            <p class="wybe-calc-eyebrow">Your Numbers</p>
+            <div id="tdee-placeholder">
+              <p class="font-sans text-sm text-white/50 leading-relaxed max-w-xs">Fill the form on the left. Your daily calorie needs and goal-based options will appear here.</p>
+            </div>
+            <div id="tdee-result" class="hidden">
+              <p class="font-sans text-[10px] tracking-[0.24em] uppercase text-white/55 mb-1">Daily energy expenditure</p>
+              <p class="font-sans text-6xl md:text-7xl font-black text-white leading-none tracking-tight"><span id="tdee-value">&mdash;</span> <span class="text-2xl text-white/35">kcal</span></p>
+              <p id="tdee-category" class="font-sans text-[11px] tracking-[0.24em] uppercase font-black text-burgundy mt-4 mb-5">&mdash;</p>
+              <div class="space-y-2 mb-4 font-sans text-sm">
+                <p class="flex justify-between border-b border-white/10 pb-2"><span class="text-white/60 tracking-wide">Cut (fat loss)</span><span class="font-black text-white"><span id="tdee-cut">&mdash;</span> kcal</span></p>
+                <p class="flex justify-between border-b border-white/10 pb-2"><span class="text-white/60 tracking-wide">Maintain</span><span class="font-black text-white"><span id="tdee-maintain">&mdash;</span> kcal</span></p>
+                <p class="flex justify-between border-b border-white/10 pb-2"><span class="text-white/60 tracking-wide">Lean bulk</span><span class="font-black text-white"><span id="tdee-bulk">&mdash;</span> kcal</span></p>
               </div>
+              <p class="font-sans text-[10px] text-white/45 leading-snug mb-4">* Estimate, typically &plusmn;4&ndash;5% of measured values.</p>
+              <a href="#contact" class="wybe-calc-cta" style="margin-top:0;">Let&rsquo;s WYBE &rarr;</a>
             </div>
           </div>
+        </div>
 
-          <div id="tdee-email-block" class="hidden mt-8 pt-8 border-t border-white/20">
-            <p class="font-sans text-sm text-white/85 leading-relaxed mb-4 drop-shadow-sm">Want a PDF copy of your numbers and a starter nutrition plan emailed to you?</p>
-            <form id="tdee-email-form" data-pdf-form data-calc="tdee" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
-              <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
-              <input type="hidden" name="subject" value="WYBE, TDEE Result PDF Request">
-              <input type="hidden" name="tdee_result" id="tdee-email-result">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input type="text" name="name" required placeholder="Full name" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
-                <input type="email" name="email" required placeholder="your@email.com" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
-              </div>
-              <input type="number" name="age_confirmed" required min="14" max="100" placeholder="Confirm your age" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-white placeholder:text-white/40">
-              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors">Email me my result</button>
-              <p class="font-sans text-xs text-white/70 text-center">A simple PDF report will be emailed to you and downloaded to your device.</p>
-            </form>
-            <div class="hidden mt-3 text-sm text-white/80 text-center">Sent. Check your inbox for your PDF result.</div>
-          </div>
+        <div id="tdee-email-block" class="hidden mt-8 pt-6 border-t border-white/15">
+          <p class="font-sans text-sm text-white/80 leading-relaxed mb-4">Want a PDF of your numbers and a starter nutrition plan emailed to you?</p>
+          <form id="tdee-email-form" data-pdf-form data-calc="tdee" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
+            <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
+            <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="subject" value="WYBE, TDEE Result PDF Request">
+            <input type="hidden" name="tdee_result" id="tdee-email-result">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input type="text" name="name" required placeholder="Full name" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
+              <input type="email" name="email" required placeholder="your@email.com" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
+            </div>
+            <input type="number" name="age_confirmed" required min="14" max="100" placeholder="Confirm your age" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-burgundy placeholder:text-white/30">
+            <button type="submit" class="wybe-calc-cta">Email me my result &rarr;</button>
+          </form>
+          <div class="hidden mt-3 text-sm text-white/80">Sent. Check your inbox for the PDF.</div>
         </div>
       </div>
 
       <!-- BMI -->
       <div class="wybe-story-panel" data-story-panel="2" data-calc="bmi">
-        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <form id="bmi-form" class="space-y-4">
-              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Body Mass Index</p>
-              <div class="grid grid-cols-2 gap-3">
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label><input type="number" id="bmi-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-                <div><label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Weight (kg) <span class="info-tip" tabindex="0" data-tip="Weigh yourself first thing in the morning, after using the bathroom, before eating or drinking.">?</span></label><input type="number" id="bmi-weight" step="0.1" required placeholder="78" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40"></div>
-              </div>
-              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
-              <p id="bmi-error" class="hidden font-sans text-xs text-red-300"></p>
-            </form>
+        <div class="wybe-calc-card">
+          <!-- Motif: balance scale -->
+          <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 8 L24 40 M14 40 L34 40 M24 12 L10 24 M24 12 L38 24 M6 24 L14 24 L10 32 Z M34 24 L42 24 L38 32 Z" />
+          </svg>
 
-            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
-              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Result</p>
-              <div class="w-8 h-px bg-burgundy mb-4"></div>
-              <div id="bmi-placeholder"><p class="font-sans text-sm text-white/60">Enter your height and weight to see your BMI and category.</p></div>
-              <div id="bmi-result" class="hidden">
-                <p class="font-sans text-5xl md:text-6xl font-bold text-white mb-1 drop-shadow-md"><span id="bmi-value">&mdash;</span></p>
-                <p id="bmi-category" class="font-sans text-lg font-semibold text-burgundy mb-2">&mdash;</p>
-                <p id="bmi-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mb-3"></p>
-                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* BMI is a screening number, not a body-composition measure. Lean-muscular builds can read &ldquo;overweight&rdquo; without excess fat.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
-                  Let&rsquo;s WYBE &rarr;
-                </a>
-              </div>
+          <form id="bmi-form">
+            <p class="wybe-calc-eyebrow">03 &middot; Metric</p>
+            <p class="wybe-calc-title">Body Mass Index</p>
+            <div class="wybe-calc-title-rule"></div>
+
+            <div class="wybe-input-row">
+              <label for="bmi-height">Height (cm)</label>
+              <input type="number" id="bmi-height" step="0.1" required placeholder="178">
+            </div>
+            <div class="wybe-input-row">
+              <label for="bmi-weight">Weight (kg)</label>
+              <input type="number" id="bmi-weight" step="0.1" required placeholder="78">
+            </div>
+
+            <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
+            <p id="bmi-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+          </form>
+
+          <div class="wybe-calc-result">
+            <p class="wybe-calc-eyebrow">Your Result</p>
+            <div id="bmi-placeholder">
+              <p class="font-sans text-sm text-white/50 leading-relaxed max-w-xs">Enter your height and weight. Your BMI and category will appear here.</p>
+            </div>
+            <div id="bmi-result" class="hidden">
+              <p class="font-sans text-7xl md:text-8xl font-black text-white leading-none tracking-tight"><span id="bmi-value">&mdash;</span></p>
+              <p id="bmi-category" class="font-sans text-[11px] tracking-[0.24em] uppercase font-black text-burgundy mt-4">&mdash;</p>
+              <p id="bmi-interpretation" class="font-sans text-sm text-white/80 leading-relaxed mt-3 mb-4"></p>
+              <p class="font-sans text-[10px] text-white/45 leading-snug mb-4">* BMI is a screening number, not a body-composition measure. Lean-muscular builds can read &ldquo;overweight&rdquo; without excess fat.</p>
+              <a href="#contact" class="wybe-calc-cta" style="margin-top:0;">Let&rsquo;s WYBE &rarr;</a>
             </div>
           </div>
         </div>
@@ -515,46 +660,56 @@
 
       <!-- IDEAL BODY WEIGHT -->
       <div class="wybe-story-panel" data-story-panel="3" data-calc="ibw">
-        <div class="border border-white/15 bg-charcoal/35 backdrop-blur-sm p-8 md:p-10 shadow-lg">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <form id="ibw-form" class="space-y-4">
-              <p class="font-sans text-xs tracking-widest uppercase text-burgundy drop-shadow-sm">Ideal Body Weight</p>
-              <div>
-                <label class="font-sans text-xs tracking-widest uppercase text-white/80 block mb-2 drop-shadow-sm">Gender</label>
-                <select id="ibw-gender" required class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white appearance-none cursor-pointer">
-                  <option value="male" selected class="text-charcoal">Male</option>
-                  <option value="female" class="text-charcoal">Female</option>
-                </select>
-              </div>
-              <div>
-                <label class="font-sans text-xs tracking-widest uppercase text-white/80 mb-2 flex items-center drop-shadow-sm">Height (cm) <span class="info-tip" tabindex="0" data-tip="Stand barefoot against a wall. Measure from the floor to the top of your head with a tape measure, in centimetres.">?</span></label>
-                <input type="number" id="ibw-height" step="0.1" required placeholder="178" class="border border-white/40 bg-charcoal/40 px-4 py-3 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/40">
-              </div>
-              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Calculate</button>
-              <p id="ibw-error" class="hidden font-sans text-xs text-red-300"></p>
-            </form>
+        <div class="wybe-calc-card">
+          <!-- Motif: target rings -->
+          <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="24" cy="24" r="18" />
+            <circle cx="24" cy="24" r="12" />
+            <circle cx="24" cy="24" r="6" />
+            <circle cx="24" cy="24" r="1.5" fill="currentColor" stroke="none" />
+          </svg>
 
-            <div class="border border-white/15 bg-charcoal/40 backdrop-blur-sm p-6">
-              <p class="font-sans text-xs tracking-widest uppercase text-white/80 mb-3 drop-shadow-sm">Your Result</p>
-              <div class="w-8 h-px bg-burgundy mb-4"></div>
-              <div id="ibw-placeholder"><p class="font-sans text-sm text-white/60">Enter your gender and height to see your ideal body weight range.</p></div>
-              <div id="ibw-result" class="hidden">
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70 mb-1">Ideal weight range</p>
-                <p class="font-sans text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md"><span id="ibw-low">&mdash;</span><span class="text-xl text-white/50">&ndash;</span><span id="ibw-high">&mdash;</span> <span class="text-xl text-white/50">kg</span></p>
-                <p id="ibw-point" class="font-sans text-base font-semibold text-burgundy mb-4">IBW &mdash; kg</p>
-                <p class="font-sans italic text-xs text-white/70 leading-snug mb-5">* Broca&rsquo;s Index. The &plusmn;5&nbsp;kg band is a healthy target for non-exercising clients and women. Exercising men should track body-fat % instead &mdash; muscle is denser than fat and will push weight up without adding fat.</p>
-                <a href="#contact" class="block w-full text-center bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">
-                  Let&rsquo;s WYBE &rarr;
-                </a>
-              </div>
+          <form id="ibw-form">
+            <p class="wybe-calc-eyebrow">04 &middot; Metric</p>
+            <p class="wybe-calc-title">Ideal Body Weight</p>
+            <div class="wybe-calc-title-rule"></div>
+
+            <div class="wybe-input-row">
+              <label for="ibw-gender">Gender</label>
+              <select id="ibw-gender" required>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="wybe-input-row">
+              <label for="ibw-height">Height (cm)</label>
+              <input type="number" id="ibw-height" step="0.1" required placeholder="178">
+            </div>
+
+            <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
+            <p id="ibw-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+          </form>
+
+          <div class="wybe-calc-result">
+            <p class="wybe-calc-eyebrow">Your Result</p>
+            <div id="ibw-placeholder">
+              <p class="font-sans text-sm text-white/50 leading-relaxed max-w-xs">Enter your gender and height. Your ideal body weight range will appear here.</p>
+            </div>
+            <div id="ibw-result" class="hidden">
+              <p class="font-sans text-[10px] tracking-[0.24em] uppercase text-white/55 mb-1">Ideal weight range</p>
+              <p class="font-sans text-5xl md:text-6xl font-black text-white leading-none tracking-tight"><span id="ibw-low">&mdash;</span><span class="text-2xl text-white/40">&ndash;</span><span id="ibw-high">&mdash;</span> <span class="text-2xl text-white/40">kg</span></p>
+              <p id="ibw-point" class="font-sans text-[11px] tracking-[0.24em] uppercase font-black text-burgundy mt-4 mb-4">IBW &mdash; kg</p>
+              <p class="font-sans text-[10px] text-white/45 leading-snug mb-4">* Broca&rsquo;s Index. The &plusmn;5&nbsp;kg band is a healthy target for non-exercising clients and women. Exercising men should track body-fat % instead.</p>
+              <a href="#contact" class="wybe-calc-cta" style="margin-top:0;">Let&rsquo;s WYBE &rarr;</a>
             </div>
           </div>
         </div>
       </div>
       <!-- /wybe-story-panel IBW -->
 
-          </div><!-- /.wybe-story-stack -->
-        </div><!-- /max-w-5xl -->
+            </div><!-- /.wybe-story-stack right column -->
+          </div><!-- /grid two-column -->
+        </div><!-- /max-w-6xl -->
       </div><!-- /.wybe-story-stage -->
     </div><!-- /.wybe-story-inner -->
   </section>
@@ -1831,7 +1986,11 @@
           if (mode === 'tabs') {
             if (tabs[idx]) tabs[idx].click();
           } else {
-            panels.forEach((p, i) => p.classList.toggle('is-active', i === idx));
+            // Three-state swap: is-past (above), is-active (current), default (below).
+            panels.forEach((p, i) => {
+              p.classList.toggle('is-active', i === idx);
+              p.classList.toggle('is-past',   i <  idx);
+            });
           }
           buttons.forEach(b => b.classList.toggle('is-active', Number(b.dataset.storyJump) === idx));
         };
