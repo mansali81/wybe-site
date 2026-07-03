@@ -1,5 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ── SCROLL PROGRESS BAR ──────────────────────────────
+  // Thin lime line at the very top of the viewport; width tracks how far the
+  // user has scrolled through the document. Small, godaylight-ish accent.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const bar = document.createElement('div');
+    bar.className = 'wybe-scroll-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+    let ticking = false;
+    const update = () => {
+      const h = document.documentElement;
+      const scrolled = h.scrollTop || document.body.scrollTop;
+      const max = (h.scrollHeight - h.clientHeight) || 1;
+      bar.style.width = (Math.min(1, scrolled / max) * 100).toFixed(2) + '%';
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  })();
+
   // ── NAVBAR MOBILE TOGGLE ──────────────────────────────
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');

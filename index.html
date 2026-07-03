@@ -197,6 +197,27 @@
     @media (min-width: 768px) {
       .wybe-rail-row.is-active .wybe-rail-label { font-size: 44px; }
     }
+    /* Hover preview for inactive rows: number + label brighten to lime, label
+       lifts to the right, half-height side-bar previews. Click still triggers
+       the actual is-active swap; this is just an affordance so the title
+       reacts to cursor even before it's activated. */
+    .wybe-rail-row:not(.is-active):hover             { opacity: 0.95; padding-left: 22px; }
+    .wybe-rail-row:not(.is-active):hover::before     { transform: scaleY(0.55); background: rgba(221, 255, 85, 0.7); }
+    .wybe-rail-row:not(.is-active):hover .wybe-rail-num   { color: #DDFF55; }
+    .wybe-rail-row:not(.is-active):hover .wybe-rail-label { color: #F6F2E8; font-size: 22px; letter-spacing: -0.02em; transform: translateX(4px); }
+    .wybe-rail-row .wybe-rail-label { transform: translateX(0); }
+
+    /* Progress-pill hover (Services + any future tab-mode story): same idea
+       but on the pill button rather than the rail. Non-active pill highlights
+       its border in lime and lifts slightly on hover. */
+    .wybe-story-progress-btn:not(.is-active):hover {
+      opacity: 0.95;
+      border-color: rgba(221, 255, 85, 0.7);
+      color: #DDFF55;
+      background: rgba(221, 255, 85, 0.06);
+      transform: translateY(-2px);
+    }
+    .wybe-story-progress-btn { transform: translateY(0); }
 
     /* 6c. Airy split-card calc panel (form left, live result right).
        No box, no backdrop. Thin vertical hairline separates the halves.
@@ -1485,6 +1506,7 @@
   </footer>
 
   <script src="js/wybe-bg.js" defer></script>
+  <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────

@@ -16,51 +16,66 @@ body {
 .font-display { font-family: 'Playfair Display', serif; }
 
 /* ── SCROLL ANIMATIONS ────────────────────────────
-   Sections fade and rise into view as the user scrolls. JS adds
-   .section-pre-animate to every non-hero section and swaps it for
-   .section-in-view once it crosses the IntersectionObserver threshold.
-   Hairlines draw in from 0 width, headings and body copy stagger.
-   All of this is suppressed when the user prefers reduced motion. */
+   Sections fade + rise + settle into view as the user scrolls (godaylight-
+   style). JS adds .section-pre-animate to every non-hero section and swaps
+   it for .section-in-view once it crosses the IntersectionObserver
+   threshold. Hairlines draw in from 0 width; headings, paragraphs, buttons
+   and grid children stagger for a layered reveal. All of this is suppressed
+   when the user prefers reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
   .section-pre-animate > div,
   .section-pre-animate > section {
     opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(48px) scale(0.985);
+    transition: opacity 1.15s cubic-bezier(0.19, 1, 0.22, 1),
+                transform 1.15s cubic-bezier(0.19, 1, 0.22, 1);
     will-change: opacity, transform;
   }
   .section-in-view > div,
   .section-in-view > section {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 
-  /* Grids inside an in-view section stagger their children */
+  /* Layered stagger for common content elements inside an in-view section. */
+  .section-in-view h1,
+  .section-in-view h2,
+  .section-in-view h3,
+  .section-in-view h4,
+  .section-in-view p,
+  .section-in-view a.inline-flex,
+  .section-in-view a.inline-block,
+  .section-in-view button[type='submit'],
   .section-in-view .grid > * {
-    animation: wybe-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: wybe-rise 0.95s cubic-bezier(0.19, 1, 0.22, 1) both;
   }
-  .section-in-view .grid > *:nth-child(1) { animation-delay: 0.05s; }
-  .section-in-view .grid > *:nth-child(2) { animation-delay: 0.15s; }
-  .section-in-view .grid > *:nth-child(3) { animation-delay: 0.25s; }
-  .section-in-view .grid > *:nth-child(4) { animation-delay: 0.35s; }
-  .section-in-view .grid > *:nth-child(5) { animation-delay: 0.45s; }
-  .section-in-view .grid > *:nth-child(6) { animation-delay: 0.55s; }
-  .section-in-view .grid > *:nth-child(7) { animation-delay: 0.65s; }
-  .section-in-view .grid > *:nth-child(8) { animation-delay: 0.75s; }
-  .section-in-view .grid > *:nth-child(9) { animation-delay: 0.85s; }
-  .section-in-view .grid > *:nth-child(10) { animation-delay: 0.95s; }
+  .section-in-view h1, .section-in-view h2, .section-in-view h3 { animation-delay: 0.08s; }
+  .section-in-view p                                            { animation-delay: 0.18s; }
+  .section-in-view a.inline-flex,
+  .section-in-view a.inline-block,
+  .section-in-view button[type='submit']                        { animation-delay: 0.28s; }
+  .section-in-view .grid > *:nth-child(1)  { animation-delay: 0.06s; }
+  .section-in-view .grid > *:nth-child(2)  { animation-delay: 0.14s; }
+  .section-in-view .grid > *:nth-child(3)  { animation-delay: 0.22s; }
+  .section-in-view .grid > *:nth-child(4)  { animation-delay: 0.30s; }
+  .section-in-view .grid > *:nth-child(5)  { animation-delay: 0.38s; }
+  .section-in-view .grid > *:nth-child(6)  { animation-delay: 0.46s; }
+  .section-in-view .grid > *:nth-child(7)  { animation-delay: 0.54s; }
+  .section-in-view .grid > *:nth-child(8)  { animation-delay: 0.62s; }
+  .section-in-view .grid > *:nth-child(9)  { animation-delay: 0.70s; }
+  .section-in-view .grid > *:nth-child(10) { animation-delay: 0.78s; }
 
-  /* Burgundy/sage hairlines draw in from 0 width */
+  /* Hairlines draw in from 0 width. */
   .section-in-view .w-8.h-px,
+  .section-in-view .w-10.h-px,
   .section-in-view .w-12.h-px,
   .section-in-view .w-16.h-px {
-    animation: wybe-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    animation: wybe-draw 1.1s cubic-bezier(0.19, 1, 0.22, 1) 0.22s both;
   }
 
   @keyframes wybe-rise {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(28px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
   }
   @keyframes wybe-draw {
     from { transform: scaleX(0); transform-origin: left center; }
@@ -70,6 +85,21 @@ body {
   /* Parallax target marker. JS writes a transform; we just want will-change. */
   [data-parallax] {
     will-change: transform;
+  }
+
+  /* Scroll progress indicator: a thin lime line at the very top of the page
+     that fills left-to-right as the user scrolls. Populated by JS in
+     main.js — see the wybe-scroll-progress block. */
+  .wybe-scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(221,255,85,0.6), rgba(221,255,85,1));
+    box-shadow: 0 0 10px rgba(221,255,85,0.5);
+    z-index: 10000;
+    pointer-events: none;
+    transition: width 0.1s linear;
   }
 }
 
@@ -91,20 +121,64 @@ body {
   }
 }
 
-/* ── BRANDED CURSOR ──────────────────────────────
-   Small sage dumbbell replacing the default arrow site-wide.
-   Interactive elements get the same dumbbell with a faint ring to feel responsive.
-   Inputs/textareas keep the native text cursor for clarity. */
+/* ── CUSTOM CURSOR (lime dot + trailing ring) ────
+   Native cursor is hidden on desktop pointers; js/wybe-cursor.js appends
+   two fixed elements that follow the pointer. Text inputs keep their
+   native text-caret cursor so users can still see where they are typing.
+   On touch / coarse pointers we do nothing and let the system defaults
+   through (see the media-query fallback at the bottom of this block). */
 @media (hover: hover) and (pointer: fine) {
-  html, body {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23B8BCC0'/><stop offset='0.5' stop-color='%234A5560'/><stop offset='1' stop-color='%23B8BCC0'/></linearGradient></defs><ellipse cx='5' cy='14' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><ellipse cx='23' cy='14' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><rect x='8' y='13' width='12' height='2' rx='0.5' fill='url(%23s)'/></svg>") 14 14, auto;
-  }
-  a, button, [role='button'], select, [data-book-now], [data-bfp-units], [data-tdee-units], summary, label {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23B8BCC0'/><stop offset='0.5' stop-color='%234A5560'/><stop offset='1' stop-color='%23B8BCC0'/></linearGradient></defs><circle cx='16' cy='16' r='14' fill='none' stroke='%234A5560' stroke-width='1' opacity='0.45'/><ellipse cx='7' cy='16' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><ellipse cx='25' cy='16' rx='4' ry='6' fill='url(%23s)' stroke='%232E343A' stroke-width='0.5'/><rect x='10' y='15' width='12' height='2' rx='0.5' fill='url(%23s)'/></svg>") 16 16, pointer;
+  html, body, a, button, [role='button'], select, summary, label {
+    cursor: none;
   }
   input[type='text'], input[type='email'], input[type='tel'], input[type='number'], input[type='password'], textarea {
     cursor: text;
   }
+
+  .wybe-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate3d(-100px, -100px, 0);
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .wybe-cursor.is-visible { opacity: 1; }
+
+  .wybe-cursor__dot {
+    width: 8px;
+    height: 8px;
+    background: #DDFF55;
+    border-radius: 50%;
+    margin: -4px 0 0 -4px;
+    box-shadow: 0 0 12px rgba(221, 255, 85, 0.55);
+    transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.18s ease;
+  }
+  .wybe-cursor__ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid rgba(221, 255, 85, 0.55);
+    border-radius: 50%;
+    margin: -17px 0 0 -17px;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.25s ease,
+                background-color 0.25s ease;
+  }
+  /* Generic hover (any interactive element): ring inflates, dot shrinks. */
+  .wybe-cursor.is-hover .wybe-cursor__dot  { width: 4px;  height: 4px;  margin: -2px 0 0 -2px; }
+  .wybe-cursor.is-hover .wybe-cursor__ring { width: 54px; height: 54px; margin: -27px 0 0 -27px;
+                                             border-color: rgba(221, 255, 85, 0.9);
+                                             background: rgba(221, 255, 85, 0.10); }
+  /* Title-hover (calc/service tabs): even bigger ring. */
+  .wybe-cursor.is-hover-title .wybe-cursor__ring { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
+}
+@media (hover: none), (pointer: coarse) {
+  .wybe-cursor { display: none; }
 }
 
 /* ── DARK-TRANSPARENT SELECT OPTIONS ─────────────
