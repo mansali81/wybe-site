@@ -119,76 +119,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── HERO RUNNER: SCROLL-SCRUBBED VIDEO + SPEED STREAKS ─
-  // The runner mp4 never plays on its own. As the user scrolls through the
-  // hero, we map scroll progress (0..1) → video.currentTime, so the clip
-  // advances frame-by-frame with the scroll. Lime streaks scale-in on the
-  // same progress, staggered so they read as a motion trail behind him.
-  // Falls back to a static first frame if scrubbing is unsupported (e.g.,
-  // some older mobile Safari), or is disabled entirely under
-  // prefers-reduced-motion.
+  // ── HERO RUNNER: SCROLL-JACKED STORY ──────────────────
+  // Hero is 250vh with a sticky-pinned 100vh viewport inside. Scrolling
+  // drives:
+  //   - 0.00..0.85  video plays via scroll-scrubbed currentTime, streaks
+  //                 fire one-by-one at their --fire progress values as the
+  //                 runner passes each anchor position.
+  //   - 0.85..1.00  streaks stay lit; veil + H1/subtitle/CTA fade in as
+  //                 the runner reaches the right edge.
+  // Under prefers-reduced-motion the CSS falls back to a static hero and
+  // this whole controller is a no-op.
   (function () {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const hero    = document.getElementById('home');
     const video   = document.getElementById('hero-runner-video');
     const streaks = document.querySelectorAll('.hero-streak');
+    const veil    = document.querySelector('.hero-veil');
+    const content = document.querySelector('[data-hero-content]');
     if (!hero || !video) return;
-    if (reduceMotion) return; // CSS already hides the video and streaks stay at 0
+    if (reduceMotion) {
+      // Reveal content immediately so a keyboard/reduced-motion user still
+      // gets the headline + CTA.
+      if (content) content.classList.add('is-revealed');
+      if (veil)    veil.classList.add('is-visible');
+      streaks.forEach(el => el.classList.add('is-active'));
+      return;
+    }
 
-    // Ready the video without playing it. On loadedmetadata we can seek.
+    // Prime the video so the first frame is decoded and seek is supported.
     let duration = 0;
     const primeVideo = () => {
       duration = isFinite(video.duration) && video.duration > 0 ? video.duration : 0;
-      // Nudge to a first stable frame so an initial poster shows before any
-      // scroll happens.
       try { video.currentTime = 0.001; } catch (_) {}
     };
     if (video.readyState >= 1) primeVideo();
     else video.addEventListener('loadedmetadata', primeVideo, { once: true });
 
-    // Fallback: if the video can't seek (readyState never advances), leave the
-    // element at first frame and let the streaks carry the effect.
-
-    // Compute scroll progress through the hero. We consume the FIRST viewport-
-    // height of scroll past hero-top so the whole runner sequence plays before
-    // the next section arrives.
+    // Scroll progress through the WHOLE hero section (0..1). Because the
+    // inside is sticky-pinned, scroll from hero-top → hero-bottom-minus-vh
+    // maps to 0..1 while the visible area stays put.
     const progress = () => {
-      const rect = hero.getBoundingClientRect();
-      const range = Math.max(1, hero.offsetHeight - window.innerHeight * 0.35);
-      const scrolled = -rect.top;
-      return Math.max(0, Math.min(1, scrolled / range));
+      const rect  = hero.getBoundingClientRect();
+      const range = Math.max(1, hero.offsetHeight - window.innerHeight);
+      return Math.max(0, Math.min(1, -rect.top / range));
     };
+
+    // Video timeline occupies the first 85% of scroll; the last 15% is text.
+    const VIDEO_UNTIL = 0.85;
+
+    // Cache each streak's fire threshold for the hot path.
+    const streakFires = Array.from(streaks).map(el =>
+      parseFloat(getComputedStyle(el).getPropertyValue('--fire')) || 0
+    );
 
     let latestP = 0;
     let ticking = false;
     const apply = () => {
       const p = latestP;
-      // Video scrub. Skip if not yet loaded enough to seek.
+
+      // Video: scale to VIDEO_UNTIL so the whole clip plays out by then.
+      const vp = Math.min(1, p / VIDEO_UNTIL);
       if (duration > 0 && video.readyState >= 2) {
-        // Guard against setting currentTime to exactly duration (some browsers
-        // dispatch 'ended' and freeze). Cap at duration - a small delta.
-        const t = Math.min(duration - 0.05, p * duration);
-        if (Math.abs(video.currentTime - t) > 0.02) {
+        const t = Math.min(duration - 0.05, vp * duration);
+        if (Math.abs(video.currentTime - t) > 0.03) {
           try { video.currentTime = t; } catch (_) {}
         }
       }
-      // Streaks: each one has a stagger delay in --d (0..0.35). Scale from
-      // 0 to 1 as progress crosses that delay + a 0.35 window.
-      streaks.forEach((el) => {
-        const d = parseFloat(getComputedStyle(el).getPropertyValue('--d')) || 0;
-        const local = Math.max(0, Math.min(1, (p - d) / 0.4));
-        el.style.transform = `scaleX(${local.toFixed(3)})`;
-        el.classList.toggle('is-active', local > 0.01);
-      });
+
+      // Streaks: each streak fires when scroll progress crosses its --fire.
+      // Once active, stays active (so scrolling back up doesn't erase the
+      // wake trail unless you scroll well above the trigger).
+      for (let i = 0; i < streaks.length; i++) {
+        const fired = p >= streakFires[i];
+        streaks[i].classList.toggle('is-active', fired);
+      }
+
+      // Text + veil reveal in the last 15% of scroll.
+      const reveal = p >= 0.87;
+      if (content) content.classList.toggle('is-revealed', reveal);
+      if (veil)    veil.classList.toggle('is-visible',    reveal);
+
       ticking = false;
     };
+
     window.addEventListener('scroll', () => {
       latestP = progress();
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(apply);
     }, { passive: true });
-    // Also apply once at load in case the browser restored a mid-page scroll.
+    window.addEventListener('resize', () => {
+      latestP = progress();
+      apply();
+    });
+
+    // Apply once at load in case the browser restored a mid-page scroll.
     latestP = progress();
     apply();
   })();

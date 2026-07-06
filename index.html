@@ -403,44 +403,63 @@
   <!-- #HOME HERO — solid dark-navy canvas, no image. Layout matches the brand
        palette PDF: heavy Inter Black headline, small Raleway light subtitle,
        big lime pill CTA in the accent color. -->
-  <section id="home" class="hero relative min-h-screen text-cream flex items-center pt-16 overflow-hidden">
-    <!-- Lime speed streaks. Distributed vertically across the hero; each one
-         grows from left to right as the user scrolls, staggered so the
-         streaks read as the runner's motion trail. -->
-    <div class="hero-streaks" aria-hidden="true">
-      <span class="hero-streak" style="top: 22%; --w: 42%; --d: 0.00;"></span>
-      <span class="hero-streak" style="top: 30%; --w: 58%; --d: 0.05;"></span>
-      <span class="hero-streak" style="top: 38%; --w: 34%; --d: 0.10;"></span>
-      <span class="hero-streak" style="top: 46%; --w: 68%; --d: 0.15;"></span>
-      <span class="hero-streak" style="top: 54%; --w: 44%; --d: 0.20;"></span>
-      <span class="hero-streak" style="top: 62%; --w: 74%; --d: 0.25;"></span>
-      <span class="hero-streak" style="top: 70%; --w: 38%; --d: 0.30;"></span>
-      <span class="hero-streak" style="top: 78%; --w: 60%; --d: 0.35;"></span>
-    </div>
+  <!-- HERO — scroll-jacked story.
+       Section is 250vh. Inside, .hero-sticky pins to the viewport top for
+       100vh, so scrolling advances the runner + streaks + text reveal
+       instead of moving the page. When the sequence completes, the pin
+       releases and the page scrolls on to the next section. -->
+  <section id="home" class="hero relative overflow-visible">
+    <div class="hero-sticky text-cream">
 
-    <!-- Runner video: paused, muted, and scroll-scrubbed by JS so the runner
-         moves across the hero as the user scrolls down. Source is flipped
-         horizontally (scaleX(-1)) so he appears to move left-to-right instead
-         of the source's right-to-left direction. -->
-    <div class="hero-runner" aria-hidden="true">
-      <video id="hero-runner-video"
-             preload="auto" muted playsinline
-             src="images/Untitled%20design.mp4"></video>
-    </div>
+      <!-- Runner video: paused; scroll-scrubbed by JS to advance frame-by-
+           frame. Source is right-to-left; scaleX(-1) mirrors it so the
+           runner moves LEFT-TO-RIGHT. object-fit: contain guarantees the
+           FULL video is visible (portrait 3:4 clip on a landscape hero). -->
+      <div class="hero-runner" aria-hidden="true">
+        <video id="hero-runner-video"
+               preload="auto" muted playsinline
+               src="images/Untitled%20design.mp4"></video>
+      </div>
 
-    <!-- Dark gradient veil so text stays legible over runner + streaks. -->
-    <div class="hero-veil" aria-hidden="true"></div>
+      <!-- Lime speed streaks — twelve trailing marks that FIRE as the
+           runner passes each one, extending LEFT (his wake). Each streak
+           has its LEFT edge anchored where the runner is at that progress,
+           so streaks accumulate behind him instead of blooming from the
+           left edge. --fire is the scroll-progress at which it activates. -->
+      <div class="hero-streaks" aria-hidden="true">
+        <span class="hero-streak" style="top: 18%; left:  4%; --w: 10%; --fire: 0.05;"></span>
+        <span class="hero-streak" style="top: 24%; left:  9%; --w: 14%; --fire: 0.10;"></span>
+        <span class="hero-streak" style="top: 30%; left: 14%; --w: 16%; --fire: 0.16;"></span>
+        <span class="hero-streak" style="top: 36%; left: 20%; --w: 18%; --fire: 0.22;"></span>
+        <span class="hero-streak" style="top: 42%; left: 26%; --w: 20%; --fire: 0.28;"></span>
+        <span class="hero-streak" style="top: 48%; left: 33%; --w: 22%; --fire: 0.34;"></span>
+        <span class="hero-streak" style="top: 54%; left: 40%; --w: 22%; --fire: 0.42;"></span>
+        <span class="hero-streak" style="top: 60%; left: 47%; --w: 20%; --fire: 0.50;"></span>
+        <span class="hero-streak" style="top: 66%; left: 54%; --w: 18%; --fire: 0.58;"></span>
+        <span class="hero-streak" style="top: 72%; left: 61%; --w: 16%; --fire: 0.66;"></span>
+        <span class="hero-streak" style="top: 78%; left: 68%; --w: 14%; --fire: 0.74;"></span>
+        <span class="hero-streak" style="top: 84%; left: 75%; --w: 12%; --fire: 0.82;"></span>
+      </div>
 
-    <div class="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
-      <h1 class="text-cream uppercase leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-8xl mb-8 max-w-4xl">
-        Wellness You Build Everyday
-      </h1>
-      <p class="text-cream/80 text-base md:text-lg leading-snug max-w-lg mb-10 font-light">
-        Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
-      </p>
-      <a href="#contact" class="inline-block bg-burgundy text-charcoal font-heading font-black text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
-        Let&rsquo;s WYBE
-      </a>
+      <!-- Dark navy veil layered above runner+streaks, activated once the
+           runner reaches the end so text stays legible. -->
+      <div class="hero-veil" aria-hidden="true"></div>
+
+      <!-- Content: H1 + subtitle + CTA. Starts invisible; JS reveals it
+           only in the last 15% of scroll progress, once the runner has
+           reached the right side. -->
+      <div class="hero-content max-w-6xl mx-auto px-6 w-full" data-hero-content>
+        <h1 class="text-cream uppercase leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-8xl mb-8 max-w-4xl">
+          Wellness You Build Everyday
+        </h1>
+        <p class="text-cream/85 text-base md:text-lg leading-snug max-w-lg mb-10 font-light">
+          Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
+        </p>
+        <a href="#contact" class="inline-block bg-burgundy text-charcoal font-heading font-black text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
+          Let&rsquo;s WYBE
+        </a>
+      </div>
+
     </div>
   </section>
 
