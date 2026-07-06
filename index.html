@@ -1774,6 +1774,11 @@
           clearGroup(btn);
           setActiveStyle(btn, true);
           refreshForwardBtn();
+          // Tell the Services sticky-snap story that the quiz is now in
+          // progress. It should stop advancing to the next service tab
+          // on scroll until the quiz result is shown (or the user manually
+          // clicks a different tab).
+          document.dispatchEvent(new CustomEvent('wybe:quiz-active'));
           // Q2 special: track the guidance flag so nextStepId routes correctly.
           if (q === 'q2') {
             needsGuidance = btn.dataset.guidance === 'true';
@@ -1885,6 +1890,8 @@
         if (quizState) quizState.classList.add('hidden');
         result.classList.remove('hidden');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Quiz done → release the Services sticky-snap lock.
+        document.dispatchEvent(new CustomEvent('wybe:quiz-end'));
       };
 
       // Pay button → state B: hide pay UI, reveal the name/email form.
@@ -1916,6 +1923,9 @@
         result.classList.add('hidden');
         if (quizState) quizState.classList.remove('hidden');
         renderStep();
+        // Retake: quiz is fresh (no answers yet), release the lock so scroll
+        // works normally again. It'll re-arm on the first new answer.
+        document.dispatchEvent(new CustomEvent('wybe:quiz-end'));
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     })();
@@ -1944,8 +1954,29 @@
         if (!count) return;
         let activeIdx = -1;
 
+        // Services-only: hold the tab at index 0 (Workout Program) while the
+        // digital-plan quiz is in progress. Released when the quiz result
+        // shows, when the user retakes it, or when they manually click a
+        // different service tab.
+        let quizLocked = false;
+        if (mode === 'tabs') {
+          document.addEventListener('wybe:quiz-active', () => { quizLocked = true; });
+          document.addEventListener('wybe:quiz-end',    () => { quizLocked = false; });
+          // Manual tab click on a non-workout tab also releases the lock.
+          tabs.forEach(t => {
+            t.addEventListener('click', (e) => {
+              if (!e.isTrusted) return; // ignore programmatic clicks from setActive
+              if (t.dataset.serviceTab !== 'digital-plan') quizLocked = false;
+            });
+          });
+        }
+
         const setActive = (idx) => {
           if (idx === activeIdx) return;
+          // Quiz lock: don't let scroll drag the user past the Workout Program
+          // while they're mid-quiz. Clicks on progress-jump buttons still work
+          // (they route through the click handler below, which unlocks first).
+          if (mode === 'tabs' && quizLocked && idx > 0) return;
           activeIdx = idx;
           if (mode === 'tabs') {
             if (tabs[idx]) tabs[idx].click();
@@ -1986,6 +2017,9 @@
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
             const idx = Number(btn.dataset.storyJump);
+            // Explicit user jump past a quiz-locked panel counts as intent to
+            // leave the quiz. Release the lock so the scroll can take them.
+            if (mode === 'tabs' && idx > 0) quizLocked = false;
             const rect = inner.getBoundingClientRect();
             const total = inner.offsetHeight - window.innerHeight;
             // Aim at the middle of that panel's scroll band, offset by nav height.
