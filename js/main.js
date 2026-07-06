@@ -119,44 +119,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── HERO VIDEO AUTO-SOUND ─────────────────────────────
-  // Same pattern as the calculator video: unmute while the hero is in view,
-  // mute as soon as the user scrolls past it. Browsers refuse the initial
-  // unmute attempt until the user has gestured at the page, so we also
-  // listen for the first interaction and retry while the hero is visible.
-  (function() {
-    const heroVideo = document.getElementById('hero-video');
-    const heroSection = document.getElementById('home');
-    if (!heroVideo || !heroSection || !('IntersectionObserver' in window)) return;
+  // ── HERO RUNNER: SCROLL-SCRUBBED VIDEO + SPEED STREAKS ─
+  // The runner mp4 never plays on its own. As the user scrolls through the
+  // hero, we map scroll progress (0..1) → video.currentTime, so the clip
+  // advances frame-by-frame with the scroll. Lime streaks scale-in on the
+  // same progress, staggered so they read as a motion trail behind him.
+  // Falls back to a static first frame if scrubbing is unsupported (e.g.,
+  // some older mobile Safari), or is disabled entirely under
+  // prefers-reduced-motion.
+  (function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hero    = document.getElementById('home');
+    const video   = document.getElementById('hero-runner-video');
+    const streaks = document.querySelectorAll('.hero-streak');
+    if (!hero || !video) return;
+    if (reduceMotion) return; // CSS already hides the video and streaks stay at 0
 
-    let isInView = true;
-    const tryUnmute = () => {
-      heroVideo.muted = false;
-      heroVideo.volume = 1;
-      heroVideo.play().catch(() => { heroVideo.muted = true; });
+    // Ready the video without playing it. On loadedmetadata we can seek.
+    let duration = 0;
+    const primeVideo = () => {
+      duration = isFinite(video.duration) && video.duration > 0 ? video.duration : 0;
+      // Nudge to a first stable frame so an initial poster shows before any
+      // scroll happens.
+      try { video.currentTime = 0.001; } catch (_) {}
+    };
+    if (video.readyState >= 1) primeVideo();
+    else video.addEventListener('loadedmetadata', primeVideo, { once: true });
+
+    // Fallback: if the video can't seek (readyState never advances), leave the
+    // element at first frame and let the streaks carry the effect.
+
+    // Compute scroll progress through the hero. We consume the FIRST viewport-
+    // height of scroll past hero-top so the whole runner sequence plays before
+    // the next section arrives.
+    const progress = () => {
+      const rect = hero.getBoundingClientRect();
+      const range = Math.max(1, hero.offsetHeight - window.innerHeight * 0.35);
+      const scrolled = -rect.top;
+      return Math.max(0, Math.min(1, scrolled / range));
     };
 
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        isInView = entry.isIntersecting;
-        if (entry.isIntersecting) {
-          tryUnmute();
-        } else {
-          heroVideo.muted = true;
+    let latestP = 0;
+    let ticking = false;
+    const apply = () => {
+      const p = latestP;
+      // Video scrub. Skip if not yet loaded enough to seek.
+      if (duration > 0 && video.readyState >= 2) {
+        // Guard against setting currentTime to exactly duration (some browsers
+        // dispatch 'ended' and freeze). Cap at duration - a small delta.
+        const t = Math.min(duration - 0.05, p * duration);
+        if (Math.abs(video.currentTime - t) > 0.02) {
+          try { video.currentTime = t; } catch (_) {}
         }
+      }
+      // Streaks: each one has a stagger delay in --d (0..0.35). Scale from
+      // 0 to 1 as progress crosses that delay + a 0.35 window.
+      streaks.forEach((el) => {
+        const d = parseFloat(getComputedStyle(el).getPropertyValue('--d')) || 0;
+        const local = Math.max(0, Math.min(1, (p - d) / 0.4));
+        el.style.transform = `scaleX(${local.toFixed(3)})`;
+        el.classList.toggle('is-active', local > 0.01);
       });
-    }, { threshold: 0.35 });
-    obs.observe(heroSection);
-
-    // First-gesture retry: browsers block the initial autoplay-with-sound
-    // attempt. The instant the user interacts, retry once if hero is still
-    // visible.
-    const events = ['pointerdown', 'click', 'keydown', 'touchstart'];
-    const onFirstGesture = () => {
-      events.forEach(ev => window.removeEventListener(ev, onFirstGesture, true));
-      if (isInView) tryUnmute();
+      ticking = false;
     };
-    events.forEach(ev => window.addEventListener(ev, onFirstGesture, { once: true, passive: true, capture: true }));
+    window.addEventListener('scroll', () => {
+      latestP = progress();
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    }, { passive: true });
+    // Also apply once at load in case the browser restored a mid-page scroll.
+    latestP = progress();
+    apply();
   })();
 
   // ── PARALLAX ──────────────────────────────────────────

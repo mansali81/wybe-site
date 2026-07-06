@@ -403,10 +403,37 @@
   <!-- #HOME HERO — solid dark-navy canvas, no image. Layout matches the brand
        palette PDF: heavy Inter Black headline, small Raleway light subtitle,
        big lime pill CTA in the accent color. -->
-  <section id="home" class="relative min-h-screen text-cream flex items-center pt-16 overflow-hidden">
-    <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
+  <section id="home" class="hero relative min-h-screen text-cream flex items-center pt-16 overflow-hidden">
+    <!-- Lime speed streaks. Distributed vertically across the hero; each one
+         grows from left to right as the user scrolls, staggered so the
+         streaks read as the runner's motion trail. -->
+    <div class="hero-streaks" aria-hidden="true">
+      <span class="hero-streak" style="top: 22%; --w: 42%; --d: 0.00;"></span>
+      <span class="hero-streak" style="top: 30%; --w: 58%; --d: 0.05;"></span>
+      <span class="hero-streak" style="top: 38%; --w: 34%; --d: 0.10;"></span>
+      <span class="hero-streak" style="top: 46%; --w: 68%; --d: 0.15;"></span>
+      <span class="hero-streak" style="top: 54%; --w: 44%; --d: 0.20;"></span>
+      <span class="hero-streak" style="top: 62%; --w: 74%; --d: 0.25;"></span>
+      <span class="hero-streak" style="top: 70%; --w: 38%; --d: 0.30;"></span>
+      <span class="hero-streak" style="top: 78%; --w: 60%; --d: 0.35;"></span>
+    </div>
+
+    <!-- Runner video: paused, muted, and scroll-scrubbed by JS so the runner
+         moves across the hero as the user scrolls down. Source is flipped
+         horizontally (scaleX(-1)) so he appears to move left-to-right instead
+         of the source's right-to-left direction. -->
+    <div class="hero-runner" aria-hidden="true">
+      <video id="hero-runner-video"
+             preload="auto" muted playsinline
+             src="images/Untitled%20design.mp4"></video>
+    </div>
+
+    <!-- Dark gradient veil so text stays legible over runner + streaks. -->
+    <div class="hero-veil" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
       <h1 class="text-cream uppercase leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-8xl mb-8 max-w-4xl">
-        Evidence Based Personal Training, Fitness &amp; Nutrition Consultation
+        Wellness You Build Everyday
       </h1>
       <p class="text-cream/80 text-base md:text-lg leading-snug max-w-lg mb-10 font-light">
         Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
