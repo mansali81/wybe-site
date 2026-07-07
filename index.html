@@ -403,17 +403,13 @@
   <!-- #HOME HERO — solid dark-navy canvas, no image. Layout matches the brand
        palette PDF: heavy Inter Black headline, small Raleway light subtitle,
        big lime pill CTA in the accent color. -->
-  <!-- HERO — scroll-jacked action-photograph story.
-       Section is 250vh. .hero-sticky pins for 100vh. Scrolling drives:
-         L1  MP4 sand backdrop (autoplay, muted, HEAVY blur so the runner-in-
-             the-mp4 becomes an abstract smear and the sand + sea texture fills
-             the canvas, matching the reference brief).
+  <!-- HERO — scroll-jacked story.
+       Section is 250vh. .hero-sticky pins for 100vh. Layers:
+         L1  MP4 running video (autoplay, loop, muted) plays as the hero
+             background across the full canvas (object-fit: cover).
          L2  Dense lime motion streaks (~28 of them, varied thickness + blur)
-             — a panning-blur wash, not thin lines. Each fires when scroll
-             progress crosses its --fire threshold, so they accumulate in the
-             sprinter's wake.
-         L3  Sprinter cutout PNG — the SHARP focal point. Translates from
-             off-screen left to off-screen right on scroll.
+             — a panning-blur wash. Each fires when scroll progress crosses
+             its --fire threshold.
          L4  Navy veil — fades in at the end for text legibility.
          L5  H1 + subtitle + CTA — fade in at the end. -->
   <section id="home" class="hero relative overflow-visible">
@@ -463,12 +459,6 @@
         <span class="hero-streak" style="top: 50%; left: 22%; --w: 60%; --h: 2.5px; --blur: 3px; --fire: 0.46;"></span>
         <span class="hero-streak" style="top: 65%; left: 32%; --w: 55%; --h: 2px;   --blur: 3px; --fire: 0.62;"></span>
         <span class="hero-streak" style="top: 80%; left: 42%; --w: 45%; --h: 1.5px; --blur: 2px; --fire: 0.78;"></span>
-      </div>
-
-      <!-- L3: sprinter cutout, sharp, translates on scroll -->
-      <div class="hero-sprinter" aria-hidden="true">
-        <img src="images/Untitled%20design%202.PNG" alt=""
-             draggable="false">
       </div>
 
       <!-- L4: navy veil -->
