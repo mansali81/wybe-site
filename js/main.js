@@ -119,55 +119,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── HERO RUNNER: SCROLL-JACKED STORY ──────────────────
+  // ── HERO SCROLL-JACKED STORY (v3, sprinter cutout) ─────
   // Hero is 250vh with a sticky-pinned 100vh viewport inside. Scrolling
   // drives:
-  //   - 0.00..0.85  video plays via scroll-scrubbed currentTime, streaks
-  //                 fire one-by-one at their --fire progress values as the
-  //                 runner passes each anchor position.
-  //   - 0.85..1.00  streaks stay lit; veil + H1/subtitle/CTA fade in as
-  //                 the runner reaches the right edge.
-  // Under prefers-reduced-motion the CSS falls back to a static hero and
-  // this whole controller is a no-op.
+  //   0.00..0.85  Sprinter cutout translates from off-screen-LEFT to
+  //               off-screen-RIGHT. Streaks fire at their --fire progress
+  //               values, so each accumulates in the sprinter's wake.
+  //               (Sand mp4 in the background autoplays + loops
+  //               independently and stays heavily blurred by CSS.)
+  //   0.87..1.00  Veil + H1/subtitle/CTA fade in as the sprinter clears
+  //               the frame.
+  // Under prefers-reduced-motion the CSS falls back and this is a no-op.
   (function () {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hero    = document.getElementById('home');
-    const video   = document.getElementById('hero-runner-video');
-    const streaks = document.querySelectorAll('.hero-streak');
-    const veil    = document.querySelector('.hero-veil');
-    const content = document.querySelector('[data-hero-content]');
-    if (!hero || !video) return;
+    const hero      = document.getElementById('home');
+    const sprinter  = document.querySelector('.hero-sprinter');
+    const streaks   = document.querySelectorAll('.hero-streak');
+    const veil      = document.querySelector('.hero-veil');
+    const content   = document.querySelector('[data-hero-content]');
+    if (!hero) return;
     if (reduceMotion) {
-      // Reveal content immediately so a keyboard/reduced-motion user still
-      // gets the headline + CTA.
       if (content) content.classList.add('is-revealed');
       if (veil)    veil.classList.add('is-visible');
       streaks.forEach(el => el.classList.add('is-active'));
       return;
     }
 
-    // Prime the video so the first frame is decoded and seek is supported.
-    let duration = 0;
-    const primeVideo = () => {
-      duration = isFinite(video.duration) && video.duration > 0 ? video.duration : 0;
-      try { video.currentTime = 0.001; } catch (_) {}
-    };
-    if (video.readyState >= 1) primeVideo();
-    else video.addEventListener('loadedmetadata', primeVideo, { once: true });
-
-    // Scroll progress through the WHOLE hero section (0..1). Because the
-    // inside is sticky-pinned, scroll from hero-top → hero-bottom-minus-vh
-    // maps to 0..1 while the visible area stays put.
+    // Scroll progress through the WHOLE hero section (0..1). Since the
+    // inside is sticky-pinned, scroll from hero-top down maps to 0..1
+    // while the visible area stays put.
     const progress = () => {
       const rect  = hero.getBoundingClientRect();
       const range = Math.max(1, hero.offsetHeight - window.innerHeight);
       return Math.max(0, Math.min(1, -rect.top / range));
     };
 
-    // Video timeline occupies the first 85% of scroll; the last 15% is text.
-    const VIDEO_UNTIL = 0.85;
+    const SPRINTER_UNTIL = 0.85;   // sprinter finishes traveling by 0.85
+    const REVEAL_AT      = 0.87;   // text + veil reveal at 0.87
+    // Sprinter starts off-screen LEFT (-40vw) and ends off-screen RIGHT
+    // (+40vw). At progress ~0.5 he's centered.
+    const START_TX = -40;
+    const END_TX   =  40;
 
-    // Cache each streak's fire threshold for the hot path.
     const streakFires = Array.from(streaks).map(el =>
       parseFloat(getComputedStyle(el).getPropertyValue('--fire')) || 0
     );
@@ -177,25 +170,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const apply = () => {
       const p = latestP;
 
-      // Video: scale to VIDEO_UNTIL so the whole clip plays out by then.
-      const vp = Math.min(1, p / VIDEO_UNTIL);
-      if (duration > 0 && video.readyState >= 2) {
-        const t = Math.min(duration - 0.05, vp * duration);
-        if (Math.abs(video.currentTime - t) > 0.03) {
-          try { video.currentTime = t; } catch (_) {}
-        }
-      }
+      // Sprinter translate: linear across scroll 0..SPRINTER_UNTIL.
+      const sp = Math.min(1, p / SPRINTER_UNTIL);
+      const tx = START_TX + (END_TX - START_TX) * sp;
+      if (sprinter) sprinter.style.setProperty('--tx', tx.toFixed(2) + 'vw');
 
-      // Streaks: each streak fires when scroll progress crosses its --fire.
-      // Once active, stays active (so scrolling back up doesn't erase the
-      // wake trail unless you scroll well above the trigger).
+      // Streaks: fire when scroll progress crosses each --fire threshold.
       for (let i = 0; i < streaks.length; i++) {
-        const fired = p >= streakFires[i];
-        streaks[i].classList.toggle('is-active', fired);
+        streaks[i].classList.toggle('is-active', p >= streakFires[i]);
       }
 
-      // Text + veil reveal in the last 15% of scroll.
-      const reveal = p >= 0.87;
+      // Text + veil reveal at the end.
+      const reveal = p >= REVEAL_AT;
       if (content) content.classList.toggle('is-revealed', reveal);
       if (veil)    veil.classList.toggle('is-visible',    reveal);
 
@@ -213,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
       apply();
     });
 
-    // Apply once at load in case the browser restored a mid-page scroll.
     latestP = progress();
     apply();
   })();

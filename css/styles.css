@@ -110,12 +110,15 @@ body {
   }
 }
 
-/* ── HERO: scroll-jacked runner story ────────────────
-   The section is 250vh. .hero-sticky pins to the viewport top for 100vh so
-   scrolling advances the animation instead of moving the page. Layers
-   (back to front): runner video → streaks → veil (activated at end) →
-   content (revealed at end). JS in main.js reads the section's scroll
-   progress and drives everything from it. */
+/* ── HERO: scroll-jacked action-photograph story ────
+   Layered composition on a 250vh section with a 100vh sticky pinned
+   viewport inside.
+     L1 .hero-sand    heavily blurred autoplay mp4 → sand + sea texture
+     L2 .hero-streaks dense lime motion-blur wash (~28 streaks)
+     L3 .hero-sprinter sharp cutout of the runner (translates on scroll)
+     L4 .hero-veil    navy veil, fades in at end for text legibility
+     L5 .hero-content H1 + subtitle + CTA, revealed at end
+   JS in main.js reads the section's scroll progress and drives L2/L3/L4/L5. */
 .hero {
   min-height: 250vh;
   position: relative;
@@ -127,54 +130,60 @@ body {
   height: 100vh;
   overflow: hidden;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
-/* Runner: object-fit: contain so the FULL portrait clip is visible on the
-   landscape hero (no cropping). Centered horizontally + vertically. */
-.hero-runner {
+
+/* L1: MP4 sand backdrop. object-fit: cover fills the hero so the sand +
+   sea texture covers the whole canvas. Heavy blur + slight desaturation
+   melts the runner-in-the-mp4 into an abstract smear so it doesn't
+   compete with the sharp foreground sprinter. */
+.hero-sand {
   position: absolute;
   inset: 0;
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: #002233;
 }
-.hero-runner video {
+.hero-sand video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  transform: scaleX(-1);
-  opacity: 0.95;
-  filter: contrast(1.05) brightness(0.9) saturate(1.05);
+  transform: scaleX(-1) scale(1.15);
+  filter: blur(28px) saturate(1.15) brightness(0.85) contrast(1.05);
+  opacity: 0.7;
 }
 
-/* Speed streaks — each fires when scroll progress crosses its --fire value,
-   scaling from 0 to full width LEFTWARD from its left anchor (so the streak
-   reads as extending back into the runner's wake). After it fires it stays
-   visible until the user scrolls back up. */
+/* L2: dense lime motion-blur wash. Each streak has its own thickness,
+   blur radius, and fire threshold via CSS custom properties. When active,
+   scales from 0 to full width rightward-anchored (extends LEFT into the
+   sprinter's wake). */
 .hero-streaks {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
   overflow: hidden;
+  mix-blend-mode: screen;      /* fuses with the sand backdrop for a light-trail feel */
 }
 .hero-streak {
   position: absolute;
-  height: 3px;
+  height: var(--h, 3px);
   width: var(--w, 20%);
   background: linear-gradient(
     90deg,
     rgba(221, 255, 85, 0) 0%,
-    rgba(221, 255, 85, 0.35) 8%,
-    rgba(221, 255, 85, 1) 45%,
-    rgba(221, 255, 85, 1) 75%,
-    rgba(221, 255, 85, 0.6) 92%,
+    rgba(221, 255, 85, 0.30) 8%,
+    rgba(221, 255, 85, 0.95) 40%,
+    rgba(221, 255, 85, 1) 65%,
+    rgba(221, 255, 85, 0.75) 88%,
     rgba(221, 255, 85, 0) 100%
   );
-  filter: drop-shadow(0 0 10px rgba(221, 255, 85, 0.65));
+  filter: blur(var(--blur, 3px)) drop-shadow(0 0 12px rgba(221, 255, 85, 0.55));
   transform-origin: right center;
   transform: scaleX(0);
   opacity: 0;
@@ -187,17 +196,43 @@ body {
   opacity: 1;
 }
 
-/* Navy veil: hidden until the runner reaches the end; then fades in with the
-   content so the H1 sits on a legible field. */
-.hero-veil {
+/* L3: sprinter cutout. Sharp, in-focus, positioned bottom-center. JS
+   updates --tx to translate him from off-screen left to off-screen right
+   as scroll progresses. Drop shadow anchors him in the scene. */
+.hero-sprinter {
   position: absolute;
   inset: 0;
   z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  --tx: -35vw;
+}
+.hero-sprinter img {
+  height: 82%;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  transform: translateX(var(--tx));
+  will-change: transform;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.55))
+          contrast(1.05)
+          saturate(1.08);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* L4: navy veil, fades in with the text reveal. */
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
   background: linear-gradient(
     100deg,
-    rgba(0, 34, 51, 0.85) 0%,
-    rgba(0, 34, 51, 0.55) 55%,
-    rgba(0, 34, 51, 0.3)  100%
+    rgba(0, 34, 51, 0.9) 0%,
+    rgba(0, 34, 51, 0.6) 55%,
+    rgba(0, 34, 51, 0.35) 100%
   );
   pointer-events: none;
   opacity: 0;
@@ -205,21 +240,16 @@ body {
 }
 .hero-veil.is-visible { opacity: 1; }
 
-/* Content: H1 + subtitle + CTA. Fully hidden until progress reaches ~0.85,
-   then fades in with a subtle rise. */
+/* L5: H1 + subtitle + CTA. Hidden until scroll progress crosses ~0.87. */
 .hero-content {
   position: relative;
-  z-index: 4;
+  z-index: 5;
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s cubic-bezier(0.19, 1, 0.22, 1),
               transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
   will-change: opacity, transform;
   align-self: center;
-}
-.hero-sticky {
-  display: flex;
-  align-items: center;
 }
 .hero-content.is-revealed {
   opacity: 1;
@@ -229,13 +259,14 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .hero { min-height: 100vh; }
   .hero-sticky { position: relative; height: auto; min-height: 100vh; }
-  .hero-runner video { display: none; }
+  .hero-sand video { display: none; }
   .hero-streak, .hero-veil, .hero-content {
     opacity: 1;
     transform: none;
     transition: none;
   }
-  .hero-streak { transform: scaleX(0.7); }
+  .hero-streak { transform: scaleX(0.75); }
+  .hero-sprinter { --tx: 0; }
 }
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────
