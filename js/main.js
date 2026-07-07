@@ -119,69 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── HERO SCROLL-JACKED STORY ───────────────────────────
-  // Hero is 250vh with a sticky-pinned 100vh viewport inside. The video
-  // in the background autoplays + loops independently. Scrolling drives:
-  //   0.00..0.85  Streaks fire one-by-one at their --fire thresholds.
-  //   0.87..1.00  Veil + H1/subtitle/CTA fade in.
-  // Under prefers-reduced-motion the CSS falls back and this is a no-op.
-  (function () {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hero    = document.getElementById('home');
-    const streaks = document.querySelectorAll('.hero-streak');
-    const veil    = document.querySelector('.hero-veil');
-    const content = document.querySelector('[data-hero-content]');
-    if (!hero) return;
-    if (reduceMotion) {
-      if (content) content.classList.add('is-revealed');
-      if (veil)    veil.classList.add('is-visible');
-      streaks.forEach(el => el.classList.add('is-active'));
-      return;
-    }
-
-    // Scroll progress through the whole hero section (0..1).
-    const progress = () => {
-      const rect  = hero.getBoundingClientRect();
-      const range = Math.max(1, hero.offsetHeight - window.innerHeight);
-      return Math.max(0, Math.min(1, -rect.top / range));
-    };
-
-    const REVEAL_AT = 0.87;
-
-    const streakFires = Array.from(streaks).map(el =>
-      parseFloat(getComputedStyle(el).getPropertyValue('--fire')) || 0
-    );
-
-    let latestP = 0;
-    let ticking = false;
-    const apply = () => {
-      const p = latestP;
-
-      for (let i = 0; i < streaks.length; i++) {
-        streaks[i].classList.toggle('is-active', p >= streakFires[i]);
-      }
-
-      const reveal = p >= REVEAL_AT;
-      if (content) content.classList.toggle('is-revealed', reveal);
-      if (veil)    veil.classList.toggle('is-visible',    reveal);
-
-      ticking = false;
-    };
-
-    window.addEventListener('scroll', () => {
-      latestP = progress();
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(apply);
-    }, { passive: true });
-    window.addEventListener('resize', () => {
-      latestP = progress();
-      apply();
-    });
-
-    latestP = progress();
-    apply();
-  })();
+  // Hero scroll-scrub + rays live in js/hero.js (GSAP + ScrollTrigger).
 
   // ── PARALLAX ──────────────────────────────────────────
   // Elements tagged with [data-parallax] translate vertically with scroll.

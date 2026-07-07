@@ -110,133 +110,123 @@ body {
   }
 }
 
-/* ── HERO: scroll-jacked story ─────────────────────
-   Layered composition on a 250vh section with a 100vh sticky pinned
-   viewport inside.
-     L1 .hero-sand    autoplay mp4 as the hero background (object-fit: cover)
-     L2 .hero-streaks dense lime motion-blur wash (~28 streaks)
-     L4 .hero-veil    navy veil, fades in at end for text legibility
-     L5 .hero-content H1 + subtitle + CTA, revealed at end
-   JS in main.js reads the section's scroll progress and drives L2/L4/L5. */
+/* ── HERO: GSAP + ScrollTrigger scroll-driven story ────
+   .hero      is a 100vh section; ScrollTrigger pins it and adds a +500vh
+              scroll distance so the user has ~5 s of vertical scroll to
+              scrub through the 5 s video before the pin releases.
+   .hero-frame is the visible 100vw × 100vh viewport that stays put while
+              pinned. Everything below is layered inside it.
+     .hero-video   full-cover portrait mp4 (never auto-plays; scrubbed)
+     .hero-tint    subtle dark overlay for text legibility
+     .hero-rays    canvas overlay for the lime motion streaks (screen blend)
+     .hero-content H1 + subtitle + CTA — hidden until progress = 1
+
+   NOTE ON CROP: the source clip is portrait 1792 × 2390 with the runner in
+   the vertical middle. object-fit: cover on a landscape viewport crops the
+   sand/sea top and bottom while keeping the runner's body fully visible
+   (per the "never crop the character" priority). object-position centres
+   the safe-zone. */
 .hero {
-  min-height: 250vh;
   position: relative;
-  overflow: visible;
-}
-.hero-sticky {
-  position: sticky;
-  top: 0;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-/* L1: MP4 background video, playing continuously. object-fit: cover fills
-   the hero. scaleX(-1) mirrors the source (right-to-left runner) so he
-   moves left-to-right on screen. */
-.hero-sand {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
   background: #002233;
 }
-.hero-sand video {
+.hero-frame {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  /* Source clip is filmed right-to-left; mirror horizontally so the runner
+     reads as moving LEFT-TO-RIGHT with the scroll. */
+  transform: scaleX(-1);
+  will-change: object-position;
+  pointer-events: none;
+  z-index: 1;
+}
+/* Dark tint for text legibility (0.15 per spec). Sits above the video but
+   below the rays so the rays punch through. */
+.hero-tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 2;
+}
+/* Canvas holding the lime streaks. mix-blend-mode: screen so the greens
+   fuse with the video underneath into light trails, not painted shapes. */
+.hero-rays {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transform: scaleX(-1);
-  opacity: 0.95;
-  filter: saturate(1.05) brightness(0.9) contrast(1.05);
-}
-
-/* L2: dense lime motion-blur wash. Each streak has its own thickness,
-   blur radius, and fire threshold via CSS custom properties. When active,
-   scales from 0 to full width rightward-anchored (extends LEFT into the
-   sprinter's wake). */
-.hero-streaks {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
   pointer-events: none;
-  overflow: hidden;
-  mix-blend-mode: screen;      /* fuses with the sand backdrop for a light-trail feel */
+  mix-blend-mode: screen;
+  z-index: 3;
 }
-.hero-streak {
-  position: absolute;
-  height: var(--h, 3px);
-  width: var(--w, 20%);
-  background: linear-gradient(
-    90deg,
-    rgba(221, 255, 85, 0) 0%,
-    rgba(221, 255, 85, 0.30) 8%,
-    rgba(221, 255, 85, 0.95) 40%,
-    rgba(221, 255, 85, 1) 65%,
-    rgba(221, 255, 85, 0.75) 88%,
-    rgba(221, 255, 85, 0) 100%
-  );
-  filter: blur(var(--blur, 3px)) drop-shadow(0 0 12px rgba(221, 255, 85, 0.55));
-  transform-origin: right center;
-  transform: scaleX(0);
-  opacity: 0;
-  will-change: transform, opacity;
-  transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1),
-              opacity 0.35s ease;
-}
-.hero-streak.is-active {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-/* L4: navy veil, fades in with the text reveal. */
-.hero-veil {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  background: linear-gradient(
-    100deg,
-    rgba(0, 34, 51, 0.9) 0%,
-    rgba(0, 34, 51, 0.6) 55%,
-    rgba(0, 34, 51, 0.35) 100%
-  );
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.55s cubic-bezier(0.19, 1, 0.22, 1);
-}
-.hero-veil.is-visible { opacity: 1; }
-
-/* L5: H1 + subtitle + CTA. Hidden until scroll progress crosses ~0.87. */
+/* Text placeholder — hidden until the video finishes, then revealed by a
+   GSAP timeline. Layout is bottom-left; adjust freely. */
 .hero-content {
-  position: relative;
-  z-index: 5;
+  position: absolute;
+  z-index: 4;
+  left: 6vw;
+  right: 6vw;
+  bottom: 12vh;
+  color: #F6F2E8;
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.7s cubic-bezier(0.19, 1, 0.22, 1),
-              transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  pointer-events: none;
   will-change: opacity, transform;
-  align-self: center;
 }
-.hero-content.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
+.hero-content.is-revealed { pointer-events: auto; }
+.hero-headline {
+  font-family: 'Inter', 'Raleway', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  font-size: clamp(56px, 12vw, 160px);
+  margin: 0 0 clamp(12px, 1.6vw, 24px);
+  text-transform: uppercase;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
 }
+.hero-sub {
+  font-family: 'Raleway', 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: clamp(15px, 1.4vw, 20px);
+  line-height: 1.35;
+  max-width: 34rem;
+  margin: 0 0 clamp(20px, 2.4vw, 32px);
+  color: rgba(246, 242, 232, 0.9);
+}
+.hero-cta {
+  display: inline-block;
+  background: #DDFF55;
+  color: #002233;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 34px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.hero-cta:hover { background: #C4E63C; transform: translateY(-2px); }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero { min-height: 100vh; }
-  .hero-sticky { position: relative; height: auto; min-height: 100vh; }
-  .hero-sand video { display: none; }
-  .hero-streak, .hero-veil, .hero-content {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .hero-streak { transform: scaleX(0.75); }
+  .hero-video { display: none; }
+  .hero-rays  { display: none; }
+  .hero-content { opacity: 1; transform: none; pointer-events: auto; }
 }
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────

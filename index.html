@@ -286,8 +286,9 @@
     }
   </style>
 
-  <!-- GSAP (for launch price count-up animation on quiz result) -->
+  <!-- GSAP + ScrollTrigger (hero scroll-scrub + launch price count-up animation) -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 
   <!-- jsPDF for client-side PDF generation (calculator results) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
@@ -400,83 +401,34 @@
     </div>
   </nav>
 
-  <!-- #HOME HERO — solid dark-navy canvas, no image. Layout matches the brand
-       palette PDF: heavy Inter Black headline, small Raleway light subtitle,
-       big lime pill CTA in the accent color. -->
-  <!-- HERO — scroll-jacked story.
-       Section is 250vh. .hero-sticky pins for 100vh. Layers:
-         L1  MP4 running video (autoplay, loop, muted) plays as the hero
-             background across the full canvas (object-fit: cover).
-         L2  Dense lime motion streaks (~28 of them, varied thickness + blur)
-             — a panning-blur wash. Each fires when scroll progress crosses
-             its --fire threshold.
-         L4  Navy veil — fades in at the end for text legibility.
-         L5  H1 + subtitle + CTA — fade in at the end. -->
-  <section id="home" class="hero relative overflow-visible">
-    <div class="hero-sticky text-cream">
+  <!-- HERO — GSAP + ScrollTrigger scroll-driven hero.
+       See js/hero.js for the controller. Section is pinned via ScrollTrigger
+       for +500vh of scroll distance; scroll progress maps to video.currentTime
+       and drives a lime light-ray canvas overlay; text reveals at progress = 1.
 
-      <!-- L1: sand backdrop -->
-      <div class="hero-sand" aria-hidden="true">
-        <video id="hero-sand-video"
-               autoplay muted loop playsinline preload="auto"
-               src="images/Untitled%20design.mp4"></video>
-      </div>
+       Video sources: hero_scrub.mp4 (5 s, 30 fps, keyframe-per-frame for
+       smooth seeking) is the primary; the existing Untitled design.mp4 is a
+       fallback so the hero still works before the optimized encode ships. -->
+  <section id="home" class="hero" data-hero>
+    <div class="hero-frame">
+      <video id="hero-scrub" class="hero-video"
+             muted playsinline webkit-playsinline preload="auto"
+             disablepictureinpicture>
+        <source src="images/hero_scrub.mp4"          type="video/mp4">
+        <source src="images/Untitled%20design.mp4"   type="video/mp4">
+      </video>
+      <div class="hero-tint" aria-hidden="true"></div>
+      <canvas id="hero-rays" class="hero-rays" aria-hidden="true"></canvas>
 
-      <!-- L2: dense lime motion streaks (28 of them). --w = width, --h =
-           thickness, --blur = filter blur, --fire = progress at activation.
-           Positioned so the streaks fan across the sprinter's whole path,
-           layered vertically for a heavy panning-blur effect. -->
-      <div class="hero-streaks" aria-hidden="true">
-        <!-- Top band -->
-        <span class="hero-streak" style="top:  8%; left:  2%; --w: 16%; --h: 2.5px; --blur: 3px; --fire: 0.04;"></span>
-        <span class="hero-streak" style="top: 12%; left:  6%; --w: 22%; --h: 4px;   --blur: 5px; --fire: 0.08;"></span>
-        <span class="hero-streak" style="top: 17%; left: 10%; --w: 26%; --h: 6px;   --blur: 7px; --fire: 0.12;"></span>
-        <span class="hero-streak" style="top: 22%; left: 14%; --w: 20%; --h: 3px;   --blur: 4px; --fire: 0.16;"></span>
-        <span class="hero-streak" style="top: 27%; left: 18%; --w: 30%; --h: 8px;   --blur: 9px; --fire: 0.20;"></span>
-        <!-- Upper mid -->
-        <span class="hero-streak" style="top: 32%; left: 22%; --w: 24%; --h: 5px;   --blur: 6px; --fire: 0.24;"></span>
-        <span class="hero-streak" style="top: 37%; left: 26%; --w: 32%; --h: 10px;  --blur: 12px;--fire: 0.28;"></span>
-        <span class="hero-streak" style="top: 41%; left: 30%; --w: 28%; --h: 5px;   --blur: 6px; --fire: 0.32;"></span>
-        <span class="hero-streak" style="top: 45%; left: 34%; --w: 26%; --h: 3.5px; --blur: 4px; --fire: 0.36;"></span>
-        <!-- Center band (runner area) -->
-        <span class="hero-streak" style="top: 48%; left: 38%; --w: 34%; --h: 12px;  --blur: 14px;--fire: 0.40;"></span>
-        <span class="hero-streak" style="top: 52%; left: 42%; --w: 30%; --h: 8px;   --blur: 10px;--fire: 0.44;"></span>
-        <span class="hero-streak" style="top: 55%; left: 46%; --w: 28%; --h: 5px;   --blur: 6px; --fire: 0.48;"></span>
-        <span class="hero-streak" style="top: 58%; left: 50%; --w: 32%; --h: 10px;  --blur: 12px;--fire: 0.52;"></span>
-        <!-- Lower mid -->
-        <span class="hero-streak" style="top: 62%; left: 54%; --w: 26%; --h: 4px;   --blur: 5px; --fire: 0.56;"></span>
-        <span class="hero-streak" style="top: 66%; left: 58%; --w: 30%; --h: 8px;   --blur: 10px;--fire: 0.60;"></span>
-        <span class="hero-streak" style="top: 70%; left: 62%; --w: 24%; --h: 5px;   --blur: 6px; --fire: 0.64;"></span>
-        <span class="hero-streak" style="top: 74%; left: 66%; --w: 28%; --h: 7px;   --blur: 8px; --fire: 0.68;"></span>
-        <!-- Bottom band -->
-        <span class="hero-streak" style="top: 78%; left: 70%; --w: 22%; --h: 3.5px; --blur: 4px; --fire: 0.72;"></span>
-        <span class="hero-streak" style="top: 82%; left: 74%; --w: 20%; --h: 5px;   --blur: 6px; --fire: 0.76;"></span>
-        <span class="hero-streak" style="top: 86%; left: 78%; --w: 18%; --h: 3px;   --blur: 4px; --fire: 0.80;"></span>
-        <span class="hero-streak" style="top: 90%; left: 82%; --w: 14%; --h: 2px;   --blur: 3px; --fire: 0.84;"></span>
-        <!-- Cross-line panning highlights spanning wider bands for the wash -->
-        <span class="hero-streak" style="top: 20%; left:  4%; --w: 45%; --h: 1.5px; --blur: 2px; --fire: 0.14;"></span>
-        <span class="hero-streak" style="top: 35%; left: 12%; --w: 55%; --h: 2px;   --blur: 3px; --fire: 0.30;"></span>
-        <span class="hero-streak" style="top: 50%; left: 22%; --w: 60%; --h: 2.5px; --blur: 3px; --fire: 0.46;"></span>
-        <span class="hero-streak" style="top: 65%; left: 32%; --w: 55%; --h: 2px;   --blur: 3px; --fire: 0.62;"></span>
-        <span class="hero-streak" style="top: 80%; left: 42%; --w: 45%; --h: 1.5px; --blur: 2px; --fire: 0.78;"></span>
-      </div>
-
-      <!-- L4: navy veil -->
-      <div class="hero-veil" aria-hidden="true"></div>
-
-      <!-- L5: content -->
-      <div class="hero-content max-w-6xl mx-auto px-6 w-full" data-hero-content>
-        <h1 class="text-cream uppercase leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-8xl mb-8 max-w-4xl">
-          Wellness You Build Everyday
-        </h1>
-        <p class="text-cream/85 text-base md:text-lg leading-snug max-w-lg mb-10 font-light">
+      <!-- Placeholder text — swap for real copy at any time. Hidden until
+           scroll progress = 1; revealed by a GSAP timeline. -->
+      <div class="hero-content" data-hero-content>
+        <h1 class="hero-headline">WYBE</h1>
+        <p class="hero-sub">
           Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
         </p>
-        <a href="#contact" class="inline-block bg-burgundy text-charcoal font-heading font-black text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
-          Let&rsquo;s WYBE
-        </a>
+        <a href="#contact" class="hero-cta">Let&rsquo;s WYBE</a>
       </div>
-
     </div>
   </section>
 
@@ -1543,6 +1495,7 @@
 
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
+  <script src="js/hero.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the
