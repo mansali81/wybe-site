@@ -365,13 +365,12 @@
   <!-- NAVBAR (smooth-scroll anchors) -->
   <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="flex items-center justify-between h-[72px]">
-        <!-- Brand: mark-only SVG + WYBE wordmark. Clicking anywhere in the
-             lockup routes to #home (the logo replaces the old Home link). -->
-        <a href="#home" class="wybe-brand" aria-label="WYBE, home">
-          <img src="images/Logo.svg" alt=""
+      <div class="flex items-center justify-between h-[80px]">
+        <!-- Brand: single combined SVG (logo + WYBE + tagline baked in).
+             Clicking the lockup routes to #home. -->
+        <a href="#home" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
+          <img src="images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
                class="wybe-brand__mark" draggable="false">
-          <span class="wybe-brand__wordmark">WYBE</span>
         </a>
         <!-- Desktop nav links -->
         <div class="hidden md:flex items-center gap-7">
@@ -410,23 +409,19 @@
   <section id="home" class="hero" data-hero>
     <div class="hero-frame">
       <!-- Runner video: NEVER auto-plays. js/hero.js scrubs currentTime from
-           scroll progress via ScrollTrigger. -->
+           scroll progress via ScrollTrigger, then holds for a ~2 s read beat. -->
       <video id="hero-scrub" class="hero-video"
              muted playsinline webkit-playsinline preload="auto"
              disablepictureinpicture>
-        <source src="images/Running.MOV" type="video/quicktime">
-        <source src="images/Running.MOV" type="video/mp4">
+        <source src="images/Running.mp4" type="video/mp4">
       </video>
       <div class="hero-tint" aria-hidden="true"></div>
-      <canvas id="hero-rays" class="hero-rays" aria-hidden="true"></canvas>
 
-      <!-- Hero copy — vertically centered, left-aligned. Visible on load
-           with a fade-up entrance animation (CSS). The video scrubs in
-           the background as the user scrolls; the copy stays legible
-           throughout thanks to the gradient overlay in .hero-tint. -->
+      <!-- Hero copy — vertically centered, left-aligned. Each child stays
+           hidden until scroll-scrub reveals it left-to-right (clip-path
+           wipe). By the end of the scroll all three are fully visible. -->
       <div class="hero-content" data-hero-content>
-        <p class="hero-tagline">Personal Trainer, Human Performance Nutritionist &amp; Mind Coach</p>
-        <h1 class="hero-headline">Wellness You Build Everyday</h1>
+        <p class="hero-tagline">Personal Trainer, Mind Coach &amp; Sports Nutritionist</p>
         <p class="hero-sub">
           Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
         </p>

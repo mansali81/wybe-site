@@ -67,36 +67,46 @@ h4, h5, h6, .wybe-subhead {
   border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Brand: mark-only SVG + WYBE wordmark, both vertically centered inside
-   the 72 px nav row with a 10 px gap. Clicking anywhere in the lockup
-   routes to #home — replaces the removed "Home" nav link. */
+/* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
+   Vertically centered inside the 80 px nav row. Hover mirrors the nav
+   links — a lime glow filter on the mark plus an animated underline
+   sweeping left → right. */
 .wybe-brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   color: #F6F2E8;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  padding: 6px 2px;
 }
-.wybe-brand:hover { opacity: 0.85; }
-.wybe-brand:hover .wybe-brand__wordmark { color: #DDFF55; }
 .wybe-brand__mark {
-  height: 48px;
+  height: 60px;
   width: auto;
   flex-shrink: 0;
   display: block;
+  transition: filter 0.25s ease, transform 0.25s ease;
 }
-.wybe-brand__wordmark {
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
-  font-size: 27px;
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #F6F2E8;
-  transition: color 0.25s ease;
+/* Underline sweep — matches .wybe-nav-link's ::after so the brand
+   participates in the same hover language. */
+.wybe-brand::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: #DDFF55;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 1px;
 }
+.wybe-brand:hover .wybe-brand__mark {
+  /* Lime tint via drop-shadow glow + a modest brightness bump so the
+     baked-in logo/tagline read as "lit" rather than colour-inverted. */
+  filter: brightness(1.06) drop-shadow(0 0 14px rgba(221, 255, 85, 0.55));
+}
+.wybe-brand:hover::after { transform: scaleX(1); }
 .wybe-brand:focus-visible {
   outline: 2px solid #DDFF55;
   outline-offset: 4px;
@@ -327,21 +337,14 @@ h4, h5, h6, .wybe-subhead {
 }
 
 /* ── HERO: GSAP + ScrollTrigger scroll-driven story ────
-   .hero      is a 100vh section; ScrollTrigger pins it and adds a +500vh
-              scroll distance so the user has ~5 s of vertical scroll to
-              scrub through the 5 s video before the pin releases.
-   .hero-frame is the visible 100vw × 100vh viewport that stays put while
-              pinned. Everything below is layered inside it.
+   .hero        100vh section; ScrollTrigger pins it and scrubs the video
+                over ~500vh + a ~50vh read-beat hold at the end.
+   .hero-frame  the visible 100vw × 100vh viewport that stays put while
+                pinned. Everything else is layered inside it.
      .hero-video   full-cover portrait mp4 (never auto-plays; scrubbed)
-     .hero-tint    subtle dark overlay for text legibility
-     .hero-rays    canvas overlay for the lime motion streaks (screen blend)
-     .hero-content H1 + subtitle + CTA — hidden until progress = 1
-
-   NOTE ON CROP: the source clip is portrait 1792 × 2390 with the runner in
-   the vertical middle. object-fit: cover on a landscape viewport crops the
-   sand/sea top and bottom while keeping the runner's body fully visible
-   (per the "never crop the character" priority). object-position centres
-   the safe-zone. */
+     .hero-tint    dual-gradient overlay for text legibility
+     .hero-content .hero-tagline + .hero-sub + .hero-cta — reveal
+                   left-to-right as the video plays via clip-path wipe */
 .hero {
   position: relative;
   width: 100%;
@@ -397,18 +400,9 @@ h4, h5, h6, .wybe-subhead {
   pointer-events: none;
   z-index: 2;
 }
-.hero-rays {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  z-index: 3;
-}
-/* Content container is visible; individual children are painted in by the
-   GSAP light-sweep timeline. Initial hidden state below matches the values
-   GSAP tweens from so the sweep and text reveal stay perfectly in sync. */
+/* Content container is visible; individual children are wiped in from
+   left → right by the scroll-scrubbed GSAP timeline. Initial hidden
+   state matches the tween start so wipe and video scrub stay in sync. */
 .hero-content {
   position: relative;
   z-index: 4;
@@ -416,18 +410,12 @@ h4, h5, h6, .wybe-subhead {
   color: #F6F2E8;
 }
 .hero-tagline,
-.hero-headline,
 .hero-sub,
 .hero-cta {
   opacity: 0;
   -webkit-clip-path: inset(0 100% 0 0);
           clip-path: inset(0 100% 0 0);
-  will-change: opacity, transform, clip-path;
-}
-.hero-tagline,
-.hero-headline,
-.hero-sub {
-  transform: translateY(20px);
+  will-change: opacity, clip-path;
 }
 
 /* Eyebrow / subhead above the H1 — lime SemiBold uppercase. */
@@ -440,18 +428,6 @@ h4, h5, h6, .wybe-subhead {
   color: #DDFF55;
   margin: 0 0 clamp(16px, 1.8vw, 26px);
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
-}
-.hero-headline {
-  font-family: var(--font-header);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 0.92;
-  /* Big but never overflows: fluid between 44px and 148px. */
-  font-size: clamp(44px, 9vw, 148px);
-  margin: 0 0 clamp(16px, 2vw, 28px);
-  color: #F6F2E8;
-  text-transform: uppercase;
-  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.55);
 }
 .hero-sub {
   font-family: var(--font-body);
@@ -520,9 +496,6 @@ h4, h5, h6, .wybe-subhead {
   .hero-content {
     max-width: 100%;
   }
-  .hero-headline {
-    font-size: clamp(36px, 10vw, 64px);
-  }
   .hero-sub {
     font-size: 16px;
     max-width: none;
@@ -537,15 +510,12 @@ h4, h5, h6, .wybe-subhead {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-video { display: none; }
-  .hero-rays  { display: none; }
-  /* Skip the light-sweep entrance: reveal everything immediately. */
+  /* Skip the scroll scrub. Video's first frame (poster) shows; all text
+     is revealed immediately. */
   .hero-tagline,
-  .hero-headline,
   .hero-sub,
   .hero-cta {
     opacity: 1 !important;
-    transform: none !important;
     -webkit-clip-path: none !important;
             clip-path: none !important;
   }
