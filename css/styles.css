@@ -81,7 +81,7 @@ h4, h5, h6, .wybe-subhead {
   padding: 6px 2px;
 }
 .wybe-brand__mark {
-  height: 72px;
+  height: 64px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -430,15 +430,16 @@ h4, h5, h6, .wybe-subhead {
   will-change: opacity, clip-path;
 }
 
-/* Eyebrow / subhead above the H1 — lime SemiBold uppercase. */
+/* Hero subheadline — two lines of lime Inter SemiBold uppercase. */
 .hero-tagline {
   font-family: var(--font-subhead);
   font-weight: 600;
-  font-size: clamp(14px, 1.4vw, 20px);
-  letter-spacing: 0.1em;
+  font-size: clamp(20px, 2.4vw, 30px);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #DDFF55;
-  margin: 0 0 clamp(16px, 1.8vw, 26px);
+  margin: 0 0 clamp(20px, 2.2vw, 30px);
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 .hero-sub {

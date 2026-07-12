@@ -105,16 +105,15 @@
       // Video scrub — occupies units 0 → 5 (matches the ~5 s clip).
       tl.to(video, { currentTime: duration, duration: 5, ease: 'none' }, 0);
 
-      // Text wipes in left-to-right. fromTo forces GSAP to interpolate
-      // between two explicit clip-path values with matching unit format
-      // (both % on all four sides) — otherwise GSAP can't parse the
-      // transition from '0 100% 0 0' (mixed) to '0 0 0 0' (unit-less).
+      // Text wipe: all three elements reveal SIMULTANEOUSLY — same start
+      // time, same duration, same ease. Left-to-right clip-path wipe +
+      // opacity fade tied to the scroll scrub. fromTo forces GSAP to
+      // interpolate between two clip-path strings with matching unit
+      // format (both % on all four sides).
       const FROM = { clipPath: 'inset(0% 100% 0% 0%)', opacity: 0 };
-      const TO   = { clipPath: 'inset(0% 0% 0% 0%)',   opacity: 1, ease: 'power2.out' };
+      const TO   = { clipPath: 'inset(0% 0% 0% 0%)',   opacity: 1, duration: 2.2, ease: 'power2.out' };
 
-      tl.fromTo(tagline, FROM, Object.assign({ duration: 1.2 }, TO), 0.35);
-      tl.fromTo(sub,     FROM, Object.assign({ duration: 1.4 }, TO), 1.70);
-      tl.fromTo(cta,     FROM, Object.assign({ duration: 1.2 }, TO), 3.20);
+      tl.fromTo(items, FROM, TO, 1.0);
 
       // Empty "hold" at the end — a 0.6-unit tween on a dummy object.
       // Total timeline: 5.6 units. With end='+=560%', 0.6 units maps to
