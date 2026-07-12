@@ -410,21 +410,15 @@
        for +500vh of scroll distance; scroll progress maps to video.currentTime
        and drives a lime light-ray canvas overlay; text reveals at progress = 1.
 
-       Video sources: hero_scrub.mp4 (5 s, 30 fps, keyframe-per-frame for
-       smooth seeking) is the primary; the existing Untitled design.mp4 is a
-       fallback so the hero still works before the optimized encode ships. -->
+       Video source: images/Running.mp4 (mp4 / H.264). -->
   <section id="home" class="hero" data-hero>
     <div class="hero-frame">
       <!-- Runner video: NEVER auto-plays. js/hero.js scrubs currentTime from
-           scroll progress via ScrollTrigger. Source is Running.MOV; if you
-           later add an mp4 encode named hero_scrub.mp4, browsers will pick
-           that first. -->
+           scroll progress via ScrollTrigger. -->
       <video id="hero-scrub" class="hero-video"
              muted playsinline webkit-playsinline preload="auto"
              disablepictureinpicture>
-        <source src="images/hero_scrub.mp4" type="video/mp4">
-        <source src="images/Running.MOV"    type="video/quicktime">
-        <source src="images/Running.MOV"    type="video/mp4">
+        <source src="images/Running.mp4" type="video/mp4">
       </video>
       <div class="hero-tint" aria-hidden="true"></div>
       <canvas id="hero-rays" class="hero-rays" aria-hidden="true"></canvas>
