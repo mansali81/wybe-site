@@ -1,4 +1,7 @@
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px; /* fixed nav is 96 px tall */
+}
 
 /* ── GLOBAL TYPE SYSTEM ──────────────────────────
    Three roles across the whole site:
@@ -51,16 +54,18 @@ h4, h5, h6, .wybe-subhead {
    the subhead type role; active section gets a lime underline via the
    IntersectionObserver-driven .is-active class. */
 .wybe-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 50;
+  left: 0;
+  right: 0;
+  z-index: 100;
   width: 100%;
-  background: rgba(0, 34, 51, 0.8);
+  background: rgba(0, 34, 51, 0.88);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
 .wybe-nav.is-scrolled {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
@@ -129,7 +134,7 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   font-family: var(--font-subhead);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 0.02em;
   color: #F6F2E8;
   text-decoration: none;
@@ -362,6 +367,8 @@ h4, h5, h6, .wybe-subhead {
   height: 100vh;
   overflow: hidden;
   background: #002233;
+  /* Fixed nav overlays the top 96 px; hero content is vertically centered
+     in .hero-frame so it sits well below the nav. */
 }
 /* Vertically center + left align the content block. The video, gradient
    tint and rays are all absolutely positioned inside; only .hero-content

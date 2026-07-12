@@ -105,15 +105,18 @@
       // Video scrub — occupies units 0 → 5 (matches the ~5 s clip).
       tl.to(video, { currentTime: duration, duration: 5, ease: 'none' }, 0);
 
-      // Text wipe: all three elements reveal SIMULTANEOUSLY — same start
-      // time, same duration, same ease. Left-to-right clip-path wipe +
-      // opacity fade tied to the scroll scrub. fromTo forces GSAP to
-      // interpolate between two clip-path strings with matching unit
-      // format (both % on all four sides).
-      const FROM = { clipPath: 'inset(0% 100% 0% 0%)', opacity: 0 };
-      const TO   = { clipPath: 'inset(0% 0% 0% 0%)',   opacity: 1, duration: 2.2, ease: 'power2.out' };
-
-      tl.fromTo(items, FROM, TO, 1.0);
+      // Text wipe: all three items animate on the exact same keyframes
+      // with the same tween. `gsap.set()` pins the initial state so any
+      // pre-existing inline styles or transitions cannot make one target
+      // interpolate slower than the others (fixes the CTA opacity lag).
+      gsap.set(items, { clipPath: 'inset(0% 100% 0% 0%)', opacity: 0 });
+      tl.to(items, {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        opacity: 1,
+        duration: 2.2,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      }, 1.0);
 
       // Empty "hold" at the end — a 0.6-unit tween on a dummy object.
       // Total timeline: 5.6 units. With end='+=560%', 0.6 units maps to
