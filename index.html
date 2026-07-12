@@ -33,7 +33,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -64,18 +64,13 @@
   </script>
   <link rel="stylesheet" href="css/styles.css">
 
-  <!-- Global typography per brand palette: Raleway light for body, Inter black for headings + heavy weight elements. -->
+  <!-- Site-level background + stacking. Type is defined in css/styles.css
+       via the --font-header / --font-subhead / --font-body variables. -->
   <style>
     body {
-      font-family: 'Raleway', 'Inter', sans-serif;
-      font-weight: 300;
-      background-color: #002233;   /* Navy field; all sections are transparent so the animated background canvas is visible everywhere. */
+      background-color: #002233;   /* Navy field */
       color: #F6F2E8;
     }
-    h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 900; letter-spacing: -0.01em; }
-
-    /* Clean navy field — no animated background layer. Cursor kettlebell +
-       lime ring aura are the only reactive elements (see js/wybe-cursor.js). */
     body > *:not(.wybe-cursor) { position: relative; z-index: 1; }
   </style>
 
@@ -368,40 +363,44 @@
 <body class="text-cream">
 
   <!-- NAVBAR (smooth-scroll anchors) -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/80 backdrop-blur-md border-b border-cream/10">
+  <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="#home" class="flex items-center gap-3 group" aria-label="WYBE home">
-          <img src="images/WYBE-6-logo-name-sand.svg" alt="WYBE logo"
-               class="h-10 w-auto shrink-0" draggable="false">
-          <span class="font-sans text-xl font-bold tracking-widest text-cream uppercase">WYBE</span>
+        <!-- Brand: logo mark + WYBE wordmark, cap-height matched. -->
+        <a href="#home" class="wybe-brand" aria-label="WYBE home">
+          <img src="images/WYBE-6-logo-name-sand.svg" alt="WYBE"
+               class="wybe-brand__mark" draggable="false">
+          <span class="wybe-brand__wordmark">WYBE</span>
         </a>
+        <!-- Desktop nav links -->
         <div class="hidden md:flex items-center gap-7">
-          <a href="#home" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Home</a>
-          <a href="#about" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">About</a>
-          <a href="#services" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Services</a>
-          <a href="#calculators" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Calculators</a>
-          <a href="publication.html" class="font-sans text-sm text-cream hover:text-burgundy transition-colors">My Publication</a>
-          <a href="#book" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">My Book</a>
-          <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors">Book Now</a>
+          <a href="#home"         data-nav-link class="wybe-nav-link">Home</a>
+          <a href="#about"        data-nav-link class="wybe-nav-link">About</a>
+          <a href="#services"     data-nav-link class="wybe-nav-link">Services</a>
+          <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculators</a>
+          <a href="publication.html"            class="wybe-nav-link">My Publication</a>
+          <a href="#book"         data-nav-link class="wybe-nav-link">My Book</a>
+          <a href="#contact" class="wybe-cta">Book Now</a>
         </div>
-        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
-          <span class="w-6 h-px bg-cream block"></span>
-          <span class="w-6 h-px bg-cream block"></span>
-          <span class="w-6 h-px bg-cream block"></span>
+        <!-- Hamburger (mobile) -->
+        <button id="menu-btn" type="button"
+                class="wybe-hamburger md:hidden"
+                aria-label="Open menu"
+                aria-controls="mobile-menu"
+                aria-expanded="false">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-charcoal/95 backdrop-blur-md border-t border-cream/10 px-6 py-6">
-      <div class="flex flex-col gap-4">
-        <a href="#home" class="font-sans text-sm text-cream">Home</a>
-        <a href="#about" class="font-sans text-sm text-cream">About</a>
-        <a href="#services" class="font-sans text-sm text-cream">Services</a>
-        <a href="#calculators" class="font-sans text-sm text-cream">Calculators</a>
-        <a href="publication.html" class="font-sans text-sm text-cream">My Publication</a>
-        <a href="#book" class="font-sans text-sm text-cream">My Book</a>
-        <a href="#contact" class="font-sans text-sm bg-burgundy text-charcoal px-5 py-3 rounded-full text-center">Book Now</a>
-      </div>
+    <!-- Mobile menu — full-width dropdown on the dark background. -->
+    <div id="mobile-menu" class="wybe-mobile-menu hidden md:hidden" role="menu">
+      <a href="#home"        class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="#about"       class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="#services"    class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculators</a>
+      <a href="publication.html" class="wybe-mobile-link" role="menuitem">My Publication</a>
+      <a href="#book"        class="wybe-mobile-link" role="menuitem">My Book</a>
+      <a href="#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
     </div>
   </nav>
 

@@ -25,16 +25,44 @@ document.addEventListener('DOMContentLoaded', () => {
     update();
   })();
 
-  // ── NAVBAR MOBILE TOGGLE ──────────────────────────────
+  // ── NAV: scroll-shadow toggle ─────────────────────────
+  // After ~50 px of scroll, deepen the nav shadow (CSS class .is-scrolled).
+  (function () {
+    const nav = document.getElementById('wybe-nav');
+    if (!nav) return;
+    let ticking = false;
+    const update = () => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 50);
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  })();
+
+  // ── NAV: mobile hamburger + aria-expanded ─────────────
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   if (menuBtn && mobileMenu) {
+    const setOpen = (open) => {
+      mobileMenu.classList.toggle('hidden', !open);
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
     menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
     });
     // Close mobile menu on any in-page link click
     mobileMenu.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+      a.addEventListener('click', () => setOpen(false));
+    });
+    // Close on Escape when open
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') setOpen(false);
     });
   }
 
@@ -51,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const navObs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          navLinks.forEach(l => { l.classList.remove('text-burgundy'); l.classList.add('text-cream'); });
+          navLinks.forEach(l => l.classList.remove('is-active'));
           const link = sectionMap.get(entry.target);
-          if (link) { link.classList.add('text-burgundy'); link.classList.remove('text-cream'); }
+          if (link) link.classList.add('is-active');
         }
       });
     }, { rootMargin: '-40% 0px -55% 0px' });

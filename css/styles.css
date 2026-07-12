@@ -1,10 +1,39 @@
 html { scroll-behavior: smooth; }
 
+/* ── GLOBAL TYPE SYSTEM ──────────────────────────
+   Three roles across the whole site:
+     --font-header   Inter Black 900 for H1..H3
+     --font-subhead  Inter SemiBold 600 for H4..H6, eyebrow labels, buttons
+     --font-body     Raleway Regular 400 for paragraphs and body copy
+   Colors and layout are unchanged; only typography is unified here. */
+:root {
+  --font-header:  'Inter', sans-serif;
+  --font-subhead: 'Inter', sans-serif;
+  --font-body:    'Raleway', 'Inter', sans-serif;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #FFFFFF;
-  color: #1A2E22;
+  font-family: var(--font-body);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .font-heading {
+  font-family: var(--font-header);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+h4, h5, h6, .wybe-subhead {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+}
+/* Eyebrow labels — the small uppercase tags that sit above section titles.
+   We target them by their common utility signature so we don't have to
+   touch every hand-authored eyebrow one at a time. */
+.font-sans.tracking-widest.uppercase,
+[class*='tracking-widest'][class*='uppercase'] {
+  font-family: var(--font-subhead);
+  font-weight: 600;
 }
 
 .hairline {
@@ -14,6 +43,188 @@ body {
 
 /* Ensure Playfair Display loads for font-display class */
 .font-display { font-family: 'Playfair Display', serif; }
+
+/* ── HEADER / NAVBAR ─────────────────────────────
+   Sticky at the top with a dark navy translucent background + blur. Once
+   the user scrolls past ~50 px, JS toggles .is-scrolled which deepens the
+   shadow. Brand mark is cap-height matched to the wordmark. Nav links use
+   the subhead type role; active section gets a lime underline via the
+   IntersectionObserver-driven .is-active class. */
+.wybe-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: rgba(0, 34, 51, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.wybe-nav.is-scrolled {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Brand: logo + WYBE side-by-side. Logo cap-matched to wordmark. */
+.wybe-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #F6F2E8;
+  text-decoration: none;
+}
+.wybe-brand__mark {
+  height: 30px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+.wybe-brand__wordmark {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F6F2E8;
+  transition: color 0.25s ease;
+}
+.wybe-brand:hover .wybe-brand__wordmark { color: #DDFF55; }
+.wybe-brand:focus-visible {
+  outline: 2px solid #DDFF55;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Desktop nav links */
+.wybe-nav-link {
+  position: relative;
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: #F6F2E8;
+  text-decoration: none;
+  padding: 6px 2px;
+  transition: color 0.25s ease;
+}
+.wybe-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: #DDFF55;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 1px;
+}
+.wybe-nav-link:hover { color: #DDFF55; }
+.wybe-nav-link:hover::after,
+.wybe-nav-link.is-active::after,
+.wybe-nav-link.text-burgundy::after { transform: scaleX(1); }
+.wybe-nav-link.is-active,
+.wybe-nav-link.text-burgundy { color: #DDFF55; }
+.wybe-nav-link:focus-visible {
+  outline: 2px solid #DDFF55;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Primary CTA pill button */
+.wybe-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #DDFF55;
+  color: #002233;
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(221, 255, 85, 0.15);
+}
+.wybe-cta:hover {
+  transform: translateY(-1px) scale(1.03);
+  filter: brightness(1.06);
+  box-shadow: 0 8px 22px rgba(221, 255, 85, 0.30);
+}
+.wybe-cta:focus-visible {
+  outline: 2px solid #F6F2E8;
+  outline-offset: 3px;
+}
+.wybe-cta--full {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px 22px;
+  margin-top: 8px;
+}
+
+/* Hamburger — three bars, morphs to X when [aria-expanded="true"] */
+.wybe-hamburger {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.wybe-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #F6F2E8;
+  border-radius: 1px;
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.2s ease;
+}
+.wybe-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.wybe-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.wybe-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.wybe-hamburger:focus-visible {
+  outline: 2px solid #DDFF55;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Mobile menu — full width dropdown on the nav's own background. */
+.wybe-mobile-menu {
+  padding: 12px 24px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 34, 51, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wybe-mobile-link {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #F6F2E8;
+  text-decoration: none;
+  padding: 10px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: color 0.2s ease;
+}
+.wybe-mobile-link:hover,
+.wybe-mobile-link.is-active { color: #DDFF55; }
+.wybe-mobile-link:focus-visible {
+  outline: 2px solid #DDFF55;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
 /* ── SCROLL ANIMATIONS (Shopify-Editions-inspired) ────
    Every non-hero section behaves like a "chapter": as it enters the
