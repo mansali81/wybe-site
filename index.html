@@ -443,36 +443,34 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- OUR PROMISE + OUR COMMITMENT — two offset boxes.
-       Our Promise sits top-left; Our Commitment sits bottom-right, staggered
-       one row down and to the right so the pair reads as a staircase. -->
-  <section class="py-14 md:py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+  <!-- PROMISE + COMMITMENT — editorial statements on the navy field.
+       No cards, no borders. Each block has a large uppercase Inter Black
+       heading sitting over a blurred lime "splash" blob for energy, then
+       a Raleway body paragraph in cream below. Commitment is slightly
+       right-offset on desktop so the pair reads as dynamic, not stacked
+       corporate. GSAP + ScrollTrigger reveals: splash in first, then the
+       heading + body wipe/fade in behind it. See js/promise.js. -->
+  <section class="wybe-manifesto" data-manifesto>
+    <div class="wybe-manifesto__inner">
 
-        <!-- Our Promise (top-left) -->
-        <div class="md:col-span-6">
-          <div class="border-2 border-burgundy/70 p-8 md:p-10 bg-charcoal/40 backdrop-blur-sm">
-            <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Promise</h3>
-            <div class="w-10 h-px bg-burgundy mb-4"></div>
-            <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
-              A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
-            </p>
-          </div>
-        </div>
-
-        <!-- Our Commitment (bottom-right, offset vertically to form a staircase) -->
-        <div class="md:col-span-6 md:col-start-7 md:mt-16">
-          <div class="border-2 border-burgundy/70 p-8 md:p-10 bg-charcoal/40 backdrop-blur-sm">
-            <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Commitment</h3>
-            <div class="w-10 h-px bg-burgundy mb-4"></div>
-            <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
-              To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
-            </p>
-          </div>
-        </div>
-
+      <!-- PROMISE -->
+      <div class="wybe-statement" data-statement>
+        <span class="wybe-statement__splash" data-splash aria-hidden="true"></span>
+        <h2 class="wybe-statement__heading" data-line>Promise</h2>
+        <p class="wybe-statement__body" data-line>
+          Wellness is a daily discipline built into the fabric of daily life, not a 30-day challenge.
+        </p>
       </div>
+
+      <!-- COMMITMENT — offset right on desktop for a dynamic pair -->
+      <div class="wybe-statement wybe-statement--offset" data-statement>
+        <span class="wybe-statement__splash wybe-statement__splash--warm" data-splash aria-hidden="true"></span>
+        <h2 class="wybe-statement__heading" data-line>Commitment</h2>
+        <p class="wybe-statement__body" data-line>
+          We hand you the real tools &mdash; the science, the structure, and the straight-up accountability &mdash; to build that discipline into your body, your nutrition, and your mind. For life, not for 30 days.
+        </p>
+      </div>
+
     </div>
   </section>
 
@@ -1504,6 +1502,7 @@
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
   <script src="js/hero.js" defer></script>
+  <script src="js/promise.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the

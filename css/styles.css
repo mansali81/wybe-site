@@ -561,6 +561,116 @@ h4, h5, h6, .wybe-subhead {
   }
 }
 
+/* ── PROMISE + COMMITMENT MANIFESTO ─────────────────
+   Two large editorial statements on the site's navy field. Each block
+   has an oversized Inter Black heading sitting over a soft blurred lime
+   "splash" blob (radial gradient) that scales up on scroll before the
+   type wipes in — energetic, physical, not corporate. See js/promise.js
+   for the ScrollTrigger reveal. */
+.wybe-manifesto {
+  padding: clamp(80px, 12vw, 160px) 0;
+}
+.wybe-manifesto__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 6vw, 96px);
+  display: grid;
+  gap: clamp(80px, 12vw, 180px);
+}
+.wybe-statement {
+  position: relative;
+  max-width: 780px;
+  isolation: isolate; /* keeps the splash z-order predictable */
+}
+.wybe-statement--offset {
+  margin-left: auto;
+  padding-left: clamp(24px, 8vw, 120px); /* dynamic right-drift */
+}
+
+/* Splash: a soft lime blob painted with a radial gradient, heavy blur,
+   dropped behind the heading. It scales up on ScrollTrigger reveal. */
+.wybe-statement__splash {
+  position: absolute;
+  z-index: -1;
+  left: clamp(-40px, -3vw, -20px);
+  top:  clamp(-40px, -4vw, -30px);
+  width:  clamp(320px, 42vw, 640px);
+  height: clamp(260px, 34vw, 500px);
+  background: radial-gradient(
+    ellipse at 40% 45%,
+    rgba(221, 255, 85, 0.55) 0%,
+    rgba(221, 255, 85, 0.35) 35%,
+    rgba(221, 255, 85, 0.12) 62%,
+    rgba(221, 255, 85, 0)    82%
+  );
+  filter: blur(28px);
+  border-radius: 50% 60% 45% 55% / 55% 50% 60% 45%;
+  transform: scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+/* Slight variant for Commitment so the two splashes don't twin. */
+.wybe-statement__splash--warm {
+  left: auto;
+  right: clamp(-60px, -4vw, -30px);
+  top:  clamp(-30px, -3vw, -20px);
+  background: radial-gradient(
+    ellipse at 60% 50%,
+    rgba(221, 255, 85, 0.60) 0%,
+    rgba(221, 255, 85, 0.30) 40%,
+    rgba(221, 255, 85, 0.10) 68%,
+    rgba(221, 255, 85, 0)    88%
+  );
+  border-radius: 55% 45% 60% 40% / 45% 55% 40% 60%;
+}
+
+/* Big editorial heading — Inter Black uppercase, lime accent. */
+.wybe-statement__heading {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(48px, 10vw, 128px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #DDFF55;
+  margin: 0 0 clamp(20px, 2.4vw, 36px);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Body copy — Raleway, cream, high contrast for legibility. */
+.wybe-statement__body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(17px, 1.5vw, 22px);
+  line-height: 1.55;
+  color: #F6F2E8;
+  max-width: 640px;
+  margin: 0;
+}
+
+/* GSAP-driven initial states for the reveal (JS overrides these on
+   completion). If JS never runs the CSS below ensures nothing is stuck
+   invisible. */
+.wybe-statement__heading,
+.wybe-statement__body {
+  will-change: opacity, transform, clip-path;
+}
+
+/* Reduced motion: show everything statically. */
+@media (prefers-reduced-motion: reduce) {
+  .wybe-statement__splash {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .wybe-statement__heading,
+  .wybe-statement__body {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: inset(0% 0% 0% 0%) !important;
+  }
+}
+
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────
    Applies to nav + footer text links (skips pill CTAs by class) and any
    element with .wybe-hover-title. Text lifts 2px, brightens to lime, and
