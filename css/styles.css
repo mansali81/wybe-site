@@ -67,19 +67,35 @@ h4, h5, h6, .wybe-subhead {
   border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Brand: single logo image (wordmark is baked into the SVG). Vertically
-   centred inside the nav row via inline-flex align-items: center. */
+/* Brand: mark-only SVG + WYBE wordmark, both vertically centered inside
+   the 72 px nav row with a 10 px gap. Clicking anywhere in the lockup
+   routes to #home — replaces the removed "Home" nav link. */
 .wybe-brand {
   display: inline-flex;
   align-items: center;
+  gap: 10px;
   color: #F6F2E8;
   text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
+.wybe-brand:hover { opacity: 0.85; }
+.wybe-brand:hover .wybe-brand__wordmark { color: #DDFF55; }
 .wybe-brand__mark {
-  height: 40px;
+  height: 48px;
   width: auto;
   flex-shrink: 0;
   display: block;
+}
+.wybe-brand__wordmark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 27px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #F6F2E8;
+  transition: color 0.25s ease;
 }
 .wybe-brand:focus-visible {
   outline: 2px solid #DDFF55;

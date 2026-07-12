@@ -365,16 +365,16 @@
   <!-- NAVBAR (smooth-scroll anchors) -->
   <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="flex items-center justify-between h-16">
-        <!-- Brand: logo image (wordmark already baked in). -->
-        <a href="#home" class="wybe-brand" aria-label="WYBE home">
-          <img src="images/Logo%20and%20Brand.svg" alt="WYBE"
+      <div class="flex items-center justify-between h-[72px]">
+        <!-- Brand: mark-only SVG + WYBE wordmark. Clicking anywhere in the
+             lockup routes to #home (the logo replaces the old Home link). -->
+        <a href="#home" class="wybe-brand" aria-label="WYBE, home">
+          <img src="images/Logo.svg" alt=""
                class="wybe-brand__mark" draggable="false">
+          <span class="wybe-brand__wordmark">WYBE</span>
         </a>
         <!-- Desktop nav links -->
         <div class="hidden md:flex items-center gap-7">
-          <a href="#home"         data-nav-link class="wybe-nav-link">Home</a>
-          <a href="#about"        data-nav-link class="wybe-nav-link">About</a>
           <a href="#services"     data-nav-link class="wybe-nav-link">Services</a>
           <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculators</a>
           <a href="publication.html"            class="wybe-nav-link">My Publication</a>
@@ -393,8 +393,6 @@
     </div>
     <!-- Mobile menu — full-width dropdown on the dark background. -->
     <div id="mobile-menu" class="wybe-mobile-menu hidden md:hidden" role="menu">
-      <a href="#home"        class="wybe-mobile-link" role="menuitem">Home</a>
-      <a href="#about"       class="wybe-mobile-link" role="menuitem">About</a>
       <a href="#services"    class="wybe-mobile-link" role="menuitem">Services</a>
       <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculators</a>
       <a href="publication.html" class="wybe-mobile-link" role="menuitem">My Publication</a>
