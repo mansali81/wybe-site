@@ -43,27 +43,46 @@
       const lines  = block.querySelectorAll('[data-line]');
       if (!splash || !lines.length) return;
 
-      // Pin initial states via gsap.set — same source of truth as CSS.
-      gsap.set(splash, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' });
-      gsap.set(lines,  { opacity: 0, y: 20, clipPath: 'inset(0% 100% 0% 0%)' });
+      // Each splash can carry a data-flip attribute — the Commitment
+      // block does — so the two splashes read as two separate "throws
+      // of paint" rather than the same PNG twice. We compose the flip
+      // + a subtle rotation into the reveal tween via scaleX/scaleY +
+      // rotation (never `scale`) so GSAP tracks each axis on its own
+      // and the flip is preserved through the animation.
+      const flip = splash.hasAttribute('data-flip');
+      const finalScaleX = flip ? -1  : 1;
+      const finalRot    = flip ? 12  : -6;
+      const startScale  = 0.7;
 
-      // Build the reveal timeline; ScrollTrigger fires it once the block
-      // is ~15 % up from the viewport bottom (comfortably in view before
-      // motion starts).
+      gsap.set(splash, {
+        opacity: 0,
+        scaleX:   finalScaleX * startScale,
+        scaleY:   startScale,
+        rotation: finalRot - (flip ? 8 : -8) // rotate a bit further from final
+      });
+      gsap.set(lines, {
+        opacity: 0,
+        y: 20,
+        clipPath: 'inset(0% 100% 0% 0%)'
+      });
+
+      // Reveal timeline.
       const tl = gsap.timeline({
         paused: true,
         defaults: { ease: 'power2.out' }
       });
 
-      // 1) Splash lands first (0.5 s ease-out).
+      // 1) Splash lands first — scale up, ease in, rotate to rest.
       tl.to(splash, {
         opacity: 1,
-        scale: 1,
-        duration: 0.5
+        scaleX: finalScaleX,
+        scaleY: 1,
+        rotation: finalRot,
+        duration: 0.55
       }, 0);
 
-      // 2) Heading + body wipe in, starting at 0.25 s (slight overlap so
-      //    the type feels born from the splash, not sequential).
+      // 2) Heading + body wipe in with a small overlap so the type
+      //    feels "born from" the splash, not sequential.
       tl.to(lines, {
         opacity: 1,
         y: 0,

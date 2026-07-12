@@ -590,55 +590,49 @@ h4, h5, h6, .wybe-subhead {
   padding-left: clamp(24px, 8vw, 120px); /* dynamic right-drift */
 }
 
-/* Splash: a soft lime blob painted with a radial gradient, heavy blur,
-   dropped behind the heading. It scales up on ScrollTrigger reveal. */
+/* Splash: a wet-paint PNG (images/splash-green.png) painted behind each
+   heading. Bigger than the type so the heading sits inside the splash.
+   GSAP animates opacity + scale (+ rotation for the flipped variant). */
 .wybe-statement__splash {
   position: absolute;
   z-index: -1;
-  left: clamp(-40px, -3vw, -20px);
-  top:  clamp(-40px, -4vw, -30px);
-  width:  clamp(320px, 42vw, 640px);
-  height: clamp(260px, 34vw, 500px);
-  background: radial-gradient(
-    ellipse at 40% 45%,
-    rgba(221, 255, 85, 0.55) 0%,
-    rgba(221, 255, 85, 0.35) 35%,
-    rgba(221, 255, 85, 0.12) 62%,
-    rgba(221, 255, 85, 0)    82%
-  );
-  filter: blur(28px);
-  border-radius: 50% 60% 45% 55% / 55% 50% 60% 45%;
-  transform: scale(0.6);
+  left:   clamp(-120px, -8vw, -40px);
+  top:    clamp(-100px, -10vw, -70px);
+  width:  clamp(420px, 70%, 780px);
+  height: auto;
+  max-height: 300%;
+  object-fit: contain;
   opacity: 0;
+  transform-origin: 40% 55%;
   pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
   will-change: transform, opacity;
 }
-/* Slight variant for Commitment so the two splashes don't twin. */
-.wybe-statement__splash--warm {
+/* Second block gets a horizontally flipped + slightly rotated variant so
+   the two splashes don't twin. The base transform is applied by GSAP via
+   scaleX/scaleY + rotation so it composes cleanly with the reveal tween. */
+.wybe-statement__splash--flip {
   left: auto;
-  right: clamp(-60px, -4vw, -30px);
-  top:  clamp(-30px, -3vw, -20px);
-  background: radial-gradient(
-    ellipse at 60% 50%,
-    rgba(221, 255, 85, 0.60) 0%,
-    rgba(221, 255, 85, 0.30) 40%,
-    rgba(221, 255, 85, 0.10) 68%,
-    rgba(221, 255, 85, 0)    88%
-  );
-  border-radius: 55% 45% 60% 40% / 45% 55% 40% 60%;
+  right:  clamp(-140px, -9vw, -50px);
+  top:    clamp(-90px, -9vw, -60px);
+  transform-origin: 60% 55%;
 }
 
-/* Big editorial heading — Inter Black uppercase, lime accent. */
+/* Big editorial heading — Inter Black uppercase, lime accent. Tightened
+   size to ~40-64px per the spec so it reads punchy, not billboard. */
 .wybe-statement__heading {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(48px, 10vw, 128px);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   color: #DDFF55;
-  margin: 0 0 clamp(20px, 2.4vw, 36px);
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  margin: 0 0 clamp(18px, 2vw, 30px);
+  text-shadow:
+    0 3px 20px rgba(0, 20, 30, 0.55),
+    0 1px 4px rgba(0, 0, 0, 0.40);
 }
 
 /* Body copy — Raleway, cream, high contrast for legibility. */
