@@ -390,19 +390,28 @@ h4, h5, h6, .wybe-subhead {
   mix-blend-mode: screen;
   z-index: 3;
 }
-/* Content: visible on load with a fade-up entrance animation. */
+/* Content container is visible; individual children are painted in by the
+   GSAP light-sweep timeline. Initial hidden state below matches the values
+   GSAP tweens from so the sweep and text reveal stay perfectly in sync. */
 .hero-content {
   position: relative;
   z-index: 4;
   max-width: 40rem;
   color: #F6F2E8;
-  opacity: 0;
-  transform: translateY(24px);
-  animation: hero-fade-up 0.9s cubic-bezier(0.19, 1, 0.22, 1) 0.15s forwards;
-  will-change: opacity, transform;
 }
-@keyframes hero-fade-up {
-  to { opacity: 1; transform: translateY(0); }
+.hero-tagline,
+.hero-headline,
+.hero-sub,
+.hero-cta {
+  opacity: 0;
+  -webkit-clip-path: inset(0 100% 0 0);
+          clip-path: inset(0 100% 0 0);
+  will-change: opacity, transform, clip-path;
+}
+.hero-tagline,
+.hero-headline,
+.hero-sub {
+  transform: translateY(20px);
 }
 
 /* Eyebrow / subhead above the H1 — lime SemiBold uppercase. */
@@ -514,7 +523,16 @@ h4, h5, h6, .wybe-subhead {
 @media (prefers-reduced-motion: reduce) {
   .hero-video { display: none; }
   .hero-rays  { display: none; }
-  .hero-content { opacity: 1; transform: none; animation: none; }
+  /* Skip the light-sweep entrance: reveal everything immediately. */
+  .hero-tagline,
+  .hero-headline,
+  .hero-sub,
+  .hero-cta {
+    opacity: 1 !important;
+    transform: none !important;
+    -webkit-clip-path: none !important;
+            clip-path: none !important;
+  }
 }
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────

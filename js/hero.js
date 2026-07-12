@@ -1,41 +1,47 @@
 /**
- * WYBE hero — scroll-driven runner story.
- * ────────────────────────────────────────
- * Pins the hero for +500vh of scroll distance via GSAP + ScrollTrigger.
- * Scroll progress 0→1 drives:
- *   - video.currentTime 0→duration (smooth scrub via ScrollTrigger scrub: 1)
- *   - a canvas overlay that renders lime motion-streak light rays trailing
- *     behind the runner's on-screen position, with intensity scaling to
- *     scroll velocity and fading out as progress reaches 1
- * The text block is visible from load (CSS fade-up); it no longer waits
- * for scroll to reach the end.
+ * WYBE hero — light-sweep + text-reveal + short read-beat pin.
+ * ────────────────────────────────────────────────────────────
+ * On page load a single lime "ray" sweeps once from the left edge to the
+ * right edge of the hero over 1.8 s (power2.out). The sweep progress drives:
+ *   - A canvas render of the bright vertical bar + trailing horizontal
+ *     streaks, mix-blend-mode:screen fusing them with the video underneath.
+ *   - Staggered reveals of .hero-tagline, .hero-headline, .hero-sub,
+ *     .hero-cta via clip-path inset() + opacity + y — as if the light is
+ *     painting them into view.
+ * When the sweep completes the timeline resolves; the canvas is painted
+ * once with a small residual glow on the right and never re-rendered
+ * (no scroll-driven redraw, no loop).
  *
- * No autoplay. The video is preloaded, muted, playsinline, and we never
- * call .play() — its frame is set purely by currentTime.
+ * On desktop we also add a ScrollTrigger pin (start: top top,
+ * end: +=60%, pinSpacing: true, invalidateOnRefresh: true) so the hero
+ * holds still for a ~2-second read-beat before smoothly releasing into
+ * the next section. Mobile skips the pin.
  *
- * prefers-reduced-motion: the whole controller is a no-op; CSS hides the
- * video and rays.
+ * prefers-reduced-motion: the whole controller returns early — CSS keeps
+ * the text visible (opacity: 1, clip-path: none) and no ray is drawn.
  */
 (function () {
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const heroEl   = document.querySelector('[data-hero]');
-  const video    = document.getElementById('hero-scrub');
-  const rays     = document.getElementById('hero-rays');
-  const content  = document.querySelector('[data-hero-content]');
-  if (!heroEl || !video || !rays || !content) return;
+  const heroEl  = document.querySelector('section.hero');
+  const content = document.querySelector('[data-hero-content]');
+  const rays    = document.getElementById('hero-rays');
+  if (!heroEl || !content || !rays) return;
 
-  if (reduceMotion) {
-    // CSS already keeps the text visible; no ScrollTrigger work to do.
-    return;
-  }
+  const items = [
+    content.querySelector('.hero-tagline'),
+    content.querySelector('.hero-headline'),
+    content.querySelector('.hero-sub'),
+    content.querySelector('.hero-cta')
+  ].filter(Boolean);
 
-  // Wait for GSAP + ScrollTrigger to load. Both are deferred CDN scripts.
+  if (reduceMotion) return; // CSS handles the reduced-motion path
+
+  // Wait for GSAP + ScrollTrigger (both loaded via defer).
   function ready(cb) {
     if (window.gsap && window.ScrollTrigger) { cb(); return; }
     if (document.readyState === 'complete') {
-      // Retry a few times if scripts haven't attached yet.
       let tries = 0;
       const t = setInterval(() => {
         if ((window.gsap && window.ScrollTrigger) || tries++ > 40) {
@@ -47,190 +53,127 @@
       window.addEventListener('load', () => ready(cb), { once: true });
     }
   }
-
   ready(init);
 
   function init() {
     gsap.registerPlugin(ScrollTrigger);
 
-    // ── 1. Canvas + device-pixel setup ────────────────────────
+    // ── Canvas setup ───────────────────────────────
     const ctx = rays.getContext('2d');
-    let cssWidth = 0, cssHeight = 0, dpr = 1;
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-
+    let cssW = 0, cssH = 0, dpr = 1;
     function resizeCanvas() {
       dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-      cssWidth  = window.innerWidth;
-      cssHeight = window.innerHeight;
-      rays.width  = Math.round(cssWidth  * dpr);
-      rays.height = Math.round(cssHeight * dpr);
-      rays.style.width  = cssWidth  + 'px';
-      rays.style.height = cssHeight + 'px';
+      cssW = window.innerWidth;
+      cssH = window.innerHeight;
+      rays.width  = Math.round(cssW * dpr);
+      rays.height = Math.round(cssH * dpr);
+      rays.style.width  = cssW + 'px';
+      rays.style.height = cssH + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resizeCanvas();
 
-    // ── 2. Ray particle state ─────────────────────────────────
-    // Each ray is a horizontal streak trailing to the LEFT of its head.
-    // "head" is the x/y of the leading (right) edge; "length" is how far
-    // it stretches leftward; "life" fades from 1 → 0 with "decay".
-    const RAY_CAP        = isMobile ? 60 : 140;    // hard cap on live rays
-    const SPARK_ENABLED  = !isMobile;
-    const rayList        = [];
+    // ── Ray renders ────────────────────────────────
+    // Sweep: a bright vertical bar with soft edges + trailing horizontal
+    // streaks. The bar's centre X is mapped from the sweep progress
+    // (with off-screen buffers on both ends so it enters/exits cleanly).
+    function renderSweep(p) {
+      ctx.clearRect(0, 0, cssW, cssH);
+      const x = p * (cssW + 200) - 100;
 
-    // Spawn a single ray with parameters that reflect the current scroll
-    // velocity (via intensity) and where the runner currently is (headX/Y).
-    function spawnRay(headX, headY, intensity) {
-      const spread = 0.28 * cssHeight;               // vertical wobble
-      const y = headY + (Math.random() - 0.5) * spread;
-      rayList.push({
-        x:        headX,
-        y:        y,
-        len:      140 + intensity * 380,
-        thick:    1.5 + Math.random() * (1.5 + intensity * 3.5),
-        life:     1,
-        decay:    0.018 + Math.random() * 0.02,
-        sparks:   SPARK_ENABLED ? Math.round(intensity * 6) : 0
-      });
-      if (rayList.length > RAY_CAP) rayList.splice(0, rayList.length - RAY_CAP);
-    }
+      // Vertical bar
+      const barW = 220;
+      const bar = ctx.createLinearGradient(x - barW, 0, x + barW, 0);
+      bar.addColorStop(0.00, 'rgba(221, 255, 85, 0)');
+      bar.addColorStop(0.50, 'rgba(221, 255, 85, 0.92)');
+      bar.addColorStop(1.00, 'rgba(221, 255, 85, 0)');
+      ctx.fillStyle = bar;
+      ctx.fillRect(x - barW, 0, barW * 2, cssH);
 
-    // ── 3. Ray render loop (runs continuously, decoupled from scroll) ──
-    function renderRays() {
-      ctx.clearRect(0, 0, cssWidth, cssHeight);
-      // Draw from oldest (dimmest) to newest so newest streaks read on top.
-      for (let i = 0; i < rayList.length; i++) {
-        const r = rayList[i];
-        r.life -= r.decay;
-        if (r.life <= 0) continue;
-        const a = r.life;
-
-        // Main streak — horizontal gradient from transparent (left) to
-        // bright lime at the head (right).
-        const x0 = r.x - r.len;
-        const x1 = r.x;
-        const g  = ctx.createLinearGradient(x0, r.y, x1, r.y);
-        g.addColorStop(0.0,  'rgba(221, 255, 85, 0)');
-        g.addColorStop(0.55, 'rgba(221, 255, 85, ' + (0.35 * a) + ')');
-        g.addColorStop(0.9,  'rgba(221, 255, 85, ' + (0.95 * a) + ')');
-        g.addColorStop(1.0,  'rgba(255, 255, 210, ' + a + ')');
+      // Trailing horizontal streaks — cluster near the runner band
+      const rows = 8;
+      for (let i = 0; i < rows; i++) {
+        const yFrac = (i + 0.5) / rows;
+        const y = yFrac * cssH;
+        const len = 240 + Math.sin(i * 1.7) * 80;
+        const g = ctx.createLinearGradient(x - len, y, x, y);
+        g.addColorStop(0.0, 'rgba(221, 255, 85, 0)');
+        g.addColorStop(0.75, 'rgba(221, 255, 85, 0.35)');
+        g.addColorStop(1.0, 'rgba(221, 255, 85, 0.75)');
         ctx.fillStyle = g;
-        ctx.fillRect(x0, r.y - r.thick / 2, r.len, r.thick);
-
-        // Leading edge bloom — brighter blob at the head.
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, r.thick * 1.4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(221, 255, 85, ' + (0.9 * a) + ')';
-        ctx.fill();
-
-        // Tail sparks (desktop only) — small bright dots scattered along
-        // the streak for a "particle burst" feel.
-        for (let s = 0; s < r.sparks; s++) {
-          const sx = r.x - Math.random() * r.len;
-          const sy = r.y + (Math.random() - 0.5) * 18;
-          ctx.beginPath();
-          ctx.arc(sx, sy, 0.9 + Math.random() * 1.6, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(221, 255, 85, ' + (0.6 * a) + ')';
-          ctx.fill();
-        }
+        ctx.fillRect(x - len, y - 1.5, len, 3);
       }
-      // Compact the array — drop dead rays.
-      for (let i = rayList.length - 1; i >= 0; i--) {
-        if (rayList[i].life <= 0) rayList.splice(i, 1);
-      }
-      requestAnimationFrame(renderRays);
     }
-    requestAnimationFrame(renderRays);
 
-    // ── 4. GSAP ScrollTrigger — pin + scrub ──────────────────
-    // Text is now visible on load (fade-up handled by CSS animation), so we
-    // no longer gate reveal behind scroll progress.
+    // Final resting state: small residual lime glow off-screen right so the
+    // scene doesn't end abruptly. Painted once; never re-rendered.
+    function renderFinalState() {
+      ctx.clearRect(0, 0, cssW, cssH);
+      const cx = cssW + 40;
+      const cy = cssH * 0.5;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, cssH * 0.55);
+      g.addColorStop(0.0, 'rgba(221, 255, 85, 0.18)');
+      g.addColorStop(0.5, 'rgba(221, 255, 85, 0.06)');
+      g.addColorStop(1.0, 'rgba(221, 255, 85, 0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, cssW, cssH);
+    }
 
-    // Velocity trackers for the ray-spawn budget.
-    let lastProgress    = 0;
-    let smoothedVel     = 0;
-    let lastFrameTime   = performance.now();
+    // ── Load timeline: sweep + staggered text reveal ──
+    // Initial hidden state set via GSAP so if inline styles trump anything
+    // the CSS applied, the animation still starts from a known state.
+    gsap.set(items, { opacity: 0, clipPath: 'inset(0 100% 0 0)' });
+    gsap.set(items.slice(0, 3), { y: 20 });
 
-    // The main ScrollTrigger: pin for 500vh of scroll distance, scrub 1 s
-    // smoothing so the video and canvas track finger movement smoothly.
-    const st = ScrollTrigger.create({
-      trigger:   heroEl,
-      start:     'top top',
-      end:       '+=500%',       // 500vh of scroll distance ≈ 5 s of video
-      pin:       true,
-      pinSpacing: true,
-      scrub:     1,              // 1 s of scrub smoothing
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-
-      onUpdate(self) {
-        const now = performance.now();
-        const dt  = Math.max(1, now - lastFrameTime);
-        lastFrameTime = now;
-
-        const p     = self.progress;
-        const dp    = p - lastProgress;
-        // Instantaneous velocity in "progress-per-second"; smooth it a
-        // little so a jittery trackpad doesn't create rays in flashes.
-        const inst  = (Math.abs(dp) / dt) * 1000;
-        smoothedVel = smoothedVel * 0.65 + inst * 0.35;
-        lastProgress = p;
-
-        // Video scrub. Guard: only seek when the browser has enough frames
-        // decoded, and cap just short of duration to avoid the "ended"
-        // freeze some browsers dispatch.
-        if (video.duration && video.readyState >= 2) {
-          const t = Math.min(video.duration - 0.05, p * video.duration);
-          if (Math.abs(video.currentTime - t) > 0.03) {
-            try { video.currentTime = t; } catch (_) { /* ignore */ }
-          }
-        }
-
-        // Ray spawn. Runner's approximate on-screen X is a linear function
-        // of progress (he traverses the whole viewport width across the
-        // scroll). Rays trail LEFT from that head position.
-        const HEAD_START_X = -0.05 * cssWidth;   // just off-screen left
-        const HEAD_END_X   =  1.05 * cssWidth;   // just off-screen right
-        const headX        = HEAD_START_X + (HEAD_END_X - HEAD_START_X) * p;
-        const headY        = 0.45 * cssHeight;   // roughly runner's chest
-
-        // Intensity ramps with velocity and fades out as progress → 1 so
-        // the scene calms when the character finishes.
-        const fadeOut  = Math.max(0, 1 - Math.max(0, (p - 0.9) / 0.1));
-        const velNorm  = Math.min(1, smoothedVel * 5);
-        const intensity = velNorm * fadeOut;
-
-        // Spawn count per update — more rays when moving fast, none when
-        // barely scrolling.
-        const baseSpawn  = isMobile ? 1 : 2;
-        const extra      = Math.floor(intensity * (isMobile ? 3 : 6));
-        const spawns     = baseSpawn + extra;
-        if (intensity > 0.05 && p < 0.98) {
-          for (let i = 0; i < spawns; i++) {
-            // Slight horizontal jitter so successive rays don't stack.
-            const jitterX = (Math.random() - 0.5) * 0.02 * cssWidth;
-            spawnRay(headX + jitterX, headY, Math.min(1, intensity + Math.random() * 0.15));
-          }
-        }
-
+    const sweep = { p: 0 };
+    const tl = gsap.timeline({
+      onUpdate: function () { renderSweep(sweep.p); },
+      onComplete: function () {
+        renderFinalState();
+        // Clear inline transforms on any element that has a hover transform
+        // (CTA). Nothing to clear on the others; opacity + clip-path stay.
+        gsap.set(items[3], { clearProps: 'transform' });
       }
     });
 
-    // ── 5. Prime the video: seek to first frame so a poster shows
-    //       before the user starts scrolling.
-    function primeVideo() {
-      try { video.currentTime = 0.001; } catch (_) {}
-      ScrollTrigger.refresh();
-    }
-    if (video.readyState >= 1) primeVideo();
-    else video.addEventListener('loadedmetadata', primeVideo, { once: true });
+    // Sweep tween — drives canvas x position. 1.8 s, ease-out.
+    tl.to(sweep, { p: 1, duration: 1.8, ease: 'power2.out' }, 0);
 
-    // ── 6. Resize handling — keep canvas + ScrollTrigger in sync ──
+    // Text reveals — each fully hidden → fully revealed inside 1.8 s.
+    // First three get the small slide-up; CTA is opacity + clip only so
+    // its :hover scale transform isn't overridden by inline transforms.
+    const REV = { clipPath: 'inset(0 0 0 0)', ease: 'power2.out' };
+    tl.to(items[0], Object.assign({ opacity: 1, y: 0, duration: 0.90 }, REV), 0.05);
+    tl.to(items[1], Object.assign({ opacity: 1, y: 0, duration: 1.00 }, REV), 0.35);
+    tl.to(items[2], Object.assign({ opacity: 1, y: 0, duration: 0.90 }, REV), 0.65);
+    tl.to(items[3], Object.assign({ opacity: 1,         duration: 0.70 }, REV), 1.10);
+    // Total: 1.10 + 0.70 = 1.80 s
+
+    // ── Read-beat pin ──────────────────────────────
+    // Desktop only. Pin for +=60% of viewport (~2s at normal scroll speed)
+    // so the reader has time to take in the hero before the next section.
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (!isMobile) {
+      ScrollTrigger.create({
+        trigger: heroEl,
+        start: 'top top',
+        end: '+=60%',
+        pin: true,
+        pinSpacing: true,
+        invalidateOnRefresh: true
+      });
+    }
+
+    // ── Resize handling ────────────────────────────
+    // Debounced. Re-sizes the canvas, repaints the final state if the
+    // sweep has already finished, and asks ScrollTrigger to recompute pin
+    // start/end positions.
     let rz;
     window.addEventListener('resize', () => {
       clearTimeout(rz);
       rz = setTimeout(() => {
         resizeCanvas();
+        if (tl.progress() >= 0.999) renderFinalState();
         ScrollTrigger.refresh();
       }, 120);
     });
