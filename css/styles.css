@@ -1,6 +1,13 @@
+:root {
+  /* Real height of the fixed .wybe-nav (h-[96px] flex row + 1 px border).
+     JS in main.js measures the actual rendered height on load + resize
+     and rewrites this variable, so if the nav grows on mobile or shrinks
+     via user zoom, every offset that uses it stays in sync. */
+  --nav-h: 97px;
+}
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px; /* fixed nav is 96 px tall */
+  scroll-padding-top: var(--nav-h);
 }
 
 /* ── GLOBAL TYPE SYSTEM ──────────────────────────
@@ -19,9 +26,15 @@ body {
   font-family: var(--font-body);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
-  /* Offset for the fixed .wybe-nav (96 px tall). Keeps the very first
-     paint of every page below the header. */
-  padding-top: 96px;
+}
+/* Every top-of-page section gets its own margin-top: var(--nav-h) so the
+   fixed header never overlaps its content. .hero uses margin-top +
+   height math so the video begins exactly at the header's bottom edge. */
+.hero,
+main > *:first-child,
+body > header:first-of-type,
+body > section:first-of-type {
+  margin-top: var(--nav-h);
 }
 
 h1, h2, h3, .font-heading {
@@ -56,10 +69,9 @@ h4, h5, h6, .wybe-subhead {
    shadow. Brand mark is cap-height matched to the wordmark. Nav links use
    the subhead type role; active section gets a lime underline via the
    IntersectionObserver-driven .is-active class. */
-/* Fixed, frozen header. !important + z-index 1000 so no later rule (or
-   inline-style block cascade quirk) can knock it back to position:
-   relative. Excluded from the body > * override in index.html /
-   publication.html inline styles as well. */
+/* Fixed, frozen header. Solid navy — no alpha — so the hero video can
+   never bleed through and hint at overlap. Kept the blur declaration for
+   any future tint changes, but with an opaque bg the browser skips it. */
 .wybe-nav {
   position: fixed !important;
   top: 0;
@@ -67,7 +79,7 @@ h4, h5, h6, .wybe-subhead {
   right: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(0, 34, 51, 0.88);
+  background: #002233;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
@@ -371,9 +383,10 @@ h4, h5, h6, .wybe-subhead {
 .hero {
   position: relative;
   width: 100%;
-  /* Body has padding-top: 96 px for the fixed nav; subtract it so the
-     hero still fills exactly the remaining viewport height. */
-  height: calc(100vh - 96px);
+  /* margin-top: var(--nav-h) applied via the block above; height fills
+     exactly the remaining viewport so no scroll is needed to see the
+     entire video frame. */
+  height: calc(100vh - var(--nav-h));
   overflow: hidden;
   background: #002233;
 }

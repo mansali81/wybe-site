@@ -1,5 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ── FIXED NAV HEIGHT SYNC ────────────────────────────
+  // The fixed header's real rendered height is written to --nav-h on
+  // <html>. Every offset (body padding proxy, .hero margin/height,
+  // scroll-padding) reads from --nav-h so responsive height changes
+  // (mobile / user zoom / breakpoints) never leave a gap or overlap.
+  (function () {
+    const nav = document.getElementById('wybe-nav');
+    if (!nav) return;
+    let last = -1;
+    const write = () => {
+      const h = Math.round(nav.getBoundingClientRect().height);
+      if (h > 0 && h !== last) {
+        document.documentElement.style.setProperty('--nav-h', h + 'px');
+        last = h;
+      }
+    };
+    write();
+    window.addEventListener('resize', write);
+    // Fire once more once fonts have painted (nav row may grow slightly).
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(write);
+    } else {
+      window.addEventListener('load', write, { once: true });
+    }
+  })();
+
   // ── SCROLL PROGRESS BAR ──────────────────────────────
   // Thin lime line at the very top of the viewport; width tracks how far the
   // user has scrolled through the document. Small, godaylight-ish accent.
