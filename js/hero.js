@@ -83,6 +83,15 @@
     // metadata is available.
     try { video.currentTime = 0; } catch (_) {}
 
+    // Header height reader — used to offset the pin so the pinned hero
+    // sits BELOW the fixed .wybe-nav, not underneath it at viewport
+    // top: 0. Returns 97 as a defensive fallback if the nav isn't
+    // findable, matching the CSS --nav-h default.
+    const navH = () => {
+      const nav = document.getElementById('wybe-nav');
+      return nav ? Math.round(nav.getBoundingClientRect().height) : 97;
+    };
+
     // Once metadata is available we know the duration; build the timeline.
     const setup = () => {
       const duration = (isFinite(video.duration) && video.duration > 0) ? video.duration : 5;
@@ -90,12 +99,20 @@
       // Timeline is driven by scrub: playhead maps 1-to-1 to scroll
       // progress across the pinned range. scrub: true (not 1) so the
       // clip-path wipes track finger movement exactly, not with a lag.
+      //
+      // start: 'top top+=<navH>' is the key fix — the pin engages when
+      // the hero's top edge reaches the header's BOTTOM edge (viewport
+      // y = navH), and the pinned element sits at that offset for the
+      // whole pinned range. Without this offset, ScrollTrigger pins the
+      // hero at viewport y = 0 and the top ~97 px (including the
+      // runner's head) slides under the header.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: heroEl,
-          start: 'top top',
+          start: () => `top top+=${navH()}`,
           end: '+=560%',   // ~5s video @ ~100vh/s + ~60vh read-beat hold
           pin: true,
+          pinType: 'fixed',
           pinSpacing: true,
           scrub: true,
           invalidateOnRefresh: true
@@ -133,8 +150,9 @@
       try { video.load(); } catch (_) {}
     }
 
-    // Debounced resize — recompute canvas nothing (no canvas anymore)
-    // and let ScrollTrigger recalc the pin math.
+    // Debounced resize — invalidateOnRefresh: true recomputes the pin
+    // start via navH() so a responsive header height change (or user
+    // zoom) still produces a gap-free pin.
     let rz;
     window.addEventListener('resize', () => {
       clearTimeout(rz);

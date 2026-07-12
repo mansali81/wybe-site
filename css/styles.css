@@ -389,6 +389,9 @@ h4, h5, h6, .wybe-subhead {
   height: calc(100vh - var(--nav-h));
   overflow: hidden;
   background: #002233;
+  /* Keep the pinned hero below the fixed nav (z-index: 1000) so the
+     header always sits cleanly on top during the ScrollTrigger pin. */
+  z-index: 1;
 }
 /* Vertically center + left align the content block. The video and
    gradient tint are absolutely positioned inside; only .hero-content
