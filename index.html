@@ -286,9 +286,8 @@
     }
   </style>
 
-  <!-- GSAP + ScrollTrigger (hero scroll-scrub + launch price count-up animation) -->
+  <!-- GSAP (launch price count-up animation on quiz result) -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 
   <!-- jsPDF for client-side PDF generation (calculator results) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
@@ -401,29 +400,13 @@
     </div>
   </nav>
 
-  <!-- HERO — GSAP + ScrollTrigger scroll-driven hero.
-       See js/hero.js for the controller. Section is pinned via ScrollTrigger
-       for +500vh of scroll distance; scroll progress maps to video.currentTime
-       and drives a lime light-ray canvas overlay; text reveals at progress = 1.
-
-       Video sources: hero_scrub.mp4 (5 s, 30 fps, keyframe-per-frame for
-       smooth seeking) is the primary; the existing Untitled design.mp4 is a
-       fallback so the hero still works before the optimized encode ships. -->
-  <section id="home" class="hero" data-hero>
+  <!-- HERO — clean typographic hero on solid navy. Video, canvas rays, and
+       scroll-scrub pin are all removed. Headline + subtitle + CTA are visible
+       on first paint; no external motion or media. -->
+  <section id="home" class="hero">
     <div class="hero-frame">
-      <video id="hero-scrub" class="hero-video"
-             muted playsinline webkit-playsinline preload="auto"
-             disablepictureinpicture>
-        <source src="images/hero_scrub.mp4"          type="video/mp4">
-        <source src="images/Untitled%20design.mp4"   type="video/mp4">
-      </video>
-      <div class="hero-tint" aria-hidden="true"></div>
-      <canvas id="hero-rays" class="hero-rays" aria-hidden="true"></canvas>
-
-      <!-- Placeholder text — swap for real copy at any time. Hidden until
-           scroll progress = 1; revealed by a GSAP timeline. -->
-      <div class="hero-content" data-hero-content>
-        <h1 class="hero-headline">WYBE</h1>
+      <div class="hero-content">
+        <h1 class="hero-headline">Wellness You Build Everyday</h1>
         <p class="hero-sub">
           Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
         </p>
@@ -1495,7 +1478,6 @@
 
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
-  <script src="js/hero.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the
