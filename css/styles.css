@@ -68,8 +68,8 @@ h4, h5, h6, .wybe-subhead {
 }
 
 /* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
-   Vertically centered inside the 80 px nav row. Hover mirrors the nav
-   links — a lime glow filter on the mark plus an animated underline
+   Vertically centered inside the nav row. Hover mirrors the nav
+   links — a lime tint filter on the mark plus an animated underline
    sweeping left → right. */
 .wybe-brand {
   position: relative;
@@ -81,30 +81,41 @@ h4, h5, h6, .wybe-subhead {
   padding: 6px 2px;
 }
 .wybe-brand__mark {
-  height: 60px;
+  height: 72px;
   width: auto;
+  max-width: 100%;
+  object-fit: contain;
   flex-shrink: 0;
   display: block;
-  transition: filter 0.25s ease, transform 0.25s ease;
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
 .wybe-brand::after {
   content: '';
   position: absolute;
-  left: 0; right: 0;
+  left: 6px; right: 6px;
   bottom: -2px;
   height: 2px;
   background: #DDFF55;
   transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
   border-radius: 1px;
+  pointer-events: none;
 }
+/* Lime hover tint. The filter chain re-maps any base colour to lime
+   (#DDFF55) — dark artwork inside the SVG lights up green on hover. */
 .wybe-brand:hover .wybe-brand__mark {
-  /* Lime tint via drop-shadow glow + a modest brightness bump so the
-     baked-in logo/tagline read as "lit" rather than colour-inverted. */
-  filter: brightness(1.06) drop-shadow(0 0 14px rgba(221, 255, 85, 0.55));
+  filter:
+    brightness(0)
+    saturate(100%)
+    invert(94%)
+    sepia(38%)
+    saturate(1090%)
+    hue-rotate(15deg)
+    brightness(103%)
+    contrast(101%);
 }
 .wybe-brand:hover::after { transform: scaleX(1); }
 .wybe-brand:focus-visible {
@@ -413,8 +424,9 @@ h4, h5, h6, .wybe-subhead {
 .hero-sub,
 .hero-cta {
   opacity: 0;
-  -webkit-clip-path: inset(0 100% 0 0);
-          clip-path: inset(0 100% 0 0);
+  /* Initial state — GSAP fromTo overrides this with inline style. Same
+     four-percentage format as the tween so the interpolation is stable. */
+  clip-path: inset(0% 100% 0% 0%);
   will-change: opacity, clip-path;
 }
 
@@ -510,14 +522,13 @@ h4, h5, h6, .wybe-subhead {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Skip the scroll scrub. Video's first frame (poster) shows; all text
-     is revealed immediately. */
+  /* Skip the scroll scrub. Video's first frame shows; all text is
+     revealed immediately. */
   .hero-tagline,
   .hero-sub,
   .hero-cta {
     opacity: 1 !important;
-    -webkit-clip-path: none !important;
-            clip-path: none !important;
+    clip-path: inset(0% 0% 0% 0%) !important;
   }
 }
 
@@ -526,7 +537,7 @@ h4, h5, h6, .wybe-subhead {
    element with .wybe-hover-title. Text lifts 2px, brightens to lime, and
    a lime underline sweeps in left-to-right. Matches the calc-rail feel so
    the whole site reads as reactive. */
-nav a:not([class*="bg-burgundy"]),
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand),
 footer a:not([class*="bg-burgundy"]),
 .wybe-hover-title {
   display: inline-block;
@@ -536,7 +547,7 @@ footer a:not([class*="bg-burgundy"]),
               letter-spacing .3s ease;
   will-change: transform;
 }
-nav a:not([class*="bg-burgundy"])::after,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand)::after,
 footer a:not([class*="bg-burgundy"])::after,
 .wybe-hover-title::after {
   content: '';
@@ -549,14 +560,14 @@ footer a:not([class*="bg-burgundy"])::after,
   transition: transform .45s cubic-bezier(0.19, 1, 0.22, 1);
   pointer-events: none;
 }
-nav a:not([class*="bg-burgundy"]):hover,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover,
 footer a:not([class*="bg-burgundy"]):hover,
 .wybe-hover-title:hover {
   color: #DDFF55 !important;
   transform: translateY(-2px);
   letter-spacing: 0.01em;
 }
-nav a:not([class*="bg-burgundy"]):hover::after,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover::after,
 footer a:not([class*="bg-burgundy"]):hover::after,
 .wybe-hover-title:hover::after {
   transform: scaleX(1);

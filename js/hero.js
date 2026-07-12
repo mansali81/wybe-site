@@ -87,11 +87,9 @@
     const setup = () => {
       const duration = (isFinite(video.duration) && video.duration > 0) ? video.duration : 5;
 
-      // Initial hidden state (belt-and-braces — CSS also sets these).
-      gsap.set(items, { opacity: 0, clipPath: 'inset(0 100% 0 0)' });
-
-      // Timeline is driven by scrub: the timeline's playhead maps 1-to-1
-      // to scroll progress across the pinned range.
+      // Timeline is driven by scrub: playhead maps 1-to-1 to scroll
+      // progress across the pinned range. scrub: true (not 1) so the
+      // clip-path wipes track finger movement exactly, not with a lag.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: heroEl,
@@ -99,7 +97,7 @@
           end: '+=560%',   // ~5s video @ ~100vh/s + ~60vh read-beat hold
           pin: true,
           pinSpacing: true,
-          scrub: 1,
+          scrub: true,
           invalidateOnRefresh: true
         }
       });
@@ -107,16 +105,21 @@
       // Video scrub — occupies units 0 → 5 (matches the ~5 s clip).
       tl.to(video, { currentTime: duration, duration: 5, ease: 'none' }, 0);
 
-      // Text wipes in left-to-right, staggered within the video window.
-      const REV = { clipPath: 'inset(0 0 0 0)', opacity: 1, ease: 'power2.out' };
-      tl.to(tagline, Object.assign({ duration: 1.2 }, REV), 0.35);
-      tl.to(sub,     Object.assign({ duration: 1.4 }, REV), 1.70);
-      tl.to(cta,     Object.assign({ duration: 1.2 }, REV), 3.20);
+      // Text wipes in left-to-right. fromTo forces GSAP to interpolate
+      // between two explicit clip-path values with matching unit format
+      // (both % on all four sides) — otherwise GSAP can't parse the
+      // transition from '0 100% 0 0' (mixed) to '0 0 0 0' (unit-less).
+      const FROM = { clipPath: 'inset(0% 100% 0% 0%)', opacity: 0 };
+      const TO   = { clipPath: 'inset(0% 0% 0% 0%)',   opacity: 1, ease: 'power2.out' };
+
+      tl.fromTo(tagline, FROM, Object.assign({ duration: 1.2 }, TO), 0.35);
+      tl.fromTo(sub,     FROM, Object.assign({ duration: 1.4 }, TO), 1.70);
+      tl.fromTo(cta,     FROM, Object.assign({ duration: 1.2 }, TO), 3.20);
 
       // Empty "hold" at the end — a 0.6-unit tween on a dummy object.
-      // With +=560% and a total timeline of 5.6 units, this corresponds
-      // to ~60 vh of extra scroll where the hero is still pinned and
-      // fully revealed — the ~2s read beat before smoothly releasing.
+      // Total timeline: 5.6 units. With end='+=560%', 0.6 units maps to
+      // ~60 vh of extra scroll where the hero stays pinned and all text
+      // is fully revealed — the ~2s read beat before smoothly releasing.
       tl.to({}, { duration: 0.6 }, 5.0);
     };
 
