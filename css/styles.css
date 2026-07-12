@@ -333,11 +333,18 @@ h4, h5, h6, .wybe-subhead {
   overflow: hidden;
   background: #002233;
 }
+/* Vertically center + left align the content block. The video, gradient
+   tint and rays are all absolutely positioned inside; only .hero-content
+   participates in the flex flow. */
 .hero-frame {
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 clamp(24px, 6vw, 96px);
 }
 .hero-video {
   position: absolute;
@@ -346,24 +353,34 @@ h4, h5, h6, .wybe-subhead {
   height: 100vh;
   object-fit: cover;
   object-position: center;
-  /* Source clip is filmed right-to-left; mirror horizontally so the runner
-     reads as moving LEFT-TO-RIGHT with the scroll. */
   transform: scaleX(-1);
   will-change: object-position;
   pointer-events: none;
   z-index: 1;
 }
-/* Dark tint for text legibility (0.15 per spec). Sits above the video but
-   below the rays so the rays punch through. */
+/* Dual-gradient legibility overlay:
+     - horizontal: strong navy on the left where the copy sits, fading to
+       transparent by ~60% so the runner on the right stays visible
+     - subtle bottom-up wash for footer edge contrast */
 .hero-tint {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.15);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 20, 30, 0.85) 0%,
+      rgba(0, 20, 30, 0.55) 45%,
+      rgba(0, 20, 30, 0.15) 75%,
+      rgba(0, 20, 30, 0)    100%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 55%,
+      rgba(0, 20, 30, 0.45) 100%
+    );
   pointer-events: none;
   z-index: 2;
 }
-/* Canvas holding the lime streaks. mix-blend-mode: screen so the greens
-   fuse with the video underneath into light trails, not painted shapes. */
 .hero-rays {
   position: absolute;
   inset: 0;
@@ -373,71 +390,131 @@ h4, h5, h6, .wybe-subhead {
   mix-blend-mode: screen;
   z-index: 3;
 }
-/* Text placeholder — hidden until the video finishes, then revealed by a
-   GSAP timeline. Layout is bottom-left; adjust freely. */
+/* Content: visible on load with a fade-up entrance animation. */
 .hero-content {
-  position: absolute;
+  position: relative;
   z-index: 4;
-  left: 6vw;
-  right: 6vw;
-  bottom: 12vh;
+  max-width: 40rem;
   color: #F6F2E8;
   opacity: 0;
   transform: translateY(24px);
-  pointer-events: none;
+  animation: hero-fade-up 0.9s cubic-bezier(0.19, 1, 0.22, 1) 0.15s forwards;
   will-change: opacity, transform;
 }
-.hero-content.is-revealed { pointer-events: auto; }
-/* Tagline eyebrow above the H1 — small lime-tinted uppercase label. */
+@keyframes hero-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Eyebrow / subhead above the H1 — lime SemiBold uppercase. */
 .hero-tagline {
-  font-family: 'Inter', 'Raleway', sans-serif;
-  font-weight: 900;
-  font-size: clamp(11px, 0.95vw, 14px);
-  letter-spacing: 0.28em;
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: clamp(14px, 1.4vw, 20px);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #DDFF55;
-  margin: 0 0 clamp(14px, 1.4vw, 22px);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  margin: 0 0 clamp(16px, 1.8vw, 26px);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 .hero-headline {
-  font-family: 'Inter', 'Raleway', sans-serif;
+  font-family: var(--font-header);
   font-weight: 900;
   letter-spacing: -0.02em;
-  line-height: 0.9;
-  font-size: clamp(56px, 12vw, 160px);
-  margin: 0 0 clamp(12px, 1.6vw, 24px);
+  line-height: 0.92;
+  /* Big but never overflows: fluid between 44px and 148px. */
+  font-size: clamp(44px, 9vw, 148px);
+  margin: 0 0 clamp(16px, 2vw, 28px);
+  color: #F6F2E8;
   text-transform: uppercase;
-  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.55);
 }
 .hero-sub {
-  font-family: 'Raleway', 'Inter', sans-serif;
-  font-weight: 300;
-  font-size: clamp(15px, 1.4vw, 20px);
-  line-height: 1.35;
-  max-width: 34rem;
-  margin: 0 0 clamp(20px, 2.4vw, 32px);
-  color: rgba(246, 242, 232, 0.9);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.5;
+  max-width: 520px;
+  margin: 0 0 clamp(24px, 2.6vw, 36px);
+  color: rgba(246, 242, 232, 0.92);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 .hero-cta {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   background: #DDFF55;
   color: #002233;
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
+  font-family: var(--font-subhead);
+  font-weight: 600;
   font-size: 14px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 16px 34px;
+  padding: 16px 32px;
   border-radius: 999px;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 6px 18px rgba(221, 255, 85, 0.20);
+  transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease;
 }
-.hero-cta:hover { background: #C4E63C; transform: translateY(-2px); }
+.hero-cta__arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.hero-cta:hover {
+  transform: scale(1.05);
+  filter: brightness(1.08);
+  box-shadow: 0 10px 28px rgba(221, 255, 85, 0.40);
+  background: #E4FF6A;
+}
+.hero-cta:hover .hero-cta__arrow { transform: translateX(4px); }
+.hero-cta:focus-visible {
+  outline: 2px solid #F6F2E8;
+  outline-offset: 4px;
+}
+
+/* ── HERO responsive ─────────────────────────────
+   Tablet + mobile: darken the overlay so text stays punchy on smaller
+   screens where the video reads more strongly, dial the headline down,
+   and make the CTA a full-width tappable target. */
+@media (max-width: 768px) {
+  .hero-tint {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 20, 30, 0.55) 0%,
+        rgba(0, 20, 30, 0.75) 55%,
+        rgba(0, 20, 30, 0.85) 100%
+      );
+  }
+  .hero-frame {
+    padding: 0 24px;
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+  .hero-headline {
+    font-size: clamp(36px, 10vw, 64px);
+  }
+  .hero-sub {
+    font-size: 16px;
+    max-width: none;
+  }
+  .hero-cta {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 18px 32px;
+    font-size: 15px;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .hero-video { display: none; }
   .hero-rays  { display: none; }
-  .hero-content { opacity: 1; transform: none; pointer-events: auto; }
+  .hero-content { opacity: 1; transform: none; animation: none; }
 }
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────

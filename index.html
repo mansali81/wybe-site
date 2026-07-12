@@ -421,15 +421,25 @@
       <div class="hero-tint" aria-hidden="true"></div>
       <canvas id="hero-rays" class="hero-rays" aria-hidden="true"></canvas>
 
-      <!-- Hero copy — hidden until scroll progress = 1 (runner finishes the
-           traversal); revealed by a GSAP timeline. -->
+      <!-- Hero copy — vertically centered, left-aligned. Visible on load
+           with a fade-up entrance animation (CSS). The video scrubs in
+           the background as the user scrolls; the copy stays legible
+           throughout thanks to the gradient overlay in .hero-tint. -->
       <div class="hero-content" data-hero-content>
         <p class="hero-tagline">Personal Trainer, Human Performance Nutritionist &amp; Mind Coach</p>
         <h1 class="hero-headline">Wellness You Build Everyday</h1>
         <p class="hero-sub">
           Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
         </p>
-        <a href="#contact" class="hero-cta">Let&rsquo;s WYBE</a>
+        <a href="#contact" class="hero-cta">
+          <span>Let&rsquo;s WYBE</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+               class="hero-cta__arrow" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
     </div>
   </section>

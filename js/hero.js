@@ -7,14 +7,14 @@
  *   - a canvas overlay that renders lime motion-streak light rays trailing
  *     behind the runner's on-screen position, with intensity scaling to
  *     scroll velocity and fading out as progress reaches 1
- *   - a text reveal at progress = 1 (GSAP fade + slide)
- * After the reveal, the pin releases and normal page scroll resumes.
+ * The text block is visible from load (CSS fade-up); it no longer waits
+ * for scroll to reach the end.
  *
  * No autoplay. The video is preloaded, muted, playsinline, and we never
  * call .play() — its frame is set purely by currentTime.
  *
  * prefers-reduced-motion: the whole controller is a no-op; CSS hides the
- * video and rays and shows the text immediately.
+ * video and rays.
  */
 (function () {
   'use strict';
@@ -27,8 +27,7 @@
   if (!heroEl || !video || !rays || !content) return;
 
   if (reduceMotion) {
-    // CSS handles the fallback appearance; just make sure text is visible.
-    content.classList.add('is-revealed');
+    // CSS already keeps the text visible; no ScrollTrigger work to do.
     return;
   }
 
@@ -144,17 +143,8 @@
     requestAnimationFrame(renderRays);
 
     // ── 4. GSAP ScrollTrigger — pin + scrub ──────────────────
-    // We build the reveal timeline first so ScrollTrigger can hand off
-    // when progress = 1.
-    const revealTl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-    revealTl
-      .to(content, { opacity: 1, y: 0, duration: 0.6 }, 0)
-      .fromTo(content.querySelector('.hero-headline'),
-              { y: 40 }, { y: 0, duration: 0.55 }, 0.05)
-      .fromTo(content.querySelector('.hero-sub'),
-              { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.20)
-      .fromTo(content.querySelector('.hero-cta'),
-              { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.32);
+    // Text is now visible on load (fade-up handled by CSS animation), so we
+    // no longer gate reveal behind scroll progress.
 
     // Velocity trackers for the ray-spawn budget.
     let lastProgress    = 0;
@@ -223,13 +213,6 @@
           }
         }
 
-        // Text reveal — progress = 1 (or extremely close).
-        if (p >= 0.995) {
-          if (!content.classList.contains('is-revealed')) {
-            content.classList.add('is-revealed');
-            revealTl.play(0);
-          }
-        }
       }
     });
 
