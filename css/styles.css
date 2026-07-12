@@ -167,6 +167,28 @@ body {
 }
 .hero-cta:hover { background: #C4E63C; transform: translateY(-2px); }
 
+/* ── SPORTY CHEVRON DIVIDER ──────────────────────
+   Replaces the plain hairline between sections. A single downward chevron
+   in lime, breathing gently. On light backgrounds the lime pops off cream;
+   on dark backgrounds it pops off navy. Same shape either way. */
+.wybe-chevron-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 0;
+}
+.wybe-chevron-divider svg {
+  filter: drop-shadow(0 0 8px rgba(221, 255, 85, 0.35));
+  animation: wybe-chevron-breathe 3.2s ease-in-out infinite;
+}
+@keyframes wybe-chevron-breathe {
+  0%, 100% { transform: translateY(0);   opacity: 0.9; }
+  50%      { transform: translateY(3px); opacity: 1;   }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wybe-chevron-divider svg { animation: none; }
+}
+
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────
    Applies to nav + footer text links (skips pill CTAs by class) and any
    element with .wybe-hover-title. Text lifts 2px, brightens to lime, and
