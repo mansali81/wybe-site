@@ -119,6 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Hero scroll-scrub + rays live in js/hero.js (GSAP + ScrollTrigger).
+
   // ── PARALLAX ──────────────────────────────────────────
   // Elements tagged with [data-parallax] translate vertically with scroll.
   // If they also have [data-parallax-3d], a perspective rotateX + slight

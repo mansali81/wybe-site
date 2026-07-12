@@ -110,46 +110,113 @@ body {
   }
 }
 
-/* ── HERO: clean typographic hero on solid navy ────────
-   No video, no canvas overlay, no scroll-scrub. Headline + subtitle + CTA
-   sit centered vertically against the navy field the site inherits from
-   <body>. Sized to 100vh so the fold behaviour is preserved. */
+/* ── HERO: GSAP + ScrollTrigger scroll-driven story ────
+   .hero      is a 100vh section; ScrollTrigger pins it and adds a +500vh
+              scroll distance so the user has ~5 s of vertical scroll to
+              scrub through the 5 s video before the pin releases.
+   .hero-frame is the visible 100vw × 100vh viewport that stays put while
+              pinned. Everything below is layered inside it.
+     .hero-video   full-cover portrait mp4 (never auto-plays; scrubbed)
+     .hero-tint    subtle dark overlay for text legibility
+     .hero-rays    canvas overlay for the lime motion streaks (screen blend)
+     .hero-content H1 + subtitle + CTA — hidden until progress = 1
+
+   NOTE ON CROP: the source clip is portrait 1792 × 2390 with the runner in
+   the vertical middle. object-fit: cover on a landscape viewport crops the
+   sand/sea top and bottom while keeping the runner's body fully visible
+   (per the "never crop the character" priority). object-position centres
+   the safe-zone. */
 .hero {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
   background: #002233;
 }
 .hero-frame {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding: 8vh 6vw;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  /* Source clip is filmed right-to-left; mirror horizontally so the runner
+     reads as moving LEFT-TO-RIGHT with the scroll. */
+  transform: scaleX(-1);
+  will-change: object-position;
+  pointer-events: none;
+  z-index: 1;
+}
+/* Dark tint for text legibility (0.15 per spec). Sits above the video but
+   below the rays so the rays punch through. */
+.hero-tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 2;
+}
+/* Canvas holding the lime streaks. mix-blend-mode: screen so the greens
+   fuse with the video underneath into light trails, not painted shapes. */
+.hero-rays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 3;
+}
+/* Text placeholder — hidden until the video finishes, then revealed by a
+   GSAP timeline. Layout is bottom-left; adjust freely. */
 .hero-content {
-  max-width: 60rem;
+  position: absolute;
+  z-index: 4;
+  left: 6vw;
+  right: 6vw;
+  bottom: 12vh;
   color: #F6F2E8;
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.hero-content.is-revealed { pointer-events: auto; }
+/* Tagline eyebrow above the H1 — small lime-tinted uppercase label. */
+.hero-tagline {
+  font-family: 'Inter', 'Raleway', sans-serif;
+  font-weight: 900;
+  font-size: clamp(11px, 0.95vw, 14px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #DDFF55;
+  margin: 0 0 clamp(14px, 1.4vw, 22px);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 .hero-headline {
   font-family: 'Inter', 'Raleway', sans-serif;
   font-weight: 900;
   letter-spacing: -0.02em;
-  line-height: 0.95;
-  font-size: clamp(48px, 9vw, 128px);
-  margin: 0 0 clamp(16px, 2vw, 28px);
+  line-height: 0.9;
+  font-size: clamp(56px, 12vw, 160px);
+  margin: 0 0 clamp(12px, 1.6vw, 24px);
   text-transform: uppercase;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
 }
 .hero-sub {
   font-family: 'Raleway', 'Inter', sans-serif;
   font-weight: 300;
   font-size: clamp(15px, 1.4vw, 20px);
-  line-height: 1.4;
+  line-height: 1.35;
   max-width: 34rem;
-  margin: 0 0 clamp(24px, 2.4vw, 36px);
-  color: rgba(246, 242, 232, 0.85);
+  margin: 0 0 clamp(20px, 2.4vw, 32px);
+  color: rgba(246, 242, 232, 0.9);
 }
 .hero-cta {
   display: inline-block;
@@ -167,26 +234,10 @@ body {
 }
 .hero-cta:hover { background: #C4E63C; transform: translateY(-2px); }
 
-/* ── SPORTY CHEVRON DIVIDER ──────────────────────
-   Replaces the plain hairline between sections. A single downward chevron
-   in lime, breathing gently. On light backgrounds the lime pops off cream;
-   on dark backgrounds it pops off navy. Same shape either way. */
-.wybe-chevron-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 22px 0;
-}
-.wybe-chevron-divider svg {
-  filter: drop-shadow(0 0 8px rgba(221, 255, 85, 0.35));
-  animation: wybe-chevron-breathe 3.2s ease-in-out infinite;
-}
-@keyframes wybe-chevron-breathe {
-  0%, 100% { transform: translateY(0);   opacity: 0.9; }
-  50%      { transform: translateY(3px); opacity: 1;   }
-}
 @media (prefers-reduced-motion: reduce) {
-  .wybe-chevron-divider svg { animation: none; }
+  .hero-video { display: none; }
+  .hero-rays  { display: none; }
+  .hero-content { opacity: 1; transform: none; pointer-events: auto; }
 }
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────

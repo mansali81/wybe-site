@@ -272,9 +272,6 @@
     .wybe-pillar-item:hover .wybe-pillar-name::after,
     .wybe-pillar-item:focus-within .wybe-pillar-name::after { width: 100%; }
     .wybe-pillar-index     { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 0.7rem; letter-spacing: 0.24em; color: #DDFF55; margin-bottom: 12px; display: block; }
-    /* When the Four Pillars section is on a lime background (.wybe-band), the
-       lime accent underline would disappear — swap it to navy for contrast. */
-    .wybe-band .wybe-pillar-name::after { background-color: #002233; }
 
     /* Universal accessibility guard */
     @media (prefers-reduced-motion: reduce) {
@@ -289,8 +286,9 @@
     }
   </style>
 
-  <!-- GSAP (launch price count-up animation on quiz result) -->
+  <!-- GSAP + ScrollTrigger (hero scroll-scrub + launch price count-up animation) -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 
   <!-- jsPDF for client-side PDF generation (calculator results) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
@@ -373,7 +371,11 @@
   <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/80 backdrop-blur-md border-b border-cream/10">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="#home" class="font-sans text-xl font-bold tracking-widest text-cream uppercase">WYBE</a>
+        <a href="#home" class="flex items-center gap-3 group" aria-label="WYBE home">
+          <img src="images/WYBE-6-logo-name-sand.svg" alt="WYBE logo"
+               class="h-10 w-auto shrink-0" draggable="false">
+          <span class="font-sans text-xl font-bold tracking-widest text-cream uppercase">WYBE</span>
+        </a>
         <div class="hidden md:flex items-center gap-7">
           <a href="#home" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">Home</a>
           <a href="#about" data-nav-link class="font-sans text-sm text-cream hover:text-burgundy transition-colors">About</a>
@@ -403,12 +405,34 @@
     </div>
   </nav>
 
-  <!-- HERO — clean typographic hero on solid navy. Video, canvas rays, and
-       scroll-scrub pin are all removed. Headline + subtitle + CTA are visible
-       on first paint; no external motion or media. -->
-  <section id="home" class="hero">
+  <!-- HERO — GSAP + ScrollTrigger scroll-driven hero.
+       See js/hero.js for the controller. Section is pinned via ScrollTrigger
+       for +500vh of scroll distance; scroll progress maps to video.currentTime
+       and drives a lime light-ray canvas overlay; text reveals at progress = 1.
+
+       Video sources: hero_scrub.mp4 (5 s, 30 fps, keyframe-per-frame for
+       smooth seeking) is the primary; the existing Untitled design.mp4 is a
+       fallback so the hero still works before the optimized encode ships. -->
+  <section id="home" class="hero" data-hero>
     <div class="hero-frame">
-      <div class="hero-content">
+      <!-- Runner video: NEVER auto-plays. js/hero.js scrubs currentTime from
+           scroll progress via ScrollTrigger. Source is Running.MOV; if you
+           later add an mp4 encode named hero_scrub.mp4, browsers will pick
+           that first. -->
+      <video id="hero-scrub" class="hero-video"
+             muted playsinline webkit-playsinline preload="auto"
+             disablepictureinpicture>
+        <source src="images/hero_scrub.mp4" type="video/mp4">
+        <source src="images/Running.MOV"    type="video/quicktime">
+        <source src="images/Running.MOV"    type="video/mp4">
+      </video>
+      <div class="hero-tint" aria-hidden="true"></div>
+      <canvas id="hero-rays" class="hero-rays" aria-hidden="true"></canvas>
+
+      <!-- Hero copy — hidden until scroll progress = 1 (runner finishes the
+           traversal); revealed by a GSAP timeline. -->
+      <div class="hero-content" data-hero-content>
+        <p class="hero-tagline">Personal Trainer, Human Performance Nutritionist &amp; Mind Coach</p>
         <h1 class="hero-headline">Wellness You Build Everyday</h1>
         <p class="hero-sub">
           Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
@@ -419,11 +443,7 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- OUR PROMISE + OUR COMMITMENT — two offset boxes.
        Our Promise sits top-left; Our Commitment sits bottom-right, staggered
@@ -432,12 +452,12 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
 
-        <!-- Our Promise (top-left) — cream editorial card with lime accent -->
+        <!-- Our Promise (top-left) -->
         <div class="md:col-span-6">
-          <div class="border-l-4 border-burgundy p-8 md:p-10 bg-cream text-charcoal shadow-lg">
-            <h3 class="text-lg md:text-xl font-black text-charcoal mb-2 uppercase tracking-tight">Our Promise</h3>
-            <div class="w-10 h-1 bg-burgundy mb-4"></div>
-            <p class="font-sans text-base md:text-lg font-light text-charcoal leading-snug">
+          <div class="border-2 border-burgundy/70 p-8 md:p-10 bg-charcoal/40 backdrop-blur-sm">
+            <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Promise</h3>
+            <div class="w-10 h-px bg-burgundy mb-4"></div>
+            <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
               A world where wellness is not a 30-day challenge, but a daily discipline built into the fabric of ordinary life.
             </p>
           </div>
@@ -445,10 +465,10 @@
 
         <!-- Our Commitment (bottom-right, offset vertically to form a staircase) -->
         <div class="md:col-span-6 md:col-start-7 md:mt-16">
-          <div class="border-l-4 border-burgundy p-8 md:p-10 bg-cream text-charcoal shadow-lg">
-            <h3 class="text-lg md:text-xl font-black text-charcoal mb-2 uppercase tracking-tight">Our Commitment</h3>
-            <div class="w-10 h-1 bg-burgundy mb-4"></div>
-            <p class="font-sans text-base md:text-lg font-light text-charcoal leading-snug">
+          <div class="border-2 border-burgundy/70 p-8 md:p-10 bg-charcoal/40 backdrop-blur-sm">
+            <h3 class="text-lg md:text-xl font-black text-burgundy mb-2 uppercase tracking-tight">Our Commitment</h3>
+            <div class="w-10 h-px bg-burgundy mb-4"></div>
+            <p class="font-sans text-base md:text-lg font-light text-cream leading-snug">
               To give you the science, the structure, and the honest accountability to build that discipline, in your body, your nutrition, and your mind, for the rest of your life.
             </p>
           </div>
@@ -459,11 +479,7 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- #CALCULATORS -->
   <!-- CALCULATORS — sticky-snap scroll story. Section is 400vh; a sticky stage
@@ -763,11 +779,7 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
 
   <!-- #ABOUT — two-state left column: short bio (default) swaps for a metrics
@@ -838,48 +850,40 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- THE FOUNDATION — Four Pillars, minimalist word-mark grid. No icons, no
        supporting copy. Each pillar is a numbered, oversized name with a lime
        underline accent that grows on hover to reinforce the "four pillars, one
        system" idea without the visual noise. -->
-  <section class="bg-burgundy py-16 md:py-24 wybe-band">
+  <section class="py-16 md:py-24">
     <div class="max-w-6xl mx-auto px-6">
-      <p class="font-sans text-xs tracking-widest uppercase text-charcoal mb-3 text-center">The Foundation</p>
-      <div class="w-10 h-1 bg-charcoal mx-auto mb-6"></div>
-      <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal text-center mb-12 md:mb-16">Four Pillars. One System.</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-charcoal/20">
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index" style="color:#002233;">01</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl" style="color:#002233;">Mindset</span>
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3 text-center">The Foundation</p>
+      <div class="w-10 h-px bg-burgundy mx-auto mb-6"></div>
+      <h3 class="font-sans text-2xl md:text-3xl font-bold text-cream text-center mb-12 md:mb-16">Four Pillars. One System.</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-cream/10">
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">01</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Mindset</span>
         </div>
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index" style="color:#002233;">02</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl" style="color:#002233;">Nutrition</span>
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">02</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Nutrition</span>
         </div>
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index" style="color:#002233;">03</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl" style="color:#002233;">Training</span>
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">03</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Training</span>
         </div>
-        <div class="wybe-pillar-item md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index" style="color:#002233;">04</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl" style="color:#002233;">Recovery</span>
+        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
+          <span class="wybe-pillar-index">04</span>
+          <span class="wybe-pillar-name text-3xl md:text-4xl">Recovery</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- #SERVICES (dropdown-driven panels) -->
   <!-- SERVICES — same sticky-snap pattern as Calculators. The section is
@@ -1322,25 +1326,21 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
 
-  <!-- #BOOK My Book + Waitlist — cream announcement panel -->
-  <section id="book" class="bg-cream py-14 md:py-20 text-charcoal">
+  <!-- #BOOK My Book + Waitlist (inline) -->
+  <section id="book" class="py-14">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-6">Coming Soon</p>
-      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-charcoal mb-0">1825</h2>
-      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-charcoal/20 mb-6">DAYS</h2>
-      <div class="hairline w-12 mx-auto mb-6" style="background:#DDFF55; height:4px;"></div>
-      <p class="font-sans text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-6">Five years that shape a lifetime.</p>
-      <p class="font-sans text-sm text-charcoal/75 leading-relaxed mb-2 max-w-xl mx-auto">
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-6">Coming Soon</p>
+      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-cream mb-0">1825</h2>
+      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-cream/25 mb-6">DAYS</h2>
+      <div class="hairline w-12 mx-auto mb-6" style="background:#DDFF55;"></div>
+      <p class="font-sans text-2xl md:text-3xl font-semibold text-cream leading-snug mb-6">Five years that shape a lifetime.</p>
+      <p class="font-sans text-sm text-cream/75 leading-relaxed mb-2 max-w-xl mx-auto">
         The complete nutrition guide for your child, from first breath to fifth birthday. Written for parents. Grounded in science. Built for the real world.
       </p>
-      <p class="font-sans text-sm text-charcoal/60 leading-relaxed mb-10 max-w-xl mx-auto">
+      <p class="font-sans text-sm text-cream/60 leading-relaxed mb-10 max-w-xl mx-auto">
         The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
       </p>
 
@@ -1351,25 +1351,21 @@
         <input type="hidden" name="subject" value="1825 Days, Waitlist">
         <input type="hidden" name="redirect" value="false">
 
-        <input type="text"  name="name"   required placeholder="Full name"        class="border border-charcoal/25 bg-transparent px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-        <input type="email" name="email"  required placeholder="Email"            class="border border-charcoal/25 bg-transparent px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/25 bg-transparent px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+        <input type="text"  name="name"   required placeholder="Full name"        class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+        <input type="email" name="email"  required placeholder="Email"            class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
 
         <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
       </form>
       <div class="hidden mt-4 text-center">
-        <p class="font-sans text-lg font-semibold text-charcoal mb-1">You&rsquo;re on the list.</p>
-        <p class="font-sans text-sm text-charcoal/60">We will be in touch as soon as the book is ready.</p>
+        <p class="font-sans text-lg font-semibold text-cream mb-1">You&rsquo;re on the list.</p>
+        <p class="font-sans text-sm text-cream/60">We will be in touch as soon as the book is ready.</p>
       </div>
     </div>
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- MY PUBLICATION (text-only canvas, no background image) -->
   <section id="publication" class="py-16 md:py-20">
@@ -1392,20 +1388,16 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- #CONTACT — cream form panel with lime CTA -->
+  <!-- #CONTACT — form panel over the animated canvas. -->
   <section id="contact" class="py-14">
     <div class="max-w-2xl mx-auto px-6">
-      <div class="relative bg-cream text-charcoal overflow-hidden border-l-4 border-burgundy shadow-lg">
+      <div class="relative bg-charcoal/60 backdrop-blur-sm text-white overflow-hidden border border-burgundy/40">
         <div class="relative z-10 p-6 md:p-10 flex flex-col">
           <!-- FORM GROUP -->
           <div>
-            <h2 class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-3 leading-tight text-center">Let&rsquo;s WYBE</h2>
+            <h2 class="font-sans text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
 
             <form data-form data-subject="WYBE, Quick Contact" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5">
               <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
@@ -1413,41 +1405,41 @@
               <input type="hidden" name="subject" value="WYBE, Quick Contact">
               <input type="hidden" name="redirect" value="false">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/30 bg-transparent px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-charcoal placeholder:text-charcoal/40">
-                <input type="email" name="email" required placeholder="your@email.com" class="border border-charcoal/30 bg-transparent px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-charcoal placeholder:text-charcoal/40">
+                <input type="text" name="name" required placeholder="Full name" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 drop-shadow-md">
+                <input type="email" name="email" required placeholder="your@email.com" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 drop-shadow-md">
               </div>
               <div>
-                <textarea name="message" required rows="3" placeholder="What are you looking for?" class="border border-charcoal/30 bg-transparent px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-charcoal placeholder:text-charcoal/40 resize-none"></textarea>
+                <textarea name="message" required rows="3" placeholder="What are you looking for?" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 resize-none drop-shadow-md"></textarea>
                 <!-- Reply-time note sits right under the message box -->
-                <p class="font-sans text-[10px] md:text-[11px] font-normal text-charcoal/70 text-center mt-1">Send a message and team will reply within 48 hours.</p>
+                <p class="font-sans text-[10px] md:text-[11px] font-normal text-white text-center mt-1 drop-shadow-md">Send a message and team will reply within 48 hours.</p>
               </div>
               <!-- Arrow send button: circular icon-only, right-aligned -->
               <div class="flex justify-end">
-                <button type="submit" aria-label="Send message" class="group flex items-center justify-center w-12 h-12 rounded-full border-2 border-charcoal bg-burgundy hover:bg-burgundy-dark transition-colors shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-charcoal group-hover:translate-x-0.5 transition-transform">
+                <button type="submit" aria-label="Send message" class="group flex items-center justify-center w-12 h-12 rounded-full border-2 border-white bg-burgundy hover:bg-burgundy-dark hover:border-burgundy-dark transition-colors shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </button>
               </div>
             </form>
-            <div class="hidden mt-3 text-center py-4 border border-charcoal/20 bg-burgundy/15">
-              <p class="font-sans text-base font-bold text-charcoal mb-1">Message received.</p>
-              <p class="font-sans text-xs font-semibold text-charcoal">Team will reply within 48 hours.</p>
+            <div class="hidden mt-3 text-center py-4 border border-white/20 bg-charcoal/55">
+              <p class="font-sans text-base font-bold text-white mb-1 drop-shadow-md">Message received.</p>
+              <p class="font-sans text-xs font-semibold text-white drop-shadow-md">Team will reply within 48 hours.</p>
             </div>
           </div>
 
           <!-- BOTTOM: DM icons -->
           <div class="pt-6 text-center">
-            <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal mb-3">Or DM directly</p>
+            <p class="font-sans text-xs font-bold tracking-widest uppercase text-white mb-3 drop-shadow-md">Or DM directly</p>
             <div class="flex justify-center gap-6">
-              <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-charcoal hover:text-burgundy-dark transition-colors">
+              <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white hover:text-burgundy transition-colors drop-shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
               </a>
-              <a href="https://ig.me/m/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-charcoal hover:text-burgundy-dark transition-colors">
+              <a href="https://ig.me/m/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white hover:text-burgundy transition-colors drop-shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
               </a>
-              <a href="https://www.tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-charcoal hover:text-burgundy-dark transition-colors">
+              <a href="https://www.tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white hover:text-burgundy transition-colors drop-shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
               </a>
             </div>
@@ -1458,11 +1450,7 @@
   </section>
 
   <!-- Section divider -->
-  <div class="wybe-chevron-divider" aria-hidden="true">
-    <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-      <polyline points="4,4 20,16 36,4" fill="none" stroke="#DDFF55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- FOOTER -->
   <footer class="text-white border-t border-cream/10">
@@ -1517,6 +1505,7 @@
 
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
+  <script src="js/hero.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the
