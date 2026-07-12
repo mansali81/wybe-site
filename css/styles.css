@@ -19,6 +19,9 @@ body {
   font-family: var(--font-body);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  /* Offset for the fixed .wybe-nav (96 px tall). Keeps the very first
+     paint of every page below the header. */
+  padding-top: 96px;
 }
 
 h1, h2, h3, .font-heading {
@@ -53,18 +56,22 @@ h4, h5, h6, .wybe-subhead {
    shadow. Brand mark is cap-height matched to the wordmark. Nav links use
    the subhead type role; active section gets a lime underline via the
    IntersectionObserver-driven .is-active class. */
+/* Fixed, frozen header. !important + z-index 1000 so no later rule (or
+   inline-style block cascade quirk) can knock it back to position:
+   relative. Excluded from the body > * override in index.html /
+   publication.html inline styles as well. */
 .wybe-nav {
-  position: fixed;
+  position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
   width: 100%;
+  z-index: 1000;
   background: rgba(0, 34, 51, 0.88);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
   transition: box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
 .wybe-nav.is-scrolled {
@@ -364,19 +371,20 @@ h4, h5, h6, .wybe-subhead {
 .hero {
   position: relative;
   width: 100%;
-  height: 100vh;
+  /* Body has padding-top: 96 px for the fixed nav; subtract it so the
+     hero still fills exactly the remaining viewport height. */
+  height: calc(100vh - 96px);
   overflow: hidden;
   background: #002233;
-  /* Fixed nav overlays the top 96 px; hero content is vertically centered
-     in .hero-frame so it sits well below the nav. */
 }
-/* Vertically center + left align the content block. The video, gradient
-   tint and rays are all absolutely positioned inside; only .hero-content
-   participates in the flex flow. */
+/* Vertically center + left align the content block. The video and
+   gradient tint are absolutely positioned inside; only .hero-content
+   participates in the flex flow. Height fills the .hero container which
+   is already calc(100vh - 96px). */
 .hero-frame {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -386,8 +394,8 @@ h4, h5, h6, .wybe-subhead {
 .hero-video {
   position: absolute;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   transform: scaleX(-1);
