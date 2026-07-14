@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon (SVG logo mark; modern browsers use SVG directly, iOS uses apple-touch-icon) -->
+  <link rel="icon" type="image/svg+xml" href="/images/Logo.svg">
+  <link rel="apple-touch-icon" href="/images/Logo.svg">
+  <title>Page not found — WYBE</title>
+  <meta name="description" content="This page doesn't exist. Head back to the WYBE homepage.">
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#F6F2E8', 'cream-dark': '#EDE7D8',
+            'sage-tint': '#F0EDDF', 'sage-mist': '#E9E4CE',
+            'charcoal-muted': '#4A6070',
+            burgundy: '#DDFF55', 'burgundy-dark': '#C4E63C',
+            forest: '#001A24', 'charcoal-light': '#003348',
+            charcoal: '#002233',
+          },
+          fontFamily: {
+            sans:    ['Raleway', 'Inter', 'sans-serif'],
+            heading: ['Inter', 'Raleway', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body { background-color: #002233; color: #F6F2E8; }
+    /* Center the panel vertically once nav height is subtracted. */
+    .notfound-wrap {
+      min-height: calc(100vh - var(--nav-h, 97px));
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 24px;
+    }
+    .notfound-code {
+      font-family: var(--font-header, 'Inter'), sans-serif;
+      font-weight: 900;
+      font-size: clamp(96px, 20vw, 220px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #DDFF55;
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="text-cream">
+
+  <!-- Skip link — first focusable element on the page. -->
+  <a href="#main" class="wybe-skip-link">Skip to content</a>
+
+  <!-- Landmark: site header wraps the top bar. -->
+  <header class="wybe-header" role="banner">
+  <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-[96px]">
+        <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
+          <img src="/images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
+               class="wybe-brand__mark" draggable="false">
+        </a>
+        <div class="hidden md:flex items-center gap-7">
+          <a href="/#calculators"     class="wybe-nav-link">Calculators</a>
+          <a href="/#services"        class="wybe-nav-link">Services</a>
+          <a href="/publication.html" class="wybe-nav-link">My Publication</a>
+          <a href="/#contact"         class="wybe-cta">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  </header>
+
+  <main id="main" tabindex="-1" class="notfound-wrap">
+    <div class="max-w-xl mx-auto text-center">
+      <p class="notfound-code">404</p>
+      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mt-2 mb-3">Page not found</p>
+      <div class="w-12 h-px bg-burgundy mx-auto mb-6"></div>
+      <h1 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">This page took a rest day.</h1>
+      <p class="font-sans text-base text-cream/80 leading-relaxed mb-8">
+        The link is broken or the page has moved. Head back to the homepage — everything on WYBE is one hop away.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="/" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
+          Back to home
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="/#contact" class="inline-flex items-center gap-2 border border-cream/40 text-cream font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full hover:bg-cream/10 transition-colors">
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
