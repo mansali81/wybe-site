@@ -510,7 +510,7 @@
             <div class="md:col-span-7 wybe-story-stack" style="min-height: 78vh;">
 
       <!-- BFP -->
-      <div class="wybe-story-panel" data-story-panel="0" data-calc="bfp">
+      <div class="wybe-story-panel" data-story-panel="0" data-index="0" data-calc="bfp">
         <div class="wybe-calc-card">
           <!-- Motif: caliper glyph -->
           <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -588,7 +588,7 @@
       </div>
 
       <!-- TDEE -->
-      <div class="wybe-story-panel" data-story-panel="1" data-calc="tdee">
+      <div class="wybe-story-panel" data-story-panel="1" data-index="1" data-calc="tdee">
         <div class="wybe-calc-card">
           <!-- Motif: flame -->
           <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -673,7 +673,7 @@
       </div>
 
       <!-- BMI -->
-      <div class="wybe-story-panel" data-story-panel="2" data-calc="bmi">
+      <div class="wybe-story-panel" data-story-panel="2" data-index="2" data-calc="bmi">
         <div class="wybe-calc-card">
           <!-- Motif: balance scale -->
           <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -715,7 +715,7 @@
       </div>
 
       <!-- IDEAL BODY WEIGHT -->
-      <div class="wybe-story-panel" data-story-panel="3" data-calc="ibw">
+      <div class="wybe-story-panel" data-story-panel="3" data-index="3" data-calc="ibw">
         <div class="wybe-calc-card">
           <!-- Motif: target rings -->
           <svg class="wybe-calc-motif" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1985,27 +1985,54 @@
 
     // ── STICKY-SNAP SCROLL STORY ──────────────────────
     // For each `.wybe-story-inner` container: as the user scrolls through the
-    // section (which is min-height 400vh), map scroll progress to an active
-    // panel index. Panels are absolutely stacked inside a 100vh sticky stage.
-    // The progress-pill buttons act as jump targets.
+    // section (min-height 400vh), map scroll progress to an active panel
+    // index. Panels are absolutely stacked inside a 100vh sticky stage.
+    // The progress-pill buttons (calculators) and the service tabs (services)
+    // BOTH act as reliable jump targets: click index n → panel index n.
+    //
+    // A previous version routed clicks through window.scrollTo({smooth}) and
+    // let the scroll handler race the animation, so clicks like BMI (idx 2)
+    // sometimes landed on TDEE (idx 1) because Math.floor(progress*count)
+    // rounded the final settled position to the wrong band. This version:
+    //
+    //   1. Sets the active panel/tab IMMEDIATELY on click (source of truth).
+    //   2. Marks a programmatic-jump window so the scroll handler is
+    //      suppressed until the smooth scroll settles.
+    //   3. Verifies the panel with data-index === clicked index actually
+    //      has .is-active, and warns in dev if it doesn't.
     (function() {
       const stories = document.querySelectorAll('.wybe-story-inner');
       if (!stories.length) return;
+
+      // Dev-only assertion: hostname localhost / 127.0.0.1 / *.local.
+      const IS_DEV = /^(localhost|127\.0\.0\.1|.*\.local)$/i.test(location.hostname);
 
       stories.forEach(inner => {
         // Two modes:
         //  - default: cross-fade absolutely-stacked .wybe-story-panel divs
         //             (Calculators). Panel count from DOM.
-        //  - tabs:    delegate to an existing tab UI (Services). Scroll
-        //             progress programmatically clicks the corresponding tab
-        //             so the section's existing panel-swap logic runs.
-        const mode    = inner.dataset.storyMode || 'panels';
-        const panels  = inner.querySelectorAll('.wybe-story-panel');
-        const buttons = inner.querySelectorAll('[data-story-jump]');
-        const tabs    = mode === 'tabs' ? inner.querySelectorAll('[data-service-tab]') : [];
-        const count   = mode === 'tabs' ? tabs.length : panels.length;
+        //  - tabs:    delegate to an existing tab UI (Services). The
+        //             underlying service-tab click handler owns the visual
+        //             panel swap; we just make sure we click the RIGHT tab.
+        const mode     = inner.dataset.storyMode || 'panels';
+        const panels   = inner.querySelectorAll('.wybe-story-panel');
+        const buttons  = inner.querySelectorAll('[data-story-jump]');
+        const tabs     = mode === 'tabs' ? inner.querySelectorAll('[data-service-tab]') : [];
+        const targets  = mode === 'tabs' ? tabs : panels;
+        const count    = targets.length;
         if (!count) return;
+
+        // Ensure every target has a data-index so the assertion has a stable
+        // source of truth (bootstrap for markup that predates the attribute).
+        targets.forEach((el, i) => {
+          if (el.dataset.index == null) el.dataset.index = String(i);
+        });
+
         let activeIdx = -1;
+        // While a click-driven jump is animating, ignore scroll-driven index
+        // changes — they race the smooth scroll and land on the wrong panel.
+        let jumpLock = false;
+        let jumpLockTimer = 0;
 
         // Services-only: hold the tab at index 0 (Workout Program) while the
         // digital-plan quiz is in progress. Released when the quiz result
@@ -2015,24 +2042,60 @@
         if (mode === 'tabs') {
           document.addEventListener('wybe:quiz-active', () => { quizLocked = true; });
           document.addEventListener('wybe:quiz-end',    () => { quizLocked = false; });
-          // Manual tab click on a non-workout tab also releases the lock.
-          tabs.forEach(t => {
+          // Direct user click on a service tab: the tab's own handler
+          // (defined elsewhere) already ran and swapped the visible panel.
+          // We just need to (a) sync activeIdx so compute() doesn't fire a
+          // stale setActive, (b) suppress scroll overrides for the length of
+          // the corrective scroll, and (c) scroll the section so the sticky
+          // scroll position matches the newly-active tab band.
+          tabs.forEach((t, i) => {
             t.addEventListener('click', (e) => {
-              if (!e.isTrusted) return; // ignore programmatic clicks from setActive
+              if (!e.isTrusted) return; // programmatic click from setActive() → skip
               if (t.dataset.serviceTab !== 'digital-plan') quizLocked = false;
+              alignScrollToIndex(i, 'tab-click');
             });
           });
         }
 
-        const setActive = (idx) => {
+        const syncButtons = (idx) => {
+          buttons.forEach(b => b.classList.toggle('is-active', Number(b.dataset.storyJump) === idx));
+        };
+
+        // Verify the DOM reflects the requested index; warn (dev only) if not.
+        // Tabs mode: services section marks the active tab with .bg-burgundy
+        // (see the [data-service-tab] handler); the visible panel is the one
+        // NOT carrying .hidden. Panels mode: single panel has .is-active.
+        const assertActive = (requestedIdx, source) => {
+          if (!IS_DEV) return;
+          const label = '[wybe-story:' + (inner.dataset.story || '?') + ']';
+          if (mode === 'tabs') {
+            const actualTab = Array.from(tabs).findIndex(t => t.classList.contains('bg-burgundy'));
+            if (actualTab !== -1 && actualTab !== requestedIdx) {
+              console.warn(label + ' active tab index (' + actualTab + ') !== requested (' + requestedIdx + ') via ' + source);
+            }
+            const expectedPanelId = 'panel-' + (tabs[requestedIdx] && tabs[requestedIdx].dataset.serviceTab);
+            const shown = document.querySelectorAll('.service-panel:not(.hidden)');
+            if (shown.length !== 1 || shown[0].id !== expectedPanelId) {
+              const shownIds = Array.from(shown).map(p => p.id).join(',');
+              console.warn(label + ' visible service-panel [' + shownIds + '] !== expected #' + expectedPanelId + ' via ' + source);
+            }
+          } else {
+            const actual = Array.from(panels).findIndex(p => p.classList.contains('is-active'));
+            if (actual !== requestedIdx) {
+              console.warn(label + ' active panel index (' + actual + ') !== requested (' + requestedIdx + ') via ' + source);
+            }
+          }
+        };
+
+        const setActive = (idx, source) => {
           if (idx === activeIdx) return;
           // Quiz lock: don't let scroll drag the user past the Workout Program
-          // while they're mid-quiz. Clicks on progress-jump buttons still work
-          // (they route through the click handler below, which unlocks first).
+          // while they're mid-quiz. Clicks route through jumpTo() which
+          // unlocks first.
           if (mode === 'tabs' && quizLocked && idx > 0) return;
           activeIdx = idx;
           if (mode === 'tabs') {
-            if (tabs[idx]) tabs[idx].click();
+            if (tabs[idx]) tabs[idx].click(); // fires the service-tab handler
           } else {
             // Three-state swap: is-past (above), is-active (current), default (below).
             panels.forEach((p, i) => {
@@ -2040,21 +2103,23 @@
               p.classList.toggle('is-past',   i <  idx);
             });
           }
-          buttons.forEach(b => b.classList.toggle('is-active', Number(b.dataset.storyJump) === idx));
+          syncButtons(idx);
+          assertActive(idx, source || 'scroll');
         };
         // Prime the first panel so it's visible before any scroll.
-        setActive(0);
+        setActive(0, 'init');
 
-        // Map scroll progress (0..1) inside .wybe-story-inner to a panel index.
+        // Map scroll progress (0..1) inside .wybe-story-inner to an index.
         const compute = () => {
+          if (jumpLock) return;
           const rect = inner.getBoundingClientRect();
           const vh = window.innerHeight;
           const total = inner.offsetHeight - vh; // sticky "scroll range"
-          if (total <= 0) { setActive(0); return; }
+          if (total <= 0) { setActive(0, 'scroll'); return; }
           const scrolled = Math.min(Math.max(-rect.top, 0), total);
           const progress = scrolled / total;              // 0..1
           const idx = Math.min(count - 1, Math.floor(progress * count));
-          setActive(idx);
+          setActive(idx, 'scroll');
         };
 
         let ticking = false;
@@ -2066,19 +2131,50 @@
         window.addEventListener('resize', compute);
         compute();
 
-        // Progress-pill jump: scroll to the position that activates that panel.
+        // Scroll the section so the sticky scroll position matches `idx`.
+        // Also raises jumpLock so scroll-driven compute() ticks fired while
+        // the smooth scroll is animating can't overwrite the active index.
+        const alignScrollToIndex = (idx, source) => {
+          activeIdx = idx;
+          syncButtons(idx);
+          jumpLock = true;
+          clearTimeout(jumpLockTimer);
+          jumpLockTimer = setTimeout(() => {
+            jumpLock = false;
+            assertActive(idx, source + ' (post-scroll)');
+          }, 800);
+          const rect = inner.getBoundingClientRect();
+          const total = inner.offsetHeight - window.innerHeight;
+          const targetProgress = (idx + 0.5) / count;   // centre of the band
+          const targetY = window.scrollY + rect.top + (total * targetProgress);
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        };
+
+        // Explicit jump: activate the target FIRST so click index n is what
+        // ends up visible even if the smooth scroll settles a hair off; the
+        // scroll animates the section into view but never overrides.
+        const jumpTo = (idx, source) => {
+          if (idx < 0 || idx >= count) return;
+          if (mode === 'tabs' && idx > 0) quizLocked = false;
+
+          // Direct activate — bypass the equality short-circuit in setActive
+          // so a click on the currently-active tab still re-syncs everything.
+          if (mode === 'tabs') {
+            if (tabs[idx]) tabs[idx].click();
+          } else {
+            panels.forEach((p, i) => {
+              p.classList.toggle('is-active', i === idx);
+              p.classList.toggle('is-past',   i <  idx);
+            });
+          }
+          alignScrollToIndex(idx, source);
+          assertActive(idx, source);
+        };
+
+        // Progress-pill click (calculators).
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
-            const idx = Number(btn.dataset.storyJump);
-            // Explicit user jump past a quiz-locked panel counts as intent to
-            // leave the quiz. Release the lock so the scroll can take them.
-            if (mode === 'tabs' && idx > 0) quizLocked = false;
-            const rect = inner.getBoundingClientRect();
-            const total = inner.offsetHeight - window.innerHeight;
-            // Aim at the middle of that panel's scroll band, offset by nav height.
-            const targetProgress = (idx + 0.5) / count;
-            const targetY = window.scrollY + rect.top + (total * targetProgress);
-            window.scrollTo({ top: targetY, behavior: 'smooth' });
+            jumpTo(Number(btn.dataset.storyJump), 'button');
           });
         });
       });
