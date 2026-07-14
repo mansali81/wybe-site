@@ -990,9 +990,10 @@ footer a:not([class*="bg-burgundy"]):hover::after,
    Native cursor is hidden on desktop pointers; js/wybe-cursor.js appends
    two fixed elements that follow the pointer. Text inputs keep their
    native text-caret cursor so users can still see where they are typing.
-   On touch / coarse pointers we do nothing and let the system defaults
-   through (see the media-query fallback at the bottom of this block). */
-@media (hover: hover) and (pointer: fine) {
+   Three-way gate: only applies to fine-pointer devices with hover AND
+   `prefers-reduced-motion: no-preference`. Touch / coarse pointers and
+   reduced-motion users all fall through to the native system cursor. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html, body, a, button, [role='button'], select, summary, label {
     cursor: none;
   }
@@ -1043,19 +1044,23 @@ footer a:not([class*="bg-burgundy"]):hover::after,
                 background-color 0.25s ease;
   }
   /* Generic hover (any interactive element): kettlebell swings + scales up,
-     ring inflates + lime-tints. Every hover state MUST re-declare the
-     translate so it isn't clobbered by the scale/rotate that follows. */
-  .wybe-cursor.is-hover .wybe-cursor__kb   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.15) rotate(-12deg);
-                                             filter: drop-shadow(0 0 12px rgba(221, 255, 85, 0.85)); }
-  .wybe-cursor.is-hover .wybe-cursor__ring { width: 62px; height: 62px; margin: -31px 0 0 -31px;
-                                             border-color: rgba(221, 255, 85, 0.9);
-                                             background: rgba(221, 255, 85, 0.10); }
+     ring inflates + lime-tints. The .is-hover class lands on the SAME
+     element (kb / ring) so we use compound selectors, not descendant.
+     Every hover state MUST re-declare the translate so it isn't
+     clobbered by the scale/rotate that follows. */
+  .wybe-cursor__kb.is-hover   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.15) rotate(-12deg);
+                                filter: drop-shadow(0 0 12px rgba(221, 255, 85, 0.85)); }
+  .wybe-cursor__ring.is-hover { width: 62px; height: 62px; margin: -31px 0 0 -31px;
+                                border-color: rgba(221, 255, 85, 0.9);
+                                background: rgba(221, 255, 85, 0.10); }
   /* Title-hover (tabs, headings, nav links): even bigger swing, big ring. */
-  .wybe-cursor.is-hover-title .wybe-cursor__kb   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.35) rotate(-18deg); }
-  .wybe-cursor.is-hover-title .wybe-cursor__ring { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+  .wybe-cursor__kb.is-hover-title   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.35) rotate(-18deg); }
+  .wybe-cursor__ring.is-hover-title { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
 }
-@media (hover: none), (pointer: coarse) {
-  .wybe-cursor { display: none; }
+/* Fallback: hide the custom cursor DOM entirely on touch / coarse
+   pointers AND for reduced-motion users. Native cursor takes over. */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .wybe-cursor { display: none !important; }
 }
 
 /* ── DARK-TRANSPARENT SELECT OPTIONS ─────────────
