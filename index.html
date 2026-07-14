@@ -378,6 +378,13 @@
 </head>
 <body class="text-cream">
 
+  <!-- Skip link — first focusable element on the page. Visible on
+       focus only (see .wybe-skip-link in css/styles.css); Tab from a
+       cold page lands here first, Enter jumps to #main. -->
+  <a href="#main" class="wybe-skip-link">Skip to content</a>
+
+  <!-- Landmark: site header wraps the top bar. -->
+  <header class="wybe-header" role="banner">
   <!-- NAVBAR (smooth-scroll anchors) -->
   <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
     <div class="max-w-6xl mx-auto px-6">
@@ -413,6 +420,14 @@
       <a href="#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
     </div>
   </nav>
+  </header>
+  <!-- /header — end of top-bar landmark -->
+
+  <!-- Landmark: main content. Skip link jumps here. tabindex="-1"
+       makes it programmatically focusable so the browser focuses it
+       when the fragment (#main) is targeted, and screen readers
+       announce entering the main region. -->
+  <main id="main" tabindex="-1">
 
   <!-- HERO — GSAP + ScrollTrigger scroll-driven hero.
        See js/hero.js for the controller. Section is pinned via ScrollTrigger
@@ -426,7 +441,8 @@
            scroll progress via ScrollTrigger, then holds for a ~2 s read beat. -->
       <video id="hero-scrub" class="hero-video"
              muted playsinline webkit-playsinline preload="auto"
-             disablepictureinpicture>
+             disablepictureinpicture
+             aria-label="An athlete running on a treadmill, scrubbed as the page scrolls">
         <source src="images/Running.mp4" type="video/mp4">
       </video>
       <div class="hero-tint" aria-hidden="true"></div>
@@ -860,7 +876,7 @@
 
       <!-- Right column: Treadmill image at natural size, bottom flush with the canvas bottom. -->
       <div class="md:col-span-5 self-end flex justify-center md:justify-end">
-        <img src="images/Treadmill.webp" alt="Mansoor Ahamad Ali coaching at the treadmill"
+        <img src="images/Treadmill.webp" alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
              class="about-portrait block w-auto h-auto max-h-[640px] md:max-h-[820px] max-w-full object-contain">
       </div>
     </div>
@@ -1509,6 +1525,9 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
+  </main>
+  <!-- /main -->
+
   <!-- FOOTER -->
   <footer class="text-white border-t border-cream/10">
     <div class="max-w-6xl mx-auto px-6 py-16">
@@ -1940,9 +1959,12 @@
           const standard = wantsConsult ? PLANS[plan].comboStandard : PLANS[plan].standard;
           const launchEl   = document.getElementById('result-price-launch');
           const standardEl = document.getElementById('result-price-standard');
-          // Animate the launch price counting up from 0 with GSAP when available;
-          // fall back to instant text if GSAP hasn't loaded yet (defer script).
-          if (launchEl && typeof gsap !== 'undefined') {
+          // Animate the launch price counting up from 0 with GSAP when
+          // available. Reduced-motion users get the final value
+          // instantly, no tween. Also falls back to instant text if
+          // GSAP hasn't loaded yet (defer script).
+          const wantsMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (launchEl && wantsMotion && typeof gsap !== 'undefined') {
             const state = { n: 0 };
             gsap.killTweensOf(state);
             gsap.to(state, {

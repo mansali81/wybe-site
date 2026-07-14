@@ -5,6 +5,46 @@
      via user zoom, every offset that uses it stays in sync. */
   --nav-h: 97px;
 }
+/* Skip-to-content link. First focusable element on the page — invisible
+   until it receives keyboard focus, then it lands over the top-left
+   corner in the brand palette. Keyboard-only users press Tab from a
+   fresh page and see it immediately. `top: 0` at focus (not absolute
+   position off-screen) because sr-only visually-hidden techniques
+   sometimes still shift layout when focused. */
+.wybe-skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-120%);
+  z-index: 10000;
+  padding: 12px 20px;
+  background: #DDFF55;
+  color: #002233;
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wybe-skip-link:focus,
+.wybe-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #002233;
+  outline-offset: 2px;
+}
+
+/* main landmark: focus target of the skip link. tabindex="-1" is set
+   in HTML; suppress the default focus outline on the container itself
+   (the skip link's own focus ring is what's visible before activation,
+   and once focused nothing needs to be highlighted on the target). */
+main:focus {
+  outline: none;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
