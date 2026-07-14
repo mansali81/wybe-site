@@ -115,31 +115,41 @@
        pins to the top and rotates the active panel in from below (Penguin
        Capital-style 3D depth). Non-active panels get pointer-events:none so
        users can only interact with the visible one. */
+    /* Story sections are a normal-flow tabbed UI — no sticky pin, no
+       scroll-scrub. Clicking a rail button / tab swaps the visible
+       panel with a light fade + slide. A previous version pinned the
+       stage for 4 viewports of scroll (min-height 400vh + sticky
+       100vh); that scroll-jacked the wheel and dumped multiple
+       sections at once. */
     .wybe-story           { position: relative; }
     .wybe-story-inner     { position: relative; }
-    .wybe-story-stage     { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .wybe-story-stack     { position: relative; width: 100%; max-height: 100vh; perspective: 1400px; transform-style: preserve-3d; }
-    /* Default = upcoming state (below the viewport, tilted forward). */
+    .wybe-story-stage     { position: relative; padding: 40px 0; }
+    /* Panels stack in the same grid cell — the tallest panel controls
+       the container height so cross-fades don't cause layout shift. */
+    .wybe-story-stack     {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
     .wybe-story-panel     {
-      position: absolute; left: 0; right: 0; top: 50%;
+      grid-column: 1;
+      grid-row: 1;
       opacity: 0;
-      transform: translateY(calc(-50% + 90px)) rotateX(18deg);
-      transform-origin: 50% 100%;
-      transition: opacity .75s cubic-bezier(0.16, 1, 0.3, 1), transform .75s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(16px);
+      transition: opacity .45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform .45s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
-      max-height: 100vh; overflow-y: auto;
       will-change: transform, opacity;
     }
     .wybe-story-panel.is-active {
       opacity: 1;
-      transform: translateY(-50%) rotateX(0deg);
+      transform: translateY(0);
       pointer-events: auto;
     }
-    /* Past = above the active, tilted back. Fades out receding. */
     .wybe-story-panel.is-past {
       opacity: 0;
-      transform: translateY(calc(-50% - 90px)) rotateX(-10deg);
-      transform-origin: 50% 0%;
+      transform: translateY(-16px);
     }
     .wybe-story-progress-btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease; opacity: 0.55; }
     .wybe-story-progress-btn.is-active { opacity: 1; background-color: #DDFF55; color: #002233; border-color: #DDFF55; }
@@ -147,7 +157,10 @@
     /* 6b. Left-rail (Style 1: big lime text + side bar).
        Sticky column of 4 label rows. Inactive rows are small, muted, no bar.
        Active row scales up ~2.5x, turns lime, and grows a 4px lime side bar. */
-    .wybe-rail            { position: sticky; top: 0; padding: 12vh 0; }
+    /* Rail is a normal-flow column of tab buttons (was sticky when the
+       stage pinned for 400vh; no longer needed since scrolling is
+       natural now). */
+    .wybe-rail            { position: relative; padding: 24px 0; }
     .wybe-rail-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
     .wybe-rail-list       { display: flex; flex-direction: column; gap: 22px; }
     .wybe-rail-row        {
@@ -474,12 +487,11 @@
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- #CALCULATORS -->
-  <!-- CALCULATORS — sticky-snap scroll story. Section is 400vh; a sticky stage
-       stays pinned while user scrolls through 4 panels (BFP, TDEE, BMI, IBW).
-       JS in main-script maps scroll progress inside .wybe-story-inner to the
-       active .wybe-story-panel and progress pill. -->
+  <!-- CALCULATORS — normal-flow tabbed UI. Rail on the left is a stack
+       of tab buttons; right column shows the active calculator panel.
+       No scroll-jack — clicking a rail row swaps the panel in place. -->
   <section id="calculators" class="wybe-story relative overflow-visible">
-    <div class="wybe-story-inner" data-story="calc" style="min-height: 400vh;">
+    <div class="wybe-story-inner" data-story="calc">
       <div class="wybe-story-stage">
         <div class="w-full max-w-6xl mx-auto px-6">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
@@ -883,12 +895,10 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- #SERVICES (dropdown-driven panels) -->
-  <!-- SERVICES — same sticky-snap pattern as Calculators. The section is
-       400vh; a 100vh sticky stage keeps the tabs + active panel pinned while
-       the user scrolls through 4 breakpoints. Scroll progress drives which
-       tab is "clicked" so each service appears sequentially. -->
-  <section id="services" class="wybe-story relative overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs" style="min-height: 400vh;"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
+  <!-- #SERVICES — normal-flow tabbed UI. The tabs on the left swap the
+       visible service panel; the section is a single screenful of
+       content, no scroll-jack. -->
+  <section id="services" class="wybe-story relative overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-14">
       <!-- EMPTY-STATE HEADER: two-column layout — title + tabs on the left,
@@ -1983,23 +1993,16 @@
       });
     })();
 
-    // ── STICKY-SNAP SCROLL STORY ──────────────────────
-    // For each `.wybe-story-inner` container: as the user scrolls through the
-    // section (min-height 400vh), map scroll progress to an active panel
-    // index. Panels are absolutely stacked inside a 100vh sticky stage.
-    // The progress-pill buttons (calculators) and the service tabs (services)
-    // BOTH act as reliable jump targets: click index n → panel index n.
+    // ── STORY TAB CONTROLLER ─────────────────────────
+    // Both story sections (Calculators, Services) are now normal-flow
+    // tabbed UIs — no scroll-jack, no sticky stage. Clicking a rail
+    // row or a service tab swaps the visible panel in place.
     //
-    // A previous version routed clicks through window.scrollTo({smooth}) and
-    // let the scroll handler race the animation, so clicks like BMI (idx 2)
-    // sometimes landed on TDEE (idx 1) because Math.floor(progress*count)
-    // rounded the final settled position to the wrong band. This version:
-    //
-    //   1. Sets the active panel/tab IMMEDIATELY on click (source of truth).
-    //   2. Marks a programmatic-jump window so the scroll handler is
-    //      suppressed until the smooth scroll settles.
-    //   3. Verifies the panel with data-index === clicked index actually
-    //      has .is-active, and warns in dev if it doesn't.
+    //   1. Click index n → panel/tab index n becomes .is-active
+    //      immediately (source of truth = data-index on the target).
+    //   2. Dev-only assertActive() logs a console.warn if the DOM's
+    //      active index diverges from the requested one, naming the
+    //      source (button / tab-click / init).
     (function() {
       const stories = document.querySelectorAll('.wybe-story-inner');
       if (!stories.length) return;
@@ -2009,11 +2012,12 @@
 
       stories.forEach(inner => {
         // Two modes:
-        //  - default: cross-fade absolutely-stacked .wybe-story-panel divs
-        //             (Calculators). Panel count from DOM.
-        //  - tabs:    delegate to an existing tab UI (Services). The
-        //             underlying service-tab click handler owns the visual
-        //             panel swap; we just make sure we click the RIGHT tab.
+        //  - default (panels): swap .wybe-story-panel via .is-active /
+        //                      .is-past classes (Calculators).
+        //  - tabs:             delegate to the section's own tab UI
+        //                      (Services). The underlying handler owns
+        //                      the visual panel swap; we sync active
+        //                      index and run the assertion.
         const mode     = inner.dataset.storyMode || 'panels';
         const panels   = inner.querySelectorAll('.wybe-story-panel');
         const buttons  = inner.querySelectorAll('[data-story-jump]');
@@ -2022,37 +2026,28 @@
         const count    = targets.length;
         if (!count) return;
 
-        // Ensure every target has a data-index so the assertion has a stable
-        // source of truth (bootstrap for markup that predates the attribute).
+        // Ensure every target has data-index so the assertion has a
+        // stable source of truth even if markup omits it.
         targets.forEach((el, i) => {
           if (el.dataset.index == null) el.dataset.index = String(i);
         });
 
         let activeIdx = -1;
-        // While a click-driven jump is animating, ignore scroll-driven index
-        // changes — they race the smooth scroll and land on the wrong panel.
-        let jumpLock = false;
-        let jumpLockTimer = 0;
 
-        // Services-only: hold the tab at index 0 (Workout Program) while the
-        // digital-plan quiz is in progress. Released when the quiz result
-        // shows, when the user retakes it, or when they manually click a
-        // different service tab.
+        // Services-only: while the digital-plan quiz is in progress the
+        // quiz handler dispatches wybe:quiz-active. Any user click on a
+        // non-workout tab counts as "leave the quiz" and clears the lock.
         let quizLocked = false;
         if (mode === 'tabs') {
           document.addEventListener('wybe:quiz-active', () => { quizLocked = true; });
           document.addEventListener('wybe:quiz-end',    () => { quizLocked = false; });
-          // Direct user click on a service tab: the tab's own handler
-          // (defined elsewhere) already ran and swapped the visible panel.
-          // We just need to (a) sync activeIdx so compute() doesn't fire a
-          // stale setActive, (b) suppress scroll overrides for the length of
-          // the corrective scroll, and (c) scroll the section so the sticky
-          // scroll position matches the newly-active tab band.
           tabs.forEach((t, i) => {
             t.addEventListener('click', (e) => {
-              if (!e.isTrusted) return; // programmatic click from setActive() → skip
+              if (!e.isTrusted) return; // programmatic click → skip
               if (t.dataset.serviceTab !== 'digital-plan') quizLocked = false;
-              alignScrollToIndex(i, 'tab-click');
+              activeIdx = i;
+              syncButtons(i);
+              assertActive(i, 'tab-click');
             });
           });
         }
@@ -2061,10 +2056,10 @@
           buttons.forEach(b => b.classList.toggle('is-active', Number(b.dataset.storyJump) === idx));
         };
 
-        // Verify the DOM reflects the requested index; warn (dev only) if not.
-        // Tabs mode: services section marks the active tab with .bg-burgundy
-        // (see the [data-service-tab] handler); the visible panel is the one
-        // NOT carrying .hidden. Panels mode: single panel has .is-active.
+        // Verify the DOM reflects the requested index; warn (dev only)
+        // if not. Panels mode: single .wybe-story-panel has .is-active.
+        // Tabs mode (services): active tab carries .bg-burgundy, and
+        // exactly one .service-panel does NOT carry .hidden.
         const assertActive = (requestedIdx, source) => {
           if (!IS_DEV) return;
           const label = '[wybe-story:' + (inner.dataset.story || '?') + ']';
@@ -2089,92 +2084,33 @@
 
         const setActive = (idx, source) => {
           if (idx === activeIdx) return;
-          // Quiz lock: don't let scroll drag the user past the Workout Program
-          // while they're mid-quiz. Clicks route through jumpTo() which
-          // unlocks first.
           if (mode === 'tabs' && quizLocked && idx > 0) return;
           activeIdx = idx;
           if (mode === 'tabs') {
             if (tabs[idx]) tabs[idx].click(); // fires the service-tab handler
           } else {
-            // Three-state swap: is-past (above), is-active (current), default (below).
             panels.forEach((p, i) => {
               p.classList.toggle('is-active', i === idx);
               p.classList.toggle('is-past',   i <  idx);
             });
           }
           syncButtons(idx);
-          assertActive(idx, source || 'scroll');
+          assertActive(idx, source || 'init');
         };
-        // Prime the first panel so it's visible before any scroll.
+        // Prime the first panel so it's visible on load.
         setActive(0, 'init');
 
-        // Map scroll progress (0..1) inside .wybe-story-inner to an index.
-        const compute = () => {
-          if (jumpLock) return;
-          const rect = inner.getBoundingClientRect();
-          const vh = window.innerHeight;
-          const total = inner.offsetHeight - vh; // sticky "scroll range"
-          if (total <= 0) { setActive(0, 'scroll'); return; }
-          const scrolled = Math.min(Math.max(-rect.top, 0), total);
-          const progress = scrolled / total;              // 0..1
-          const idx = Math.min(count - 1, Math.floor(progress * count));
-          setActive(idx, 'scroll');
-        };
-
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-          if (ticking) return;
-          ticking = true;
-          requestAnimationFrame(() => { compute(); ticking = false; });
-        }, { passive: true });
-        window.addEventListener('resize', compute);
-        compute();
-
-        // Scroll the section so the sticky scroll position matches `idx`.
-        // Also raises jumpLock so scroll-driven compute() ticks fired while
-        // the smooth scroll is animating can't overwrite the active index.
-        const alignScrollToIndex = (idx, source) => {
-          activeIdx = idx;
-          syncButtons(idx);
-          jumpLock = true;
-          clearTimeout(jumpLockTimer);
-          jumpLockTimer = setTimeout(() => {
-            jumpLock = false;
-            assertActive(idx, source + ' (post-scroll)');
-          }, 800);
-          const rect = inner.getBoundingClientRect();
-          const total = inner.offsetHeight - window.innerHeight;
-          const targetProgress = (idx + 0.5) / count;   // centre of the band
-          const targetY = window.scrollY + rect.top + (total * targetProgress);
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-        };
-
-        // Explicit jump: activate the target FIRST so click index n is what
-        // ends up visible even if the smooth scroll settles a hair off; the
-        // scroll animates the section into view but never overrides.
-        const jumpTo = (idx, source) => {
-          if (idx < 0 || idx >= count) return;
-          if (mode === 'tabs' && idx > 0) quizLocked = false;
-
-          // Direct activate — bypass the equality short-circuit in setActive
-          // so a click on the currently-active tab still re-syncs everything.
-          if (mode === 'tabs') {
-            if (tabs[idx]) tabs[idx].click();
-          } else {
-            panels.forEach((p, i) => {
-              p.classList.toggle('is-active', i === idx);
-              p.classList.toggle('is-past',   i <  idx);
-            });
-          }
-          alignScrollToIndex(idx, source);
-          assertActive(idx, source);
-        };
-
-        // Progress-pill click (calculators).
+        // Rail / progress-pill click: activate the target index.
+        // Explicit user intent → release the quiz lock before dispatch.
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
-            jumpTo(Number(btn.dataset.storyJump), 'button');
+            const idx = Number(btn.dataset.storyJump);
+            if (idx < 0 || idx >= count) return;
+            if (mode === 'tabs' && idx > 0) quizLocked = false;
+            // Reset activeIdx so setActive re-runs for the same-index
+            // case too (clicking the already-active row re-syncs state).
+            if (activeIdx === idx) activeIdx = -1;
+            setActive(idx, 'button');
           });
         });
       });

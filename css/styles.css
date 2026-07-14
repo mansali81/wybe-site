@@ -10,6 +10,15 @@ html {
   scroll-padding-top: var(--nav-h);
 }
 
+/* Every anchor-linked section on the page (#home, #about, #services,
+   #calculators, #book, #publication, #contact) leaves room for the
+   fixed nav when the browser jumps to it. scroll-padding-top on <html>
+   above covers fragment navigation; scroll-margin-top here covers
+   programmatic scrollIntoView({block:'start'}) too. */
+section[id] {
+  scroll-margin-top: var(--nav-h);
+}
+
 /* ── GLOBAL TYPE SYSTEM ──────────────────────────
    Three roles across the whole site:
      --font-header   Inter Black 900 for H1..H3

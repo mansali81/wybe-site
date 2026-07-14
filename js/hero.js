@@ -7,14 +7,16 @@
  * their opacity or transform — pre-JS, no-JS, mobile, and reduced-
  * motion all paint the hero copy above the fold immediately.
  *
- * This controller only drives the video scrub and the pinned hold:
- *   0 → ~5 u   video.currentTime scrubs from 0 → duration (~5 s clip)
- *   5 → 5.6 u  empty hold — the "read beat" (~60 vh of scroll) with
- *              the hero pinned before it smoothly releases into the
- *              next section.
+ * This controller only drives the video scrub and a short pinned hold:
+ *   0 → 1     video.currentTime scrubs 0 → duration across the pin
+ *   1 → 1.2   empty hold — a brief "read beat" before the hero
+ *             releases into the next section.
  *
- * Pin distance is +=560% of viewport height (≈ 5 s of video scrub plus
- * ~60 vh of hold at normal scroll speed).
+ * Pin distance is +=120% of viewport height so the hero completes in
+ * ~1.2 screens of scroll — scrolling feels responsive and users no
+ * longer need to wheel through a wall of pinned scroll to reach the
+ * next section. A previous version pinned for +=560% and made the
+ * whole page feel scroll-jacked.
  *
  * Video: muted, playsinline, preload="auto", NEVER auto-plays. We drive
  * it by writing currentTime. Modern browsers show the first decoded
@@ -77,7 +79,7 @@
         scrollTrigger: {
           trigger: heroEl,
           start: () => `top top+=${navH()}`,
-          end: '+=560%',
+          end: '+=120%',
           pin: true,
           pinType: 'fixed',
           pinSpacing: true,
@@ -86,12 +88,12 @@
         }
       });
 
-      // Video scrub — occupies units 0 → 5 (matches the ~5 s clip).
-      tl.to(video, { currentTime: duration, duration: 5, ease: 'none' }, 0);
+      // Video scrub — 1 timeline unit maps to the entire pinned range.
+      tl.to(video, { currentTime: duration, duration: 1, ease: 'none' }, 0);
 
-      // Empty "hold" at the end — dummy 0.6-unit tween ≈ 60 vh of extra
-      // scroll where the hero stays pinned before smoothly releasing.
-      tl.to({}, { duration: 0.6 }, 5.0);
+      // Short hold tail — ~20 vh of extra scroll where the hero stays
+      // pinned before smoothly releasing into the next section.
+      tl.to({}, { duration: 0.2 }, 1.0);
     };
 
     if (video.readyState >= 1) {
