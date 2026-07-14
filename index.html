@@ -844,97 +844,40 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- THE FOUNDATION — Four Pillars as a Daylight-style sticky-pinned chapter.
-       Each pillar (plus the intro) is a full-viewport scene that pins for
-       ~50vh of extra scroll, giving the reader time to absorb each moment
-       before the next stacks over. Text uses per-line clip masks that rise
-       into view with GSAP + ScrollTrigger. On mobile / prefers-reduced-motion
-       the scenes collapse to a normal stack. See js/pillars.js. -->
-  <section class="pillars-manifesto" data-pillars>
+  <!-- THE FOUNDATION — one card, four pillars in a grid, wrapped in the
+       shared .wybe-scene sticky-snap pattern so the section pins into view
+       as the reader arrives and the copy reveals via line-masks. See
+       js/scenes.js for the reveal controller. -->
+  <section class="wybe-scene" data-scene>
+    <div class="wybe-scene__pin">
+      <div class="wybe-scene__inner text-center">
+        <p class="scene-eyebrow">
+          <span class="line-mask"><span class="line-inner">The Foundation</span></span>
+        </p>
+        <h2 class="scene-title">
+          <span class="line-mask"><span class="line-inner">Four Pillars. One System.</span></span>
+        </h2>
 
-    <!-- Intro scene -->
-    <div class="pillar-scene pillar-scene--intro" data-pillar-scene>
-      <div class="pillar-scene__pin">
-        <div class="pillar-scene__inner">
-          <p class="pillar-eyebrow">
-            <span class="line-mask"><span class="line-inner">The Foundation</span></span>
-          </p>
-          <h2 class="pillar-intro-title">
-            <span class="line-mask"><span class="line-inner">Four Pillars.</span></span>
-            <span class="line-mask"><span class="line-inner">One System.</span></span>
-          </h2>
+        <div class="pillars-grid">
+          <div class="pillar-cell">
+            <span class="pillar-cell__index line-mask"><span class="line-inner">01</span></span>
+            <span class="pillar-cell__name line-mask"><span class="line-inner">Mindset</span></span>
+          </div>
+          <div class="pillar-cell">
+            <span class="pillar-cell__index line-mask"><span class="line-inner">02</span></span>
+            <span class="pillar-cell__name line-mask"><span class="line-inner">Nutrition</span></span>
+          </div>
+          <div class="pillar-cell">
+            <span class="pillar-cell__index line-mask"><span class="line-inner">03</span></span>
+            <span class="pillar-cell__name line-mask"><span class="line-inner">Training</span></span>
+          </div>
+          <div class="pillar-cell">
+            <span class="pillar-cell__index line-mask"><span class="line-inner">04</span></span>
+            <span class="pillar-cell__name line-mask"><span class="line-inner">Recovery</span></span>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- 01 Mindset -->
-    <div class="pillar-scene" data-pillar-scene>
-      <div class="pillar-scene__pin">
-        <div class="pillar-scene__inner">
-          <span class="pillar-number">
-            <span class="line-mask"><span class="line-inner">01</span></span>
-          </span>
-          <h3 class="pillar-name">
-            <span class="line-mask"><span class="line-inner">Mindset</span></span>
-          </h3>
-          <p class="pillar-descriptor">
-            <span class="line-mask"><span class="line-inner">The engine. Discipline over motivation, every single day.</span></span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 02 Nutrition -->
-    <div class="pillar-scene" data-pillar-scene>
-      <div class="pillar-scene__pin">
-        <div class="pillar-scene__inner">
-          <span class="pillar-number">
-            <span class="line-mask"><span class="line-inner">02</span></span>
-          </span>
-          <h3 class="pillar-name">
-            <span class="line-mask"><span class="line-inner">Nutrition</span></span>
-          </h3>
-          <p class="pillar-descriptor">
-            <span class="line-mask"><span class="line-inner">The fuel. Food is science. What you eat becomes who you become.</span></span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 03 Training -->
-    <div class="pillar-scene" data-pillar-scene>
-      <div class="pillar-scene__pin">
-        <div class="pillar-scene__inner">
-          <span class="pillar-number">
-            <span class="line-mask"><span class="line-inner">03</span></span>
-          </span>
-          <h3 class="pillar-name">
-            <span class="line-mask"><span class="line-inner">Training</span></span>
-          </h3>
-          <p class="pillar-descriptor">
-            <span class="line-mask"><span class="line-inner">The forge. Progressive, purposeful movement &mdash; never punishment.</span></span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 04 Recovery -->
-    <div class="pillar-scene" data-pillar-scene>
-      <div class="pillar-scene__pin">
-        <div class="pillar-scene__inner">
-          <span class="pillar-number">
-            <span class="line-mask"><span class="line-inner">04</span></span>
-          </span>
-          <h3 class="pillar-name">
-            <span class="line-mask"><span class="line-inner">Recovery</span></span>
-          </h3>
-          <p class="pillar-descriptor">
-            <span class="line-mask"><span class="line-inner">The rebuild. Sleep, rest, and stress management are the mechanism, not the reward.</span></span>
-          </p>
-        </div>
-      </div>
-    </div>
-
   </section>
 
   <!-- Section divider -->
@@ -1384,14 +1327,30 @@
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
 
-  <!-- #BOOK My Book + Waitlist (inline) -->
-  <section id="book" class="py-14">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-6">Coming Soon</p>
-      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-cream mb-0">1825</h2>
-      <h2 class="font-sans text-7xl md:text-8xl font-black leading-none text-cream/25 mb-6">DAYS</h2>
-      <div class="hairline w-12 mx-auto mb-6" style="background:#DDFF55;"></div>
-      <p class="font-sans text-2xl md:text-3xl font-semibold text-cream leading-snug mb-6">Five years that shape a lifetime.</p>
+  <!-- #BOOK 1825 Days — shared .wybe-scene sticky-snap on the intro,
+       then the waitlist form flows normally below so it stays fully
+       usable (a pinned form would strand the submit button). -->
+  <section id="book">
+    <div class="wybe-scene" data-scene>
+      <div class="wybe-scene__pin">
+        <div class="wybe-scene__inner text-center">
+          <p class="scene-eyebrow">
+            <span class="line-mask"><span class="line-inner">Coming Soon</span></span>
+          </p>
+          <h2 class="scene-mega">
+            <span class="line-mask"><span class="line-inner">1825</span></span>
+          </h2>
+          <h2 class="scene-mega" style="color: rgba(246, 242, 232, 0.25); margin-top: 0.1em;">
+            <span class="line-mask"><span class="line-inner">DAYS</span></span>
+          </h2>
+          <p class="scene-title" style="font-size: clamp(24px, 3vw, 40px); margin: clamp(24px, 3vw, 40px) auto 0; text-transform: none; max-width: 640px;">
+            <span class="line-mask"><span class="line-inner">Five years that shape a lifetime.</span></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-6 text-center py-14">
       <p class="font-sans text-sm text-cream/75 leading-relaxed mb-2 max-w-xl mx-auto">
         The complete nutrition guide for your child, from first breath to fifth birthday. Written for parents. Grounded in science. Built for the real world.
       </p>
@@ -1422,23 +1381,34 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- MY PUBLICATION (text-only canvas, no background image) -->
-  <section id="publication" class="py-16 md:py-20">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Long-Form Writing</p>
-      <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-      <h2 class="font-sans text-3xl md:text-5xl font-bold text-cream mb-5 leading-tight">My Publication</h2>
-      <p class="font-sans text-base md:text-lg text-cream/75 leading-relaxed mb-8 max-w-xl mx-auto">
-        Detailed essays on training, nutrition, and building wellness as a daily discipline. Field notes from two decades of working with real people.
-      </p>
-      <a href="publication.html"
-         class="inline-flex items-center gap-3 bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
-        <span>Read the Essays</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-          <polyline points="12 5 19 12 12 19"></polyline>
-        </svg>
-      </a>
+  <!-- MY PUBLICATION — shared .wybe-scene sticky-snap. -->
+  <section id="publication" class="wybe-scene" data-scene>
+    <div class="wybe-scene__pin">
+      <div class="wybe-scene__inner text-center">
+        <p class="scene-eyebrow">
+          <span class="line-mask"><span class="line-inner">Long-Form Writing</span></span>
+        </p>
+        <h2 class="scene-title">
+          <span class="line-mask"><span class="line-inner">My Publication</span></span>
+        </h2>
+        <p class="scene-body" style="margin-bottom: clamp(28px, 3vw, 44px);">
+          <span class="line-mask"><span class="line-inner">Detailed essays on training, nutrition, and building wellness</span></span>
+          <span class="line-mask"><span class="line-inner">as a daily discipline. Field notes from two decades</span></span>
+          <span class="line-mask"><span class="line-inner">of working with real people.</span></span>
+        </p>
+        <div class="line-mask" style="display: inline-block;">
+          <span class="line-inner" style="display: inline-block;">
+            <a href="publication.html"
+               class="inline-flex items-center gap-3 bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
+              <span>Read the Essays</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1562,7 +1532,7 @@
   <script src="js/main.js"></script>
   <script src="js/hero.js" defer></script>
   <script src="js/promise.js" defer></script>
-  <script src="js/pillars.js" defer></script>
+  <script src="js/scenes.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the

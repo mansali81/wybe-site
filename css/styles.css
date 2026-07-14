@@ -564,43 +564,35 @@ h4, h5, h6, .wybe-subhead {
   }
 }
 
-/* ── FOUR PILLARS — Daylight-style sticky-pinned chapter ──
-   Five scenes total (intro + 4 pillars). Each scene is 150vh tall on
-   desktop; a sticky inner container holds the type at viewport centre
-   for one full viewport of scroll and ~50vh of extra dwell, giving the
-   reader time to absorb before the next scene stacks over it. Text
-   inside uses per-line clip masks (.line-mask / .line-inner) that GSAP
-   translates up into view when the scene enters — see js/pillars.js.
-   On mobile / prefers-reduced-motion the pins collapse to a normal
+/* ── WYBE SCENE — Daylight-style sticky-snap ─────────────
+   Generic sticky-pinned scene reused across the site. Any section
+   marked with .wybe-scene [data-scene] gets:
+     - a ~130vh outer wrapper (1 viewport of pin + ~30vh dwell)
+     - a sticky inner .wybe-scene__pin that sits under the fixed nav
+       for one full viewport before releasing
+     - per-line clip-mask reveals via .line-mask / .line-inner that
+       js/scenes.js tweens up into view on enter
+   On mobile / prefers-reduced-motion the pin collapses to a normal
    stack and the reveal is skipped. */
 
-.pillars-manifesto {
+.wybe-scene {
   position: relative;
+  min-height: 130vh;
   background: #002233;
 }
 
-/* Each scene: relative outer wrapper that gives the sticky child room
-   to scroll. min-height 150vh = 1 viewport of pin + ~0.5 viewport of
-   dwell before the pin releases. */
-.pillar-scene {
-  position: relative;
-  min-height: 150vh;
-}
-
-/* The pinned inner card: sticky under the fixed nav, exactly one
-   remaining viewport tall. Overflow-hidden so the line-mask animation
-   is bounded. */
-.pillar-scene__pin {
+.wybe-scene__pin {
   position: sticky;
   top: var(--nav-h, 97px);
   height: calc(100vh - var(--nav-h, 97px));
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 clamp(24px, 6vw, 96px);
   background: #002233;
 }
-.pillar-scene__inner {
+.wybe-scene__inner {
   max-width: 1200px;
   width: 100%;
   color: #F6F2E8;
@@ -622,71 +614,86 @@ h4, h5, h6, .wybe-subhead {
   will-change: transform;
 }
 
-/* Intro scene typography */
-.pillar-eyebrow {
+/* Shared scene typography */
+.scene-eyebrow {
   font-family: var(--font-subhead);
   font-weight: 600;
   font-size: clamp(11px, 0.9vw, 14px);
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: #DDFF55;
-  margin: 0 0 clamp(28px, 2.6vw, 44px);
+  margin: 0 0 clamp(24px, 2.4vw, 40px);
 }
-.pillar-intro-title {
+.scene-title {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(48px, 9vw, 128px);
+  font-size: clamp(44px, 7.5vw, 108px);
   line-height: 0.95;
   letter-spacing: -0.03em;
   color: #F6F2E8;
-  margin: 0;
+  margin: 0 0 clamp(40px, 5vw, 72px);
   text-transform: uppercase;
 }
-
-/* Pillar scene typography — oversized numeric watermark behind the name */
-.pillar-number {
-  display: block;
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(120px, 24vw, 380px);
-  line-height: 0.85;
-  letter-spacing: -0.05em;
-  color: rgba(221, 255, 85, 0.14);
-  margin: 0;
-  position: relative;
-  z-index: 0;
-  pointer-events: none;
-}
-.pillar-name {
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(56px, 12vw, 180px);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  color: #F6F2E8;
-  margin: clamp(-72px, -5vw, -36px) 0 clamp(24px, 2.6vw, 40px);
-  position: relative;
-  z-index: 1;
-}
-.pillar-descriptor {
+.scene-body {
   font-family: var(--font-body);
   font-weight: 400;
   font-size: clamp(17px, 1.5vw, 22px);
   line-height: 1.55;
   color: rgba(246, 242, 232, 0.85);
-  max-width: 560px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.scene-mega {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(120px, 22vw, 320px);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: #DDFF55;
   margin: 0;
 }
 
+/* Four Pillars grid — sits inside a single .wybe-scene */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 56px);
+  align-items: end;
+}
+.pillar-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(8px, 0.8vw, 14px);
+  border-top: 1px solid rgba(221, 255, 85, 0.35);
+  padding-top: clamp(18px, 1.8vw, 28px);
+}
+.pillar-cell__index {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: clamp(12px, 1vw, 14px);
+  letter-spacing: 0.24em;
+  color: #DDFF55;
+}
+.pillar-cell__name {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(24px, 2.6vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #F6F2E8;
+}
+
 /* Mobile + reduced-motion fallback: kill the pin, stack scenes at
-   natural height, reset any inline transforms JS might have set. */
+   natural height, reset any inline transforms JS might have set,
+   collapse the 4-col grid to 2 cols. */
 @media (prefers-reduced-motion: reduce), (max-width: 768px) {
-  .pillar-scene {
+  .wybe-scene {
     min-height: auto;
     padding: clamp(64px, 12vw, 120px) 0;
   }
-  .pillar-scene__pin {
+  .wybe-scene__pin {
     position: relative;
     top: auto;
     height: auto;
@@ -694,6 +701,9 @@ h4, h5, h6, .wybe-subhead {
   }
   .line-inner {
     transform: none !important;
+  }
+  .pillars-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

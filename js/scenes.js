@@ -1,23 +1,24 @@
 /**
- * WYBE Four Pillars — Daylight-style sticky-pinned reveal.
- * ─────────────────────────────────────────────────────────
- * Each `[data-pillar-scene]` block is a full-viewport sticky-pinned card
- * (CSS handles the pin). This controller runs an independent ScrollTrigger
- * per scene that tweens the per-line `.line-inner` elements from
- * `yPercent: 105` (below the mask) → `yPercent: 0` (in view) with a small
- * stagger and expo-out easing as the scene enters the viewport.
- * Scrolling back UP past the trigger reverses the animation so the
- * choreography still lands the second time.
+ * WYBE shared "sticky scene" scroll reveal.
+ * ─────────────────────────────────────────
+ * Any element marked [data-scene] participates in the Daylight-style
+ * sticky-snap pattern:
+ *   - CSS pins the scene's inner container (.wybe-scene__pin) for
+ *     ~one viewport of dwell as it enters the viewport.
+ *   - This controller finds every .line-inner descendant inside the
+ *     scene, hides it below its mask (yPercent 105), then rises them
+ *     into view (yPercent 0) with a staggered expo-out ease when a
+ *     ScrollTrigger enters the scene. Scrolling back up reverses the
+ *     reveal so the choreography still lands the second time.
  *
- * Mobile (≤ 768 px) and prefers-reduced-motion return early; CSS in
- * styles.css collapses the pin to a normal stack and keeps the type
- * visible at rest so nothing gets stuck below its mask.
+ * Mobile (≤ 768 px) and prefers-reduced-motion return early; CSS
+ * collapses the pin to a normal stack and shows all copy statically.
  */
 (function () {
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const scenes = document.querySelectorAll('[data-pillar-scene]');
+  const scenes = document.querySelectorAll('[data-scene]');
   if (!scenes.length) return;
   if (reduceMotion) return;
 
@@ -41,8 +42,8 @@
   function init() {
     gsap.registerPlugin(ScrollTrigger);
 
-    // On mobile the CSS collapses pins to a normal stack; skip the reveal
-    // machinery entirely so a horizontal-nav user always sees the copy.
+    // Mobile: CSS drops the pin to a natural stack. Skip the reveal so
+    // horizontal-nav / touch users always see the copy.
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) return;
 
@@ -53,7 +54,7 @@
       // Initial hidden state — inside the mask, translated fully below.
       gsap.set(lines, { yPercent: 105 });
 
-      // Reveal timeline, driven by ScrollTrigger enter/leaveBack.
+      // Reveal timeline: staggered rise-in, expo.out easing.
       const tl = gsap.timeline({
         paused: true,
         defaults: { ease: 'expo.out' }
@@ -61,7 +62,7 @@
       tl.to(lines, {
         yPercent: 0,
         duration: 0.9,
-        stagger: 0.09
+        stagger: 0.08
       });
 
       ScrollTrigger.create({
