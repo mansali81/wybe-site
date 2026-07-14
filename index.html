@@ -1083,9 +1083,9 @@
               </span>
             </label>
 
-            <!-- POST-PAYMENT FORM (hidden until Pay is clicked) -->
+            <!-- POST-RESERVE FORM (hidden until "Reserve My Spot" is clicked) -->
             <div id="result-details-wrap" class="hidden mb-5">
-              <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-3">Payment received. Send my plan to:</p>
+              <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-3">Reserved. Send my plan confirmation to:</p>
               <form id="result-purchase-form" data-form data-subject="WYBE, Plan Purchase Request" action="https://api.web3forms.com/submit" method="POST" class="space-y-3">
                 <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
                 <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -1116,7 +1116,7 @@
             <!-- Hidden placeholder kept so existing JS that writes to result-plan-desc.textContent still works -->
             <p id="result-plan-desc" class="hidden"></p>
 
-            <!-- Bottom actions: Retake (left) + Pay (right) -->
+            <!-- Bottom actions: Retake (left) + Reserve (right) -->
             <div class="mt-2 flex items-center justify-between">
               <button type="button" id="retake-quiz" class="inline-flex items-center gap-1.5 border border-charcoal/25 text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
@@ -1127,7 +1127,7 @@
               </button>
 
               <button type="button" id="result-pay-btn" class="bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center gap-1.5">
-                <span id="result-buy-text">Pay $100</span>
+                <span id="result-buy-text">Reserve My Spot &middot; $100</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
@@ -1136,8 +1136,11 @@
             </div>
 
             <!-- Footer note -->
-            <p class="mt-5 text-center font-sans text-[11px] text-charcoal/60">
-              Personalised workout + diet PDF emailed within 48&ndash;72 hours of purchase.
+            <p class="mt-3 text-center font-sans text-[11px] text-charcoal/70">
+              No charge yet &mdash; we&rsquo;ll email you a payment link within 24 hours to confirm.
+            </p>
+            <p class="mt-2 text-center font-sans text-[11px] text-charcoal/60">
+              Personalised workout + diet PDF emailed within 48&ndash;72 hours of confirmation.
             </p>
           </div>
         </div>
@@ -1200,18 +1203,19 @@
           </div>
 
           <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay <span id="fitness-submit-total" class="font-sans text-base ml-1"></span></button>
+          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Request Booking <span id="fitness-submit-total" class="font-sans text-base ml-1"></span></button>
+          <p class="font-sans text-[10px] text-charcoal/60 leading-snug text-center">We&rsquo;ll email you a payment link within 24 hours to confirm.</p>
         </form>
 
-        <!-- POST-PAY confirmation: shows the amount + a date picker placeholder until
-             a real booking widget is wired up. -->
+        <!-- POST-REQUEST panel: shows the estimated total + a date picker
+             placeholder while the booking is being confirmed by email. -->
         <div id="fitness-postpay" class="hidden mt-4 border border-burgundy/30 bg-cream/70 rounded-md p-4">
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Booking confirmed</p>
+          <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Request received</p>
           <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-sm text-charcoal/80 mb-3">Amount due: <span id="fitness-postpay-amount" class="font-sans text-xl md:text-2xl font-bold text-burgundy"></span></p>
-          <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">Pick your session date</label>
+          <p class="font-sans text-sm text-charcoal/80 mb-3">Estimated total: <span id="fitness-postpay-amount" class="font-sans text-xl md:text-2xl font-bold text-burgundy"></span></p>
+          <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">Preferred session date</label>
           <input type="date" id="fitness-postpay-date" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy mb-2">
-          <p class="font-sans text-[11px] text-charcoal/60">Mansoor will email confirmation + payment instructions within 24 hours.</p>
+          <p class="font-sans text-[11px] text-charcoal/60">Mansoor will email confirmation + a payment link within 24 hours.</p>
         </div>
 
         <div class="hidden py-4 text-center mt-3">
@@ -1263,8 +1267,8 @@
               </button>
             </div>
             <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-            <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Book &amp; Pay</button>
-            <p class="font-sans text-[10px] text-white/80 leading-snug text-center drop-shadow">Payment instructions sent to your email within 24 hours.</p>
+            <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Request Booking</button>
+            <p class="font-sans text-[10px] text-white/80 leading-snug text-center drop-shadow">We&rsquo;ll email you a payment link within 24 hours to confirm.</p>
           </form>
           <div class="hidden py-4 text-center mt-3">
             <p class="font-sans text-base font-semibold text-charcoal mb-1">Booking received.</p>
@@ -1595,7 +1599,7 @@
     })();
 
     // Fitness picker — 4 buttons combine format + package. Bundle options reveal
-    // a session-count dropdown. The Book & Pay button shows the live total.
+    // a session-count dropdown. The Request Booking button shows the live total.
     (function() {
       const buttons = document.querySelectorAll('.fitness-option-btn');
       const formatHidden  = document.getElementById('fitness-format');
@@ -1656,9 +1660,11 @@
       }
     })();
 
-    // Fitness post-pay: when the booking form posts successfully, the success
-    // sibling div is unhidden by the main.js form handler. We hijack the same
-    // form's submit to also reveal the date-picker confirmation block.
+    // Fitness post-request: when the booking form posts successfully, the
+    // success sibling div is unhidden by the main.js form handler. We hijack
+    // the same form's submit to also reveal the date-picker "request
+    // received" block so the user has an immediate confirmation while
+    // Mansoor emails the payment link.
     (function() {
       const form        = document.querySelector('form[data-subject="WYBE, Fitness Consultation Booking"]');
       const postpay     = document.getElementById('fitness-postpay');
@@ -1666,10 +1672,11 @@
       const submitTotal = document.getElementById('fitness-submit-total');
       if (!form || !postpay) return;
       form.addEventListener('submit', () => {
-        // Extract current total from the submit-button suffix.
+        // Extract the estimated total from the submit-button suffix.
         const m = (submitTotal && submitTotal.textContent || '').match(/\$(\d+)/);
         if (amountEl && m) amountEl.textContent = '$' + m[1];
-        // Show the post-pay block after a tick (let the form handler run first).
+        // Reveal the "request received" panel after a tick (let the form
+        // handler run first).
         setTimeout(() => postpay.classList.remove('hidden'), 50);
       });
     })();
@@ -1930,12 +1937,12 @@
             launchEl.textContent = '$' + launch;
           }
           if (standardEl) standardEl.textContent = '$' + standard;
-          // Hidden form fields + Pay button text
+          // Hidden form fields + Reserve button text
           consultMode = wantsConsult;
           consultHidden.value = wantsConsult ? 'Yes' : 'No';
           lastTotal = launch;
           totalHidden.value = '$' + launch;
-          if (buyTextEl) buyTextEl.textContent = 'Pay $' + launch;
+          if (buyTextEl) buyTextEl.textContent = 'Reserve My Spot · $' + launch;
         };
         if (comboToggle) {
           comboToggle.removeEventListener('change', renderPrice);
@@ -1944,9 +1951,9 @@
         renderPrice();
         const total = lastTotal;
 
-        // State A: Pay button visible (with total), details form hidden.
+        // State A: Reserve button visible (with total), details form hidden.
         if (buyBtn) buyBtn.classList.remove('hidden');
-        if (buyTextEl) buyTextEl.textContent = 'Pay $' + total;
+        if (buyTextEl) buyTextEl.textContent = 'Reserve My Spot · $' + total;
         if (detailsWrap) detailsWrap.classList.add('hidden');
 
         // Swap quiz off, result on.
@@ -1957,7 +1964,7 @@
         document.dispatchEvent(new CustomEvent('wybe:quiz-end'));
       };
 
-      // Pay button → state B: hide pay UI, reveal the name/email form.
+      // Reserve button → state B: hide the reserve CTA, reveal the name/email form.
       if (buyBtn) {
         buyBtn.addEventListener('click', () => {
           buyBtn.classList.add('hidden');
