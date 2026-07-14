@@ -564,6 +564,139 @@ h4, h5, h6, .wybe-subhead {
   }
 }
 
+/* ── FOUR PILLARS — Daylight-style sticky-pinned chapter ──
+   Five scenes total (intro + 4 pillars). Each scene is 150vh tall on
+   desktop; a sticky inner container holds the type at viewport centre
+   for one full viewport of scroll and ~50vh of extra dwell, giving the
+   reader time to absorb before the next scene stacks over it. Text
+   inside uses per-line clip masks (.line-mask / .line-inner) that GSAP
+   translates up into view when the scene enters — see js/pillars.js.
+   On mobile / prefers-reduced-motion the pins collapse to a normal
+   stack and the reveal is skipped. */
+
+.pillars-manifesto {
+  position: relative;
+  background: #002233;
+}
+
+/* Each scene: relative outer wrapper that gives the sticky child room
+   to scroll. min-height 150vh = 1 viewport of pin + ~0.5 viewport of
+   dwell before the pin releases. */
+.pillar-scene {
+  position: relative;
+  min-height: 150vh;
+}
+
+/* The pinned inner card: sticky under the fixed nav, exactly one
+   remaining viewport tall. Overflow-hidden so the line-mask animation
+   is bounded. */
+.pillar-scene__pin {
+  position: sticky;
+  top: var(--nav-h, 97px);
+  height: calc(100vh - var(--nav-h, 97px));
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(24px, 6vw, 96px);
+  background: #002233;
+}
+.pillar-scene__inner {
+  max-width: 1200px;
+  width: 100%;
+  color: #F6F2E8;
+}
+
+/* Line-mask reveal machinery: each visible line of text is wrapped in a
+   .line-mask (overflow-clip, block-level) around a .line-inner span. JS
+   pins line-inner at yPercent 105 (fully below the mask) then tweens to
+   0. Small vertical padding on the mask so descenders/ascenders (g, y,
+   accents) aren't clipped visually. */
+.line-mask {
+  display: block;
+  overflow: clip;
+  padding: 0.08em 0;
+  margin: -0.08em 0;
+}
+.line-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Intro scene typography */
+.pillar-eyebrow {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: clamp(11px, 0.9vw, 14px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #DDFF55;
+  margin: 0 0 clamp(28px, 2.6vw, 44px);
+}
+.pillar-intro-title {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(48px, 9vw, 128px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #F6F2E8;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Pillar scene typography — oversized numeric watermark behind the name */
+.pillar-number {
+  display: block;
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(120px, 24vw, 380px);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: rgba(221, 255, 85, 0.14);
+  margin: 0;
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}
+.pillar-name {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(56px, 12vw, 180px);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #F6F2E8;
+  margin: clamp(-72px, -5vw, -36px) 0 clamp(24px, 2.6vw, 40px);
+  position: relative;
+  z-index: 1;
+}
+.pillar-descriptor {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(17px, 1.5vw, 22px);
+  line-height: 1.55;
+  color: rgba(246, 242, 232, 0.85);
+  max-width: 560px;
+  margin: 0;
+}
+
+/* Mobile + reduced-motion fallback: kill the pin, stack scenes at
+   natural height, reset any inline transforms JS might have set. */
+@media (prefers-reduced-motion: reduce), (max-width: 768px) {
+  .pillar-scene {
+    min-height: auto;
+    padding: clamp(64px, 12vw, 120px) 0;
+  }
+  .pillar-scene__pin {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow: visible;
+  }
+  .line-inner {
+    transform: none !important;
+  }
+}
+
 /* ── PROMISE + COMMITMENT MANIFESTO ─────────────────
    Two large editorial statements on the site's navy field. Each block
    has an oversized Inter Black heading sitting over a soft blurred lime

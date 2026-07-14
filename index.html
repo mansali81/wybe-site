@@ -259,15 +259,6 @@
     .wybe-about-stage.is-metrics .wybe-about-metrics  { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
     .wybe-metric-value     { font-variant-numeric: tabular-nums; }
 
-    /* 8. Four Pillars: minimalist word-mark grid, no icons, no supporting copy. */
-    .wybe-pillar-item      { position: relative; padding: 24px 0; }
-    .wybe-pillar-name      { display: inline-block; font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.02em; color: #002233; position: relative; padding-bottom: 10px; }
-    .wybe-pillar-item--dark .wybe-pillar-name { color: #F6F2E8; }
-    .wybe-pillar-name::after { content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 28px; background-color: #DDFF55; transition: width .6s cubic-bezier(0.16, 1, 0.3, 1); }
-    .wybe-pillar-item:hover .wybe-pillar-name::after,
-    .wybe-pillar-item:focus-within .wybe-pillar-name::after { width: 100%; }
-    .wybe-pillar-index     { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 0.7rem; letter-spacing: 0.24em; color: #DDFF55; margin-bottom: 12px; display: block; }
-
     /* Universal accessibility guard */
     @media (prefers-reduced-motion: reduce) {
       .wybe-marquee,
@@ -276,8 +267,7 @@
       .wybe-icon path { transition: none; stroke-dashoffset: 0; }
       .wybe-story-panel,
       .wybe-about-intro,
-      .wybe-about-metrics,
-      .wybe-pillar-name::after { transition: none; }
+      .wybe-about-metrics { transition: none; }
     }
   </style>
 
@@ -854,34 +844,97 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- THE FOUNDATION — Four Pillars, minimalist word-mark grid. No icons, no
-       supporting copy. Each pillar is a numbered, oversized name with a lime
-       underline accent that grows on hover to reinforce the "four pillars, one
-       system" idea without the visual noise. -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-6xl mx-auto px-6">
-      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3 text-center">The Foundation</p>
-      <div class="w-10 h-px bg-burgundy mx-auto mb-6"></div>
-      <h3 class="font-sans text-2xl md:text-3xl font-bold text-cream text-center mb-12 md:mb-16">Four Pillars. One System.</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-cream/10">
-        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index">01</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl">Mindset</span>
-        </div>
-        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index">02</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl">Nutrition</span>
-        </div>
-        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index">03</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl">Training</span>
-        </div>
-        <div class="wybe-pillar-item wybe-pillar-item--dark md:px-6 text-center md:text-left">
-          <span class="wybe-pillar-index">04</span>
-          <span class="wybe-pillar-name text-3xl md:text-4xl">Recovery</span>
+  <!-- THE FOUNDATION — Four Pillars as a Daylight-style sticky-pinned chapter.
+       Each pillar (plus the intro) is a full-viewport scene that pins for
+       ~50vh of extra scroll, giving the reader time to absorb each moment
+       before the next stacks over. Text uses per-line clip masks that rise
+       into view with GSAP + ScrollTrigger. On mobile / prefers-reduced-motion
+       the scenes collapse to a normal stack. See js/pillars.js. -->
+  <section class="pillars-manifesto" data-pillars>
+
+    <!-- Intro scene -->
+    <div class="pillar-scene pillar-scene--intro" data-pillar-scene>
+      <div class="pillar-scene__pin">
+        <div class="pillar-scene__inner">
+          <p class="pillar-eyebrow">
+            <span class="line-mask"><span class="line-inner">The Foundation</span></span>
+          </p>
+          <h2 class="pillar-intro-title">
+            <span class="line-mask"><span class="line-inner">Four Pillars.</span></span>
+            <span class="line-mask"><span class="line-inner">One System.</span></span>
+          </h2>
         </div>
       </div>
     </div>
+
+    <!-- 01 Mindset -->
+    <div class="pillar-scene" data-pillar-scene>
+      <div class="pillar-scene__pin">
+        <div class="pillar-scene__inner">
+          <span class="pillar-number">
+            <span class="line-mask"><span class="line-inner">01</span></span>
+          </span>
+          <h3 class="pillar-name">
+            <span class="line-mask"><span class="line-inner">Mindset</span></span>
+          </h3>
+          <p class="pillar-descriptor">
+            <span class="line-mask"><span class="line-inner">The engine. Discipline over motivation, every single day.</span></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Nutrition -->
+    <div class="pillar-scene" data-pillar-scene>
+      <div class="pillar-scene__pin">
+        <div class="pillar-scene__inner">
+          <span class="pillar-number">
+            <span class="line-mask"><span class="line-inner">02</span></span>
+          </span>
+          <h3 class="pillar-name">
+            <span class="line-mask"><span class="line-inner">Nutrition</span></span>
+          </h3>
+          <p class="pillar-descriptor">
+            <span class="line-mask"><span class="line-inner">The fuel. Food is science. What you eat becomes who you become.</span></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Training -->
+    <div class="pillar-scene" data-pillar-scene>
+      <div class="pillar-scene__pin">
+        <div class="pillar-scene__inner">
+          <span class="pillar-number">
+            <span class="line-mask"><span class="line-inner">03</span></span>
+          </span>
+          <h3 class="pillar-name">
+            <span class="line-mask"><span class="line-inner">Training</span></span>
+          </h3>
+          <p class="pillar-descriptor">
+            <span class="line-mask"><span class="line-inner">The forge. Progressive, purposeful movement &mdash; never punishment.</span></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Recovery -->
+    <div class="pillar-scene" data-pillar-scene>
+      <div class="pillar-scene__pin">
+        <div class="pillar-scene__inner">
+          <span class="pillar-number">
+            <span class="line-mask"><span class="line-inner">04</span></span>
+          </span>
+          <h3 class="pillar-name">
+            <span class="line-mask"><span class="line-inner">Recovery</span></span>
+          </h3>
+          <p class="pillar-descriptor">
+            <span class="line-mask"><span class="line-inner">The rebuild. Sleep, rest, and stress management are the mechanism, not the reward.</span></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- Section divider -->
@@ -1509,6 +1562,7 @@
   <script src="js/main.js"></script>
   <script src="js/hero.js" defer></script>
   <script src="js/promise.js" defer></script>
+  <script src="js/pillars.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the
