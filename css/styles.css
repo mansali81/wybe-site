@@ -8,6 +8,13 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
+  /* Safety net against horizontal overflow. `overflow-x: clip` behaves
+     like `hidden` but does NOT create a new scroll container, so
+     `position: sticky` descendants (.wybe-scene__pin, service tabs,
+     nav) continue to work. Any absolutely-positioned decoration that
+     escapes its parent (e.g. the manifesto splash PNGs) gets clipped
+     at the viewport edge instead of pushing a horizontal scrollbar. */
+  overflow-x: clip;
 }
 
 /* Every anchor-linked section on the page (#home, #about, #services,
@@ -751,6 +758,10 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   max-width: 780px;
   isolation: isolate; /* keeps the splash z-order predictable */
+  /* Clip the splash to the statement's bounds so it can bleed inside
+     but never pushes horizontal scroll on narrow viewports (390 px
+     mobile was the offender). `clip` preserves sticky descendants. */
+  overflow-x: clip;
 }
 .wybe-statement--offset {
   margin-left: auto;
@@ -767,6 +778,10 @@ h4, h5, h6, .wybe-subhead {
   top:    clamp(-100px, -10vw, -70px);
   width:  clamp(420px, 70%, 780px);
   height: auto;
+  /* Cap the splash at its container width so the 420 px min never
+     exceeds a narrow-viewport statement (was pushing horizontal
+     scroll at 390 px). */
+  max-width: 100%;
   max-height: 300%;
   object-fit: contain;
   opacity: 0;
