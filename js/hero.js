@@ -1,56 +1,38 @@
 /**
- * WYBE hero — scroll-scrubbed video + text reveal + read-beat hold.
- * ─────────────────────────────────────────────────────────────────
- * Pins the hero and runs a GSAP + ScrollTrigger timeline with scrub:true
- * so scroll progress drives everything:
- *   0 → ~5 u   video.currentTime scrubs from 0 → duration (~5 s clip)
- *   0.35 → 1.55u  .hero-tagline wipes in left-to-right (clip-path)
- *   1.7  → 3.1 u  .hero-sub     wipes in
- *   3.2  → 4.4 u  .hero-cta     wipes in
- *   5    → 5.6 u  empty hold — the "read beat" (~50 vh of scroll) with
- *                 the hero pinned before it smoothly releases into the
- *                 next section.
+ * WYBE hero — scroll-scrubbed video + pinned read-beat hold.
+ * ──────────────────────────────────────────────────────────
+ * Text visibility is owned by CSS: .hero-tagline / .hero-sub / .hero-cta
+ * are visible by default and receive a short CSS `hero-enter` fade-up
+ * animation on page load (see css/styles.css). Nothing here touches
+ * their opacity or transform — pre-JS, no-JS, mobile, and reduced-
+ * motion all paint the hero copy above the fold immediately.
  *
- * The pin distance is +=560% of viewport height (≈ 5 s of video scrub
- * plus ~60 vh of hold at normal scroll speed).
+ * This controller only drives the video scrub and the pinned hold:
+ *   0 → ~5 u   video.currentTime scrubs from 0 → duration (~5 s clip)
+ *   5 → 5.6 u  empty hold — the "read beat" (~60 vh of scroll) with
+ *              the hero pinned before it smoothly releases into the
+ *              next section.
+ *
+ * Pin distance is +=560% of viewport height (≈ 5 s of video scrub plus
+ * ~60 vh of hold at normal scroll speed).
  *
  * Video: muted, playsinline, preload="auto", NEVER auto-plays. We drive
  * it by writing currentTime. Modern browsers show the first decoded
  * frame as soon as metadata loads — that acts as the poster.
  *
- * prefers-reduced-motion: the controller returns early — CSS reveals all
- * text immediately and the video sits at its first frame.
- *
- * Mobile (≤768 px): skip the pin + scrub. Text is revealed immediately.
+ * prefers-reduced-motion + mobile (≤768 px): skip the pin + scrub. The
+ * video sits at its first frame; the CSS entrance animation on desktop
+ * is auto-skipped for reduced-motion users too.
  */
 (function () {
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const heroEl  = document.querySelector('section.hero');
-  const content = document.querySelector('[data-hero-content]');
-  const video   = document.getElementById('hero-scrub');
-  if (!heroEl || !content || !video) return;
+  const heroEl = document.querySelector('section.hero');
+  const video  = document.getElementById('hero-scrub');
+  if (!heroEl || !video) return;
 
-  const tagline = content.querySelector('.hero-tagline');
-  const sub     = content.querySelector('.hero-sub');
-  const cta     = content.querySelector('.hero-cta');
-  const items   = [tagline, sub, cta].filter(Boolean);
-
-  // Reduced motion + touch/mobile short-circuit — CSS keeps text visible
-  // via the initial cascade if we bail here.
-  if (reduceMotion) {
-    revealAll();
-    return;
-  }
-
-  function revealAll() {
-    items.forEach(el => {
-      el.style.opacity = '1';
-      el.style.clipPath = 'none';
-      el.style.webkitClipPath = 'none';
-    });
-  }
+  if (reduceMotion) return;
 
   // Wait for GSAP + ScrollTrigger (both loaded via defer).
   function ready(cb) {
@@ -72,45 +54,30 @@
   function init() {
     gsap.registerPlugin(ScrollTrigger);
 
-    // On mobile: no pin, no scrub. Text is fully visible from the start.
+    // On mobile: no pin, no scrub. Text is already visible via CSS.
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    if (isMobile) {
-      revealAll();
-      return;
-    }
+    if (isMobile) return;
 
     // Prime the video — seek to first frame so a "poster" shows before
     // metadata is available.
     try { video.currentTime = 0; } catch (_) {}
 
-    // Header height reader — used to offset the pin so the pinned hero
-    // sits BELOW the fixed .wybe-nav, not underneath it at viewport
-    // top: 0. Returns 97 as a defensive fallback if the nav isn't
-    // findable, matching the CSS --nav-h default.
+    // Header height reader — offsets the pin so the pinned hero sits
+    // BELOW the fixed .wybe-nav. Defaults to 97 (matches CSS --nav-h).
     const navH = () => {
       const nav = document.getElementById('wybe-nav');
       return nav ? Math.round(nav.getBoundingClientRect().height) : 97;
     };
 
-    // Once metadata is available we know the duration; build the timeline.
+    // Build the timeline once metadata is available (need duration).
     const setup = () => {
       const duration = (isFinite(video.duration) && video.duration > 0) ? video.duration : 5;
 
-      // Timeline is driven by scrub: playhead maps 1-to-1 to scroll
-      // progress across the pinned range. scrub: true (not 1) so the
-      // clip-path wipes track finger movement exactly, not with a lag.
-      //
-      // start: 'top top+=<navH>' is the key fix — the pin engages when
-      // the hero's top edge reaches the header's BOTTOM edge (viewport
-      // y = navH), and the pinned element sits at that offset for the
-      // whole pinned range. Without this offset, ScrollTrigger pins the
-      // hero at viewport y = 0 and the top ~97 px (including the
-      // runner's head) slides under the header.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: heroEl,
           start: () => `top top+=${navH()}`,
-          end: '+=560%',   // ~5s video @ ~100vh/s + ~60vh read-beat hold
+          end: '+=560%',
           pin: true,
           pinType: 'fixed',
           pinSpacing: true,
@@ -122,23 +89,8 @@
       // Video scrub — occupies units 0 → 5 (matches the ~5 s clip).
       tl.to(video, { currentTime: duration, duration: 5, ease: 'none' }, 0);
 
-      // Text wipe: all three items animate on the exact same keyframes
-      // with the same tween. `gsap.set()` pins the initial state so any
-      // pre-existing inline styles or transitions cannot make one target
-      // interpolate slower than the others (fixes the CTA opacity lag).
-      gsap.set(items, { clipPath: 'inset(0% 100% 0% 0%)', opacity: 0 });
-      tl.to(items, {
-        clipPath: 'inset(0% 0% 0% 0%)',
-        opacity: 1,
-        duration: 2.2,
-        ease: 'power2.out',
-        overwrite: 'auto'
-      }, 1.0);
-
-      // Empty "hold" at the end — a 0.6-unit tween on a dummy object.
-      // Total timeline: 5.6 units. With end='+=560%', 0.6 units maps to
-      // ~60 vh of extra scroll where the hero stays pinned and all text
-      // is fully revealed — the ~2s read beat before smoothly releasing.
+      // Empty "hold" at the end — dummy 0.6-unit tween ≈ 60 vh of extra
+      // scroll where the hero stays pinned before smoothly releasing.
       tl.to({}, { duration: 0.6 }, 5.0);
     };
 
@@ -146,13 +98,12 @@
       setup();
     } else {
       video.addEventListener('loadedmetadata', setup, { once: true });
-      // Kick a load in case the browser was lazy about it.
       try { video.load(); } catch (_) {}
     }
 
-    // Debounced resize — invalidateOnRefresh: true recomputes the pin
-    // start via navH() so a responsive header height change (or user
-    // zoom) still produces a gap-free pin.
+    // Debounced resize — invalidateOnRefresh recomputes the pin start
+    // via navH() so a responsive header change still produces a gap-
+    // free pin.
     let rz;
     window.addEventListener('resize', () => {
       clearTimeout(rz);

@@ -378,8 +378,9 @@ h4, h5, h6, .wybe-subhead {
                 pinned. Everything else is layered inside it.
      .hero-video   full-cover portrait mp4 (never auto-plays; scrubbed)
      .hero-tint    dual-gradient overlay for text legibility
-     .hero-content .hero-tagline + .hero-sub + .hero-cta — reveal
-                   left-to-right as the video plays via clip-path wipe */
+     .hero-content .hero-tagline + .hero-sub + .hero-cta — visible on
+                   load; a short CSS fade-up entrance runs once at page
+                   load and reduced-motion users skip it */
 .hero {
   position: relative;
   width: 100%;
@@ -451,14 +452,34 @@ h4, h5, h6, .wybe-subhead {
   max-width: 40rem;
   color: #F6F2E8;
 }
+/* Hero copy is visible by default — no scroll or JS required. Pre-JS
+   and no-JS both paint the headline / tagline / CTA above the fold. */
 .hero-tagline,
 .hero-sub,
 .hero-cta {
-  opacity: 0;
-  /* Initial state — GSAP fromTo overrides this with inline style. Same
-     four-percentage format as the tween so the interpolation is stable. */
-  clip-path: inset(0% 100% 0% 0%);
-  will-change: opacity, clip-path;
+  opacity: 1;
+  clip-path: none;
+}
+
+/* Motion-safe entrance: a short one-shot fade-up on page load. Uses
+   fill-mode: both so the initial (opacity 0, translateY 12px) state is
+   painted before the animation kicks in — no visible flash of visible
+   text either. Reduced-motion users skip the animation entirely and
+   see the fully-styled hero from the first frame. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-tagline {
+    animation: hero-enter 0.7s cubic-bezier(0.19, 1, 0.22, 1) 0.05s both;
+  }
+  .hero-sub {
+    animation: hero-enter 0.7s cubic-bezier(0.19, 1, 0.22, 1) 0.2s both;
+  }
+  .hero-cta {
+    animation: hero-enter 0.7s cubic-bezier(0.19, 1, 0.22, 1) 0.35s both;
+  }
+}
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Hero subheadline — two lines of lime Inter SemiBold uppercase. */
@@ -553,16 +574,10 @@ h4, h5, h6, .wybe-subhead {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  /* Skip the scroll scrub. Video's first frame shows; all text is
-     revealed immediately. */
-  .hero-tagline,
-  .hero-sub,
-  .hero-cta {
-    opacity: 1 !important;
-    clip-path: inset(0% 0% 0% 0%) !important;
-  }
-}
+/* prefers-reduced-motion: the visible-by-default rules above already
+   apply. Nothing extra needed here — the entrance animation lives
+   under a `(prefers-reduced-motion: no-preference)` guard so reduced-
+   motion users never see it fire. */
 
 /* ── WYBE SCENE — Daylight-style sticky-snap ─────────────
    Generic sticky-pinned scene reused across the site. Any section
