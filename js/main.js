@@ -114,6 +114,47 @@ document.addEventListener('DOMContentLoaded', () => {
     sectionMap.forEach((_, sec) => navObs.observe(sec));
   }
 
+  // ── OBFUSCATED MAILTO LINKS ──────────────────────────
+  // Every anchor tagged [data-email data-user="…" data-domain="…"] has
+  // its href assembled at runtime instead of shipping a raw mailto: in
+  // the source. Scrapers that read the static HTML never see the
+  // address; scrapers that render JS have to interact with the link
+  // before it exists (we set href lazily on the first user gesture,
+  // not on load).
+  //
+  // If the element is tagged [data-render-text], we also fill its
+  // textContent with the address on activation, so inline "email
+  // me at ..." links show the address instead of an empty <a>.
+  (function () {
+    const links = document.querySelectorAll('[data-email]');
+    if (!links.length) return;
+    links.forEach(link => {
+      const user   = link.dataset.user   || '';
+      const domain = link.dataset.domain || '';
+      if (!user || !domain) return;
+      const addr = user + '@' + domain;
+      const activate = () => {
+        if (link.dataset.emailReady === '1') return;
+        link.href = 'mailto:' + addr;
+        if (link.hasAttribute('data-render-text') && !link.textContent.trim()) {
+          link.textContent = addr;
+        }
+        link.dataset.emailReady = '1';
+      };
+      // Set on any user gesture — mouse, keyboard, or touch.
+      link.addEventListener('mouseenter', activate, { once: true });
+      link.addEventListener('focus',      activate, { once: true });
+      link.addEventListener('touchstart', activate, { once: true, passive: true });
+      link.addEventListener('click',      activate);
+      // For data-render-text links we DO need the address visible on
+      // load (they read as "emailing " then nothing). Render text
+      // immediately in that case, but keep href lazy.
+      if (link.hasAttribute('data-render-text') && !link.textContent.trim()) {
+        link.textContent = addr;
+      }
+    });
+  })();
+
   // ── WEB3FORMS HANDLER ────────────────────────────────
   // Every form with `data-form` submits to web3forms, swaps in the success
   // panel that follows it (the next sibling element).

@@ -163,19 +163,19 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label for="bfp-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-height" name="height" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="bfp-height" name="height" min="50" max="260" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
                 <div>
                   <label for="bfp-neck" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Neck (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-neck" name="neck" step="0.1" required placeholder="38" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="bfp-neck" name="neck" min="20" max="70" step="0.1" required placeholder="38" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
                 <div>
                   <label for="bfp-waist" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Waist (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-waist" name="waist" step="0.1" required placeholder="85" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="bfp-waist" name="waist" min="40" max="200" step="0.1" required placeholder="85" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
                 <div id="bfp-hip-wrap" class="hidden">
                   <label for="bfp-hip" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Hip (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-hip" name="hip" step="0.1" placeholder="95" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="bfp-hip" name="hip" min="50" max="200" step="0.1" placeholder="95" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
               </div>
               <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors mt-2">
@@ -295,15 +295,15 @@
                 </div>
                 <div>
                   <label for="tdee-age" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Age</label>
-                  <input type="number" id="tdee-age" name="age" required min="14" max="100" placeholder="32" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="tdee-age" name="age" required min="5" max="120" step="1" placeholder="32" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
                 <div>
                   <label for="tdee-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (<span data-tdee-height-label>cm</span>)</label>
-                  <input type="number" id="tdee-height" name="height" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="tdee-height" name="height" min="50" max="260" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
                 <div>
                   <label for="tdee-weight" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Weight (<span data-tdee-weight-label>kg</span>)</label>
-                  <input type="number" id="tdee-weight" name="weight" step="0.1" required placeholder="78" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+                  <input type="number" id="tdee-weight" name="weight" min="20" max="400" step="0.1" required placeholder="78" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
                 </div>
               </div>
               <div>
@@ -407,7 +407,7 @@
           </div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
           <div class="flex gap-5">
-            <a href="mailto:mans_ali@hotmail.com" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+            <a href="#" data-email data-user="mans_ali" data-domain="hotmail.com" aria-label="Email Mansoor" class="text-white/70 hover:text-white transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
             </a>
             <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">

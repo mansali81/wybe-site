@@ -573,19 +573,19 @@
             </div>
             <div class="wybe-input-row">
               <label for="bfp-height">Height <span class="info-tip" tabindex="0" data-tip="Barefoot against a wall, floor to top of head, in centimetres.">?</span></label>
-              <input type="number" id="bfp-height" step="0.1" required placeholder="178">
+              <input type="number" id="bfp-height" min="50" max="260" step="0.1" required placeholder="178">
             </div>
             <div class="wybe-input-row">
               <label for="bfp-neck">Neck <span class="info-tip" tabindex="0" data-tip="Narrowest point, just below the Adam&rsquo;s apple. Snug, not tight.">?</span></label>
-              <input type="number" id="bfp-neck" step="0.1" required placeholder="38">
+              <input type="number" id="bfp-neck" min="20" max="70" step="0.1" required placeholder="38">
             </div>
             <div class="wybe-input-row">
               <label for="bfp-waist">Waist <span class="info-tip" tabindex="0" data-tip="Men: around the navel. Women: narrowest point. Relaxed, end of a normal breath.">?</span></label>
-              <input type="number" id="bfp-waist" step="0.1" required placeholder="85">
+              <input type="number" id="bfp-waist" min="40" max="200" step="0.1" required placeholder="85">
             </div>
             <div class="wybe-input-row hidden" id="bfp-hip-wrap">
               <label for="bfp-hip">Hip <span class="info-tip" tabindex="0" data-tip="Widest point of hips/buttocks, feet together, tape level all the way around.">?</span></label>
-              <input type="number" id="bfp-hip" step="0.1" placeholder="95">
+              <input type="number" id="bfp-hip" min="50" max="200" step="0.1" placeholder="95">
             </div>
 
             <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
@@ -621,7 +621,7 @@
               <input type="text" name="name" required placeholder="Full name" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
               <input type="email" name="email" required placeholder="your@email.com" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
             </div>
-            <input type="number" name="age" required min="14" max="100" placeholder="Age" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-burgundy placeholder:text-white/30">
+            <input type="number" name="age" required min="5" max="120" step="1" placeholder="Age" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-burgundy placeholder:text-white/30">
             <button type="submit" class="wybe-calc-cta">Email me my result &rarr;</button>
           </form>
           <div class="hidden mt-3 text-sm text-white/80">Sent. Check your inbox for the PDF.</div>
@@ -650,15 +650,15 @@
             </div>
             <div class="wybe-input-row">
               <label for="tdee-age">Age</label>
-              <input type="number" id="tdee-age" required min="14" max="100" placeholder="32">
+              <input type="number" id="tdee-age" required min="5" max="120" step="1" placeholder="32">
             </div>
             <div class="wybe-input-row">
               <label for="tdee-height">Height (cm)</label>
-              <input type="number" id="tdee-height" step="0.1" required placeholder="178">
+              <input type="number" id="tdee-height" min="50" max="260" step="0.1" required placeholder="178">
             </div>
             <div class="wybe-input-row">
               <label for="tdee-weight">Weight (kg)</label>
-              <input type="number" id="tdee-weight" step="0.1" required placeholder="78">
+              <input type="number" id="tdee-weight" min="20" max="400" step="0.1" required placeholder="78">
             </div>
             <div class="wybe-input-row">
               <label for="tdee-activity">Activity Level</label>
@@ -706,7 +706,7 @@
               <input type="text" name="name" required placeholder="Full name" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
               <input type="email" name="email" required placeholder="your@email.com" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
             </div>
-            <input type="number" name="age_confirmed" required min="14" max="100" placeholder="Confirm your age" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-burgundy placeholder:text-white/30">
+            <input type="number" name="age_confirmed" required min="5" max="120" step="1" placeholder="Confirm your age" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full md:w-1/2 focus:outline-none focus:border-burgundy placeholder:text-white/30">
             <button type="submit" class="wybe-calc-cta">Email me my result &rarr;</button>
           </form>
           <div class="hidden mt-3 text-sm text-white/80">Sent. Check your inbox for the PDF.</div>
@@ -728,11 +728,11 @@
 
             <div class="wybe-input-row">
               <label for="bmi-height">Height (cm)</label>
-              <input type="number" id="bmi-height" step="0.1" required placeholder="178">
+              <input type="number" id="bmi-height" min="50" max="260" step="0.1" required placeholder="178">
             </div>
             <div class="wybe-input-row">
               <label for="bmi-weight">Weight (kg)</label>
-              <input type="number" id="bmi-weight" step="0.1" required placeholder="78">
+              <input type="number" id="bmi-weight" min="20" max="400" step="0.1" required placeholder="78">
             </div>
 
             <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
@@ -780,7 +780,7 @@
             </div>
             <div class="wybe-input-row">
               <label for="ibw-height">Height (cm)</label>
-              <input type="number" id="ibw-height" step="0.1" required placeholder="178">
+              <input type="number" id="ibw-height" min="50" max="260" step="0.1" required placeholder="178">
             </div>
 
             <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
@@ -1342,7 +1342,10 @@
             <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-            <input type="tel" name="phone" required placeholder="+971 50 000 0000" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+            <input type="tel" name="phone" required placeholder="+971 50 000 0000"
+                   pattern="^\+?[0-9\s\-()]{7,20}$"
+                   title="Enter a phone number in international format, e.g. +971 50 000 0000 (7–20 characters; digits, spaces, dashes and parens allowed, optional leading +)."
+                   class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
             <input type="text" name="location" required placeholder="City / Country" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
           </div>
           <textarea name="goals" required rows="2" placeholder="Your goals and any relevant background" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
@@ -1415,7 +1418,10 @@
 
         <input type="text"  name="name"   required placeholder="Full name"        class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
         <input type="email" name="email"  required placeholder="Email"            class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
-        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+        <input type="tel"   name="mobile" required placeholder="+971 50 000 0000"
+               pattern="^\+?[0-9\s\-()]{7,20}$"
+               title="Enter a phone number in international format, e.g. +971 50 000 0000 (7–20 characters; digits, spaces, dashes and parens allowed, optional leading +)."
+               class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
 
         <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
       </form>
@@ -1563,7 +1569,7 @@
           </div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
           <div class="flex gap-5">
-            <a href="mailto:mansoor@wybe.fit" aria-label="Email" class="text-white/70 hover:text-white transition-colors">
+            <a href="#" data-email data-user="mansoor" data-domain="wybe.fit" aria-label="Email Mansoor" class="text-white/70 hover:text-white transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
             </a>
             <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">
