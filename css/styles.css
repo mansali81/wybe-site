@@ -595,6 +595,83 @@ h4, h5, h6, .wybe-subhead {
    under a `(prefers-reduced-motion: no-preference)` guard so reduced-
    motion users never see it fire. */
 
+/* ── SERVICE CARDS — dark theme ─────────────────────────
+   The four .service-panel cards (Digital Plan / Fitness / Nutrition /
+   Personal Training) originally shipped as cream cards on the dark
+   navy field, which clashed with the rest of the site and pushed the
+   body text below AA contrast. Instead of touching every Tailwind
+   utility inside each panel (there are hundreds), we override at the
+   .service-panel level so the surface, text, price, form fields and
+   dividers all inherit the dark palette. Lime (#DDFF55) is preserved
+   as the pricing / accent colour so it still POPs against the dark
+   surface. */
+.service-panel {
+  background: #003348 !important;                     /* charcoal-light surface */
+  color: #F6F2E8 !important;
+  border: 1px solid rgba(221, 255, 85, 0.22);         /* subtle lime border */
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+}
+/* Headings inside a service card — cream (was text-charcoal). */
+.service-panel h2,
+.service-panel h3 {
+  color: #F6F2E8 !important;
+}
+/* Any child text that leaned on text-charcoal / text-charcoal/N in
+   Tailwind — remap to a cream tint at AA-safe contrast. */
+.service-panel .text-charcoal,
+.service-panel [class*="text-charcoal/"] {
+  color: rgba(246, 242, 232, 0.9) !important;
+}
+/* Eyebrow / helper text at .text-charcoal/70 → cream/70 (still AA). */
+.service-panel .text-charcoal\/70,
+.service-panel .text-charcoal\/80 {
+  color: rgba(246, 242, 232, 0.85) !important;
+}
+/* Price accent — .text-burgundy is already lime (#DDFF55) in the
+   palette, so it reads great on the new dark surface. Kept as-is. */
+
+/* Form controls: dark, subtle border, cream text, lime focus. */
+.service-panel input:not([type="checkbox"]):not([type="hidden"]):not([type="radio"]),
+.service-panel select,
+.service-panel textarea {
+  background: rgba(0, 26, 36, 0.55) !important;
+  border-color: rgba(246, 242, 232, 0.25) !important;
+  color: #F6F2E8 !important;
+}
+.service-panel input::placeholder,
+.service-panel textarea::placeholder {
+  color: rgba(246, 242, 232, 0.42) !important;
+}
+.service-panel input:focus,
+.service-panel select:focus,
+.service-panel textarea:focus {
+  border-color: #DDFF55 !important;
+  outline: none;
+}
+/* Small utility buttons inside cards (bg-cream style option buttons) —
+   flip to a translucent dark chip so they don't look pasted on. */
+.service-panel .bg-cream {
+  background: rgba(0, 26, 36, 0.5) !important;
+  color: #F6F2E8 !important;
+  border-color: rgba(246, 242, 232, 0.22) !important;
+}
+.service-panel .bg-cream:hover {
+  background: #DDFF55 !important;
+  color: #002233 !important;
+  border-color: #DDFF55 !important;
+}
+/* Retake / secondary bordered buttons: cream outline stays readable. */
+.service-panel .border-charcoal\/25,
+.service-panel .border-charcoal\/20,
+.service-panel .border-charcoal\/15 {
+  border-color: rgba(246, 242, 232, 0.28) !important;
+}
+/* Divider hairlines currently use burgundy (lime); keep them, but
+   any charcoal-hairline gets remapped to a subtle cream line. */
+.service-panel .bg-charcoal {
+  background: rgba(246, 242, 232, 0.25) !important;
+}
+
 /* ── WYBE SCENE — Daylight-style sticky-snap ─────────────
    Generic sticky-pinned scene reused across the site. Any section
    marked with .wybe-scene [data-scene] gets:

@@ -132,23 +132,36 @@
       grid-template-columns: 1fr;
       width: 100%;
     }
+    /* Inactive panels are fully hidden (visibility + opacity + no
+       pointer events) so their input values / labels never bleed
+       through during the fade — previous version faded via opacity
+       only, so both panels' text was visible together for ~0.4 s
+       ("Male / 178" ghost from BFP overlapping TDEE, etc.). */
     .wybe-story-panel     {
       grid-column: 1;
       grid-row: 1;
       opacity: 0;
+      visibility: hidden;
       transform: translateY(16px);
-      transition: opacity .45s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform .45s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
       will-change: transform, opacity;
     }
+    /* The newly-active panel plays a one-shot fade-in. No transition
+       on the outgoing panel — it hides instantly, no crossfade. */
     .wybe-story-panel.is-active {
       opacity: 1;
+      visibility: visible;
       transform: translateY(0);
       pointer-events: auto;
+      animation: wybe-story-panel-in .35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes wybe-story-panel-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .wybe-story-panel.is-past {
       opacity: 0;
+      visibility: hidden;
       transform: translateY(-16px);
     }
     .wybe-story-progress-btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease; opacity: 0.55; }
@@ -792,7 +805,7 @@
     <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-end">
       <!-- Left column: text ↔ metrics -->
       <div class="md:col-span-7 pt-24 pb-16 md:pb-32 relative z-10">
-        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-5">The Practitioner</p>
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-5">The Practitioner</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
         <div class="w-12 h-px bg-burgundy mb-5"></div>
 
@@ -814,27 +827,27 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-6 mb-6">
               <div>
                 <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">20<span class="text-xl">+</span></p>
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Years coaching</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Years coaching</p>
               </div>
               <div>
                 <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">500<span class="text-xl">+</span></p>
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Clients transformed</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Clients transformed</p>
               </div>
               <div>
                 <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">10,000<span class="text-xl">+</span></p>
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Sessions delivered</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Sessions delivered</p>
               </div>
               <div>
                 <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">Level 4</p>
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70">REPS Certified PT</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">REPS Certified PT</p>
               </div>
               <div>
                 <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">UAE</p>
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70">REPS Member</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">REPS Member</p>
               </div>
               <div>
                 <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">5</p>
-                <p class="font-sans text-xs tracking-widest uppercase text-white/70">Pro Certifications</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Pro Certifications</p>
               </div>
             </div>
             <button type="button" data-about-toggle
@@ -901,25 +914,29 @@
   <section id="services" class="wybe-story relative overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-14">
-      <!-- EMPTY-STATE HEADER: two-column layout — title + tabs on the left,
-           Treadmill image on the right (right column hidden on mobile). -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
-        <!-- LEFT: title block + tabs + panels. col-span-6 leaves clear space
-             on the right for the 42%-wide section image without overlap. -->
-        <div class="md:col-span-6 flex flex-col">
-          <!-- TITLE. drop-shadow values use white glow so the dark text stays
-               legible wherever it overlaps the image. -->
+      <!-- Two-column layout: LEFT rail (title + tabs, ~1/3 width),
+           RIGHT panel column (active service card, ~2/3 width). The
+           active panel now fills the right side of the section
+           instead of leaving an empty gap. On mobile everything
+           stacks — rail on top, active panel below. -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
+        <!-- LEFT: title block + tabs (col-span-4 rail on desktop). -->
+        <div class="md:col-span-4 flex flex-col">
+          <!-- Title block — sits on the dark navy field now (no
+               background image behind it), so we drop the white
+               text-shadow glow workaround and use straight lime /
+               cream colours for AA contrast. -->
           <div class="text-center md:text-left">
-            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-3 [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_3px_rgba(255,255,255,0.95)]">Services</p>
+            <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Services</p>
             <div class="w-8 h-px bg-burgundy mx-auto md:mx-0 mb-5"></div>
-            <h2 class="font-sans text-3xl md:text-4xl font-bold text-charcoal mb-3 [text-shadow:0_0_8px_rgba(255,255,255,0.95),0_0_4px_rgba(255,255,255,0.95)]">Find Your Service</h2>
-            <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md mx-auto md:mx-0 [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_3px_rgba(255,255,255,0.95)]">
+            <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-3">Find Your Service</h2>
+            <p class="font-sans text-sm text-cream/80 leading-relaxed max-w-md mx-auto md:mx-0">
               Choose what fits where you are right now. Every service is delivered to the same standard, science-backed, personalised, and accountable.
             </p>
           </div>
 
-          <!-- Tabs wrapper — my-auto centres the tabs vertically within the left column. -->
-          <div class="my-auto py-10 w-full">
+          <!-- Tabs wrapper. -->
+          <div class="py-6 md:py-8 w-full">
             <div class="max-w-md mx-auto md:mx-0 w-full grid grid-cols-1 gap-3">
               <button type="button" data-service-tab="digital-plan" class="service-tab bg-cream text-charcoal font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-full border border-charcoal/20 hover:bg-burgundy hover:text-charcoal hover:border-burgundy transition-colors shadow-md">
                 Work out Program (Digital)
@@ -935,14 +952,15 @@
               </button>
             </div>
           </div>
+        </div>
+        <!-- /LEFT rail -->
 
-          <!-- Panels live inside this same left column so the right-side image
-               can remain the only image on the page. Only one panel is visible
-               at a time (JS toggles .hidden). -->
+        <!-- RIGHT panel column — active service card fills the ~2/3
+             remaining width. Only one panel visible at a time
+             (JS toggles .hidden). -->
+        <div class="md:col-span-8 flex flex-col justify-start">
 
-      <!-- WORK OUT PROGRAM panel: quiz only — the image lives in the
-           section's right column and is swapped via JS when this tab is
-           active. -->
+      <!-- WORK OUT PROGRAM panel: quiz only. -->
       <div id="panel-digital-plan" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
         <div class="relative p-5 md:p-8 pb-8 min-h-[480px]">
 
@@ -1146,7 +1164,7 @@
         </div>
       </div>
 
-    <!-- FITNESS PANEL: form only — image is in the section's right column. -->
+    <!-- FITNESS PANEL. -->
     <div id="panel-fitness" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 flex flex-col">
         <!-- TOP: heading + intro -->
@@ -1225,7 +1243,7 @@
       </div>
     </div>
 
-    <!-- NUTRITION PANEL: form only — image is in the section's right column. -->
+    <!-- NUTRITION PANEL. -->
     <div id="panel-nutrition" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 space-y-5">
         <!-- intro block -->
@@ -1278,7 +1296,7 @@
       </div>
     </div>
 
-    <!-- PERSONAL TRAINING PANEL: form only — image is in the section's right column. -->
+    <!-- PERSONAL TRAINING PANEL. -->
     <div id="panel-personal-training" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 flex flex-col">
         <!-- TOP: heading + intro -->
