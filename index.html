@@ -654,7 +654,7 @@
           Wellness is more than a 30 day challenge. It&rsquo;s what you build, every day, for the rest of your life.
         </p>
         <a href="#contact" class="hero-cta">
-          <span>Let&rsquo;s WYBE</span>
+          <span>Consult Now</span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                class="hero-cta__arrow" aria-hidden="true">
@@ -715,87 +715,81 @@
        support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
   <section id="calculators" class="wybe-story relative overflow-visible py-14 md:py-20">
     <div class="w-full max-w-6xl mx-auto px-6">
-      <!-- Section header — single heading, no eyebrow, no subtext.
-           Lime hairline kept as the visual accent since it also anchors
-           the eye between the fixed nav and the form. -->
+      <!-- Section header — single heading, no eyebrow, no subtext. -->
       <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream leading-tight">Body Composition Calculator</h2>
+        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream leading-tight">Know Your Numbers</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-        <!-- LEFT: unified input form -->
-        <div>
-          <form id="unified-calc-form">
-            <p class="wybe-calc-eyebrow">Your Numbers</p>
-            <p class="wybe-calc-title">One Form, Four Metrics</p>
-            <div class="wybe-calc-title-rule"></div>
-
-            <div class="wybe-input-row">
-              <label for="ucalc-gender">Gender</label>
-              <select id="ucalc-gender">
-                <option value="">Select&hellip;</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-            <div class="wybe-input-row">
-              <label for="ucalc-age">Age <span class="text-white/40 normal-case tracking-normal text-[10px]">(TDEE only)</span></label>
-              <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="32">
-            </div>
-            <div class="wybe-input-row">
-              <label for="ucalc-height">Height (cm) <span class="info-tip" tabindex="0" data-tip="Barefoot against a wall, floor to top of head, in centimetres.">?</span></label>
-              <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="178">
-            </div>
-            <div class="wybe-input-row">
-              <label for="ucalc-weight">Weight (kg)</label>
-              <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="78">
-            </div>
-            <div class="wybe-input-row">
-              <label for="ucalc-neck">Neck (cm) <span class="text-white/40 normal-case tracking-normal text-[10px]">(BFP)</span> <span class="info-tip" tabindex="0" data-tip="Narrowest point, just below the Adam&rsquo;s apple. Snug, not tight.">?</span></label>
-              <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="38">
-            </div>
-            <div class="wybe-input-row">
-              <label for="ucalc-waist">Waist (cm) <span class="text-white/40 normal-case tracking-normal text-[10px]">(BFP)</span> <span class="info-tip" tabindex="0" data-tip="Men: around the navel. Women: narrowest point. Relaxed, end of a normal breath.">?</span></label>
-              <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="85">
-            </div>
-            <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
-              <label for="ucalc-hip">Hip (cm) <span class="text-white/40 normal-case tracking-normal text-[10px]">(BFP, female)</span> <span class="info-tip" tabindex="0" data-tip="Widest point of hips/buttocks, feet together, tape level all the way around.">?</span></label>
-              <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="95">
-            </div>
-            <div class="wybe-input-row">
-              <label for="ucalc-activity">Activity level <span class="text-white/40 normal-case tracking-normal text-[10px]">(TDEE)</span></label>
-              <select id="ucalc-activity">
-                <option value="">Select&hellip;</option>
-                <option value="1.2">Sedentary, desk job, no training</option>
-                <option value="1.375">Lightly active, 1-3 days/week</option>
-                <option value="1.55">Moderately active, 3-5 days/week</option>
-                <option value="1.725">Very active, 6-7 days/week</option>
-                <option value="1.9">Extra active, physical job + daily training</option>
-              </select>
-            </div>
-
-            <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
-            <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
-            <p class="font-sans text-[11px] text-white/55 leading-snug mt-3">
-              Only height + weight required for a first pass. Add gender + neck + waist (+ hip for female) to unlock body fat percentage. Add age + activity to unlock daily calorie needs.
-            </p>
-          </form>
-        </div>
-
-        <!-- RIGHT: results panel — 4 metric tiles + one combined email/PDF form -->
-        <div>
-          <p class="wybe-calc-eyebrow">Your Report</p>
-          <p class="wybe-calc-title">Four Metrics, One Report</p>
+      <!-- Single centered column. Form is shown on load; on Get Result
+           it hides and the results view replaces it in the same space.
+           Edit-inputs link at the top of the results toggles back. -->
+      <div class="max-w-2xl mx-auto">
+        <form id="unified-calc-form" data-view="form">
           <div class="wybe-calc-title-rule"></div>
 
-          <!-- Placeholder — shown before Calculate runs -->
-          <div id="ucalc-placeholder" class="font-sans text-sm text-white/60 leading-relaxed">
-            Fill the form and hit Calculate. Whichever metrics your inputs support will appear here as tiles: BMI, body fat percentage, daily calorie needs, and ideal weight.
+          <div class="wybe-input-row">
+            <label for="ucalc-gender">Gender</label>
+            <select id="ucalc-gender">
+              <option value="">Select&hellip;</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="wybe-input-row">
+            <label for="ucalc-age">Age</label>
+            <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="32">
+          </div>
+          <div class="wybe-input-row">
+            <label for="ucalc-height">Height (cm)</label>
+            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="178">
+          </div>
+          <div class="wybe-input-row">
+            <label for="ucalc-weight">Weight (kg)</label>
+            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="78">
+          </div>
+          <div class="wybe-input-row">
+            <label for="ucalc-neck">Neck (cm)</label>
+            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="38">
+          </div>
+          <div class="wybe-input-row">
+            <label for="ucalc-waist">Waist (cm)</label>
+            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="85">
+          </div>
+          <!-- Female-only conditional row — JS toggles .hidden on gender change. -->
+          <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
+            <label for="ucalc-hip">Hip (cm)</label>
+            <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="95">
+          </div>
+          <div class="wybe-input-row">
+            <label for="ucalc-activity">Activity level</label>
+            <select id="ucalc-activity">
+              <option value="">Select&hellip;</option>
+              <option value="1.2">Sedentary, desk job, no training</option>
+              <option value="1.375">Lightly active, 1-3 days/week</option>
+              <option value="1.55">Moderately active, 3-5 days/week</option>
+              <option value="1.725">Very active, 6-7 days/week</option>
+              <option value="1.9">Extra active, physical job + daily training</option>
+            </select>
           </div>
 
-          <!-- Results grid — populated on Calculate -->
-          <div id="ucalc-results" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button type="submit" class="wybe-calc-cta">Get Result &rarr;</button>
+          <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+        </form>
+
+        <!-- Results view — hidden until "Get Result" is clicked. Replaces
+             the form in the same space; Edit inputs at the top toggles back. -->
+        <div id="ucalc-view-results" class="hidden" data-view="results">
+          <div class="flex items-center justify-between mb-6">
+            <button type="button" id="ucalc-edit-inputs"
+                    class="inline-flex items-center gap-1.5 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
+              <span aria-hidden="true">&uarr;</span> Edit inputs
+            </button>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/60">Your Results</p>
+          </div>
+
+          <!-- Tiles grid — populated by the Calculate handler. -->
+          <div id="ucalc-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- BMI tile -->
             <div class="ucalc-tile" data-metric="bmi">
               <p class="ucalc-tile-eyebrow">Body Mass Index</p>
@@ -835,16 +829,13 @@
             </div>
           </div>
 
-          <!-- Combined email / PDF form (hidden until at least one metric is computed).
-               Enhanced lead magnet: value-prop + privacy line above the fields, inline
-               validation, spinner while sending, explicit success and error panels
-               (the failure panel has a Retry button that re-runs the submit flow).
-               Local PDF download always fires as a backup so the user has the file
-               even if the network hop to Web3Forms is failing. -->
-          <div id="ucalc-email-block" class="hidden mt-8 pt-6 border-t border-white/15">
+          <!-- Email / PDF lead magnet — always shown inside the results view.
+               Enhanced: value-prop above the fields, inline validation, spinner,
+               explicit success + error panels, retry, local PDF download backup. -->
+          <div id="ucalc-email-block" class="mt-8 pt-6 border-t border-white/15">
             <p class="font-sans text-sm text-cream leading-relaxed mb-1"><strong class="text-cream">Get your full report as a PDF.</strong></p>
             <p class="font-sans text-[13px] text-cream/70 leading-snug mb-4">
-              <!-- confirm copy with client --> Delivered to your inbox with a free 7-day starter guide. No spam &mdash; unsubscribe any time with one click.
+              Your full report, delivered to your inbox as a PDF. No spam.
             </p>
 
             <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data" novalidate>
@@ -870,7 +861,7 @@
               <p id="ucalc-email-error" class="hidden font-sans text-xs text-red-300 -mt-1" role="alert" aria-live="polite"></p>
 
               <button type="submit" class="wybe-calc-cta inline-flex items-center justify-center gap-2" data-submit>
-                <span data-btn-label>Email my report &rarr;</span>
+                <span data-btn-label>Email My Report &rarr;</span>
                 <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
               </button>
             </form>
@@ -894,13 +885,16 @@
             </div>
           </div>
 
-          <!-- Below the results: single CTA to book -->
-          <div class="mt-8">
-            <a href="#contact" class="wybe-calc-cta" style="margin-top:0;">Let&rsquo;s WYBE &rarr;</a>
-            <p class="font-sans text-[11px] text-white/45 leading-snug mt-3 max-w-lg">
-              * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
-            </p>
-          </div>
+          <!-- Secondary text link — book path remains reachable without
+               overloading the primary CTA. -->
+          <p class="mt-6 text-center font-sans text-sm text-cream/70">
+            Prefer to talk it through? <a href="#services" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">Book a consultation</a>.
+          </p>
+
+          <!-- Fine-print disclaimer — sits at the very bottom of the results. -->
+          <p class="mt-8 font-sans text-[11px] text-white/45 leading-snug text-center max-w-lg mx-auto">
+            * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
+          </p>
         </div>
       </div>
     </div>
@@ -2815,9 +2809,9 @@
         hipWrap:     document.getElementById('ucalc-hip-wrap'),
         activity:    document.getElementById('ucalc-activity'),
         error:       document.getElementById('ucalc-error'),
-        placeholder: document.getElementById('ucalc-placeholder'),
         results:     document.getElementById('ucalc-results'),
-        emailBlock:  document.getElementById('ucalc-email-block'),
+        viewResults: document.getElementById('ucalc-view-results'),
+        editBtn:     document.getElementById('ucalc-edit-inputs'),
         emailSummary:document.getElementById('ucalc-email-summary'),
       };
       const tiles = {
@@ -3017,12 +3011,13 @@
           lockTile('tdee');
         }
 
-        // Reveal results panel and (if anything computed) the email/PDF form.
-        els.placeholder.classList.add('hidden');
-        els.results.classList.remove('hidden');
+        // Swap views: hide the form, reveal the results panel in its place.
+        // Populate the email summary so the emailed envelope carries the
+        // actual computed numbers, not just an attachment.
+        form.classList.add('hidden');
+        els.viewResults.classList.remove('hidden');
 
         const any = store.bmi || store.ibw || store.bfp || store.tdee;
-        els.emailBlock.classList.toggle('hidden', !any);
         if (any) {
           const parts = [];
           if (store.bmi)  parts.push('BMI ' + store.bmi.value + ' (' + store.bmi.category + ')');
@@ -3032,8 +3027,29 @@
           els.emailSummary.value = parts.join(' · ');
         }
 
+        // Scroll the top of the results into view so the user sees the
+        // Edit inputs affordance immediately (respects the fixed nav via
+        // the section's scroll-margin-top).
+        els.viewResults.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          block: 'start'
+        });
+
         CalcStore.unified = store;
       });
+
+      // Edit inputs → back to the form. Keeps entered values so the user
+      // can tweak one field without re-typing everything.
+      if (els.editBtn) {
+        els.editBtn.addEventListener('click', () => {
+          els.viewResults.classList.add('hidden');
+          form.classList.remove('hidden');
+          form.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start'
+          });
+        });
+      }
     })();
 
     // ── UNIFIED CALCULATOR PDF EMAIL HANDLER ──────────
