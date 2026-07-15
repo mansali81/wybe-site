@@ -120,14 +120,32 @@ h4, h5, h6, .wybe-subhead {
 .font-display { font-family: 'Playfair Display', serif; }
 
 /* ── HEADER / NAVBAR ─────────────────────────────
-   Sticky at the top with a dark navy translucent background + blur. Once
-   the user scrolls past ~50 px, JS toggles .is-scrolled which deepens the
-   shadow. Brand mark is cap-height matched to the wordmark. Nav links use
-   the subhead type role; active section gets a lime underline via the
-   IntersectionObserver-driven .is-active class. */
-/* Fixed, frozen header. Solid navy — no alpha — so the hero video can
-   never bleed through and hint at overlap. Kept the blur declaration for
-   any future tint changes, but with an opaque bg the browser skips it. */
+   Sticky at the top with a solid navy background. Once the user scrolls
+   past ~50 px, JS toggles .is-scrolled which deepens the shadow. Brand
+   mark is cap-height matched to the wordmark. Nav links use the subhead
+   type role; active section gets a lime underline via the
+   IntersectionObserver-driven .is-active class.
+
+   STACKING CONTEXT NOTE
+   ---------------------
+   The <header class="wybe-header"> lives directly under <body>, and the
+   `body > *:not(.wybe-cursor):not(.wybe-nav)` wildcard in index.html
+   gives every direct body child `position: relative; z-index: 1`. That
+   traps .wybe-nav's z-index inside the header's z-1 stacking context,
+   which loses to sibling <section>s (also z-1) that appear later in
+   the DOM — visible symptom: section headings paint over the fixed
+   header. The `.wybe-header { z-index: 1000 }` rule below promotes the
+   header's stacking context so the nav paints above every sibling
+   section, regardless of DOM order. */
+.wybe-header {
+  position: relative;
+  z-index: 1000;
+}
+/* Fully opaque nav — no alpha, so the hero video / section content can
+   never bleed through. `background-color` set explicitly (not just via
+   the shorthand) as belt-and-braces against any accidental shorthand
+   override elsewhere. `backdrop-filter` kept as an enhancement for any
+   future tint changes; browsers with an opaque background skip it. */
 .wybe-nav {
   position: fixed !important;
   top: 0;
@@ -136,11 +154,12 @@ h4, h5, h6, .wybe-subhead {
   width: 100%;
   z-index: 1000;
   background: #002233;
+  background-color: #002233;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .wybe-nav.is-scrolled {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
