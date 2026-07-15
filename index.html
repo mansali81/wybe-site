@@ -837,21 +837,63 @@
             </div>
           </div>
 
-          <!-- Combined email / PDF form (hidden until at least one metric is computed) -->
+          <!-- Combined email / PDF form (hidden until at least one metric is computed).
+               Enhanced lead magnet: value-prop + privacy line above the fields, inline
+               validation, spinner while sending, explicit success and error panels
+               (the failure panel has a Retry button that re-runs the submit flow).
+               Local PDF download always fires as a backup so the user has the file
+               even if the network hop to Web3Forms is failing. -->
           <div id="ucalc-email-block" class="hidden mt-8 pt-6 border-t border-white/15">
-            <p class="font-sans text-sm text-white/80 leading-relaxed mb-4">Want a PDF of the full report emailed to you?</p>
-            <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
+            <p class="font-sans text-sm text-cream leading-relaxed mb-1"><strong class="text-cream">Get your full report as a PDF.</strong></p>
+            <p class="font-sans text-[13px] text-cream/70 leading-snug mb-4">
+              <!-- confirm copy with client --> Delivered to your inbox with a free 7-day starter guide. No spam &mdash; unsubscribe any time with one click.
+            </p>
+
+            <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data" novalidate>
               <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+              <!-- Honeypot: display:none + tabindex="-1" so keyboards and screen readers
+                   ignore it, but scraper-bots that autofill every input still trip it. -->
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="subject" value="WYBE, Unified Report PDF Request">
               <input type="hidden" name="report_summary" id="ucalc-email-summary">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input type="text" name="name" required placeholder="Full name" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
-                <input type="email" name="email" required placeholder="your@email.com" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
+                <label class="sr-only" for="ucalc-email-name">Full name</label>
+                <input id="ucalc-email-name" type="text" name="name" required autocomplete="name" placeholder="Full name"
+                       class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30"
+                       aria-invalid="false" data-input="name">
+                <label class="sr-only" for="ucalc-email-input">Email address</label>
+                <input id="ucalc-email-input" type="email" name="email" required autocomplete="email" placeholder="your@email.com"
+                       class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30"
+                       aria-describedby="ucalc-email-hint" aria-invalid="false" data-input="email">
               </div>
-              <button type="submit" class="wybe-calc-cta">Email my report &rarr;</button>
+              <p id="ucalc-email-hint" class="sr-only">Enter a valid email address, for example name@example.com.</p>
+
+              <!-- Inline validation error slot. aria-live so AT announces it. -->
+              <p id="ucalc-email-error" class="hidden font-sans text-xs text-red-300 -mt-1" role="alert" aria-live="polite"></p>
+
+              <button type="submit" class="wybe-calc-cta inline-flex items-center justify-center gap-2" data-submit>
+                <span data-btn-label>Email my report &rarr;</span>
+                <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+              </button>
             </form>
-            <div class="hidden mt-3 text-sm text-white/80">Sent. Check your inbox for the PDF.</div>
+
+            <!-- Success panel: replaces the form on a 200 response. -->
+            <div id="ucalc-email-success" class="hidden mt-3 flex items-start gap-2 text-sm text-cream/90" role="status" aria-live="polite">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 text-burgundy flex-shrink-0" aria-hidden="true">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              <span><strong class="text-cream">Sent.</strong> Your report is on the way. Check spam if you don&rsquo;t see it in the next few minutes &mdash; the PDF also downloaded to your device as a backup.</span>
+            </div>
+
+            <!-- Error panel: shown when the Web3Forms request fails. -->
+            <div id="ucalc-email-fail" class="hidden mt-3 border border-red-300/40 bg-red-500/10 px-3 py-2 rounded-md flex items-start justify-between gap-3" role="alert" aria-live="assertive">
+              <p class="font-sans text-xs text-cream/90 leading-snug">
+                Send failed &mdash; check your connection and try again. Your PDF also downloaded locally as a backup.
+              </p>
+              <button type="button" data-retry class="font-sans text-xs font-bold uppercase tracking-widest text-burgundy underline underline-offset-2 flex-shrink-0">
+                Retry
+              </button>
+            </div>
           </div>
 
           <!-- Below the results: single CTA to book -->
@@ -2983,33 +3025,86 @@
         return doc;
       };
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = form.querySelector('button[type="submit"]');
-        const successEl = form.nextElementSibling;
-        const originalText = btn ? btn.textContent : '';
+      // ── Enhanced lead-magnet submit ──
+      // Steps:
+      //   1. Client-side validate name + email (block obviously-bad input).
+      //   2. Show spinner in the submit button.
+      //   3. Build the PDF; always download locally so the user has it even
+      //      if the network hop fails.
+      //   4. POST to Web3Forms; on success hide the form and show the
+      //      success panel + fire wybeTrack('Calculator Email Report').
+      //      On failure, restore the button and show the retry panel.
+      //   5. Retry button re-submits without re-validating (fields are
+      //      already known-good).
+      const btn         = form.querySelector('[data-submit]');
+      const btnLabel    = form.querySelector('[data-btn-label]');
+      const btnSpinner  = form.querySelector('[data-btn-spinner]');
+      const nameInput   = form.querySelector('[data-input="name"]');
+      const emailInput  = form.querySelector('[data-input="email"]');
+      const errorSlot   = document.getElementById('ucalc-email-error');
+      const successPanel = document.getElementById('ucalc-email-success');
+      const failPanel    = document.getElementById('ucalc-email-fail');
+      const retryBtn     = failPanel && failPanel.querySelector('[data-retry]');
+
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      const showError = (msg, target) => {
+        errorSlot.textContent = msg;
+        errorSlot.classList.remove('hidden');
+        if (target) {
+          target.setAttribute('aria-invalid', 'true');
+          try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
+        }
+      };
+      const clearError = () => {
+        errorSlot.textContent = '';
+        errorSlot.classList.add('hidden');
+        nameInput  && nameInput.setAttribute('aria-invalid',  'false');
+        emailInput && emailInput.setAttribute('aria-invalid', 'false');
+      };
+      const setSending = (on) => {
+        if (!btn) return;
+        btn.disabled = on;
+        if (btnSpinner) btnSpinner.classList.toggle('hidden', !on);
+        if (btnLabel)   btnLabel.textContent = on ? 'Sending…' : 'Email my report →';
+      };
+
+      const send = async () => {
+        clearError();
+        failPanel.classList.add('hidden');
+        successPanel.classList.add('hidden');
 
         if (!window.jspdf) {
-          if (btn) { btn.textContent = 'PDF library still loading…'; }
+          showError('PDF library still loading — please try again in a moment.');
           return;
         }
-        const fd = new FormData(form);
-        const name  = (fd.get('name')  || '').toString().trim();
-        const email = (fd.get('email') || '').toString().trim();
+
+        const name  = (nameInput.value  || '').trim();
+        const email = (emailInput.value || '').trim();
+
+        if (name.length < 2) {
+          showError('Enter your full name so I know how to address the email.', nameInput);
+          return;
+        }
+        if (!EMAIL_RE.test(email)) {
+          showError('That email doesn’t look right — try name@example.com.', emailInput);
+          return;
+        }
 
         const doc = buildUnifiedPdf(name, email);
         if (!doc) {
-          if (btn) { btn.textContent = 'Calculate first, then submit'; }
+          showError('Calculate your numbers first, then send the report.');
           return;
         }
 
-        if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+        setSending(true);
 
         const slug = (name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'result');
         const filename = 'wybe-numbers-' + slug + '.pdf';
         const blob = doc.output('blob');
 
-        // Local download backup so the user always has the PDF.
+        // Always download locally first, so a network failure still leaves
+        // the user with their PDF.
         try {
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
@@ -3018,19 +3113,38 @@
           URL.revokeObjectURL(url);
         } catch (_) { /* ignore download errors */ }
 
+        // Fresh FormData each attempt so a retry doesn't accumulate
+        // duplicate attachment blobs.
+        const fd = new FormData(form);
         fd.append('attachment', blob, filename);
         fd.append('message', 'WYBE unified report for ' + name + ', attached as PDF.');
 
         try {
           const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
-          if (res.ok) {
-            form.classList.add('hidden');
-            if (successEl) successEl.classList.remove('hidden');
-          } else { throw new Error(); }
-        } catch {
-          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          if (!res.ok) throw new Error('bad-status:' + res.status);
+          // Success — hide form, show success panel, fire tracking event.
+          setSending(false);
+          form.classList.add('hidden');
+          successPanel.classList.remove('hidden');
+          if (typeof window.wybeTrack === 'function') {
+            window.wybeTrack('Calculator Email Report');
+          }
+        } catch (_) {
+          setSending(false);
+          failPanel.classList.remove('hidden');
         }
+      };
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        send();
       });
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          failPanel.classList.add('hidden');
+          send();
+        });
+      }
     })();
   </script>
 </body>

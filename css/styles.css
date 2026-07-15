@@ -635,6 +635,41 @@ h4, h5, h6, .wybe-subhead {
    under a `(prefers-reduced-motion: no-preference)` guard so reduced-
    motion users never see it fire. */
 
+/* Visually-hidden but AT-readable — used for form field labels
+   whose visible cue is the placeholder. */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Small circular spinner for form submit buttons. Uses currentColor
+   so it inherits the button text colour (charcoal on the lime CTA).
+   Reduced-motion users see a static ring so the "sending" state is
+   still visible without a spin animation. */
+.wybe-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: wybe-spin 0.7s linear infinite;
+  vertical-align: -2px;
+}
+@keyframes wybe-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wybe-spinner { animation: none; }
+}
+
 /* ── FAQ (accessible accordion) ─────────────────────────
    Each item is a <button aria-expanded aria-controls> plus a
    <div role="region"> answer. The <button> gets a lime border-left

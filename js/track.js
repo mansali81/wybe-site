@@ -66,11 +66,10 @@
     const form = e.target;
     if (!form || form.tagName !== 'FORM') return;
 
-    // Calculator email PDF form
-    if (form.id === 'ucalc-email-form') {
-      window.wybeTrack('Calculator Email Report');
-      return;
-    }
+    // Calculator email PDF form: skip — its own handler fires
+    // wybeTrack('Calculator Email Report') on the successful response
+    // (not on the submit intent) so we don't double-count failures.
+    if (form.id === 'ucalc-email-form') return;
     // Unified calculator "Calculate" (only real calc form on the page)
     if (form.id === 'unified-calc-form') {
       const isDedicatedPage = /\/calculators\.html/.test(location.pathname);
