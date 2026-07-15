@@ -378,6 +378,53 @@
     ]
   }
   </script>
+
+  <!-- Structured data: Reviews + AggregateRating for the Client
+       Results section. VALUES ARE PLACEHOLDERS matching the 3 demo
+       testimonials — swap author names, dates, ratings, and
+       reviewCount for real values once written consent is on file
+       and the placeholder testimonials are replaced with actual
+       client copy. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://wybe.fit/#business",
+    "name": "WYBE — Wellness You Build Everyday",
+    "url": "https://wybe.fit/",
+    "image": "https://wybe.fit/images/Logo.svg",
+    "description": "Personal training, human performance nutrition, and mind coaching with Mansoor Ahamad Ali. Based in the UAE, delivered globally.",
+    "priceRange": "$$",
+    "areaServed": "Global",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "3",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author":       { "@type": "Person", "name": "Sarah R." },
+        "reviewBody":   "Mansoor built a plan around my calendar, not the other way around. Six months in I was 9 kg lighter, stronger in every lift, and eating more, not less."
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author":       { "@type": "Person", "name": "James K." },
+        "reviewBody":   "I'd trained on and off for a decade with nothing to show for it. Mansoor rebuilt my technique from the floor up. My squat went from painful to my favourite lift in 12 weeks."
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author":       { "@type": "Person", "name": "Aisha N." },
+        "reviewBody":   "The nutrition consult alone paid for itself in a week. No fads, no supplements to buy — just a way of eating I can hold onto for the rest of my life."
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="text-cream">
 
@@ -402,6 +449,7 @@
         <div class="hidden md:flex items-center gap-7">
           <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculators</a>
           <a href="#services"     data-nav-link class="wybe-nav-link">Services</a>
+          <a href="#results"      data-nav-link class="wybe-nav-link">Results</a>
           <a href="publication.html"            class="wybe-nav-link">My Publication</a>
           <a href="#contact" class="wybe-cta">Book Now</a>
         </div>
@@ -419,6 +467,7 @@
     <div id="mobile-menu" class="wybe-mobile-menu hidden md:hidden" role="menu">
       <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculators</a>
       <a href="#services"    class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="#results"     class="wybe-mobile-link" role="menuitem">Results</a>
       <a href="publication.html" class="wybe-mobile-link" role="menuitem">My Publication</a>
       <a href="#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
     </div>
@@ -745,6 +794,181 @@
         <img src="images/Treadmill.webp" alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
              class="about-portrait block w-auto h-auto max-h-[640px] md:max-h-[820px] max-w-full object-contain">
       </div>
+    </div>
+  </section>
+
+  <!-- Section divider -->
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
+
+  <!-- CLIENT RESULTS — 3-up testimonial grid + before/after
+       transformations strip. Backs up the "500+ clients / 10,000+
+       sessions" claim in #about. Every card / image is a placeholder
+       marked with a comment; swap in real content once written consent
+       is on file. Cards reveal via the generic .wybe-reveal
+       IntersectionObserver (main.js), same fade+slide used elsewhere,
+       gated by prefers-reduced-motion. -->
+  <section id="results" class="wybe-results relative py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Header -->
+      <div class="text-center mb-12 md:mb-14 max-w-2xl mx-auto">
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Client Results</p>
+        <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
+        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Real People. Real Results.</h2>
+        <p class="font-sans text-base text-cream/80 leading-relaxed">
+          Independent stories from clients I&rsquo;ve worked with &mdash; no scripts, no filters, just the outcomes and how they got there.
+        </p>
+      </div>
+
+      <!-- Testimonial grid (3-up desktop, 1-col mobile) -->
+      <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <article class="wybe-testimonial wybe-reveal">
+          <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
+          <blockquote class="wybe-testimonial__body">
+            Mansoor built a plan around my calendar, not the other way around. Six months in I was 9&nbsp;kg lighter, stronger in every lift, and eating more, not less.
+          </blockquote>
+          <div class="wybe-testimonial__meta">
+            <span class="wybe-testimonial__avatar" aria-hidden="true">SR</span>
+            <div class="wybe-testimonial__id">
+              <p class="wybe-testimonial__name">Sarah R.</p>
+              <p class="wybe-testimonial__context">Fat loss &middot; 6 months &middot; Dubai</p>
+            </div>
+          </div>
+        </article>
+        <article class="wybe-testimonial wybe-reveal">
+          <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
+          <blockquote class="wybe-testimonial__body">
+            I&rsquo;d trained on and off for a decade with nothing to show for it. Mansoor rebuilt my technique from the floor up. My squat went from painful to my favourite lift in 12&nbsp;weeks.
+          </blockquote>
+          <div class="wybe-testimonial__meta">
+            <span class="wybe-testimonial__avatar" aria-hidden="true">JK</span>
+            <div class="wybe-testimonial__id">
+              <p class="wybe-testimonial__name">James K.</p>
+              <p class="wybe-testimonial__context">Strength rebuild &middot; 12 weeks &middot; London</p>
+            </div>
+          </div>
+        </article>
+        <article class="wybe-testimonial wybe-reveal">
+          <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
+          <blockquote class="wybe-testimonial__body">
+            The nutrition consult alone paid for itself in a week. No fads, no supplements to buy &mdash; just a way of eating I can hold onto for the rest of my life.
+          </blockquote>
+          <div class="wybe-testimonial__meta">
+            <span class="wybe-testimonial__avatar" aria-hidden="true">AN</span>
+            <div class="wybe-testimonial__id">
+              <p class="wybe-testimonial__name">Aisha N.</p>
+              <p class="wybe-testimonial__context">Nutrition reset &middot; Ongoing &middot; Abu Dhabi</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Transformations strip: 4 before/after pairs -->
+      <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->
+      <div class="mt-14 md:mt-20">
+        <div class="text-center mb-8 md:mb-10 max-w-xl mx-auto">
+          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Transformations</p>
+          <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
+          <h3 class="font-sans text-2xl md:text-3xl font-bold text-cream leading-tight">Twelve to Twenty-Four Weeks of Work.</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+          <!-- Card 1 -->
+          <figure class="wybe-transformation wybe-reveal">
+            <div class="wybe-transformation__pair">
+              <!-- REPLACE with real client photos (get written consent):
+                   Once images/results/before-01.webp + before-01.jpg exist,
+                   insert BEFORE the <img>:  <source type="image/webp" srcset="images/results/before-01.webp">
+                   and change the <img src> to images/results/before-01.jpg -->
+              <picture>
+                <img src="images/results/placeholder-before.svg"
+                     alt="Placeholder — client 1 before photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+              <picture>
+                <img src="images/results/placeholder-after.svg"
+                     alt="Placeholder — client 1 after photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+            </div>
+            <figcaption class="wybe-transformation__caption">
+              <span class="wybe-transformation__weeks">12 weeks</span>
+              <span class="wybe-transformation__detail">Down 9 kg</span>
+            </figcaption>
+          </figure>
+          <!-- Card 2 -->
+          <figure class="wybe-transformation wybe-reveal">
+            <div class="wybe-transformation__pair">
+              <picture>
+                <img src="images/results/placeholder-before.svg"
+                     alt="Placeholder — client 2 before photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+              <picture>
+                <img src="images/results/placeholder-after.svg"
+                     alt="Placeholder — client 2 after photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+            </div>
+            <figcaption class="wybe-transformation__caption">
+              <span class="wybe-transformation__weeks">16 weeks</span>
+              <span class="wybe-transformation__detail">+6 kg lean mass</span>
+            </figcaption>
+          </figure>
+          <!-- Card 3 -->
+          <figure class="wybe-transformation wybe-reveal">
+            <div class="wybe-transformation__pair">
+              <picture>
+                <img src="images/results/placeholder-before.svg"
+                     alt="Placeholder — client 3 before photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+              <picture>
+                <img src="images/results/placeholder-after.svg"
+                     alt="Placeholder — client 3 after photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+            </div>
+            <figcaption class="wybe-transformation__caption">
+              <span class="wybe-transformation__weeks">24 weeks</span>
+              <span class="wybe-transformation__detail">Body fat 28% &rarr; 18%</span>
+            </figcaption>
+          </figure>
+          <!-- Card 4 -->
+          <figure class="wybe-transformation wybe-reveal">
+            <div class="wybe-transformation__pair">
+              <picture>
+                <img src="images/results/placeholder-before.svg"
+                     alt="Placeholder — client 4 before photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+              <picture>
+                <img src="images/results/placeholder-after.svg"
+                     alt="Placeholder — client 4 after photo. Replace with real image once written consent is on file."
+                     width="400" height="500" loading="lazy" decoding="async"
+                     class="wybe-transformation__img">
+              </picture>
+            </div>
+            <figcaption class="wybe-transformation__caption">
+              <span class="wybe-transformation__weeks">20 weeks</span>
+              <span class="wybe-transformation__detail">Back pain &rarr; pain-free</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <p class="font-sans text-[11px] text-cream/50 leading-snug text-center mt-6 max-w-xl mx-auto">
+          Individual results vary and depend on adherence, starting condition, and consistency. Every photo is published with written consent from the client.
+        </p>
+      </div>
+
     </div>
   </section>
 
@@ -1418,6 +1642,7 @@
             <li><a href="#about" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
             <li><a href="#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
             <li><a href="#calculators" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
+            <li><a href="#results" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Results</a></li>
             <li><a href="publication.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Publication</a></li>
             <li><a href="#book" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
             <li><a href="#contact" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Contact</a></li>

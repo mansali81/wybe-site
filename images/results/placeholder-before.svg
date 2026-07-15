@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-labelledby="phb-title">
+  <title id="phb-title">Placeholder image — replace with a real client "before" photo once written consent is on file.</title>
+  <defs>
+    <pattern id="phb-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0e4560" stroke-width="0.75"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="500" fill="#003348"/>
+  <rect width="400" height="500" fill="url(#phb-grid)"/>
+  <rect x="16" y="16" width="368" height="468" fill="none" stroke="#DDFF55" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <text x="200" y="235" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="46" fill="#DDFF55" letter-spacing="4">BEFORE</text>
+  <text x="200" y="270" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#F6F2E8" fill-opacity="0.65" letter-spacing="2.5">PLACEHOLDER</text>
+  <text x="200" y="305" text-anchor="middle" font-family="Inter, sans-serif" font-weight="400" font-size="11" fill="#F6F2E8" fill-opacity="0.5">Replace with real client photo</text>
+</svg>

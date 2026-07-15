@@ -155,6 +155,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
+  // ── PER-ELEMENT REVEAL (.wybe-reveal) ────────────────
+  // Any element tagged .wybe-reveal fades + slides up on entry.
+  // Used by the Client Results testimonial cards / transformation
+  // figures for a light, staggered reveal without needing GSAP.
+  // CSS gates the transition behind prefers-reduced-motion: no-preference,
+  // so reduced-motion users see the final state instantly.
+  (function () {
+    const items = document.querySelectorAll('.wybe-reveal');
+    if (!items.length || !('IntersectionObserver' in window)) {
+      items.forEach(el => el.classList.add('is-visible')); // reveal statically
+      return;
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    items.forEach(el => io.observe(el));
+  })();
+
   // ── WEB3FORMS HANDLER ────────────────────────────────
   // Every form with `data-form` submits to web3forms, swaps in the success
   // panel that follows it (the next sibling element).

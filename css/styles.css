@@ -635,6 +635,155 @@ h4, h5, h6, .wybe-subhead {
    under a `(prefers-reduced-motion: no-preference)` guard so reduced-
    motion users never see it fire. */
 
+/* ── CLIENT RESULTS ─────────────────────────────────────
+   Testimonial cards + before/after transformations strip. Same dark-
+   surface treatment as .service-panel; lime accent on the quote mark
+   and the transformation caption dot; explicit width/height on every
+   image so there's no CLS on load. */
+.wybe-results {
+  background: #002233;
+  color: #F6F2E8;
+}
+
+.wybe-testimonial {
+  position: relative;
+  padding: 44px 24px 24px;
+  background: #003348;
+  border: 1px solid rgba(221, 255, 85, 0.22);
+  border-top: 3px solid #DDFF55;
+  border-radius: 8px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.wybe-testimonial__quote {
+  position: absolute;
+  top: 8px; left: 18px;
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1;
+  color: #DDFF55;
+  opacity: 0.55;
+  user-select: none;
+}
+.wybe-testimonial__body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(246, 242, 232, 0.9);
+  margin: 0 0 20px;
+  flex: 1;
+  quotes: none; /* the ldquo/rdquo are baked into the copy */
+}
+.wybe-testimonial__body::before,
+.wybe-testimonial__body::after { content: none; }
+
+.wybe-testimonial__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(246, 242, 232, 0.14);
+}
+.wybe-testimonial__avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #DDFF55;
+  color: #002233;
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.wybe-testimonial__id { min-width: 0; }
+.wybe-testimonial__name {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 13px;
+  color: #F6F2E8;
+  margin: 0 0 2px;
+  letter-spacing: 0.02em;
+}
+.wybe-testimonial__context {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 11px;
+  color: rgba(246, 242, 232, 0.65);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Transformations grid — 2-up on tablet, 4-up on desktop, 1 on mobile */
+.wybe-transformation {
+  margin: 0;
+  background: rgba(0, 26, 36, 0.35);
+  border: 1px solid rgba(246, 242, 232, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.wybe-transformation__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px; /* the seam between before/after */
+  background: rgba(221, 255, 85, 0.35);
+}
+.wybe-transformation__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 400 / 500;
+  object-fit: cover;
+  background: #003348;
+}
+.wybe-transformation__caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 14px;
+  font-family: var(--font-subhead);
+}
+.wybe-transformation__weeks {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #DDFF55;
+}
+.wybe-transformation__detail {
+  font-weight: 400;
+  font-size: 12px;
+  color: rgba(246, 242, 232, 0.8);
+  text-align: right;
+}
+
+/* Reveal-on-scroll (main.js IntersectionObserver adds .is-visible). */
+@media (prefers-reduced-motion: no-preference) {
+  .wybe-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .wybe-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Stagger the cards inside a row by nth-child so they fade in in
+     sequence when the parent grid enters the viewport. */
+  .wybe-reveal:nth-child(2)      { transition-delay: 0.08s; }
+  .wybe-reveal:nth-child(3)      { transition-delay: 0.16s; }
+  .wybe-reveal:nth-child(4)      { transition-delay: 0.24s; }
+}
+
 /* ── UNIFIED CALCULATOR TILES ────────────────────────────
    Four metric tiles (BMI, IBW, BFP, TDEE) live side-by-side in the
    Calculator result panel. Locked (before Calculate, or missing
