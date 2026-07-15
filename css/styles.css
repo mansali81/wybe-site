@@ -11,11 +11,14 @@
    fresh page and see it immediately. `top: 0` at focus (not absolute
    position off-screen) because sr-only visually-hidden techniques
    sometimes still shift layout when focused. */
+/* Off-screen until keyboard-focused. `left: -9999px` is the safest
+   sr-only pattern — a transform can be clobbered by another rule; a
+   negative-left cannot. On :focus the link jumps to top-left of the
+   viewport with a lime pill background so it's unmissable. */
 .wybe-skip-link {
   position: fixed;
-  top: 0;
-  left: 0;
-  transform: translateY(-120%);
+  top: auto;
+  left: -9999px;
   z-index: 10000;
   padding: 12px 20px;
   background: #DDFF55;
@@ -26,13 +29,13 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: 0 0 8px 0;
+  border-radius: 8px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .wybe-skip-link:focus,
 .wybe-skip-link:focus-visible {
-  transform: translateY(0);
+  top: 1rem;
+  left: 1rem;
   outline: 2px solid #002233;
   outline-offset: 2px;
 }
@@ -1128,23 +1131,28 @@ h4, h5, h6, .wybe-subhead {
   text-align: right;
 }
 
-/* Reveal-on-scroll (main.js IntersectionObserver adds .is-visible). */
+/* Reveal-on-scroll (main.js IntersectionObserver adds .is-visible).
+   Safety: the hidden-initial state is scoped to html.js-active — a
+   class main.js sets synchronously. If the script fails to load or
+   crashes before that class is added, .wybe-reveal stays visible
+   (no invisible content). Reduced-motion users also skip the whole
+   fade because the media query below doesn't match for them. */
 @media (prefers-reduced-motion: no-preference) {
-  .wybe-reveal {
+  html.js-active .wybe-reveal {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .wybe-reveal.is-visible {
+  html.js-active .wybe-reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
   }
   /* Stagger the cards inside a row by nth-child so they fade in in
      sequence when the parent grid enters the viewport. */
-  .wybe-reveal:nth-child(2)      { transition-delay: 0.08s; }
-  .wybe-reveal:nth-child(3)      { transition-delay: 0.16s; }
-  .wybe-reveal:nth-child(4)      { transition-delay: 0.24s; }
+  html.js-active .wybe-reveal:nth-child(2) { transition-delay: 0.08s; }
+  html.js-active .wybe-reveal:nth-child(3) { transition-delay: 0.16s; }
+  html.js-active .wybe-reveal:nth-child(4) { transition-delay: 0.24s; }
 }
 
 /* ── UNIFIED CALCULATOR TILES ────────────────────────────

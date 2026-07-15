@@ -1,3 +1,10 @@
+// Safety flag: gates the hidden-initial state of .wybe-reveal in
+// css/styles.css. If this script fails to load or execute for any
+// reason, `.js-active` is never set and .wybe-reveal elements stay
+// visible instead of hidden-forever at opacity: 0. Set as early as
+// possible (module top, before DOMContentLoaded).
+document.documentElement.classList.add('js-active');
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── FIXED NAV HEIGHT SYNC ────────────────────────────
@@ -352,5 +359,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
     updateParallax();
   }
+
+  // ── SCROLLTRIGGER REFRESH ────────────────────────────
+  // The fixed header + font-load can shift page geometry after
+  // ScrollTriggers are created (in scenes.js / promise.js). Refresh
+  // once on window.load (all assets in) and again on resize +
+  // font-face ready. `invalidateOnRefresh: true` on the individual
+  // triggers means start/end positions get recomputed each time.
+  const refreshST = () => {
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === 'function') {
+      window.ScrollTrigger.refresh();
+    }
+  };
+  window.addEventListener('load', refreshST, { once: true });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(refreshST);
+  }
+  let rzST;
+  window.addEventListener('resize', () => {
+    clearTimeout(rzST);
+    rzST = setTimeout(refreshST, 150);
+  });
+  // Also refresh when the URL fragment changes (e.g. #services jump
+  // from another page) — the browser scroll re-lands after fragment
+  // navigation and triggers may need re-measuring.
+  window.addEventListener('hashchange', refreshST);
 
 });
