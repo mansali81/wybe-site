@@ -100,261 +100,144 @@
     </div>
   </section>
 
-  <!-- CALCULATOR SWITCHER -->
-  <section class="bg-cream py-12 border-b border-charcoal/10">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+  <!-- ONE UNIFIED CALCULATOR — dark panel embedded in the page. Same
+       markup and controller as the section on index.html. -->
+  <section class="bg-charcoal text-cream py-16 md:py-20" id="calculators">
+    <div class="w-full max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-14 max-w-2xl mx-auto">
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Free Tools</p>
+        <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
+        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Your Numbers, All At Once</h2>
+        <p class="font-sans text-base text-cream/80 leading-relaxed">
+          One form, four metrics. Fill in what you know &mdash; the more you enter, the more you unlock. BMI, body fat percentage, daily calorie needs, and ideal weight, in a single report.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
         <div>
-          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-2">Choose a Calculator</p>
-          <div class="w-8 h-px bg-burgundy"></div>
-        </div>
-        <select id="calc-switcher" class="border border-charcoal/20 bg-cream px-5 py-3 font-sans text-sm w-full md:w-auto md:min-w-[320px] focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
-          <option value="bfp" selected>Body Fat Percentage (US Navy)</option>
-          <option value="tdee">Daily Calorie Needs (TDEE)</option>
-        </select>
-      </div>
-    </div>
-  </section>
+          <form id="unified-calc-form">
+            <p class="wybe-calc-eyebrow">Your Numbers</p>
+            <p class="wybe-calc-title">One Form, Four Metrics</p>
+            <div class="wybe-calc-title-rule"></div>
 
-  <!-- SECTION: BFP CALCULATOR -->
-  <section class="bg-cream py-24 calc-section" id="bfp" data-calc="bfp">
-    <div class="max-w-6xl mx-auto px-6">
-
-      <!-- Educational copy -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
-        <div class="md:col-span-4">
-          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Calculator 01</p>
-          <div class="w-8 h-px bg-burgundy mb-6"></div>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal leading-snug">Body Fat Percentage</h2>
-        </div>
-        <div class="md:col-span-8 space-y-5">
-          <p class="font-display text-xl md:text-2xl font-semibold text-charcoal leading-snug">
-            Your weight tells you very little. Your body fat percentage tells you almost everything.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            Two people can weigh exactly the same and look completely different. One can be soft and tired, the other lean and strong. The difference is what their weight is made of; muscle, fat, water, and bone. Body fat percentage (BFP) is the share of your total weight that is fat. The lower the percentage, the more muscle and less fat you carry, within reason.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            <span class="font-medium text-charcoal">The US Navy method.</span> This calculator uses the same formula the US Navy has used for decades to estimate body fat from a few simple tape-measure readings. It is not perfect; a DEXA scan is the gold standard; but it is free, takes 30 seconds, and is accurate enough to track your progress month over month. <span class="font-medium text-charcoal">BIA (bioelectrical impedance)</span> is the next-closest at-home alternative; its results come closest to DEXA out of any consumer method.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            <span class="font-medium text-charcoal">How to measure correctly:</span> use a soft tape. Stand relaxed, breathing normally. Measure your <span class="font-medium">neck</span> just below the Adam&rsquo;s apple. Measure your <span class="font-medium">waist</span> at the level of the belly button (men) or at the narrowest point (women). For women, also measure your <span class="font-medium">hips</span> at the widest point. Do not hold your breath in. Honesty beats wishful measuring.
-          </p>
-        </div>
-      </div>
-
-      <!-- BFP Calculator UI -->
-      <div class="border border-charcoal/15 bg-cream-dark p-8 md:p-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
-            <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Enter Your Measurements</p>
-
-            <!-- Unit toggle -->
-            <div class="inline-flex border border-charcoal/20 mb-6" role="tablist" aria-label="Units">
-              <button type="button" data-bfp-units="metric" class="px-4 py-2 font-sans text-xs tracking-widest uppercase bg-burgundy text-white transition-colors">Metric (cm)</button>
-              <button type="button" data-bfp-units="imperial" class="px-4 py-2 font-sans text-xs tracking-widest uppercase text-charcoal hover:bg-charcoal/5 transition-colors">Imperial (in)</button>
+            <div class="wybe-input-row">
+              <label for="ucalc-gender">Gender</label>
+              <select id="ucalc-gender">
+                <option value="">Select&hellip;</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="wybe-input-row">
+              <label for="ucalc-age">Age <span class="text-white/40 normal-case tracking-normal text-[10px]">(TDEE only)</span></label>
+              <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="32">
+            </div>
+            <div class="wybe-input-row">
+              <label for="ucalc-height">Height (cm) <span class="info-tip" tabindex="0" data-tip="Barefoot against a wall, floor to top of head, in centimetres.">?</span></label>
+              <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="178">
+            </div>
+            <div class="wybe-input-row">
+              <label for="ucalc-weight">Weight (kg)</label>
+              <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="78">
+            </div>
+            <div class="wybe-input-row">
+              <label for="ucalc-neck">Neck (cm) <span class="text-white/40 normal-case tracking-normal text-[10px]">(BFP)</span> <span class="info-tip" tabindex="0" data-tip="Narrowest point, just below the Adam&rsquo;s apple. Snug, not tight.">?</span></label>
+              <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="38">
+            </div>
+            <div class="wybe-input-row">
+              <label for="ucalc-waist">Waist (cm) <span class="text-white/40 normal-case tracking-normal text-[10px]">(BFP)</span> <span class="info-tip" tabindex="0" data-tip="Men: around the navel. Women: narrowest point. Relaxed, end of a normal breath.">?</span></label>
+              <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="85">
+            </div>
+            <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
+              <label for="ucalc-hip">Hip (cm) <span class="text-white/40 normal-case tracking-normal text-[10px]">(BFP, female)</span> <span class="info-tip" tabindex="0" data-tip="Widest point of hips/buttocks, feet together, tape level all the way around.">?</span></label>
+              <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="95">
+            </div>
+            <div class="wybe-input-row">
+              <label for="ucalc-activity">Activity level <span class="text-white/40 normal-case tracking-normal text-[10px]">(TDEE)</span></label>
+              <select id="ucalc-activity">
+                <option value="">Select&hellip;</option>
+                <option value="1.2">Sedentary, desk job, no training</option>
+                <option value="1.375">Lightly active, 1-3 days/week</option>
+                <option value="1.55">Moderately active, 3-5 days/week</option>
+                <option value="1.725">Very active, 6-7 days/week</option>
+                <option value="1.9">Extra active, physical job + daily training</option>
+              </select>
             </div>
 
-            <form id="bfp-form" class="space-y-4">
-              <div>
-                <label for="bfp-gender" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Gender</label>
-                <select id="bfp-gender" name="gender" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
-                  <option value="male" selected>Male</option>
-                  <option value="female">Female</option>
-                </select>
+            <button type="submit" class="wybe-calc-cta">Calculate &rarr;</button>
+            <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+            <p class="font-sans text-[11px] text-white/55 leading-snug mt-3">
+              Only height + weight required for a first pass. Add gender + neck + waist (+ hip for female) to unlock body fat percentage. Add age + activity to unlock daily calorie needs.
+            </p>
+          </form>
+        </div>
+
+        <div>
+          <p class="wybe-calc-eyebrow">Your Report</p>
+          <p class="wybe-calc-title">Four Metrics, One Report</p>
+          <div class="wybe-calc-title-rule"></div>
+
+          <div id="ucalc-placeholder" class="font-sans text-sm text-white/60 leading-relaxed">
+            Fill the form and hit Calculate. Whichever metrics your inputs support will appear here as tiles: BMI, body fat percentage, daily calorie needs, and ideal weight.
+          </div>
+
+          <div id="ucalc-results" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="ucalc-tile" data-metric="bmi">
+              <p class="ucalc-tile-eyebrow">Body Mass Index</p>
+              <p class="ucalc-tile-value"><span data-value>&mdash;</span></p>
+              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
+              <p class="ucalc-tile-note" data-note>&mdash;</p>
+              <p class="ucalc-tile-hint hidden" data-hint>Enter height + weight to unlock.</p>
+            </div>
+            <div class="ucalc-tile" data-metric="ibw">
+              <p class="ucalc-tile-eyebrow">Ideal Body Weight</p>
+              <p class="ucalc-tile-value"><span data-value>&mdash;</span> <span class="ucalc-tile-unit">kg</span></p>
+              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
+              <p class="ucalc-tile-note" data-note>&mdash;</p>
+              <p class="ucalc-tile-hint hidden" data-hint>Enter gender + height to unlock.</p>
+            </div>
+            <div class="ucalc-tile" data-metric="bfp">
+              <p class="ucalc-tile-eyebrow">Body Fat %</p>
+              <p class="ucalc-tile-value"><span data-value>&mdash;</span><span class="ucalc-tile-unit">%</span></p>
+              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
+              <p class="ucalc-tile-note" data-note>&mdash;</p>
+              <p class="ucalc-tile-hint hidden" data-hint>Enter gender + height + neck + waist (+ hip for female) to unlock.</p>
+            </div>
+            <div class="ucalc-tile" data-metric="tdee">
+              <p class="ucalc-tile-eyebrow">Daily Calorie Needs</p>
+              <p class="ucalc-tile-value"><span data-value>&mdash;</span> <span class="ucalc-tile-unit">kcal</span></p>
+              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
+              <p class="ucalc-tile-note" data-note>&mdash;</p>
+              <p class="ucalc-tile-hint hidden" data-hint>Enter gender + age + height + weight + activity to unlock.</p>
+              <div class="ucalc-tile-targets hidden" data-targets>
+                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Cut (fat loss)</span><span class="font-bold text-white"><span data-cut>&mdash;</span> kcal</span></p>
+                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Maintain</span><span class="font-bold text-white"><span data-maintain>&mdash;</span> kcal</span></p>
+                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Lean bulk</span><span class="font-bold text-white"><span data-bulk>&mdash;</span> kcal</span></p>
               </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label for="bfp-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-height" name="height" min="50" max="260" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
-                <div>
-                  <label for="bfp-neck" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Neck (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-neck" name="neck" min="20" max="70" step="0.1" required placeholder="38" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
-                <div>
-                  <label for="bfp-waist" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Waist (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-waist" name="waist" min="40" max="200" step="0.1" required placeholder="85" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
-                <div id="bfp-hip-wrap" class="hidden">
-                  <label for="bfp-hip" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Hip (<span data-bfp-unit-label>cm</span>)</label>
-                  <input type="number" id="bfp-hip" name="hip" min="50" max="200" step="0.1" placeholder="95" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
+            </div>
+          </div>
+
+          <div id="ucalc-email-block" class="hidden mt-8 pt-6 border-t border-white/15">
+            <p class="font-sans text-sm text-white/80 leading-relaxed mb-4">Want a PDF of the full report emailed to you?</p>
+            <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data">
+              <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="hidden" name="subject" value="WYBE, Unified Report PDF Request">
+              <input type="hidden" name="report_summary" id="ucalc-email-summary">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input type="text" name="name" required placeholder="Full name" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
+                <input type="email" name="email" required placeholder="your@email.com" class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30">
               </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors mt-2">
-                Calculate
-              </button>
-              <p id="bfp-error" class="hidden font-sans text-xs text-red-700 mt-2">Please check your measurements, the calculation could not run.</p>
+              <button type="submit" class="wybe-calc-cta">Email my report &rarr;</button>
             </form>
+            <div class="hidden mt-3 text-sm text-white/80">Sent. Check your inbox for the PDF.</div>
           </div>
 
-          <!-- Results -->
-          <div class="border border-charcoal/15 bg-cream p-8 flex flex-col">
-            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Your Result</p>
-            <div class="w-8 h-px bg-burgundy mb-6"></div>
-            <div id="bfp-result" class="hidden flex-1 flex flex-col">
-              <p class="font-sans text-xs tracking-widest uppercase text-charcoal/50 mb-2">Body fat percentage</p>
-              <p class="font-display text-6xl md:text-7xl font-bold text-charcoal mb-2"><span id="bfp-value">,</span><span class="text-3xl text-charcoal/40">%</span></p>
-              <p id="bfp-category" class="font-display text-lg font-semibold text-burgundy mb-4">,</p>
-              <p id="bfp-interpretation" class="font-sans text-sm text-charcoal/70 leading-relaxed flex-1">,</p>
-              <p class="font-sans text-xs text-charcoal/40 mt-6 leading-relaxed">Estimate based on US Navy tape-measure method. For clinical accuracy, use a DEXA scan or hydrostatic weighing.</p>
-            </div>
-            <div id="bfp-placeholder" class="flex-1 flex items-center justify-center text-center">
-              <p class="font-sans text-sm text-charcoal/40 max-w-xs">Fill in your measurements and tap calculate. Your result will appear here.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Reference ranges -->
-      <div class="mt-12">
-        <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Reference Ranges</p>
-        <div class="w-8 h-px bg-burgundy mb-6"></div>
-        <div class="border border-charcoal/15 overflow-hidden">
-          <div class="grid grid-cols-3 bg-cream-dark border-b border-charcoal/15">
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-xs tracking-widest uppercase text-charcoal/60">Category</p></div>
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-xs tracking-widest uppercase text-charcoal/60">Men</p></div>
-            <div class="p-4"><p class="font-sans text-xs tracking-widest uppercase text-charcoal/60">Women</p></div>
-          </div>
-          <div class="grid grid-cols-3 border-b border-charcoal/15">
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Essential fat</p><p class="font-sans text-xs text-charcoal/50">The minimum your body needs to function</p></div>
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">2&ndash;5%</p></div>
-            <div class="p-4"><p class="font-sans text-sm text-charcoal">10&ndash;13%</p></div>
-          </div>
-          <div class="grid grid-cols-3 border-b border-charcoal/15">
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Athletes</p><p class="font-sans text-xs text-charcoal/50">Competition-lean</p></div>
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">6&ndash;12%</p></div>
-            <div class="p-4"><p class="font-sans text-sm text-charcoal">14&ndash;18%</p></div>
-          </div>
-          <div class="grid grid-cols-3 border-b border-charcoal/15">
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Fitness</p><p class="font-sans text-xs text-charcoal/50">Visibly trained</p></div>
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">13&ndash;15%</p></div>
-            <div class="p-4"><p class="font-sans text-sm text-charcoal">19&ndash;20%</p></div>
-          </div>
-          <div class="grid grid-cols-3 border-b border-charcoal/15">
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Average</p><p class="font-sans text-xs text-charcoal/50">Healthy but untrained</p></div>
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">16&ndash;24%</p></div>
-            <div class="p-4"><p class="font-sans text-sm text-charcoal">21&ndash;31%</p></div>
-          </div>
-          <div class="grid grid-cols-3">
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm font-medium text-charcoal">Above average</p><p class="font-sans text-xs text-charcoal/50">Health risks increase</p></div>
-            <div class="p-4 border-r border-charcoal/15"><p class="font-sans text-sm text-charcoal">25%+</p></div>
-            <div class="p-4"><p class="font-sans text-sm text-charcoal">32%+</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION: TDEE CALCULATOR -->
-  <section class="bg-cream py-24 calc-section hidden" id="tdee" data-calc="tdee">
-    <div class="max-w-6xl mx-auto px-6">
-
-      <!-- Educational copy -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
-        <div class="md:col-span-4">
-          <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Calculator 02</p>
-          <div class="w-8 h-px bg-burgundy mb-6"></div>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-charcoal leading-snug">Daily Calorie Needs (TDEE)</h2>
-        </div>
-        <div class="md:col-span-8 space-y-5">
-          <p class="font-display text-xl md:text-2xl font-semibold text-charcoal leading-snug">
-            If you don&rsquo;t know how many calories you burn in a day, every diet you try is a guess.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            TDEE stands for <span class="font-medium text-charcoal">Total Daily Energy Expenditure</span>. It is the total number of calories your body burns in a 24-hour period, from breathing and digesting food, to walking, training, and everything in between. Knowing this number is the foundation of any sensible diet, cut, or bulk.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            <span class="font-medium text-charcoal">First we calculate your BMR.</span> Your Basal Metabolic Rate is what your body would burn lying in bed all day, doing absolutely nothing. It pays the bills for your heart, brain, organs, and basic cell function. This calculator uses the <span class="font-medium">Mifflin-St Jeor</span> formula, which is currently the most accurate equation for most healthy adults.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            <span class="font-medium text-charcoal">Then we multiply by your activity level.</span> Your real-life daily burn is much higher than your BMR because you also walk, climb stairs, train, fidget, and live. We multiply BMR by a factor based on how active you are, and that gives you your TDEE.
-          </p>
-          <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            <span class="font-medium text-charcoal">What do you do with the number?</span> Eat at your TDEE to maintain. Eat ~500 calories below it to lose fat at a steady pace (roughly 0.5 kg / 1 lb per week). Eat ~250 above it to gain lean muscle slowly. The calculator does this math for you below the result.
-          </p>
-        </div>
-      </div>
-
-      <!-- TDEE Calculator UI -->
-      <div class="border border-charcoal/15 bg-cream-dark p-8 md:p-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
-            <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Enter Your Details</p>
-
-            <div class="inline-flex border border-charcoal/20 mb-6" role="tablist" aria-label="Units">
-              <button type="button" data-tdee-units="metric" class="px-4 py-2 font-sans text-xs tracking-widest uppercase bg-burgundy text-white transition-colors">Metric (cm/kg)</button>
-              <button type="button" data-tdee-units="imperial" class="px-4 py-2 font-sans text-xs tracking-widest uppercase text-charcoal hover:bg-charcoal/5 transition-colors">Imperial (in/lbs)</button>
-            </div>
-
-            <form id="tdee-form" class="space-y-4">
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label for="tdee-gender" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Gender</label>
-                  <select id="tdee-gender" name="gender" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
-                    <option value="male" selected>Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="tdee-age" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Age</label>
-                  <input type="number" id="tdee-age" name="age" required min="5" max="120" step="1" placeholder="32" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
-                <div>
-                  <label for="tdee-height" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Height (<span data-tdee-height-label>cm</span>)</label>
-                  <input type="number" id="tdee-height" name="height" min="50" max="260" step="0.1" required placeholder="178" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
-                <div>
-                  <label for="tdee-weight" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Weight (<span data-tdee-weight-label>kg</span>)</label>
-                  <input type="number" id="tdee-weight" name="weight" min="20" max="400" step="0.1" required placeholder="78" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
-                </div>
-              </div>
-              <div>
-                <label for="tdee-activity" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Activity Level</label>
-                <select id="tdee-activity" name="activity" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
-                  <option value="1.2">Sedentary, desk job, no training</option>
-                  <option value="1.375">Lightly active, light exercise 1&ndash;3 days/week</option>
-                  <option value="1.55" selected>Moderately active, 3&ndash;5 days/week</option>
-                  <option value="1.725">Very active, 6&ndash;7 days/week</option>
-                  <option value="1.9">Extra active, physical job + daily training</option>
-                </select>
-              </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors mt-2">
-                Calculate
-              </button>
-              <p id="tdee-error" class="hidden font-sans text-xs text-red-700 mt-2">Please check your inputs, the calculation could not run.</p>
-            </form>
-          </div>
-
-          <!-- Results -->
-          <div class="border border-charcoal/15 bg-cream p-8 flex flex-col">
-            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">Your Numbers</p>
-            <div class="w-8 h-px bg-burgundy mb-6"></div>
-            <div id="tdee-result" class="hidden flex-1 flex flex-col">
-              <p class="font-sans text-xs tracking-widest uppercase text-charcoal/50 mb-2">Daily energy expenditure (TDEE)</p>
-              <p class="font-display text-5xl md:text-6xl font-bold text-charcoal mb-1"><span id="tdee-value">,</span> <span class="text-2xl text-charcoal/40">kcal</span></p>
-              <p class="font-sans text-sm text-charcoal/60 mb-6">BMR: <span id="tdee-bmr">,</span> kcal &middot; multiplier <span id="tdee-multiplier">,</span></p>
-
-              <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Targets for common goals</p>
-              <div class="space-y-2 mb-6">
-                <div class="flex items-baseline justify-between border-b border-charcoal/10 py-2">
-                  <p class="font-sans text-sm text-charcoal">Cut (fat loss, ~0.5 kg/week)</p>
-                  <p class="font-display text-lg font-semibold text-charcoal"><span id="tdee-cut">,</span> kcal</p>
-                </div>
-                <div class="flex items-baseline justify-between border-b border-charcoal/10 py-2">
-                  <p class="font-sans text-sm text-charcoal">Maintain</p>
-                  <p class="font-display text-lg font-semibold text-charcoal"><span id="tdee-maintain">,</span> kcal</p>
-                </div>
-                <div class="flex items-baseline justify-between py-2">
-                  <p class="font-sans text-sm text-charcoal">Lean bulk (slow muscle gain)</p>
-                  <p class="font-display text-lg font-semibold text-charcoal"><span id="tdee-bulk">,</span> kcal</p>
-                </div>
-              </div>
-              <p class="font-sans text-xs text-charcoal/40 leading-relaxed">Estimates based on the Mifflin-St Jeor BMR equation. Real-world energy needs vary by 5&ndash;10% per person, treat these as a starting point and adjust based on what you see in the mirror over 2&ndash;3 weeks.</p>
-            </div>
-            <div id="tdee-placeholder" class="flex-1 flex items-center justify-center text-center">
-              <p class="font-sans text-sm text-charcoal/40 max-w-xs">Fill in your details and tap calculate. Your numbers will appear here.</p>
-            </div>
+          <div class="mt-8">
+            <a href="index.html#contact" class="wybe-calc-cta" style="margin-top:0;">Let&rsquo;s WYBE &rarr;</a>
+            <p class="font-sans text-[11px] text-white/45 leading-snug mt-3 max-w-lg">
+              * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
+            </p>
           </div>
         </div>
       </div>
@@ -429,239 +312,384 @@
     </div>
   </footer>
 
+  <!-- jsPDF for client-side PDF generation (unified calculator report) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
   <script src="js/main.js"></script>
   <script>
-    // ── CALCULATOR SWITCHER ─────────────────────────────
-    (function() {
-      const switcher = document.getElementById('calc-switcher');
-      const sections = document.querySelectorAll('.calc-section');
-      if (!switcher) return;
-      const showCalc = (v) => {
-        sections.forEach(s => s.classList.toggle('hidden', s.dataset.calc !== v));
+    // Shared store of the latest unified calculator output for the PDF handler to read.
+    const CalcStore = { unified: null };
+
+    // ── UNIFIED CALCULATOR ────────────────────────────
+    (function () {
+      const form = document.getElementById('unified-calc-form');
+      if (!form) return;
+
+      const els = {
+        gender:      document.getElementById('ucalc-gender'),
+        age:         document.getElementById('ucalc-age'),
+        height:      document.getElementById('ucalc-height'),
+        weight:      document.getElementById('ucalc-weight'),
+        neck:        document.getElementById('ucalc-neck'),
+        waist:       document.getElementById('ucalc-waist'),
+        hip:         document.getElementById('ucalc-hip'),
+        hipWrap:     document.getElementById('ucalc-hip-wrap'),
+        activity:    document.getElementById('ucalc-activity'),
+        error:       document.getElementById('ucalc-error'),
+        placeholder: document.getElementById('ucalc-placeholder'),
+        results:     document.getElementById('ucalc-results'),
+        emailBlock:  document.getElementById('ucalc-email-block'),
+        emailSummary:document.getElementById('ucalc-email-summary'),
       };
-      switcher.addEventListener('change', () => {
-        showCalc(switcher.value);
-        const visible = document.querySelector('.calc-section[data-calc="' + switcher.value + '"]');
-        if (visible) visible.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      // On load, respect URL hash so the nav dropdown can jump straight to a calculator
-      const initial = (window.location.hash || '').replace('#', '');
-      if (initial === 'tdee' || initial === 'bfp') {
-        switcher.value = initial;
-        showCalc(initial);
-      }
-    })();
-
-    // ── BFP CALCULATOR ─────────────────────────────────
-    (function() {
-      const form = document.getElementById('bfp-form');
-      const gender = document.getElementById('bfp-gender');
-      const hipWrap = document.getElementById('bfp-hip-wrap');
-      const hipInput = document.getElementById('bfp-hip');
-      const heightInput = document.getElementById('bfp-height');
-      const neckInput = document.getElementById('bfp-neck');
-      const waistInput = document.getElementById('bfp-waist');
-      const unitLabels = document.querySelectorAll('[data-bfp-unit-label]');
-      const unitBtns = document.querySelectorAll('[data-bfp-units]');
-      const resultEl = document.getElementById('bfp-result');
-      const placeholderEl = document.getElementById('bfp-placeholder');
-      const valueEl = document.getElementById('bfp-value');
-      const categoryEl = document.getElementById('bfp-category');
-      const interpretationEl = document.getElementById('bfp-interpretation');
-      const errorEl = document.getElementById('bfp-error');
-
-      let units = 'metric';
-
-      const setUnits = (u) => {
-        units = u;
-        unitLabels.forEach(el => el.textContent = u === 'metric' ? 'cm' : 'in');
-        unitBtns.forEach(b => {
-          const active = b.dataset.bfpUnits === u;
-          b.classList.toggle('bg-burgundy', active);
-          b.classList.toggle('text-white', active);
-          b.classList.toggle('text-charcoal', !active);
-        });
-        // Update placeholders to sensible defaults per unit
-        if (u === 'metric') {
-          heightInput.placeholder = '178';
-          neckInput.placeholder = '38';
-          waistInput.placeholder = '85';
-          hipInput.placeholder = '95';
-        } else {
-          heightInput.placeholder = '70';
-          neckInput.placeholder = '15';
-          waistInput.placeholder = '33.5';
-          hipInput.placeholder = '37.4';
-        }
+      const tiles = {
+        bmi:  document.querySelector('[data-metric="bmi"]'),
+        ibw:  document.querySelector('[data-metric="ibw"]'),
+        bfp:  document.querySelector('[data-metric="bfp"]'),
+        tdee: document.querySelector('[data-metric="tdee"]'),
       };
-
-      unitBtns.forEach(b => b.addEventListener('click', () => setUnits(b.dataset.bfpUnits)));
 
       const toggleHip = () => {
-        const isFemale = gender.value === 'female';
-        hipWrap.classList.toggle('hidden', !isFemale);
-        hipInput.required = isFemale;
+        els.hipWrap.classList.toggle('hidden', els.gender.value !== 'female');
       };
-      gender.addEventListener('change', toggleHip);
+      els.gender.addEventListener('change', toggleHip);
       toggleHip();
 
-      const categorise = (bfp, isFemale) => {
-        // Men thresholds: <6 essential, 6-12 athletes, 13-15 fitness, 16-24 average, 25+ above average
-        // Women thresholds: <14 essential, 14-18 athletes, 19-20 fitness, 21-31 average, 32+ above average
-        if (isFemale) {
-          if (bfp < 14) return { name: 'Essential fat range', note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
-          if (bfp < 19) return { name: 'Athletes range', note: 'Highly trained, competition-lean. Requires careful nutrition and recovery to maintain long-term.' };
-          if (bfp < 21) return { name: 'Fitness range', note: 'Visibly trained, healthy, sustainable. A strong target for most active women.' };
-          if (bfp < 32) return { name: 'Average / Acceptable', note: 'Within the healthy adult range. Resistance training and nutrition can move this lower if that is your goal.' };
-          return { name: 'Above average', note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this. Consider a consultation.' };
-        }
-        if (bfp < 6) return { name: 'Essential fat range', note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
-        if (bfp < 13) return { name: 'Athletes range', note: 'Competition-lean. Requires careful nutrition and recovery to maintain long-term.' };
-        if (bfp < 16) return { name: 'Fitness range', note: 'Visibly trained and healthy. A strong target for most active men.' };
-        if (bfp < 25) return { name: 'Average / Acceptable', note: 'Within the healthy adult range. Resistance training and a diet plan can move this lower if that is your goal.' };
-        return { name: 'Above average', note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this. Consider a consultation.' };
+      const num = (el) => {
+        const v = parseFloat(el.value);
+        return isFinite(v) && v > 0 ? v : null;
       };
 
-      const showBfpError = (msg) => {
-        errorEl.textContent = msg;
-        errorEl.classList.remove('hidden');
-        resultEl.classList.add('hidden');
-        placeholderEl.classList.remove('hidden');
+      const bmiCategory = (bmi) => {
+        if (bmi < 18.5) return { name: 'Underweight',   note: 'Below the typical healthy range. Build muscle, not just weight, with progressive training and a calorie surplus.' };
+        if (bmi < 25)   return { name: 'Normal weight', note: 'Within the healthy adult range. Focus on body composition and strength rather than this single number.' };
+        if (bmi < 30)   return { name: 'Overweight',    note: 'Above the healthy range. A structured plan with progressive training and a small calorie deficit can move this down.' };
+        return          { name: 'Obese',                note: 'Long-term health risks rise sharply here. A structured plan and consistent execution change this faster than you think.' };
       };
+      const bfpCategory = (bfp, isFemale) => {
+        if (isFemale) {
+          if (bfp < 14) return { name: 'Essential fat range',   note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
+          if (bfp < 19) return { name: 'Athletes range',        note: 'Highly trained, competition-lean. Requires careful nutrition and recovery to maintain.' };
+          if (bfp < 21) return { name: 'Fitness range',         note: 'Visibly trained, healthy, sustainable. A strong target for most active women.' };
+          if (bfp < 32) return { name: 'Average / Acceptable',  note: 'Within the healthy adult range. Resistance training and nutrition can move this lower if that is your goal.' };
+          return          { name: 'Above average',              note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this.' };
+        }
+        if (bfp < 6)  return { name: 'Essential fat range',   note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
+        if (bfp < 13) return { name: 'Athletes range',        note: 'Competition-lean. Requires careful nutrition and recovery to maintain.' };
+        if (bfp < 16) return { name: 'Fitness range',         note: 'Visibly trained and healthy. A strong target for most active men.' };
+        if (bfp < 25) return { name: 'Average / Acceptable',  note: 'Within the healthy adult range. Resistance training and a diet plan can move this lower if that is your goal.' };
+        return          { name: 'Above average',              note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this.' };
+      };
+      const tdeeCategory = (tdee) => {
+        if (tdee < 1700) return 'Low energy needs, careful with cuts';
+        if (tdee < 2500) return 'Moderate metabolic range';
+        if (tdee < 3200) return 'High energy needs';
+        return 'Very high energy needs, athlete tier';
+      };
+      const roundKcal = (n) => Math.round(n / 5) * 5;
+
+      const renderTile = (metric, valueHtml, category, note, extras) => {
+        const t = tiles[metric];
+        if (!t) return;
+        t.classList.add('is-unlocked');
+        t.classList.remove('is-locked');
+        t.querySelector('[data-value]').innerHTML = valueHtml;
+        t.querySelector('[data-cat]').textContent = category || '';
+        t.querySelector('[data-note]').textContent = note || '';
+        t.querySelector('[data-hint]').classList.add('hidden');
+        if (metric === 'tdee' && extras) {
+          const wrap = t.querySelector('[data-targets]');
+          if (wrap) {
+            wrap.querySelector('[data-cut]').textContent      = extras.cut.toLocaleString();
+            wrap.querySelector('[data-maintain]').textContent = extras.maintain.toLocaleString();
+            wrap.querySelector('[data-bulk]').textContent     = extras.bulk.toLocaleString();
+            wrap.classList.remove('hidden');
+          }
+        }
+      };
+      const lockTile = (metric) => {
+        const t = tiles[metric];
+        if (!t) return;
+        t.classList.add('is-locked');
+        t.classList.remove('is-unlocked');
+        t.querySelector('[data-value]').textContent = '—';
+        t.querySelector('[data-cat]').textContent = '';
+        t.querySelector('[data-note]').textContent = '';
+        t.querySelector('[data-hint]').classList.remove('hidden');
+        const targets = t.querySelector('[data-targets]');
+        if (targets) targets.classList.add('hidden');
+      };
+
+      const showErr = (msg) => { els.error.textContent = msg; els.error.classList.remove('hidden'); };
+      const clearErr = () => els.error.classList.add('hidden');
 
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        errorEl.classList.add('hidden');
+        clearErr();
 
-        const isFemale = gender.value === 'female';
-        const heightRaw = parseFloat(heightInput.value);
-        const neckRaw = parseFloat(neckInput.value);
-        const waistRaw = parseFloat(waistInput.value);
-        const hipRaw = isFemale ? parseFloat(hipInput.value) : 0;
+        const gender   = els.gender.value;
+        const isFemale = gender === 'female';
+        const age      = els.age.value ? parseInt(els.age.value, 10) : null;
+        const h        = num(els.height);
+        const w        = num(els.weight);
+        const neck     = num(els.neck);
+        const waist    = num(els.waist);
+        const hip      = num(els.hip);
+        const mult     = els.activity.value ? parseFloat(els.activity.value) : null;
 
-        if (isNaN(heightRaw) || heightRaw <= 0) return showBfpError('Please enter a valid height.');
-        if (isNaN(neckRaw) || neckRaw <= 0) return showBfpError('Please enter a valid neck measurement.');
-        if (isNaN(waistRaw) || waistRaw <= 0) return showBfpError('Please enter a valid waist measurement.');
-        if (isFemale && (isNaN(hipRaw) || hipRaw <= 0)) return showBfpError('Please enter a valid hip measurement.');
-
-        // US Navy formula via Siri equation, metric form. Inputs in cm.
-        // Men:   BFP = 495 / (1.0324 - 0.19077*log10(waist - neck) + 0.15456*log10(height)) - 450
-        // Women: BFP = 495 / (1.29579 - 0.35004*log10(waist + hip - neck) + 0.22100*log10(height)) - 450
-        const toCm = (v) => units === 'metric' ? v : v * 2.54;
-        const heightCm = toCm(heightRaw);
-        const neckCm = toCm(neckRaw);
-        const waistCm = toCm(waistRaw);
-        const hipCm = toCm(hipRaw);
-
-        let bfp;
-        if (isFemale) {
-          const diff = waistCm + hipCm - neckCm;
-          if (diff <= 0) return showBfpError('Waist plus hip must be greater than your neck measurement.');
-          const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(heightCm);
-          bfp = 495 / denom - 450;
-        } else {
-          const diff = waistCm - neckCm;
-          if (diff <= 0) return showBfpError('Waist must be greater than your neck measurement.');
-          const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(heightCm);
-          bfp = 495 / denom - 450;
+        if (!h || !w) {
+          showErr('Enter at least your height and weight to get started.');
+          return;
         }
 
-        if (!isFinite(bfp)) return showBfpError('Calculation failed. Please double-check your measurements.');
+        const store = {
+          gender: gender || null, age,
+          height: h, weight: w, neck, waist,
+          hip: isFemale ? hip : null,
+          activityMult: mult,
+          activityLabel: mult ? els.activity.options[els.activity.selectedIndex].text : null,
+          bmi: null, ibw: null, bfp: null, tdee: null,
+        };
 
-        // Show the raw result, even if negative or outside the typical 2 to 60 band.
-        // A negative or >60 result is mathematically what the formula returns and signals
-        // that the measurements are likely outside human plausibility (e.g. waist far smaller than neck).
-        const rounded = Math.round(bfp * 10) / 10;
-        valueEl.textContent = rounded.toFixed(1);
-        if (rounded < 2 || rounded > 60) {
-          categoryEl.textContent = 'Outside plausible range';
-          interpretationEl.textContent = 'The formula returned a value outside the realistic 2 to 60 percent band. This usually means one of your measurements is off, double-check that waist is measured at navel level and that all measurements are in the selected units.';
-        } else {
-          const cat = categorise(rounded, isFemale);
-          categoryEl.textContent = cat.name;
-          interpretationEl.textContent = cat.note;
+        {
+          const hm = h / 100;
+          const bmi = w / (hm * hm);
+          if (isFinite(bmi) && bmi >= 5 && bmi <= 80) {
+            const cat = bmiCategory(bmi);
+            renderTile('bmi', bmi.toFixed(1), cat.name, cat.note);
+            store.bmi = { value: bmi.toFixed(1), category: cat.name, note: cat.note };
+          } else { lockTile('bmi'); }
         }
-        placeholderEl.classList.add('hidden');
-        resultEl.classList.remove('hidden');
+
+        if (gender) {
+          const maleIBW = h - 100;
+          const target = gender === 'male' ? maleIBW : maleIBW * 0.9;
+          if (isFinite(target) && target >= 20 && target <= 160) {
+            const point = Math.round(target);
+            const low = Math.round(target - 5);
+            const high = Math.round(target + 5);
+            const html = point + ' <span class="text-white/45 text-2xl">(' + low + '–' + high + ')</span>';
+            const note = 'Healthy target band, ±5 kg around ' + point + ' kg. Broca’s Index; exercising men should track body-fat % instead.';
+            renderTile('ibw', html, 'IBW ' + point + ' kg', note);
+            store.ibw = { point, low, high, note };
+          } else { lockTile('ibw'); }
+        } else { lockTile('ibw'); }
+
+        const bfpOK = gender && neck && waist && (!isFemale || hip);
+        if (bfpOK) {
+          let bfp;
+          if (isFemale) {
+            const diff = waist + hip - neck;
+            if (diff > 0) {
+              const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(h);
+              bfp = 495 / denom - 450;
+            }
+          } else {
+            const diff = waist - neck;
+            if (diff > 0) {
+              const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(h);
+              bfp = 495 / denom - 450;
+            }
+          }
+          if (isFinite(bfp)) {
+            const rounded = Math.round(bfp * 10) / 10;
+            let cat;
+            if (rounded < 2 || rounded > 60) {
+              cat = { name: 'Outside plausible range', note: 'The formula returned a value outside the realistic 2–60% band. One of your measurements is likely off.' };
+            } else {
+              cat = bfpCategory(rounded, isFemale);
+            }
+            renderTile('bfp', rounded.toFixed(1), cat.name, cat.note);
+            store.bfp = { value: rounded.toFixed(1), category: cat.name, note: cat.note };
+          } else { lockTile('bfp'); }
+        } else { lockTile('bfp'); }
+
+        if (gender && age && mult) {
+          const bmr = gender === 'male'
+            ? 10 * w + 6.25 * h - 5 * age + 5
+            : 10 * w + 6.25 * h - 5 * age - 161;
+          if (isFinite(bmr) && bmr >= 500) {
+            const tdee = bmr * mult;
+            const cat = tdeeCategory(tdee);
+            const cut = roundKcal(tdee - 500);
+            const maintain = roundKcal(tdee);
+            const bulk = roundKcal(tdee + 250);
+            renderTile('tdee', maintain.toLocaleString(), cat, '', { cut, maintain, bulk });
+            store.tdee = { value: maintain, category: cat, cut, maintain, bulk };
+          } else { lockTile('tdee'); }
+        } else { lockTile('tdee'); }
+
+        els.placeholder.classList.add('hidden');
+        els.results.classList.remove('hidden');
+
+        const any = store.bmi || store.ibw || store.bfp || store.tdee;
+        els.emailBlock.classList.toggle('hidden', !any);
+        if (any) {
+          const parts = [];
+          if (store.bmi)  parts.push('BMI ' + store.bmi.value + ' (' + store.bmi.category + ')');
+          if (store.bfp)  parts.push('BFP ' + store.bfp.value + '% (' + store.bfp.category + ')');
+          if (store.tdee) parts.push('TDEE ' + store.tdee.value.toLocaleString() + ' kcal (' + store.tdee.category + ')');
+          if (store.ibw)  parts.push('IBW ' + store.ibw.point + ' kg (' + store.ibw.low + '–' + store.ibw.high + ')');
+          els.emailSummary.value = parts.join(' · ');
+        }
+
+        CalcStore.unified = store;
       });
     })();
 
-    // ── TDEE CALCULATOR ────────────────────────────────
-    (function() {
-      const form = document.getElementById('tdee-form');
-      const gender = document.getElementById('tdee-gender');
-      const age = document.getElementById('tdee-age');
-      const height = document.getElementById('tdee-height');
-      const weight = document.getElementById('tdee-weight');
-      const activity = document.getElementById('tdee-activity');
-      const heightLabel = document.querySelector('[data-tdee-height-label]');
-      const weightLabel = document.querySelector('[data-tdee-weight-label]');
-      const unitBtns = document.querySelectorAll('[data-tdee-units]');
-      const resultEl = document.getElementById('tdee-result');
-      const placeholderEl = document.getElementById('tdee-placeholder');
-      const valueEl = document.getElementById('tdee-value');
-      const bmrEl = document.getElementById('tdee-bmr');
-      const multiplierEl = document.getElementById('tdee-multiplier');
-      const cutEl = document.getElementById('tdee-cut');
-      const maintainEl = document.getElementById('tdee-maintain');
-      const bulkEl = document.getElementById('tdee-bulk');
-      const errorEl = document.getElementById('tdee-error');
+    // ── UNIFIED CALCULATOR PDF EMAIL HANDLER ──────────
+    (function () {
+      const form = document.getElementById('ucalc-email-form');
+      if (!form) return;
 
-      let units = 'metric';
-
-      const setUnits = (u) => {
-        units = u;
-        heightLabel.textContent = u === 'metric' ? 'cm' : 'in';
-        weightLabel.textContent = u === 'metric' ? 'kg' : 'lbs';
-        unitBtns.forEach(b => {
-          const active = b.dataset.tdeeUnits === u;
-          b.classList.toggle('bg-burgundy', active);
-          b.classList.toggle('text-white', active);
-          b.classList.toggle('text-charcoal', !active);
-        });
-        if (u === 'metric') {
-          height.placeholder = '178';
-          weight.placeholder = '78';
-        } else {
-          height.placeholder = '70';
-          weight.placeholder = '172';
-        }
+      const drawHeader = (doc, title) => {
+        doc.setFillColor(0, 34, 51);
+        doc.rect(0, 0, 210, 28, 'F');
+        doc.setTextColor(221, 255, 85);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
+        doc.text('WYBE', 18, 16);
+        doc.setTextColor(246, 242, 232);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('Wellness You Build Everyday', 18, 22);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text(title, 192, 16, { align: 'right' });
+      };
+      const drawFooter = (doc) => {
+        doc.setTextColor(120, 120, 120);
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.text('Generated at mansoorahamadali.com — for educational reference only. DEXA / BIA are gold standards.', 105, 285, { align: 'center' });
       };
 
-      unitBtns.forEach(b => b.addEventListener('click', () => setUnits(b.dataset.tdeeUnits)));
+      const buildUnifiedPdf = (name, email) => {
+        const s = CalcStore.unified;
+        if (!s) return null;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        drawHeader(doc, 'YOUR NUMBERS');
 
-      form.addEventListener('submit', (e) => {
+        doc.setTextColor(0, 34, 51);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        let y = 42;
+        doc.text('Name:  ' + name, 18, y); y += 6;
+        doc.text('Email: ' + email, 18, y); y += 6;
+        if (s.age)    { doc.text('Age:    ' + s.age, 18, y); y += 6; }
+        if (s.gender) { doc.text('Gender: ' + (s.gender === 'male' ? 'Male' : 'Female'), 18, y); y += 6; }
+        y += 4;
+
+        const section = (label, value, category, note) => {
+          doc.setDrawColor(221, 255, 85);
+          doc.setLineWidth(0.6);
+          doc.line(18, y, 192, y); y += 6;
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+          doc.setTextColor(0, 34, 51);
+          doc.text(label, 18, y); y += 7;
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(24);
+          doc.setTextColor(0, 34, 51);
+          doc.text(value, 18, y); y += 8;
+
+          if (category) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.setTextColor(90, 100, 120);
+            doc.text(category, 18, y); y += 6;
+          }
+          if (note) {
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(60, 70, 80);
+            const noteLines = doc.splitTextToSize(note, 174);
+            doc.text(noteLines, 18, y);
+            y += noteLines.length * 4.5;
+          }
+          y += 6;
+        };
+
+        if (s.bmi)  section('Body Mass Index',    s.bmi.value,                  s.bmi.category, s.bmi.note);
+        if (s.bfp)  section('Body Fat %',         s.bfp.value + ' %',           s.bfp.category, s.bfp.note);
+        if (s.tdee) section('Daily Calorie Needs', s.tdee.value.toLocaleString() + ' kcal / day',
+                             s.tdee.category, 'Goal targets — cut: ' + s.tdee.cut.toLocaleString() + ' kcal, maintain: ' + s.tdee.maintain.toLocaleString() + ' kcal, lean bulk: ' + s.tdee.bulk.toLocaleString() + ' kcal.');
+        if (s.ibw)  section('Ideal Body Weight',  s.ibw.point + ' kg',          'Range ' + s.ibw.low + '–' + s.ibw.high + ' kg', s.ibw.note);
+
+        y += 2;
+        doc.setDrawColor(221, 255, 85);
+        doc.line(18, y, 192, y); y += 6;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(0, 34, 51);
+        doc.text('Inputs used', 18, y); y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(60, 70, 80);
+        if (s.height)        { doc.text('Height:   ' + s.height + ' cm', 18, y); y += 5; }
+        if (s.weight)        { doc.text('Weight:   ' + s.weight + ' kg', 18, y); y += 5; }
+        if (s.neck)          { doc.text('Neck:     ' + s.neck + ' cm', 18, y); y += 5; }
+        if (s.waist)         { doc.text('Waist:    ' + s.waist + ' cm', 18, y); y += 5; }
+        if (s.hip)           { doc.text('Hip:      ' + s.hip + ' cm', 18, y); y += 5; }
+        if (s.activityLabel) { doc.text('Activity: ' + s.activityLabel, 18, y); y += 5; }
+
+        y += 6;
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(9);
+        doc.setTextColor(60, 70, 80);
+        const next = 'Next step: book a session with Mansoor to translate these numbers into a concrete training and nutrition plan. Reply to this email or visit the contact section on the website.';
+        doc.text(doc.splitTextToSize(next, 174), 18, y);
+
+        drawFooter(doc);
+        return doc;
+      };
+
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        errorEl.classList.add('hidden');
+        const btn = form.querySelector('button[type="submit"]');
+        const successEl = form.nextElementSibling;
+        const originalText = btn ? btn.textContent : '';
+
+        if (!window.jspdf) {
+          if (btn) { btn.textContent = 'PDF library still loading…'; }
+          return;
+        }
+        const fd = new FormData(form);
+        const name  = (fd.get('name')  || '').toString().trim();
+        const email = (fd.get('email') || '').toString().trim();
+
+        const doc = buildUnifiedPdf(name, email);
+        if (!doc) {
+          if (btn) { btn.textContent = 'Calculate first, then submit'; }
+          return;
+        }
+
+        if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+
+        const slug = (name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'result');
+        const filename = 'wybe-numbers-' + slug + '.pdf';
+        const blob = doc.output('blob');
+
         try {
-          // Convert to metric for Mifflin-St Jeor
-          const heightCm = units === 'metric' ? parseFloat(height.value) : parseFloat(height.value) * 2.54;
-          const weightKg = units === 'metric' ? parseFloat(weight.value) : parseFloat(weight.value) / 2.2046;
-          const ageYrs = parseInt(age.value, 10);
-          const multiplier = parseFloat(activity.value);
-          if (!heightCm || !weightKg || !ageYrs || !multiplier) throw new Error('missing');
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = filename;
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+        } catch (_) { /* ignore download errors */ }
 
-          const bmr = gender.value === 'male'
-            ? 10 * weightKg + 6.25 * heightCm - 5 * ageYrs + 5
-            : 10 * weightKg + 6.25 * heightCm - 5 * ageYrs - 161;
+        fd.append('attachment', blob, filename);
+        fd.append('message', 'WYBE unified report for ' + name + ', attached as PDF.');
 
-          if (!isFinite(bmr) || bmr < 500) throw new Error('range');
-
-          const tdee = bmr * multiplier;
-          const round = (n) => Math.round(n / 5) * 5; // round to nearest 5 kcal
-
-          valueEl.textContent = round(tdee).toLocaleString();
-          bmrEl.textContent = round(bmr).toLocaleString();
-          multiplierEl.textContent = '×' + multiplier;
-          cutEl.textContent = round(tdee - 500).toLocaleString();
-          maintainEl.textContent = round(tdee).toLocaleString();
-          bulkEl.textContent = round(tdee + 250).toLocaleString();
-          placeholderEl.classList.add('hidden');
-          resultEl.classList.remove('hidden');
-        } catch (err) {
-          resultEl.classList.add('hidden');
-          placeholderEl.classList.remove('hidden');
-          errorEl.classList.remove('hidden');
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
+          if (res.ok) {
+            form.classList.add('hidden');
+            if (successEl) successEl.classList.remove('hidden');
+          } else { throw new Error(); }
+        } catch {
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
         }
       });
     })();

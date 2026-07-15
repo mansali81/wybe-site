@@ -635,6 +635,73 @@ h4, h5, h6, .wybe-subhead {
    under a `(prefers-reduced-motion: no-preference)` guard so reduced-
    motion users never see it fire. */
 
+/* ── UNIFIED CALCULATOR TILES ────────────────────────────
+   Four metric tiles (BMI, IBW, BFP, TDEE) live side-by-side in the
+   Calculator result panel. Locked (before Calculate, or missing
+   inputs): faint border + a "need X" hint. Unlocked: brighter, with
+   value/category/note visible. */
+.ucalc-tile {
+  position: relative;
+  padding: 18px 20px 20px;
+  border-radius: 8px;
+  background: rgba(0, 26, 36, 0.35);
+  border: 1px solid rgba(246, 242, 232, 0.14);
+  transition: background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  color: #F6F2E8;
+}
+.ucalc-tile.is-locked   { opacity: 0.55; }
+.ucalc-tile.is-unlocked { border-color: rgba(221, 255, 85, 0.35); background: rgba(0, 34, 51, 0.55); }
+
+.ucalc-tile-eyebrow {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #DDFF55;
+  margin: 0 0 8px;
+}
+.ucalc-tile-value {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(30px, 3.4vw, 42px);
+  line-height: 1;
+  color: #F6F2E8;
+  margin: 0 0 6px;
+}
+.ucalc-tile-unit {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 0.55em;
+  color: rgba(246, 242, 232, 0.55);
+  margin-left: 2px;
+}
+.ucalc-tile-cat {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #DDFF55;
+  margin: 6px 0 8px;
+  min-height: 14px;
+}
+.ucalc-tile-note {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(246, 242, 232, 0.8);
+  margin: 0;
+}
+.ucalc-tile-hint {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(246, 242, 232, 0.55);
+  margin: 6px 0 0;
+}
+
 /* ── SERVICE CARDS — dark theme ─────────────────────────
    The four .service-panel cards (Digital Plan / Fitness / Nutrition /
    Personal Training) originally shipped as cream cards on the dark
