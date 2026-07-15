@@ -155,6 +155,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
+  // ── FAQ ACCORDION ────────────────────────────────────
+  // Native <button data-faq-trigger aria-controls="X"> toggles the
+  // matching <div id="X" role="region" hidden>. Enter/Space are
+  // handled by the browser because the trigger IS a <button>; we
+  // just flip aria-expanded, remove/add [hidden] (visibility for AT
+  // and keyboard), and drive the max-height transition. For reduced-
+  // motion users the CSS media query strips the transition; we still
+  // set/remove [hidden] + aria-expanded so behaviour is identical.
+  (function () {
+    const triggers = document.querySelectorAll('[data-faq-trigger]');
+    if (!triggers.length) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    triggers.forEach((btn) => {
+      const answer = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!answer) return;
+
+      const open = () => {
+        btn.setAttribute('aria-expanded', 'true');
+        answer.hidden = false;
+        answer.dataset.open = 'true';
+        if (reduceMotion) return;
+        // Animate to the exact content height, then clear so multi-
+        // line answers reflow correctly on window resize.
+        const h = answer.scrollHeight;
+        answer.style.maxHeight = h + 'px';
+        const clear = (e) => {
+          if (e.propertyName !== 'max-height') return;
+          answer.style.maxHeight = 'none';
+          answer.removeEventListener('transitionend', clear);
+        };
+        answer.addEventListener('transitionend', clear);
+      };
+      const close = () => {
+        btn.setAttribute('aria-expanded', 'false');
+        answer.dataset.open = 'false';
+        if (reduceMotion) {
+          answer.hidden = true;
+          return;
+        }
+        // If we were at 'none' (fully open, resize-safe), pin the
+        // current height first so the collapse has something to
+        // transition from.
+        const current = answer.scrollHeight;
+        answer.style.maxHeight = current + 'px';
+        // Next frame: transition to 0.
+        requestAnimationFrame(() => {
+          answer.style.maxHeight = '0px';
+        });
+        const done = (e) => {
+          if (e.propertyName !== 'max-height') return;
+          answer.hidden = true;
+          answer.removeEventListener('transitionend', done);
+        };
+        answer.addEventListener('transitionend', done);
+      };
+
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        if (expanded) close(); else open();
+      });
+    });
+  })();
+
   // ── PER-ELEMENT REVEAL (.wybe-reveal) ────────────────
   // Any element tagged .wybe-reveal fades + slides up on entry.
   // Used by the Client Results testimonial cards / transformation

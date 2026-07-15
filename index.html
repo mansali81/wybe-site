@@ -425,6 +425,83 @@
     ]
   }
   </script>
+
+  <!-- Structured data: FAQPage. Answer text MUST match the visible
+       accordion answers verbatim (Google's requirement for FAQ rich
+       results). Update BOTH here and the #faq markup together if
+       any Q or A changes. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do you train in person or online?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Both. Personal training in-person is UAE-only (Dubai and Abu Dhabi). Fitness consultations, nutrition consultations, and the digital workout plans are delivered online worldwide, over video call and follow-up email."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where in Dubai do you train clients?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sessions run out of partner studios across Dubai and select building gyms for clients whose residence includes a private facility. Exact venue is agreed once your application is accepted; I don’t list a single fixed address because the roster is capped and location follows the client, not the other way around."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much do sessions cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Live pricing is on the Services section: online fitness consultations start at $69, in-person UAE sessions at $159, nutrition consultations from $199 for a monthly programme, and 1-on-1 personal training in the UAE from ~$5,000/month (12 sessions, 3-month minimum, application only). Digital plans are $100 (beginner), $150 (intermediate), or $200 (advanced) one-off."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer nutrition plans separately from training?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The Nutrition Consultation is a standalone service — you don’t need to train with me to work on your food. Book it on its own, and I’ll build the plan around your current activity and lifestyle rather than a specific programme."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What qualifications do you hold?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "REPS UAE Level 4 Certified Personal Trainer and a registered Human Performance Nutritionist, with certifications across biomechanics, kinesiology, and breathing technique. Over two decades of coaching practice sit behind the paperwork."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get started?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pick a service in the Services section, submit the short form, and I’ll reply within 48 hours with confirmation and a payment link. Digital plans start with the questionnaire; personal training starts with an application review. There’s no charge until your booking is confirmed by email."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you work with beginners?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, and often. The Beginner digital plan is built exactly for someone new to structured training, and beginners are welcome in the online consultations. The 1-on-1 personal training roster leans toward intermediate and advanced clients because the price sits there, but application is open to anyone serious."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is your cancellation and refund policy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Single sessions can be rescheduled with 24-hour notice at no cost; less than 24 hours forfeits the session. Digital plans are refundable within 7 days of delivery if you have not accessed the material. Monthly programmes run in whole calendar months and are non-refundable mid-month, but you can pause with two weeks’ notice. Full terms are sent with your booking confirmation."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="text-cream">
 
@@ -450,6 +527,7 @@
           <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculators</a>
           <a href="#services"     data-nav-link class="wybe-nav-link">Services</a>
           <a href="#results"      data-nav-link class="wybe-nav-link">Results</a>
+          <a href="#faq"          data-nav-link class="wybe-nav-link">FAQ</a>
           <a href="publication.html"            class="wybe-nav-link">My Publication</a>
           <a href="#contact" class="wybe-cta">Book Now</a>
         </div>
@@ -468,6 +546,7 @@
       <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculators</a>
       <a href="#services"    class="wybe-mobile-link" role="menuitem">Services</a>
       <a href="#results"     class="wybe-mobile-link" role="menuitem">Results</a>
+      <a href="#faq"         class="wybe-mobile-link" role="menuitem">FAQ</a>
       <a href="publication.html" class="wybe-mobile-link" role="menuitem">My Publication</a>
       <a href="#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
     </div>
@@ -1467,6 +1546,201 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
+  <!-- FAQ — accessible accordion. Each item is a <button
+       aria-expanded aria-controls> that toggles a <div role="region"
+       aria-labelledby> answer. Native <button> gives Enter/Space +
+       Tab focus behaviour for free. Focus-visible outline in CSS.
+       CSS animates max-height on the answer; reduced-motion users
+       skip the transition (see .wybe-faq__answer). Every visible Q&A
+       is duplicated verbatim into the FAQPage JSON-LD in <head> so
+       Google's Rich Results test passes. -->
+  <section id="faq" class="wybe-faq relative py-16 md:py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-12">
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">FAQ</p>
+        <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
+        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Questions, Answered.</h2>
+        <p class="font-sans text-base text-cream/80 leading-relaxed">
+          The things people ask most before booking. If yours isn&rsquo;t here, send it via <a href="#contact" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">the contact form</a>.
+        </p>
+      </div>
+
+      <ul class="wybe-faq__list" role="list">
+        <!-- FAQ 1 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q1"
+                    aria-expanded="false"
+                    aria-controls="faq-a1"
+                    data-faq-trigger>
+              <span>Do you train in person or online?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a1"
+               role="region"
+               aria-labelledby="faq-q1"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Both. Personal training in-person is UAE-only (Dubai and Abu Dhabi). Fitness consultations, nutrition consultations, and the digital workout plans are delivered online worldwide, over video call and follow-up email.</p>
+          </div>
+        </li>
+        <!-- FAQ 2 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q2"
+                    aria-expanded="false"
+                    aria-controls="faq-a2"
+                    data-faq-trigger>
+              <span>Where in Dubai do you train clients?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a2"
+               role="region"
+               aria-labelledby="faq-q2"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Sessions run out of partner studios across Dubai and select building gyms for clients whose residence includes a private facility. Exact venue is agreed once your application is accepted; I don&rsquo;t list a single fixed address because the roster is capped and location follows the client, not the other way around.</p>
+          </div>
+        </li>
+        <!-- FAQ 3 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q3"
+                    aria-expanded="false"
+                    aria-controls="faq-a3"
+                    data-faq-trigger>
+              <span>How much do sessions cost?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a3"
+               role="region"
+               aria-labelledby="faq-q3"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Live pricing is on the Services section: online fitness consultations start at $69, in-person UAE sessions at $159, nutrition consultations from $199 for a monthly programme, and 1-on-1 personal training in the UAE from ~$5,000/month (12 sessions, 3-month minimum, application only). Digital plans are $100 (beginner), $150 (intermediate), or $200 (advanced) one-off.</p>
+          </div>
+        </li>
+        <!-- FAQ 4 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q4"
+                    aria-expanded="false"
+                    aria-controls="faq-a4"
+                    data-faq-trigger>
+              <span>Do you offer nutrition plans separately from training?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a4"
+               role="region"
+               aria-labelledby="faq-q4"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Yes. The Nutrition Consultation is a standalone service &mdash; you don&rsquo;t need to train with me to work on your food. Book it on its own, and I&rsquo;ll build the plan around your current activity and lifestyle rather than a specific programme.</p>
+          </div>
+        </li>
+        <!-- FAQ 5 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q5"
+                    aria-expanded="false"
+                    aria-controls="faq-a5"
+                    data-faq-trigger>
+              <span>What qualifications do you hold?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a5"
+               role="region"
+               aria-labelledby="faq-q5"
+               class="wybe-faq__answer"
+               hidden>
+            <p>REPS UAE Level&nbsp;4 Certified Personal Trainer and a registered Human Performance Nutritionist, with certifications across biomechanics, kinesiology, and breathing technique. Over two decades of coaching practice sit behind the paperwork.</p>
+          </div>
+        </li>
+        <!-- FAQ 6 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q6"
+                    aria-expanded="false"
+                    aria-controls="faq-a6"
+                    data-faq-trigger>
+              <span>How do I get started?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a6"
+               role="region"
+               aria-labelledby="faq-q6"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Pick a service in the Services section, submit the short form, and I&rsquo;ll reply within 48 hours with confirmation and a payment link. Digital plans start with the questionnaire; personal training starts with an application review. There&rsquo;s no charge until your booking is confirmed by email.</p>
+          </div>
+        </li>
+        <!-- FAQ 7 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q7"
+                    aria-expanded="false"
+                    aria-controls="faq-a7"
+                    data-faq-trigger>
+              <span>Do you work with beginners?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a7"
+               role="region"
+               aria-labelledby="faq-q7"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Yes, and often. The Beginner digital plan is built exactly for someone new to structured training, and beginners are welcome in the online consultations. The 1-on-1 personal training roster leans toward intermediate and advanced clients because the price sits there, but application is open to anyone serious.</p>
+          </div>
+        </li>
+        <!-- FAQ 8 -->
+        <li class="wybe-faq__item">
+          <h3 class="wybe-faq__q">
+            <button type="button"
+                    class="wybe-faq__trigger"
+                    id="faq-q8"
+                    aria-expanded="false"
+                    aria-controls="faq-a8"
+                    data-faq-trigger>
+              <span>What is your cancellation and refund policy?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a8"
+               role="region"
+               aria-labelledby="faq-q8"
+               class="wybe-faq__answer"
+               hidden>
+            <p>Single sessions can be rescheduled with 24-hour notice at no cost; less than 24 hours forfeits the session. Digital plans are refundable within 7 days of delivery if you have not accessed the material. Monthly programmes run in whole calendar months and are non-refundable mid-month, but you can pause with two weeks&rsquo; notice. Full terms are sent with your booking confirmation.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Section divider -->
+  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
+
 
   <!-- #BOOK 1825 Days — shared .wybe-scene sticky-snap on the intro,
        then the waitlist form flows normally below so it stays fully
@@ -1643,6 +1917,7 @@
             <li><a href="#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
             <li><a href="#calculators" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
             <li><a href="#results" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Results</a></li>
+            <li><a href="#faq" class="font-sans text-sm text-white/70 hover:text-white transition-colors">FAQ</a></li>
             <li><a href="publication.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Publication</a></li>
             <li><a href="#book" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
             <li><a href="#contact" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Contact</a></li>

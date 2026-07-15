@@ -635,6 +635,137 @@ h4, h5, h6, .wybe-subhead {
    under a `(prefers-reduced-motion: no-preference)` guard so reduced-
    motion users never see it fire. */
 
+/* ── FAQ (accessible accordion) ─────────────────────────
+   Each item is a <button aria-expanded aria-controls> plus a
+   <div role="region"> answer. The <button> gets a lime border-left
+   accent when open, a plus/minus icon that flips, and a
+   focus-visible outline. The answer transitions max-height; reduced-
+   motion users skip the transition entirely (see media query below).
+   The answer starts with `hidden` in HTML so it's inaccessible from
+   AT + keyboard until opened — JS removes the attribute on toggle.
+*/
+.wybe-faq {
+  background: #002233;
+  color: #F6F2E8;
+}
+.wybe-faq__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wybe-faq__item {
+  border-bottom: 1px solid rgba(246, 242, 232, 0.14);
+}
+.wybe-faq__item:first-child {
+  border-top: 1px solid rgba(246, 242, 232, 0.14);
+}
+.wybe-faq__q { margin: 0; }
+.wybe-faq__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 4px 20px 20px;
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  color: #F6F2E8;
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.wybe-faq__trigger:hover {
+  background: rgba(221, 255, 85, 0.05);
+  color: #DDFF55;
+}
+.wybe-faq__trigger:focus { outline: none; }
+.wybe-faq__trigger:focus-visible {
+  outline: 2px solid #DDFF55;
+  outline-offset: -2px;
+  border-radius: 2px;
+}
+.wybe-faq__trigger[aria-expanded="true"] {
+  color: #DDFF55;
+  border-left-color: #DDFF55;
+  background: rgba(221, 255, 85, 0.06);
+}
+/* Plus icon that flips to minus on open. Pure CSS, no bitmap.  */
+.wybe-faq__icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+.wybe-faq__icon::before,
+.wybe-faq__icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.wybe-faq__icon::before {
+  width: 14px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+.wybe-faq__icon::after {
+  width: 2px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+}
+.wybe-faq__trigger[aria-expanded="true"] .wybe-faq__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.wybe-faq__answer {
+  padding: 0 20px 4px 23px; /* left = 20 + border-left 3, aligned with trigger */
+  color: rgba(246, 242, 232, 0.85);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(14px, 1.15vw, 16px);
+  line-height: 1.65;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              padding-bottom 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wybe-faq__answer[data-open="true"] {
+  padding-bottom: 20px;
+  /* max-height set inline by JS to the scrollHeight so the transition
+     runs to the exact content height, then removed on transitionend so
+     multi-line answers reflow correctly on window resize. */
+}
+.wybe-faq__answer p { margin: 0; }
+
+/* Reduced-motion users: no transition, no max-height clamp. When
+   open, the answer takes its natural height; when closed, `hidden`
+   in HTML still hides it. This preserves keyboard/AT operation
+   without animating anything. */
+@media (prefers-reduced-motion: reduce) {
+  .wybe-faq__trigger,
+  .wybe-faq__answer,
+  .wybe-faq__icon::before,
+  .wybe-faq__icon::after {
+    transition: none;
+  }
+  .wybe-faq__answer {
+    max-height: none;
+  }
+  .wybe-faq__answer[data-open="true"] {
+    padding-bottom: 20px;
+  }
+}
+
 /* ── CLIENT RESULTS ─────────────────────────────────────
    Testimonial cards + before/after transformations strip. Same dark-
    surface treatment as .service-panel; lime accent on the quote mark
