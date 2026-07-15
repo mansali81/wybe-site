@@ -432,20 +432,21 @@
        announce entering the main region. -->
   <main id="main" tabindex="-1">
 
-  <!-- HERO — GSAP + ScrollTrigger scroll-driven hero.
-       See js/hero.js for the controller. Section is pinned via ScrollTrigger
-       for +500vh of scroll distance; scroll progress maps to video.currentTime
-       and drives a lime light-ray canvas overlay; text reveals at progress = 1.
+  <!-- HERO — native-scrolling hero. Video sits on its first decoded
+       frame (js/hero.js primes it as a poster); no pin, no scroll-scrub,
+       no ScrollTrigger. Text visibility is owned by CSS: a short
+       hero-enter fade-up runs once on load, gated by
+       prefers-reduced-motion.
 
        Video source: images/Running.mp4 (mp4 / H.264). -->
   <section id="home" class="hero" data-hero>
     <div class="hero-frame">
-      <!-- Runner video: NEVER auto-plays. js/hero.js scrubs currentTime from
-           scroll progress via ScrollTrigger, then holds for a ~2 s read beat. -->
+      <!-- Runner video: NEVER auto-plays. Primed to first frame by
+           js/hero.js so browsers show it as a poster. -->
       <video id="hero-scrub" class="hero-video"
              muted playsinline webkit-playsinline preload="auto"
              disablepictureinpicture
-             aria-label="An athlete running on a treadmill, scrubbed as the page scrolls">
+             aria-label="An athlete running on a treadmill, primed to the first frame as the hero poster.">
         <source src="images/Running.mp4" type="video/mp4">
       </video>
       <div class="hero-tint" aria-hidden="true"></div>

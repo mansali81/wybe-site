@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Hero scroll-scrub + rays live in js/hero.js (GSAP + ScrollTrigger).
+  // Hero video first-frame priming lives in js/hero.js (no pin/scrub).
 
   // ── PARALLAX ──────────────────────────────────────────
   // Elements tagged with [data-parallax] translate vertically with scroll.
