@@ -1249,6 +1249,42 @@
              (JS toggles .hidden). -->
         <div class="md:col-span-8 flex flex-col justify-start">
 
+      <!-- ─────────────────────────────────────────────────────────────
+           STRIPE PAYMENT LINK MAPPING
+           ─────────────────────────────────────────────────────────────
+           Paste each tier's live Stripe Payment Link URL into the
+           matching `<a href="REPLACE: …">` below. Every URL is used
+           in exactly ONE place in this file; grep for the placeholder
+           string to jump to the right anchor.
+
+           Fitness Consultation (Form & Technique Review)
+             Online · Single  ($69) …………… REPLACE_fitness_online_single_69
+             Live UAE · Single ($159) …… REPLACE_fitness_live_single_159
+             Bundle Online · 2-session ($169) … REPLACE_fitness_bundle_online_169
+             Bundle Live UAE · 2-session ($269) REPLACE_fitness_bundle_live_269
+
+           Nutrition Consultation (Evidence-Based Nutrition)
+             Single Session  ($119) …………… REPLACE_nutrition_single_119
+             Extended Block  ($229) …………… REPLACE_nutrition_extended_229
+             Monthly Programme ($349) ……… REPLACE_nutrition_monthly_349
+
+           Digital Workout Programme (quiz result)
+             Beginner     · solo   ($39) …… REPLACE_plan_beginner_solo_39
+             Beginner     · combo ($88) …… REPLACE_plan_beginner_combo_88
+             Intermediate · solo   ($69) …… REPLACE_plan_intermediate_solo_69
+             Intermediate · combo ($118) … REPLACE_plan_intermediate_combo_118
+             Advanced     · solo   ($119) … REPLACE_plan_advanced_solo_119
+             Advanced     · combo ($168) … REPLACE_plan_advanced_combo_168
+
+           SECURITY / SCOPE
+           - No Stripe secret keys, webhooks, or checkout code live in
+             this repo. Only the public Payment Link URLs are inlined
+             here. See README-payments.md for the Stripe + Google
+             Calendar wiring and the (optional) webhook-gated variant.
+           ───────────────────────────────────────────────────────────── -->
+      <!-- Stripe secret keys, webhooks, and the pay→book gating are
+           configured in Stripe/Google, not in this static repo. -->
+
       <!-- WORK OUT PROGRAM panel: quiz only. -->
       <div id="panel-digital-plan" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
         <div class="relative p-5 md:p-8 pb-8 min-h-[480px]">
@@ -1390,37 +1426,15 @@
               </span>
             </label>
 
-            <!-- POST-RESERVE FORM (hidden until "Reserve My Spot" is clicked) -->
-            <div id="result-details-wrap" class="hidden mb-5">
-              <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-3">Reserved. Send my plan confirmation to:</p>
-              <form id="result-purchase-form" data-form data-subject="WYBE, Plan Purchase Request" action="https://api.web3forms.com/submit" method="POST" class="space-y-3">
-                <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-                <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
-                <input type="hidden" name="subject" value="WYBE, Plan Purchase Request">
-                <input type="hidden" name="redirect" value="false">
-                <input type="hidden" name="recommended_plan" id="result-plan-hidden" value="Beginner">
-                <input type="hidden" name="quiz_score" id="result-score-hidden" value="">
-                <input type="hidden" name="consultation" id="result-consult-hidden" value="No">
-                <input type="hidden" name="total_due" id="result-total-hidden" value="$100">
-
-                <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/50">
-                <input type="email" name="email" required placeholder="your@email.com" class="border border-charcoal/25 bg-cream/80 px-4 py-3 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/50">
-                <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center justify-center gap-1.5">
-                  Send My Plan
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </button>
-              </form>
-              <!-- Success state replaces the form (main.js looks for form.nextElementSibling) -->
-              <div class="hidden py-3 text-center mt-3 border border-charcoal/15 bg-cream/60 rounded-md">
-                <p class="font-sans text-base font-bold text-charcoal mb-1">Request received.</p>
-                <p class="font-sans text-sm font-semibold text-charcoal/80">PDF will be emailed within 48&ndash;72 hours.</p>
-              </div>
-            </div>
-
-            <!-- Hidden placeholder kept so existing JS that writes to result-plan-desc.textContent still works -->
+            <!-- Hidden placeholders retained so existing quiz JS that writes
+                 to these elements (plan slug, quiz score, consult toggle,
+                 total) doesn't 404. These values feed the analytics /
+                 Payment Link href so Mansoor can reconcile a Stripe
+                 checkout back to the recommended plan. -->
+            <input type="hidden" id="result-plan-hidden"  value="Beginner">
+            <input type="hidden" id="result-score-hidden" value="">
+            <input type="hidden" id="result-consult-hidden" value="No">
+            <input type="hidden" id="result-total-hidden"   value="$0">
             <p id="result-plan-desc" class="hidden"></p>
 
             <!-- Bottom actions: Retake (left) + Reserve (right) -->
@@ -1433,208 +1447,300 @@
                 Retake
               </button>
 
-              <button type="button" id="result-pay-btn" class="bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center gap-1.5">
-                <span id="result-buy-text">Reserve My Spot &middot; $100</span>
+              <!-- Purchase & Book — anchor (not <button>) so right-click "open
+                   in new tab" works. href is set dynamically by the quiz
+                   handler based on plan (Beginner/Intermediate/Advanced) +
+                   combo toggle (solo/combo). The href starts as "#" so
+                   clicking before Calculate is a no-op (guarded in JS). -->
+              <a id="result-pay-btn"
+                 href="#"
+                 target="_blank"
+                 rel="noopener"
+                 class="wybe-tier-cta bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full hover:bg-burgundy-dark transition-colors shadow-md inline-flex items-center gap-1.5"
+                 data-tier="digital-plan"
+                 aria-disabled="true">
+                <span id="result-buy-text">Purchase &amp; Book &middot; $0</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
-              </button>
+              </a>
             </div>
 
             <!-- Footer note -->
-            <p class="mt-3 text-center font-sans text-[11px] text-charcoal/70">
-              No charge yet &mdash; I&rsquo;ll email you a payment link within 24 hours to confirm.
+            <p class="mt-3 text-center font-sans text-[11px] text-charcoal/80">
+              <!-- confirm copy --> Secure checkout via Stripe. After payment you&rsquo;ll be taken to my calendar to pick your time &mdash; I&rsquo;ll get the booking instantly.
             </p>
             <p class="mt-2 text-center font-sans text-[11px] text-charcoal/60">
-              Personalised workout + diet PDF emailed within 48&ndash;72 hours of confirmation.
+              Questions before you pay? <a href="#contact" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-charcoal">Send an enquiry</a>.
             </p>
           </div>
         </div>
       </div>
 
-    <!-- FITNESS PANEL. -->
+    <!-- FITNESS PANEL — 4 tier cards, each with its own Stripe Payment
+         Link. No card fields on the site. Fallback enquiry link routes
+         hesitant buyers to the #contact form. -->
     <div id="panel-fitness" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 flex flex-col">
-        <!-- TOP: heading + intro -->
-        <div class="mb-auto">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Online Fitness Consultation</p>
+        <div class="mb-6">
+          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Fitness Consultation</p>
           <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Form &amp; Technique Review</h3>
           <div class="w-12 h-px bg-burgundy mb-3"></div>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed text-justify">
-            A consultation, not coaching. If you already have a trainer and want an independent second opinion, if you train solo at an advanced level and aren&rsquo;t sure your form is right, or if a specific lift is giving you trouble, this is where you bring it. Mansoor reviews your technique through the lens of human biomechanics and kinesiology and tells you exactly what to correct.
+            A consultation, not coaching. Bring the lift or movement giving you trouble &mdash; I review your technique through the lens of human biomechanics and kinesiology and tell you exactly what to correct.
           </p>
         </div>
 
-        <!-- BOTTOM: compact booking form -->
-        <form data-form data-subject="WYBE, Fitness Consultation Booking" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5 mt-4">
-          <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
-          <input type="hidden" name="subject" value="WYBE, Fitness Consultation Booking">
-          <input type="hidden" name="redirect" value="false">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70">Book Me</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-            <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-            <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-          </div>
-          <!-- 4 main option buttons (2×2 grid). Hidden input holds the value. -->
-          <input type="hidden" name="format"  id="fitness-format"  required>
-          <input type="hidden" name="package" id="fitness-package" required value="Single">
-          <input type="hidden" name="bundle_size" id="fitness-bundle-size">
-          <div class="grid grid-cols-2 gap-1.5">
-            <button type="button" data-format="Online" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-              <span class="text-[9px] md:text-[10px]">Online</span>
-              <span class="text-base md:text-lg font-sans normal-case tracking-normal"><span class="font-bold">$69</span> <span class="opacity-60 line-through text-sm">$99</span></span>
-            </button>
-            <button type="button" data-format="UAE In-Person" data-package="Single" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-              <span class="text-[9px] md:text-[10px]">Live · UAE</span>
-              <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$159</span>
-            </button>
-            <button type="button" data-format="Online" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-              <span class="text-[9px] md:text-[10px]">Bundle Online</span>
-              <span class="text-base md:text-lg font-sans normal-case tracking-normal font-semibold text-charcoal/80">from $169</span>
-            </button>
-            <button type="button" data-format="UAE In-Person" data-package="Bundle" class="fitness-option-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-              <span class="text-[9px] md:text-[10px]">Bundle Live</span>
-              <span class="text-base md:text-lg font-sans normal-case tracking-normal font-semibold text-charcoal/80">from $269</span>
-            </button>
-          </div>
+        <div class="wybe-tier-grid">
+          <!-- Tier 1 · Online Single -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Online &middot; Single</p>
+            <p class="wybe-tier-card__price">$69 <span class="wybe-tier-card__strike">$99</span></p>
+            <ul class="wybe-tier-card__list">
+              <li>One 60-min video call</li>
+              <li>Written technique notes</li>
+              <li>Two follow-up questions by email</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Fitness Consultation · Online Single · $69 -->
+            <a href="https://buy.stripe.com/REPLACE_fitness_online_single_69"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="fitness-online-single">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
 
-          <!-- Conditional bundle dropdown — revealed when a Bundle option is picked. -->
-          <div id="fitness-bundle-wrap" class="hidden">
-            <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">How many sessions?</label>
-            <select id="fitness-bundle-select" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy appearance-none cursor-pointer">
-              <option value="2">2 sessions</option>
-              <option value="3">3 sessions</option>
-            </select>
-          </div>
+          <!-- Tier 2 · Live UAE Single -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Live UAE &middot; Single</p>
+            <p class="wybe-tier-card__price">$159</p>
+            <ul class="wybe-tier-card__list">
+              <li>One 60-min in-studio session (UAE)</li>
+              <li>Hands-on cueing + live technique fix</li>
+              <li>Written summary emailed after</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Fitness Consultation · Live UAE Single · $159 -->
+            <a href="https://buy.stripe.com/REPLACE_fitness_live_single_159"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="fitness-live-single">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
 
-          <textarea name="goal" required rows="2" placeholder="Which lift or movement do you want reviewed?" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <button type="submit" id="fitness-submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Request Booking <span id="fitness-submit-total" class="font-sans text-base ml-1"></span></button>
-          <p class="font-sans text-[10px] text-charcoal/60 leading-snug text-center">I&rsquo;ll email you a payment link within 24 hours to confirm.</p>
-        </form>
+          <!-- Tier 3 · Bundle Online -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Bundle Online &middot; 2 sessions</p>
+            <p class="wybe-tier-card__price">$169</p>
+            <ul class="wybe-tier-card__list">
+              <li>Two 60-min video calls, 2&ndash;4 weeks apart</li>
+              <li>Progress review between calls</li>
+              <li>Written summary after each session</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Fitness Consultation · Bundle Online 2-session · $169 -->
+            <a href="https://buy.stripe.com/REPLACE_fitness_bundle_online_169"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="fitness-bundle-online">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
 
-        <!-- POST-REQUEST panel: shows the estimated total + a date picker
-             placeholder while the booking is being confirmed by email. -->
-        <div id="fitness-postpay" class="hidden mt-4 border border-burgundy/30 bg-cream/70 rounded-md p-4">
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-charcoal/70 mb-1">Request received</p>
-          <div class="w-8 h-px bg-burgundy mb-3"></div>
-          <p class="font-sans text-sm text-charcoal/80 mb-3">Estimated total: <span id="fitness-postpay-amount" class="font-sans text-xl md:text-2xl font-bold text-burgundy"></span></p>
-          <label class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 block mb-1.5">Preferred session date</label>
-          <input type="date" id="fitness-postpay-date" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy mb-2">
-          <p class="font-sans text-[11px] text-charcoal/60">Mansoor will email confirmation + a payment link within 24 hours.</p>
+          <!-- Tier 4 · Bundle Live UAE -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Bundle Live UAE &middot; 2 sessions</p>
+            <p class="wybe-tier-card__price">$269</p>
+            <ul class="wybe-tier-card__list">
+              <li>Two 60-min in-studio sessions (UAE)</li>
+              <li>Hands-on cueing + progress review</li>
+              <li>Written summary after each session</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Fitness Consultation · Bundle Live UAE 2-session · $269 -->
+            <a href="https://buy.stripe.com/REPLACE_fitness_bundle_live_269"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="fitness-bundle-live">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
         </div>
 
-        <div class="hidden py-4 text-center mt-3">
-          <p class="font-sans text-base font-semibold text-charcoal mb-1">Booking received.</p>
-          <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
-        </div>
+        <p class="wybe-tier-helper">
+          <!-- confirm copy --> Secure checkout via Stripe. After payment you&rsquo;ll be taken to my calendar to pick your time &mdash; I&rsquo;ll get the booking instantly.
+        </p>
+        <p class="wybe-tier-enquiry">
+          Questions before you pay? <a href="#contact">Send an enquiry</a>. Need a 3-session bundle? Ask via the enquiry form.
+        </p>
       </div>
     </div>
 
-    <!-- NUTRITION PANEL. -->
+    <!-- NUTRITION PANEL — 3 tier cards with their own Stripe Payment
+         Links. Fallback enquiry link routes hesitant buyers to
+         #contact. -->
     <div id="panel-nutrition" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
-      <div class="relative p-6 md:p-10 space-y-5">
-        <!-- intro block -->
-        <div>
+      <div class="relative p-6 md:p-10 flex flex-col">
+        <div class="mb-6">
           <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Human Performance Nutrition Consultation</p>
-          <h3 class="font-sans text-2xl md:text-4xl font-bold text-charcoal mb-3 leading-tight">Evidence-Based Nutrition</h3>
-          <div class="w-12 h-px bg-burgundy mb-4"></div>
+          <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Evidence-Based Nutrition</h3>
+          <div class="w-12 h-px bg-burgundy mb-3"></div>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed">
-            Sports and general nutrition, with a tailored plan in every tier. Choose a single 1-hour consult, a 2-hour extended block, or a monthly programme with 4 hours of flexible time. Clinical or disordered-eating cases are referred out.
+            Sports and general nutrition with a tailored plan in every tier. Clinical or disordered-eating cases are referred out.
           </p>
         </div>
 
-        <!-- form block (stacks under the intro within the left column) -->
-        <div>
-          <form data-form data-subject="WYBE, Nutrition Consultation Booking" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5">
-            <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
-            <input type="hidden" name="subject" value="WYBE, Nutrition Consultation Booking">
-            <input type="hidden" name="redirect" value="false">
-            <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70">Book Me</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-              <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-              <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-            </div>
-            <!-- Tier picker — three options, each shows label + price + (founding flag on Single). -->
-            <input type="hidden" name="tier" id="nutrition-tier" required>
-            <div class="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Choose your package">
-              <button type="button" data-tier="Single Session ($119 founding)" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-                <span class="text-[9px] md:text-[10px]">Single</span>
-                <span class="text-base md:text-lg font-sans normal-case tracking-normal"><span class="font-bold">$119</span> <span class="opacity-60 line-through text-sm">$149</span></span>
-              </button>
-              <button type="button" data-tier="Extended Block" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-                <span class="text-[9px] md:text-[10px]">Extended</span>
-                <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$229</span>
-              </button>
-              <button type="button" data-tier="Monthly Programme" class="nutrition-tier-btn bg-cream text-charcoal font-sans font-bold tracking-widest uppercase px-2 py-2 rounded-md hover:bg-burgundy hover:text-charcoal transition-colors shadow-md leading-tight flex flex-col items-center justify-center gap-0.5">
-                <span class="text-[9px] md:text-[10px]">Monthly</span>
-                <span class="text-base md:text-lg font-sans normal-case tracking-normal font-bold">$349</span>
-              </button>
-            </div>
-            <textarea name="goal" required rows="2" placeholder="Current nutrition, goals, anything Mansoor should know" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-            <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors">Request Booking</button>
-            <p class="font-sans text-[10px] text-white/80 leading-snug text-center drop-shadow">I&rsquo;ll email you a payment link within 24 hours to confirm.</p>
-          </form>
-          <div class="hidden py-4 text-center mt-3">
-            <p class="font-sans text-base font-semibold text-charcoal mb-1">Booking received.</p>
-            <p class="font-sans text-xs text-charcoal/70">Mansoor will reply within 48 hours with confirmation and payment details.</p>
-          </div>
+        <div class="wybe-tier-grid wybe-tier-grid--3">
+          <!-- Tier 1 · Single Session -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Single Session</p>
+            <p class="wybe-tier-card__price">$119 <span class="wybe-tier-card__strike">$149</span></p>
+            <ul class="wybe-tier-card__list">
+              <li>One 60-min consult</li>
+              <li>Tailored nutrition plan</li>
+              <li>One follow-up question</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Nutrition Consultation · Single Session · $119 -->
+            <a href="https://buy.stripe.com/REPLACE_nutrition_single_119"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="nutrition-single">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
+
+          <!-- Tier 2 · Extended Block -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Extended Block</p>
+            <p class="wybe-tier-card__price">$229</p>
+            <ul class="wybe-tier-card__list">
+              <li>2-hour deep-dive consult</li>
+              <li>Full nutrition + supplement audit</li>
+              <li>2-week follow-up call included</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Nutrition Consultation · Extended Block · $229 -->
+            <a href="https://buy.stripe.com/REPLACE_nutrition_extended_229"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="nutrition-extended">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
+
+          <!-- Tier 3 · Monthly Programme -->
+          <article class="wybe-tier-card">
+            <p class="wybe-tier-card__eyebrow">Monthly Programme</p>
+            <p class="wybe-tier-card__price">$349<span class="wybe-tier-card__unit"> / month</span></p>
+            <ul class="wybe-tier-card__list">
+              <li>4 hours of flexible time / month</li>
+              <li>Ongoing plan revisions</li>
+              <li>Email support between sessions</li>
+            </ul>
+            <!-- REPLACE: Stripe Payment Link for Nutrition Consultation · Monthly Programme · $349 -->
+            <a href="https://buy.stripe.com/REPLACE_nutrition_monthly_349"
+               target="_blank" rel="noopener"
+               class="wybe-tier-cta" data-tier="nutrition-monthly">
+              Purchase &amp; Book <span class="wybe-tier-cta__arrow" aria-hidden="true">→</span>
+              <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+            </a>
+          </article>
         </div>
+
+        <p class="wybe-tier-helper">
+          <!-- confirm copy --> Secure checkout via Stripe. After payment you&rsquo;ll be taken to my calendar to pick your time &mdash; I&rsquo;ll get the booking instantly.
+        </p>
+        <p class="wybe-tier-enquiry">
+          Questions before you pay? <a href="#contact">Send an enquiry</a>.
+        </p>
       </div>
     </div>
 
-    <!-- PERSONAL TRAINING PANEL. -->
+    <!-- PERSONAL TRAINING PANEL — application only. No public price,
+         no Stripe, no calendar. Reuses the existing Web3Forms
+         infrastructure with an enhanced submit handler (validation +
+         spinner + success/error/retry). -->
     <div id="panel-personal-training" class="service-panel hidden relative bg-cream text-charcoal overflow-hidden rounded-md">
       <div class="relative p-6 md:p-10 flex flex-col">
-        <!-- TOP: heading + intro -->
-        <div class="mb-auto">
+        <div class="mb-4">
           <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70 mb-2">Personal Training (1 on 1)</p>
           <h3 class="font-sans text-2xl md:text-3xl font-bold text-charcoal mb-2 leading-tight">Exclusive &middot; UAE</h3>
           <div class="w-12 h-px bg-burgundy mb-3"></div>
-          <!-- Price meta: launch UAE pricing, 12 sessions / month, application-only. -->
           <p class="font-sans text-base font-semibold text-burgundy mb-2 leading-snug">
-            From <span class="font-sans text-2xl md:text-3xl font-bold">~$5,000</span> <span class="text-base">/ month</span>
+            By application &middot; Investment discussed privately.
             <span class="block text-charcoal/70 font-normal text-sm mt-1">12 sessions &middot; 3-month minimum &middot; application only</span>
           </p>
           <p class="font-sans text-sm text-charcoal/80 leading-relaxed max-w-md">
             For those who require absolute discretion, complete personalisation, and a trainer fully invested in their outcome. Roster is capped; new applications are reviewed personally.
           </p>
+          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mt-3">
+            Limited to a handful of private clients each year.
+          </p>
         </div>
 
-        <!-- BOTTOM: compact application form -->
-        <form data-form data-subject="WYBE, Personal Training Application" action="https://api.web3forms.com/submit" method="POST" class="space-y-2.5 mt-4">
+        <form id="pt-application-form"
+              data-subject="WYBE, Personal Training Application"
+              action="https://api.web3forms.com/submit"
+              method="POST"
+              class="space-y-2.5 mt-4"
+              novalidate>
           <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="subject" value="WYBE, Personal Training Application">
           <input type="hidden" name="redirect" value="false">
           <p class="font-sans text-[11px] tracking-widest uppercase text-charcoal/70">Apply</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-            <input type="text" name="name" required placeholder="Full name" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-            <input type="email" name="email" required placeholder="Email" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+            <label class="sr-only" for="pt-app-name">Full name</label>
+            <input id="pt-app-name" type="text" name="name" required autocomplete="name" placeholder="Full name"
+                   class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40"
+                   aria-invalid="false" data-input="name">
+            <label class="sr-only" for="pt-app-email">Email</label>
+            <input id="pt-app-email" type="email" name="email" required autocomplete="email" placeholder="Email"
+                   class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40"
+                   aria-invalid="false" data-input="email">
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-            <input type="tel" name="phone" required placeholder="+971 50 000 0000"
+            <label class="sr-only" for="pt-app-phone">Phone</label>
+            <input id="pt-app-phone" type="tel" name="phone" required autocomplete="tel" placeholder="+971 50 000 0000"
                    pattern="^\+?[0-9\s\-()]{7,20}$"
                    title="Enter a phone number in international format, e.g. +971 50 000 0000 (7–20 characters; digits, spaces, dashes and parens allowed, optional leading +)."
-                   class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
-            <input type="text" name="location" required placeholder="City / Country" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40">
+                   class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40"
+                   aria-invalid="false" data-input="phone">
+            <label class="sr-only" for="pt-app-location">City / Country</label>
+            <input id="pt-app-location" type="text" name="location" required placeholder="City / Country"
+                   class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40"
+                   aria-invalid="false" data-input="location">
           </div>
-          <textarea name="goals" required rows="2" placeholder="Your goals and any relevant background" class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"></textarea>
-          <!-- Submit as a compact round arrow, right-aligned, matching the contact form. -->
-          <div class="flex justify-end">
-            <button type="submit" aria-label="Submit application" class="group flex items-center justify-center w-12 h-12 rounded-full border-2 border-white bg-burgundy hover:bg-burgundy-dark hover:border-burgundy-dark transition-colors shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </button>
-          </div>
+          <label class="sr-only" for="pt-app-goals">Your goals and background</label>
+          <textarea id="pt-app-goals" name="goals" required rows="2" placeholder="Your goals and any relevant background"
+                    class="border border-charcoal/25 bg-cream/80 px-3 py-2.5 font-sans text-sm text-charcoal w-full focus:outline-none focus:border-burgundy placeholder:text-charcoal/40 resize-none"
+                    aria-invalid="false" data-input="goals"></textarea>
+
+          <p id="pt-app-error" class="hidden font-sans text-xs text-red-600 -mt-1" role="alert" aria-live="polite"></p>
+
+          <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-3 hover:bg-burgundy-dark transition-colors inline-flex items-center justify-center gap-2" data-submit>
+            <span data-btn-label>Apply for a place</span>
+            <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
+          </button>
         </form>
-        <div class="hidden py-4 text-center mt-3">
-          <p class="font-sans text-base font-semibold text-charcoal mb-1">Application received.</p>
-          <p class="font-sans text-xs text-charcoal/70">Applications are reviewed personally. You will hear back within a few days.</p>
+
+        <!-- Success panel -->
+        <div id="pt-app-success" class="hidden mt-3 flex items-start gap-2 text-sm text-charcoal" role="status" aria-live="polite">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 text-burgundy flex-shrink-0" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+          <span>
+            <strong class="text-charcoal">Application received.</strong>
+            Applications are reviewed personally. If it&rsquo;s a fit, I&rsquo;ll reach out to arrange a private call and discuss the details.
+          </span>
+        </div>
+
+        <!-- Error panel with Retry -->
+        <div id="pt-app-fail" class="hidden mt-3 border border-red-400/50 bg-red-100/70 px-3 py-2 rounded-md flex items-start justify-between gap-3" role="alert" aria-live="assertive">
+          <p class="font-sans text-xs text-charcoal leading-snug">
+            Send failed &mdash; check your connection and try again.
+          </p>
+          <button type="button" data-retry class="font-sans text-xs font-bold uppercase tracking-widest text-burgundy underline underline-offset-2 flex-shrink-0">
+            Retry
+          </button>
         </div>
       </div>
     </div>
@@ -2102,100 +2208,111 @@
       btn.classList.toggle('text-charcoal', !active);
     };
 
-    // Nutrition tier picker (single button per tier).
-    (function() {
-      const buttons = document.querySelectorAll('.nutrition-tier-btn');
-      const hidden  = document.getElementById('nutrition-tier');
-      if (!buttons.length || !hidden) return;
-      buttons.forEach(b => {
-        b.addEventListener('click', () => {
-          hidden.value = b.dataset.tier;
-          buttons.forEach(o => setActive(o, o === b));
-        });
-      });
-    })();
-
-    // Fitness picker — 4 buttons combine format + package. Bundle options reveal
-    // a session-count dropdown. The Request Booking button shows the live total.
-    (function() {
-      const buttons = document.querySelectorAll('.fitness-option-btn');
-      const formatHidden  = document.getElementById('fitness-format');
-      const packageHidden = document.getElementById('fitness-package');
-      const bundleHidden  = document.getElementById('fitness-bundle-size');
-      const bundleWrap    = document.getElementById('fitness-bundle-wrap');
-      const bundleSelect  = document.getElementById('fitness-bundle-select');
-      const submitBtn     = document.getElementById('fitness-submit');
-      const submitTotal   = document.getElementById('fitness-submit-total');
-      if (!buttons.length || !formatHidden) return;
-
-      // Price table: format + package + bundle size → total USD.
-      const PRICE = {
-        'Online|Single':            69,   // founding
-        'UAE In-Person|Single':     159,
-        'Online|Bundle|2':          169,
-        'Online|Bundle|3':          239,
-        'UAE In-Person|Bundle|2':   269,
-        'UAE In-Person|Bundle|3':   379,
-      };
-
-      const computeTotal = () => {
-        const fmt = formatHidden.value;
-        const pkg = packageHidden.value;
-        if (!fmt) return null;
-        if (pkg === 'Bundle') {
-          const size = bundleSelect ? bundleSelect.value : '2';
-          return PRICE[`${fmt}|Bundle|${size}`];
-        }
-        return PRICE[`${fmt}|Single`];
-      };
-
-      const refreshSubmit = () => {
-        const total = computeTotal();
-        if (submitTotal) submitTotal.textContent = total ? `· $${total}` : '';
-      };
-
-      buttons.forEach(b => {
-        b.addEventListener('click', () => {
-          formatHidden.value  = b.dataset.format;
-          packageHidden.value = b.dataset.package;
-          buttons.forEach(o => setActive(o, o === b));
-          // Show bundle dropdown only when a Bundle option is selected.
-          if (bundleWrap) bundleWrap.classList.toggle('hidden', b.dataset.package !== 'Bundle');
-          if (b.dataset.package === 'Bundle' && bundleSelect) {
-            bundleHidden.value = bundleSelect.value;
-          } else {
-            bundleHidden.value = '';
+    // ── TIER CTA BRIEF LOADING STATE ──────────────────
+    // Every .wybe-tier-cta anchor opens its Stripe Payment Link in a
+    // new tab. The click default handles the navigation; we just add
+    // a spinner for ~600 ms so the button visibly acknowledges the
+    // click before the new tab opens. Also fires a wybeTrack event
+    // so the analytics dashboard has a "which tier gets clicks" view.
+    (function () {
+      document.querySelectorAll('.wybe-tier-cta').forEach(a => {
+        a.addEventListener('click', () => {
+          const spinner = a.querySelector('[data-btn-spinner]');
+          if (spinner) spinner.classList.remove('hidden');
+          setTimeout(() => spinner && spinner.classList.add('hidden'), 700);
+          if (typeof window.wybeTrack === 'function') {
+            const tier = a.dataset.tier || 'unknown';
+            window.wybeTrack('Purchase Click', { tier: tier });
           }
-          refreshSubmit();
         });
       });
-      if (bundleSelect) {
-        bundleSelect.addEventListener('change', () => {
-          bundleHidden.value = bundleSelect.value;
-          refreshSubmit();
-        });
-      }
     })();
 
-    // Fitness post-request: when the booking form posts successfully, the
-    // success sibling div is unhidden by the main.js form handler. We hijack
-    // the same form's submit to also reveal the date-picker "request
-    // received" block so the user has an immediate confirmation while
-    // Mansoor emails the payment link.
-    (function() {
-      const form        = document.querySelector('form[data-subject="WYBE, Fitness Consultation Booking"]');
-      const postpay     = document.getElementById('fitness-postpay');
-      const amountEl    = document.getElementById('fitness-postpay-amount');
-      const submitTotal = document.getElementById('fitness-submit-total');
-      if (!form || !postpay) return;
-      form.addEventListener('submit', () => {
-        // Extract the estimated total from the submit-button suffix.
-        const m = (submitTotal && submitTotal.textContent || '').match(/\$(\d+)/);
-        if (amountEl && m) amountEl.textContent = '$' + m[1];
-        // Reveal the "request received" panel after a tick (let the form
-        // handler run first).
-        setTimeout(() => postpay.classList.remove('hidden'), 50);
-      });
+    // ── PERSONAL TRAINING APPLICATION HANDLER ─────────
+    // AJAX submit → spinner → success/error panels. Retry re-runs the
+    // send without re-validating.  Fires a Booking Request event on
+    // success only (via track.js data-subject mapping is skipped for
+    // this form since the handler owns success/failure state).
+    (function () {
+      const form = document.getElementById('pt-application-form');
+      if (!form) return;
+
+      const btn         = form.querySelector('[data-submit]');
+      const btnLabel    = form.querySelector('[data-btn-label]');
+      const btnSpinner  = form.querySelector('[data-btn-spinner]');
+      const nameInput   = form.querySelector('[data-input="name"]');
+      const emailInput  = form.querySelector('[data-input="email"]');
+      const phoneInput  = form.querySelector('[data-input="phone"]');
+      const locInput    = form.querySelector('[data-input="location"]');
+      const goalsInput  = form.querySelector('[data-input="goals"]');
+      const errorSlot   = document.getElementById('pt-app-error');
+      const successEl   = document.getElementById('pt-app-success');
+      const failEl      = document.getElementById('pt-app-fail');
+      const retryBtn    = failEl && failEl.querySelector('[data-retry]');
+
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      const PHONE_RE = /^\+?[0-9\s\-()]{7,20}$/;
+
+      const showError = (msg, target) => {
+        errorSlot.textContent = msg;
+        errorSlot.classList.remove('hidden');
+        if (target) {
+          target.setAttribute('aria-invalid', 'true');
+          try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
+        }
+      };
+      const clearError = () => {
+        errorSlot.textContent = '';
+        errorSlot.classList.add('hidden');
+        [nameInput, emailInput, phoneInput, locInput, goalsInput].forEach(el => el && el.setAttribute('aria-invalid', 'false'));
+      };
+      const setSending = (on) => {
+        if (!btn) return;
+        btn.disabled = on;
+        if (btnSpinner) btnSpinner.classList.toggle('hidden', !on);
+        if (btnLabel)   btnLabel.textContent = on ? 'Sending…' : 'Apply for a place';
+      };
+
+      const send = async () => {
+        clearError();
+        failEl.classList.add('hidden');
+        successEl.classList.add('hidden');
+
+        const name  = (nameInput.value  || '').trim();
+        const email = (emailInput.value || '').trim();
+        const phone = (phoneInput.value || '').trim();
+        const loc   = (locInput.value   || '').trim();
+        const goals = (goalsInput.value || '').trim();
+
+        if (name.length < 2) return showError('Enter your full name.', nameInput);
+        if (!EMAIL_RE.test(email)) return showError('That email doesn’t look right — try name@example.com.', emailInput);
+        if (!PHONE_RE.test(phone)) return showError('Enter a phone number in international format, e.g. +971 50 000 0000.', phoneInput);
+        if (loc.length < 2) return showError('Where are you based? Add your city and country.', locInput);
+        if (goals.length < 10) return showError('A sentence or two on your goals helps me decide if it’s a fit.', goalsInput);
+
+        setSending(true);
+        const data = Object.fromEntries(new FormData(form));
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (!res.ok) throw new Error('bad-status:' + res.status);
+          setSending(false);
+          form.classList.add('hidden');
+          successEl.classList.remove('hidden');
+          if (typeof window.wybeTrack === 'function') {
+            window.wybeTrack('Booking Request', { service: 'Personal Training' });
+          }
+        } catch (_) {
+          setSending(false);
+          failEl.classList.remove('hidden');
+        }
+      };
+
+      form.addEventListener('submit', (e) => { e.preventDefault(); send(); });
+      if (retryBtn) retryBtn.addEventListener('click', () => { failEl.classList.add('hidden'); send(); });
     })();
 
     // ── PLAN QUIZ ─────────────────────────────────────
@@ -2246,10 +2363,23 @@
       const consultTotalEl    = document.getElementById('consult-total');
       const consultHidden     = document.getElementById('result-consult-hidden');
       const totalHidden       = document.getElementById('result-total-hidden');
-      const buyBtn            = document.getElementById('result-buy-btn');
+      // Purchase link (was <button id="result-buy-btn"> — bug: markup used
+      // id="result-pay-btn". Now correctly targets the anchor.)
+      const payBtn            = document.getElementById('result-pay-btn');
       const buyTextEl         = document.getElementById('result-buy-text');
-      const purchaseForm      = document.getElementById('result-purchase-form');
       const calendlyLink      = document.getElementById('consult-calendly-link');
+
+      // Six Stripe Payment Links, one per plan × combo state. Update
+      // the mapping table in the big HTML comment above #panel-digital-plan
+      // in the Services section AND here whenever a real URL is pasted in.
+      const PLAN_LINKS = {
+        'Beginner|solo':      'https://buy.stripe.com/REPLACE_plan_beginner_solo_39',
+        'Beginner|combo':     'https://buy.stripe.com/REPLACE_plan_beginner_combo_88',
+        'Intermediate|solo':  'https://buy.stripe.com/REPLACE_plan_intermediate_solo_69',
+        'Intermediate|combo': 'https://buy.stripe.com/REPLACE_plan_intermediate_combo_118',
+        'Advanced|solo':      'https://buy.stripe.com/REPLACE_plan_advanced_solo_119',
+        'Advanced|combo':     'https://buy.stripe.com/REPLACE_plan_advanced_combo_168',
+      };
 
       // Tracks whether we're in the "consult required" branch and the running total to charge
       let consultMode = false;
@@ -2257,7 +2387,6 @@
 
       const backBtn = document.getElementById('quiz-back');
       const forwardBtn = document.getElementById('quiz-forward');
-      const detailsWrap = document.getElementById('result-details-wrap');
       const progressEl = document.getElementById('quiz-progress');
 
       // Map: step-id → id of the hidden input that holds that step's answer.
@@ -2457,24 +2586,27 @@
             launchEl.textContent = '$' + launch;
           }
           if (standardEl) standardEl.textContent = '$' + standard;
-          // Hidden form fields + Reserve button text
+          // Hidden reconciliation fields + Purchase button label / href.
           consultMode = wantsConsult;
           consultHidden.value = wantsConsult ? 'Yes' : 'No';
           lastTotal = launch;
           totalHidden.value = '$' + launch;
-          if (buyTextEl) buyTextEl.textContent = 'Reserve My Spot · $' + launch;
+          if (buyTextEl) buyTextEl.textContent = 'Purchase & Book · $' + launch;
+          if (payBtn) {
+            const key = plan + '|' + (wantsConsult ? 'combo' : 'solo');
+            const link = PLAN_LINKS[key];
+            if (link) {
+              payBtn.href = link;
+              payBtn.setAttribute('aria-disabled', 'false');
+              payBtn.dataset.tier = 'digital-plan-' + plan.toLowerCase() + '-' + (wantsConsult ? 'combo' : 'solo');
+            }
+          }
         };
         if (comboToggle) {
           comboToggle.removeEventListener('change', renderPrice);
           comboToggle.addEventListener('change', renderPrice);
         }
         renderPrice();
-        const total = lastTotal;
-
-        // State A: Reserve button visible (with total), details form hidden.
-        if (buyBtn) buyBtn.classList.remove('hidden');
-        if (buyTextEl) buyTextEl.textContent = 'Reserve My Spot · $' + total;
-        if (detailsWrap) detailsWrap.classList.add('hidden');
 
         // Swap quiz off, result on.
         if (quizState) quizState.classList.add('hidden');
@@ -2486,28 +2618,22 @@
         document.dispatchEvent(new CustomEvent('wybe:quiz-end', { detail: { plan: plan } }));
       };
 
-      // Reserve button → state B: hide the reserve CTA, reveal the name/email form.
-      if (buyBtn) {
-        buyBtn.addEventListener('click', () => {
-          buyBtn.classList.add('hidden');
-          if (detailsWrap) detailsWrap.classList.remove('hidden');
-        });
-      }
-
-      // The quiz form has no visible submit button anymore; result is triggered
-      // programmatically via advance(). Guard against any accidental submit.
+      // The quiz form has no visible submit button; the result screen is
+      // triggered programmatically via advance(). Guard accidental submits.
       form.addEventListener('submit', (e) => e.preventDefault());
 
       renderStep();
 
-      // Retake → reset everything, restart at q1.
+      // Retake → reset the quiz, restart at q1, disable the pay link
+      // until the user reaches the result again.
       retake.addEventListener('click', () => {
-        if (purchaseForm) purchaseForm.reset();
         form.querySelectorAll('input[type="hidden"]').forEach(inp => { inp.value = ''; });
         form.querySelectorAll('.quiz-option').forEach(b => setActiveStyle(b, false));
         if (consultBlock) consultBlock.classList.add('hidden');
-        if (detailsWrap) detailsWrap.classList.add('hidden');
-        if (buyBtn) buyBtn.classList.remove('hidden');
+        if (payBtn) {
+          payBtn.href = '#';
+          payBtn.setAttribute('aria-disabled', 'true');
+        }
         consultMode = false;
         needsGuidance = false;
         navStack.length = 0;

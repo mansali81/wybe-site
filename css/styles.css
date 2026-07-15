@@ -635,6 +635,164 @@ h4, h5, h6, .wybe-subhead {
    under a `(prefers-reduced-motion: no-preference)` guard so reduced-
    motion users never see it fire. */
 
+/* ── SERVICE TIER CARDS ─────────────────────────────────
+   Used inside #panel-fitness and #panel-nutrition. Every tier is a
+   self-contained card with its own Stripe Payment Link. Dark surface
+   (matches the .service-panel override), subtle lime border. Purchase
+   & Book anchor styled as a wide lime pill; hover brightens; focus-
+   visible gets a lime ring. Prefers-reduced-motion strips the pill's
+   scale transition; the spinner in .wybe-spinner already handles
+   reduced motion. */
+.wybe-tier-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 4px;
+}
+@media (min-width: 640px) {
+  .wybe-tier-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (min-width: 900px) {
+  .wybe-tier-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* 3-up variant for panels that only have three tiers (Nutrition). */
+@media (min-width: 900px) {
+  .wybe-tier-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.wybe-tier-card {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px 20px;
+  background: rgba(0, 26, 36, 0.45) !important;
+  border: 1px solid rgba(221, 255, 85, 0.25);
+  border-radius: 8px;
+  color: #F6F2E8 !important;
+}
+.wybe-tier-card__eyebrow {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #DDFF55 !important;
+  margin: 0 0 8px;
+}
+.wybe-tier-card__price {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(26px, 3.4vw, 34px);
+  line-height: 1;
+  color: #F6F2E8 !important;
+  margin: 0 0 12px;
+}
+.wybe-tier-card__strike {
+  font-family: var(--font-header);
+  font-weight: 700;
+  font-size: 0.55em;
+  color: rgba(246, 242, 232, 0.45) !important;
+  text-decoration: line-through;
+  margin-left: 6px;
+}
+.wybe-tier-card__unit {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.4em;
+  color: rgba(246, 242, 232, 0.65) !important;
+}
+.wybe-tier-card__list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  flex: 1;
+  color: rgba(246, 242, 232, 0.82) !important;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.wybe-tier-card__list li {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 4px;
+}
+.wybe-tier-card__list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 8px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #DDFF55;
+}
+
+.wybe-tier-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #DDFF55 !important;
+  color: #002233 !important;
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  border-radius: 999px;
+  text-decoration: none !important;
+  box-shadow: 0 3px 12px rgba(221, 255, 85, 0.14);
+  transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 0.2s ease,
+              box-shadow 0.2s ease;
+}
+.wybe-tier-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(221, 255, 85, 0.35);
+}
+.wybe-tier-cta:focus { outline: none; }
+.wybe-tier-cta:focus-visible {
+  outline: 2px solid #F6F2E8;
+  outline-offset: 3px;
+}
+.wybe-tier-cta[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.35);
+}
+.wybe-tier-cta__arrow {
+  font-weight: 900;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wybe-tier-cta { transition: none; }
+  .wybe-tier-cta:hover { transform: none; }
+}
+
+.wybe-tier-helper {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(246, 242, 232, 0.75) !important;
+  text-align: center;
+  margin: 18px 0 6px;
+}
+.wybe-tier-enquiry {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(246, 242, 232, 0.55) !important;
+  text-align: center;
+  margin: 0;
+}
+.wybe-tier-enquiry a {
+  color: #DDFF55 !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(221, 255, 85, 0.4);
+  text-underline-offset: 3px;
+}
+.wybe-tier-enquiry a:hover {
+  text-decoration-color: #DDFF55;
+}
+
 /* Visually-hidden but AT-readable — used for form field labels
    whose visible cue is the placeholder. */
 .sr-only {
