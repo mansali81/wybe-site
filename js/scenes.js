@@ -55,9 +55,17 @@
       gsap.set(lines, { yPercent: 105 });
 
       // Reveal timeline: staggered rise-in, expo.out easing.
+      // willChange is added at onStart and removed at onComplete/onReverseComplete
+      // so the lines are only promoted to a compositor layer during
+      // the tween — never persistently. See css/styles.css for why the
+      // static will-change on .line-inner was removed.
+      const setWC = (v) => gsap.set(lines, { willChange: v });
       const tl = gsap.timeline({
         paused: true,
-        defaults: { ease: 'expo.out' }
+        defaults: { ease: 'expo.out' },
+        onStart:           () => setWC('transform'),
+        onComplete:        () => setWC('auto'),
+        onReverseComplete: () => setWC('auto'),
       });
       tl.to(lines, {
         yPercent: 0,

@@ -67,9 +67,29 @@
       });
 
       // Reveal timeline.
+      // willChange is added at onStart and cleared at
+      // onComplete/onReverseComplete so the splash + heading + body
+      // only get promoted to compositor layers during the tween,
+      // never persistently. Static will-change on these elements
+      // was promoting the huge Promise / Commitment headings to
+      // permanent layers that painted above the fixed nav.
+      const setSplashWC = (v) => gsap.set(splash, { willChange: v });
+      const setLinesWC  = (v) => gsap.set(lines,  { willChange: v });
       const tl = gsap.timeline({
         paused: true,
-        defaults: { ease: 'power2.out' }
+        defaults: { ease: 'power2.out' },
+        onStart: () => {
+          setSplashWC('transform, opacity');
+          setLinesWC('transform, opacity, clip-path');
+        },
+        onComplete: () => {
+          setSplashWC('auto');
+          setLinesWC('auto');
+        },
+        onReverseComplete: () => {
+          setSplashWC('auto');
+          setLinesWC('auto');
+        },
       });
 
       // 1) Splash lands first — scale up, ease in, rotate to rest.

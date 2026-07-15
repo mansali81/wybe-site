@@ -126,34 +126,34 @@ h4, h5, h6, .wybe-subhead {
    type role; active section gets a lime underline via the
    IntersectionObserver-driven .is-active class.
 
-   STACKING CONTEXT NOTE
-   ---------------------
-   The <header class="wybe-header"> lives directly under <body>, and the
-   `body > *:not(.wybe-cursor):not(.wybe-nav)` wildcard in index.html
-   gives every direct body child `position: relative; z-index: 1`. That
-   traps .wybe-nav's z-index inside the header's z-1 stacking context,
-   which loses to sibling <section>s (also z-1) that appear later in
-   the DOM — visible symptom: section headings paint over the fixed
-   header. The `.wybe-header { z-index: 1000 }` rule below promotes the
-   header's stacking context so the nav paints above every sibling
-   section, regardless of DOM order. */
+   STACKING / COMPOSITOR NOTE
+   --------------------------
+   The fixed positioning + high z-index + isolation now live on the
+   OUTER <header class="wybe-header"> wrapper, not on the inner
+   #wybe-nav. Reason: ~55 elements on the page carry will-change:
+   transform (hero video, .wybe-statement__heading etc.) which promote
+   them to their own compositor layers. Those promoted layers ignore
+   nested z-index and paint above every non-promoted sibling. Fix:
+   make the header its own top-level compositor layer via
+   translateZ(0) + isolation: isolate + z-index: 2000, so nothing can
+   climb above it regardless of promotion.
+
+   Also — the `body > *:not(.wybe-cursor):not(.wybe-nav)` wildcard in
+   index.html excludes .wybe-nav but not .wybe-header. That wildcard
+   set .wybe-header to `position: relative; z-index: 1`, which used
+   to trap the fixed nav inside a z-1 context. With the wrapper now
+   `position: fixed; z-index: 2000` (class specificity beats element
+   specificity) that trap is broken cleanly. */
 .wybe-header {
-  position: relative;
-  z-index: 1000;
-}
-/* Fully opaque nav — no alpha, so the hero video / section content can
-   never bleed through. `background-color` set explicitly (not just via
-   the shorthand) as belt-and-braces against any accidental shorthand
-   override elsewhere. `backdrop-filter` kept as an enhancement for any
-   future tint changes; browsers with an opaque background skip it. */
-.wybe-nav {
-  position: fixed !important;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 1000;
-  background: #002233;
+  z-index: 2000;                 /* wins over every promoted layer */
+  isolation: isolate;            /* new stacking context — sealed */
+  transform: translateZ(0);      /* dedicated compositor layer */
+  background: #002233;           /* opaque backdrop under the blur */
   background-color: #002233;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
@@ -161,7 +161,27 @@ h4, h5, h6, .wybe-subhead {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
-.wybe-nav.is-scrolled {
+.wybe-header.is-scrolled,
+.wybe-nav.is-scrolled + * { /* no-op guard */ }
+
+/* Inner nav bar is now a normal-flow child of the fixed header. Kept
+   its historical class-name for JS + Tailwind selectors that reference
+   #wybe-nav / .wybe-nav. Background here is inherited from the header
+   wrapper — this rule leaves it transparent so the wrapper's solid
+   colour + shadow are the visual surface. */
+.wybe-nav {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  border: 0;
+  box-shadow: none;
+}
+/* Deepened shadow + border once the user has scrolled past ~50 px.
+   main.js toggles .is-scrolled on both .wybe-header AND #wybe-nav
+   so historic selectors targeting either still work. */
+.wybe-header.is-scrolled {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
   border-bottom-color: rgba(255, 255, 255, 0.14);
 }
@@ -465,9 +485,11 @@ h4, h5, h6, .wybe-subhead {
   height: calc(100vh - var(--nav-h));
   overflow: hidden;
   background: #002233;
-  /* Keep the pinned hero below the fixed nav (z-index: 1000) so the
-     header always sits cleanly on top during the ScrollTrigger pin. */
-  z-index: 1;
+  /* Seal the hero — the mp4 (compositor layer via will-change) and
+     the .hero-tint gradient (z-index 2) both composite inside this
+     stacking context, never above the z-index: 2000 fixed header. */
+  z-index: 0;
+  isolation: isolate;
 }
 /* Vertically center + left align the content block. The video and
    gradient tint are absolutely positioned inside; only .hero-content
@@ -478,6 +500,7 @@ h4, h5, h6, .wybe-subhead {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  isolation: isolate; /* second seal around the compositor layers */
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -491,9 +514,12 @@ h4, h5, h6, .wybe-subhead {
   object-fit: cover;
   object-position: center;
   transform: scaleX(-1);
-  will-change: object-position;
   pointer-events: none;
   z-index: 1;
+  /* will-change removed: the video no longer scrubs on scroll, so no
+     transform / object-position animation ever runs on it. Static
+     will-change was promoting the video to a permanent compositor
+     layer that painted over the fixed nav on iOS Safari. */
 }
 /* Dual-gradient legibility overlay:
      - horizontal: strong navy on the left where the copy sits, fading to
@@ -1284,6 +1310,8 @@ h4, h5, h6, .wybe-subhead {
 
 .wybe-scene {
   position: relative;
+  z-index: 0;
+  isolation: isolate; /* seal promoted line-inner reveals inside the scene */
   min-height: 130vh;
   background: #002233;
 }
@@ -1318,7 +1346,10 @@ h4, h5, h6, .wybe-subhead {
 }
 .line-inner {
   display: inline-block;
-  will-change: transform;
+  /* will-change added dynamically by js/scenes.js during the reveal
+     tween (onStart) and cleared on completion (onComplete). Keeping
+     it static promoted every .line-inner on the page to its own
+     compositor layer, which the fixed nav couldn't always paint over. */
 }
 
 /* Shared scene typography */
@@ -1420,7 +1451,15 @@ h4, h5, h6, .wybe-subhead {
    "splash" blob (radial gradient) that scales up on scroll before the
    type wipes in — energetic, physical, not corporate. See js/promise.js
    for the ScrollTrigger reveal. */
+/* Manifesto section — Promise + Commitment blocks with large lime
+   headings that GSAP promotes to their own compositor layers. Section
+   is a sealed stacking context (isolation: isolate + z-index: 0)
+   so those promoted layers composite INSIDE the section and can't
+   climb above the z-index: 2000 fixed header. */
 .wybe-manifesto {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
   padding: clamp(80px, 12vw, 160px) 0;
 }
 .wybe-manifesto__inner {
@@ -1429,6 +1468,7 @@ h4, h5, h6, .wybe-subhead {
   padding: 0 clamp(24px, 6vw, 96px);
   display: grid;
   gap: clamp(80px, 12vw, 180px);
+  isolation: isolate; /* belt-and-braces around the two statements */
 }
 .wybe-statement {
   position: relative;
@@ -1465,7 +1505,8 @@ h4, h5, h6, .wybe-subhead {
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-  will-change: transform, opacity;
+  /* will-change added dynamically by js/promise.js during the reveal
+     tween. Removed the static declaration — see hero-video note. */
 }
 /* Second block gets a horizontally flipped + slightly rotated variant so
    the two splashes don't twin. The base transform is applied by GSAP via
@@ -1507,10 +1548,10 @@ h4, h5, h6, .wybe-subhead {
 /* GSAP-driven initial states for the reveal (JS overrides these on
    completion). If JS never runs the CSS below ensures nothing is stuck
    invisible. */
-.wybe-statement__heading,
-.wybe-statement__body {
-  will-change: opacity, transform, clip-path;
-}
+/* will-change on these two removed — js/promise.js sets it via GSAP
+   for the duration of the reveal tween only. Keeping it static
+   promoted the huge Promise / Commitment headings to permanent
+   compositor layers that painted above the fixed nav. */
 
 /* Reduced motion: show everything statically. */
 @media (prefers-reduced-motion: reduce) {

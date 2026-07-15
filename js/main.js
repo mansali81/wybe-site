@@ -58,7 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!nav) return;
     let ticking = false;
     const update = () => {
-      nav.classList.toggle('is-scrolled', window.scrollY > 50);
+      const on = window.scrollY > 50;
+      nav.classList.toggle('is-scrolled', on);
+      // Deepened shadow now lives on the .wybe-header wrapper (the fixed,
+      // isolated compositor layer). Toggle the class there too so the CSS
+      // rule that owns the shadow fires. Historic listeners on the
+      // .wybe-nav class keep working unchanged.
+      const header = nav.closest('.wybe-header') || document.querySelector('.wybe-header');
+      if (header) header.classList.toggle('is-scrolled', on);
       ticking = false;
     };
     window.addEventListener('scroll', () => {
