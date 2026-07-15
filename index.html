@@ -78,7 +78,11 @@
       background-color: #002233;   /* Navy field */
       color: #F6F2E8;
     }
-    body > *:not(.wybe-cursor):not(.wybe-nav) { position: relative; z-index: 1; }
+    /* .wybe-header is excluded so its own `position: fixed; z-index: 2000`
+       rule wins — otherwise this wildcard forced the fixed header back to
+       position: relative and it dropped into normal flow above the hero,
+       creating the empty navy band above the nav. */
+    body > *:not(.wybe-cursor):not(.wybe-nav):not(.wybe-header):not(.wybe-skip-link) { position: relative; z-index: 1; }
   </style>
 
   <!-- Inline motion styles for Vision breathing bg, pillar SVG draw-in, and 3D wordmark breathe. All respect prefers-reduced-motion. -->
@@ -284,12 +288,9 @@
     .wybe-calc-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* 7. About Me: description swaps out, metrics fade in as user scrolls past. */
-    .wybe-about-stage      { position: relative; }
-    .wybe-about-intro,
-    .wybe-about-metrics    { transition: opacity .6s ease, transform .6s ease; }
-    .wybe-about-metrics    { opacity: 0; transform: translateY(24px); pointer-events: none; position: absolute; inset: 0; }
-    .wybe-about-stage.is-metrics .wybe-about-intro    { opacity: 0; transform: translateY(-24px); pointer-events: none; }
-    .wybe-about-stage.is-metrics .wybe-about-metrics  { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
+    /* Obsolete: bio↔metrics flip. The About section now shows both
+       together permanently. Rules kept as no-ops so the .wybe-metric-value
+       + related tokens still resolve cleanly if referenced elsewhere. */
     .wybe-metric-value     { font-variant-numeric: tabular-nums; }
 
     /* Universal accessibility guard */
@@ -298,9 +299,7 @@
       .wybe-breathe-bg,
       .wybe-3d-mark { animation: none; }
       .wybe-icon path { transition: none; stroke-dashoffset: 0; }
-      .wybe-story-panel,
-      .wybe-about-intro,
-      .wybe-about-metrics { transition: none; }
+      .wybe-story-panel { transition: none; }
     }
   </style>
 
@@ -713,7 +712,7 @@
   <!-- CALCULATORS — one unified form → one report. Fill what you know
        and the results panel unlocks whichever metrics your inputs
        support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
-  <section id="calculators" class="wybe-story relative overflow-visible py-14 md:py-20">
+  <section id="calculators" class="wybe-story relative overflow-visible py-20 md:py-28">
     <div class="w-full max-w-6xl mx-auto px-6">
       <!-- Section header — single heading, no eyebrow, no subtext. -->
       <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
@@ -905,69 +904,60 @@
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
 
-  <!-- #ABOUT — two-state left column: short bio (default) swaps for a metrics
-       grid once user scrolls to it. "Learn More" toggles the same swap on click. -->
-  <section id="about" class="relative text-white overflow-hidden">
-    <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-end">
-      <!-- Left column: text ↔ metrics -->
-      <div class="md:col-span-7 pt-24 pb-16 md:pb-32 relative z-10">
-        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-5">The Practitioner</p>
+  <!-- #ABOUT — bio + By The Numbers side-by-side, always visible.
+       Two-column on md+: text stack (heading, bio, stat grid, CTA) on
+       the left; portrait on the right. Single column stacked on mobile.
+       Old flip-to-reveal toggle was removed — content is always visible
+       at rest, no interaction required. -->
+  <section id="about" class="relative text-white overflow-hidden py-20 md:py-28">
+    <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
+      <div class="md:col-span-7 relative z-10">
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">The Practitioner</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
         <div class="w-12 h-px bg-burgundy mb-5"></div>
 
-        <div class="wybe-about-stage" data-about-stage>
-          <!-- State A: intro copy + Learn More CTA -->
-          <div class="wybe-about-intro">
-            <p class="font-sans text-base text-white/85 leading-relaxed mb-6">
-              Personal Trainer, Human Performance Nutritionist, Personal Coach, and Author (forthcoming), with over two decades of practical, evidence-based work in health and fitness grounded in Human Biomechanics, Kinesiology, and breathing technique, guided by a simple principle: &ldquo;we are what we eat&rdquo;.
-            </p>
-            <button type="button" data-about-toggle
-                    class="inline-block bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full hover:bg-burgundy-dark transition-colors">
-              Learn More
-            </button>
-          </div>
+        <p class="font-sans text-base text-white/85 leading-relaxed mb-8 max-w-xl">
+          Personal Trainer, Human Performance Nutritionist, Personal Coach, and Author (forthcoming), with over two decades of practical, evidence-based work in health and fitness grounded in Human Biomechanics, Kinesiology, and breathing technique, guided by a simple principle: &ldquo;we are what we eat&rdquo;.
+        </p>
 
-          <!-- State B: metric grid, revealed on scroll or Learn More click -->
-          <div class="wybe-about-metrics">
-            <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-4">By the numbers</p>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-6 mb-6">
-              <div>
-                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">20<span class="text-xl">+</span></p>
-                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Years coaching</p>
-              </div>
-              <div>
-                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">500<span class="text-xl">+</span></p>
-                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Clients transformed</p>
-              </div>
-              <div>
-                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">10,000<span class="text-xl">+</span></p>
-                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Sessions delivered</p>
-              </div>
-              <div>
-                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">Level 4</p>
-                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">REPS Certified PT</p>
-              </div>
-              <div>
-                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">UAE</p>
-                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">REPS Member</p>
-              </div>
-              <div>
-                <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">5</p>
-                <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Pro Certifications</p>
-              </div>
-            </div>
-            <button type="button" data-about-toggle
-                    class="inline-block bg-transparent text-burgundy font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full border border-burgundy hover:bg-burgundy hover:text-charcoal transition-colors">
-              &larr; Back to Bio
-            </button>
+        <!-- By The Numbers — six-cell stat grid, permanent (no flip). -->
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy-dark mb-4">By the numbers</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5 mb-8 max-w-lg">
+          <div>
+            <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">20<span class="text-xl">+</span></p>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Years coaching</p>
+          </div>
+          <div>
+            <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">500<span class="text-xl">+</span></p>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Clients transformed</p>
+          </div>
+          <div>
+            <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">10,000<span class="text-xl">+</span></p>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Sessions delivered</p>
+          </div>
+          <div>
+            <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">Level 4</p>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/90">REPS Certified PT</p>
+          </div>
+          <div>
+            <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">UAE</p>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/90">REPS Member</p>
+          </div>
+          <div>
+            <p class="wybe-metric-value font-sans text-3xl md:text-4xl font-bold text-burgundy leading-none mb-1">5</p>
+            <p class="font-sans text-xs tracking-widest uppercase text-cream/90">Pro Certifications</p>
           </div>
         </div>
+
+        <a href="#services" class="inline-block bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase px-6 py-3 rounded-full hover:bg-burgundy-dark transition-colors">
+          Explore Services
+        </a>
       </div>
 
-      <!-- Right column: Treadmill image at natural size, bottom flush with the canvas bottom. -->
-      <div class="md:col-span-5 self-end flex justify-center md:justify-end">
+      <!-- Portrait — bottom-flush on desktop so the runner grounds the section. -->
+      <div class="md:col-span-5 flex justify-center md:justify-end">
         <img src="images/Treadmill.webp" alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
-             class="about-portrait block w-auto h-auto max-h-[640px] md:max-h-[820px] max-w-full object-contain">
+             class="about-portrait block w-auto h-auto max-h-[480px] md:max-h-[620px] max-w-full object-contain">
       </div>
     </div>
   </section>
@@ -982,7 +972,7 @@
        is on file. Cards reveal via the generic .wybe-reveal
        IntersectionObserver (main.js), same fade+slide used elsewhere,
        gated by prefers-reduced-motion. -->
-  <section id="results" class="wybe-results relative py-16 md:py-24">
+  <section id="results" class="wybe-results relative py-20 md:py-28">
     <div class="max-w-6xl mx-auto px-6">
 
       <!-- Header -->
@@ -1192,7 +1182,7 @@
   <!-- #SERVICES — normal-flow tabbed UI. The tabs on the left swap the
        visible service panel; the section is a single screenful of
        content, no scroll-jack. -->
-  <section id="services" class="wybe-story relative overflow-visible"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden md:min-h-[820px]">
+  <section id="services" class="wybe-story relative overflow-visible py-20 md:py-28"><div class="wybe-story-inner" data-story="services" data-story-mode="tabs"><div class="wybe-story-stage"><div class="w-full relative overflow-hidden">
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-14">
       <!-- Two-column layout: LEFT rail (title + tabs, ~1/3 width),
@@ -1756,7 +1746,7 @@
        skip the transition (see .wybe-faq__answer). Every visible Q&A
        is duplicated verbatim into the FAQPage JSON-LD in <head> so
        Google's Rich Results test passes. -->
-  <section id="faq" class="wybe-faq relative py-16 md:py-24">
+  <section id="faq" class="wybe-faq relative py-20 md:py-28">
     <div class="max-w-3xl mx-auto px-6">
       <div class="text-center mb-10 md:mb-12">
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">FAQ</p>
@@ -2036,7 +2026,7 @@
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
   <!-- #CONTACT — form panel over the animated canvas. -->
-  <section id="contact" class="pt-8 md:pt-10 pb-14">
+  <section id="contact" class="py-16 md:py-20">
     <div class="max-w-2xl mx-auto px-6">
       <div class="relative bg-charcoal/60 backdrop-blur-sm text-white overflow-hidden border border-burgundy/40">
         <div class="relative z-10 p-6 md:p-10 flex flex-col">
@@ -2058,15 +2048,17 @@
                 <!-- Reply-time note sits right under the message box -->
                 <p class="font-sans text-[10px] md:text-[11px] font-normal text-white text-center mt-1 drop-shadow-md">Send a message and Mansoor will reply within 48 hours.</p>
               </div>
-              <!-- Arrow send button: circular icon-only, right-aligned -->
-              <div class="flex justify-end">
-                <button type="submit" aria-label="Send message" class="group flex items-center justify-center w-12 h-12 rounded-full border-2 border-white bg-burgundy hover:bg-burgundy-dark hover:border-burgundy-dark transition-colors shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </button>
-              </div>
+              <!-- Primary submit: lime pill matching every other CTA on
+                   the site. Full-width so it reads as an intentional
+                   primary action, not an afterthought. -->
+              <button type="submit"
+                      class="w-full inline-flex items-center justify-center gap-2 bg-burgundy text-charcoal font-sans text-sm font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
+                Send Message
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
             </form>
             <div class="hidden mt-3 text-center py-4 border border-white/20 bg-charcoal/55">
               <p class="font-sans text-base font-bold text-white mb-1 drop-shadow-md">Message received.</p>
@@ -2763,28 +2755,10 @@
       });
     })();
 
-    // ── ABOUT ME: BIO ↔ METRICS SWAP ──────────────────
-    // Intro copy is default. Once user has scrolled past the bio, or clicks
-    // the "Learn More" button, metrics take over the same slot. Clicking
-    // "Back to Bio" returns to state A.
-    (function() {
-      const stage = document.querySelector('[data-about-stage]');
-      if (!stage) return;
-      const toggles = stage.querySelectorAll('[data-about-toggle]');
-      const setMetrics = (on) => stage.classList.toggle('is-metrics', on);
-      toggles.forEach(btn => btn.addEventListener('click', () => setMetrics(!stage.classList.contains('is-metrics'))));
-
-      // Auto-reveal when the About section has been scrolled ~55% into view.
-      const about = document.getElementById('about');
-      if (about && 'IntersectionObserver' in window) {
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) setMetrics(true);
-          });
-        }, { threshold: 0.55 });
-        obs.observe(about);
-      }
-    })();
+    // Old ABOUT bio↔metrics flip IIFE removed: the About section now
+    // shows the bio and the "By The Numbers" stat grid together
+    // permanently — no swap, no toggle button, no IntersectionObserver
+    // trigger. Content is always visible at rest.
 
     // Shared store of the latest unified calculator output for the PDF handler to read.
     const CalcStore = { unified: null };

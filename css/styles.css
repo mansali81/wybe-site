@@ -904,7 +904,7 @@ h4, h5, h6, .wybe-subhead {
   justify-content: space-between;
   gap: 16px;
   width: 100%;
-  padding: 20px 4px 20px 20px;
+  padding: 16px 4px 16px 18px;
   background: transparent;
   border: 0;
   border-left: 3px solid transparent;
@@ -932,37 +932,31 @@ h4, h5, h6, .wybe-subhead {
   border-left-color: #DDFF55;
   background: rgba(221, 255, 85, 0.06);
 }
-/* Plus icon that flips to minus on open. Pure CSS, no bitmap.  */
+/* Chevron that rotates 180° on open. Two absolute-positioned bars
+   at 45°/-45° angles form the ˅ shape; when the trigger is
+   expanded the whole icon rotates upward. */
 .wybe-faq__icon {
   position: relative;
   flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  transition: transform 0.25s ease;
 }
 .wybe-faq__icon::before,
 .wybe-faq__icon::after {
   content: "";
   position: absolute;
-  left: 50%;
   top: 50%;
+  width: 9px;
+  height: 2px;
   background: currentColor;
   border-radius: 1px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
 }
-.wybe-faq__icon::before {
-  width: 14px;
-  height: 2px;
-  transform: translate(-50%, -50%);
-}
-.wybe-faq__icon::after {
-  width: 2px;
-  height: 14px;
-  transform: translate(-50%, -50%);
-}
-.wybe-faq__trigger[aria-expanded="true"] .wybe-faq__icon::after {
-  transform: translate(-50%, -50%) rotate(90deg);
-  opacity: 0;
+.wybe-faq__icon::before { left: 0;  transform: translateY(-50%) rotate(45deg);  transform-origin: right center; }
+.wybe-faq__icon::after  { right: 0; transform: translateY(-50%) rotate(-45deg); transform-origin: left  center; }
+.wybe-faq__trigger[aria-expanded="true"] .wybe-faq__icon {
+  transform: rotate(180deg);
 }
 
 .wybe-faq__answer {
@@ -1297,35 +1291,32 @@ h4, h5, h6, .wybe-subhead {
   background: rgba(246, 242, 232, 0.25) !important;
 }
 
-/* ── WYBE SCENE — Daylight-style sticky-snap ─────────────
-   Generic sticky-pinned scene reused across the site. Any section
-   marked with .wybe-scene [data-scene] gets:
-     - a ~130vh outer wrapper (1 viewport of pin + ~30vh dwell)
-     - a sticky inner .wybe-scene__pin that sits under the fixed nav
-       for one full viewport before releasing
-     - per-line clip-mask reveals via .line-mask / .line-inner that
-       js/scenes.js tweens up into view on enter
-   On mobile / prefers-reduced-motion the pin collapses to a normal
-   stack and the reveal is skipped. */
+/* ── WYBE SCENE — compact feature strip ─────────────────
+   Formerly a sticky-pinned 130vh scene. Downsized to a single-screen
+   feature strip: normal-flow section with py-20 md:py-28 padding and
+   an inner container that centers content. Per-line clip-mask
+   reveals via .line-mask / .line-inner still play (via
+   js/scenes.js) but only for the section's own entrance; no pin,
+   no dwell, no 130vh wrapper. */
 
 .wybe-scene {
   position: relative;
   z-index: 0;
-  isolation: isolate; /* seal promoted line-inner reveals inside the scene */
-  min-height: 130vh;
+  isolation: isolate;
+  padding: clamp(64px, 8vw, 112px) 0;
   background: #002233;
 }
 
 .wybe-scene__pin {
-  position: sticky;
-  top: var(--nav-h, 97px);
-  height: calc(100vh - var(--nav-h, 97px));
+  /* Kept as the inner container so existing markup doesn't need to
+     be re-nested. Now just a flex-centered box, no sticky, no fixed
+     height. */
+  position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 clamp(24px, 6vw, 96px);
-  background: #002233;
 }
 .wybe-scene__inner {
   max-width: 1200px;
@@ -1384,9 +1375,9 @@ h4, h5, h6, .wybe-subhead {
 .scene-mega {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(120px, 22vw, 320px);
-  line-height: 0.85;
-  letter-spacing: -0.05em;
+  font-size: clamp(56px, 10vw, 128px); /* text-5xl md:text-7xl-ish, was clamp(120px, 22vw, 320px) */
+  line-height: 0.9;
+  letter-spacing: -0.04em;
   color: #DDFF55;
   margin: 0;
 }
@@ -1423,26 +1414,12 @@ h4, h5, h6, .wybe-subhead {
   color: #F6F2E8;
 }
 
-/* Mobile + reduced-motion fallback: kill the pin, stack scenes at
-   natural height, reset any inline transforms JS might have set,
-   collapse the 4-col grid to 2 cols. */
+/* Mobile + reduced-motion: reset any inline transforms JS might have
+   set (line-inner starts at yPercent 105 for the reveal), collapse
+   the 4-col Pillars grid to 2 cols. */
 @media (prefers-reduced-motion: reduce), (max-width: 768px) {
-  .wybe-scene {
-    min-height: auto;
-    padding: clamp(64px, 12vw, 120px) 0;
-  }
-  .wybe-scene__pin {
-    position: relative;
-    top: auto;
-    height: auto;
-    overflow: visible;
-  }
-  .line-inner {
-    transform: none !important;
-  }
-  .pillars-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .line-inner { transform: none !important; }
+  .pillars-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ── PROMISE + COMMITMENT MANIFESTO ─────────────────
@@ -1460,15 +1437,15 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   z-index: 0;
   isolation: isolate;
-  padding: clamp(80px, 12vw, 160px) 0;
+  padding: clamp(48px, 6vw, 112px) 0; /* py-20 md:py-28 rhythm */
 }
 .wybe-manifesto__inner {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 clamp(24px, 6vw, 96px);
   display: grid;
-  gap: clamp(80px, 12vw, 180px);
-  isolation: isolate; /* belt-and-braces around the two statements */
+  gap: clamp(40px, 5vw, 80px);
+  isolation: isolate;
 }
 .wybe-statement {
   position: relative;
