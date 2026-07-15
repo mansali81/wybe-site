@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSYVFQXV0M"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-LSYVFQXV0M');
-  </script>
-  <!-- End Google Analytics 4 -->
+  <!-- Analytics — Plausible (privacy-friendly, cookieless, no banner
+       required in the EU/GCC). Single async script, no layout shift.
+       REPLACE `wybe.fit` below with your actual Plausible site
+       identifier if it differs. The queue shim right after captures
+       any wybeTrack() calls that fire before the script finishes
+       loading (they're replayed once plausible() is defined).
+
+       Google Analytics 4 is intentionally NOT added — it requires a
+       cookie banner in most jurisdictions. Remove any pre-existing
+       gtag / GA snippet if you find one. -->
+  <script defer data-domain="wybe.fit"
+          src="https://plausible.io/js/script.tagged-events.outbound-links.js"></script>
+  <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -340,62 +344,120 @@
     "sameAs": [
       "https://www.instagram.com/wybewithmansoor",
       "https://www.tiktok.com/@wybewithmansoor",
-      "https://www.youtube.com/@wybewithmansoor"
+      "https://www.youtube.com/@wybewithmansoor",
+      "https://wa.me/971527530530"
     ]
   }
   </script>
 
-  <!-- ProfessionalService schema: WYBE -->
+  <!-- Structured data: canonical business entity for WYBE. Uses the
+       SportsActivityLocation subtype (a subtype of LocalBusiness)
+       because the venue is a training facility. Contains the address,
+       contactPoint (phone), geo, hasOfferCatalog (services), and the
+       existing 3 reviews + AggregateRating from the Client Results
+       section. VALUES ARE PLACEHOLDERS wherever a `REPLACE:` comment
+       appears — the client MUST fill real values before this section
+       gets submitted to Google. Reviews are also placeholders until
+       written consent is on file and the on-page testimonials are
+       replaced with real client copy. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "WYBE",
-    "alternateName": "Wellness You Build Everyday",
-    "description": "In-person personal training across Dubai and the United Arab Emirates, with fitness and nutrition consultations available to clients worldwide online. Evidence-based training, human performance nutrition and personal coaching.",
+    "@type": "SportsActivityLocation",
+    "@id": "https://wybe.fit/#business",
+    "name": "WYBE — Wellness You Build Everyday",
+    "alternateName": "WYBE with Mansoor",
     "url": "https://wybe.fit/",
-    "image": "https://wybe.fit/images/Contactus.png",
+    "image": "https://wybe.fit/images/Logo.svg",
+    "logo":  "https://wybe.fit/images/Logo.svg",
+    "description": "Personal training, human performance nutrition, and mind coaching with Mansoor Ahamad Ali. In-person across the UAE, online worldwide.",
+    "priceRange": "$$",
     "email": "mansoor@wybe.fit",
+    "founder": { "@type": "Person", "name": "Mansoor Ahamad Ali Mohamed" },
     "foundingDate": "2024",
-    "founder": {
-      "@type": "Person",
-      "name": "Mansoor Ahamad Ali Mohamed"
-    },
+
     "areaServed": [
-      { "@type": "City", "name": "Dubai" },
+      { "@type": "City",    "name": "Dubai" },
+      { "@type": "City",    "name": "Abu Dhabi" },
       { "@type": "Country", "name": "United Arab Emirates" },
-      { "@type": "Place", "name": "Worldwide (online)" }
+      { "@type": "Place",   "name": "Global (Online)" }
     ],
+
     "address": {
       "@type": "PostalAddress",
+      "streetAddress":   "REPLACE: street address (e.g. Studio 12, Building X, Al Wasl Road)",
       "addressLocality": "Dubai",
-      "addressCountry": "AE"
+      "addressRegion":   "Dubai",
+      "postalCode":      "REPLACE: postal code / P.O. Box",
+      "addressCountry":  "AE"
     },
+
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude":  "REPLACE: e.g. 25.2048",
+      "longitude": "REPLACE: e.g. 55.2708"
+    },
+
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone":   "+971527530530",
+        "email":       "mansoor@wybe.fit",
+        "availableLanguage": ["English", "Arabic", "Hindi"],
+        "areaServed":  ["AE", "Worldwide"]
+      }
+    ],
+
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name":  "WYBE Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "price": "69",
+          "url":   "https://wybe.fit/#services",
+          "itemOffered": { "@type": "Service", "name": "Online Fitness Consultation",  "serviceType": "Personal Training" }
+        },
+        {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "price": "159",
+          "url":   "https://wybe.fit/#services",
+          "itemOffered": { "@type": "Service", "name": "UAE In-Person Fitness Consultation", "serviceType": "Personal Training" }
+        },
+        {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "priceSpecification": { "@type": "PriceSpecification", "minPrice": "199", "maxPrice": "349", "priceCurrency": "USD" },
+          "url":   "https://wybe.fit/#services",
+          "itemOffered": { "@type": "Service", "name": "Nutrition Consultation", "serviceType": "Nutrition Coaching" }
+        },
+        {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "priceSpecification": { "@type": "PriceSpecification", "minPrice": "5000", "priceCurrency": "USD", "unitText": "MONTH" },
+          "url":   "https://wybe.fit/#services",
+          "itemOffered": { "@type": "Service", "name": "Personal Training (1-on-1, UAE)", "serviceType": "Personal Training" }
+        },
+        {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "priceSpecification": { "@type": "PriceSpecification", "minPrice": "100", "maxPrice": "200", "priceCurrency": "USD" },
+          "url":   "https://wybe.fit/#services",
+          "itemOffered": { "@type": "Service", "name": "Digital Training Plans (6-12 months)", "serviceType": "Training Plan" }
+        }
+      ]
+    },
+
     "sameAs": [
       "https://www.instagram.com/wybewithmansoor",
       "https://www.tiktok.com/@wybewithmansoor",
-      "https://www.youtube.com/@wybewithmansoor"
-    ]
-  }
-  </script>
+      "https://www.youtube.com/@wybewithmansoor",
+      "https://wa.me/971527530530"
+    ],
 
-  <!-- Structured data: Reviews + AggregateRating for the Client
-       Results section. VALUES ARE PLACEHOLDERS matching the 3 demo
-       testimonials — swap author names, dates, ratings, and
-       reviewCount for real values once written consent is on file
-       and the placeholder testimonials are replaced with actual
-       client copy. -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": "https://wybe.fit/#business",
-    "name": "WYBE — Wellness You Build Everyday",
-    "url": "https://wybe.fit/",
-    "image": "https://wybe.fit/images/Logo.svg",
-    "description": "Personal training, human performance nutrition, and mind coaching with Mansoor Ahamad Ali. Based in the UAE, delivered globally.",
-    "priceRange": "$$",
-    "areaServed": "Global",
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
@@ -1956,6 +2018,7 @@
 
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
+  <script src="js/track.js" defer></script>
   <script src="js/hero.js" defer></script>
   <script src="js/promise.js" defer></script>
   <script src="js/scenes.js" defer></script>
@@ -2375,8 +2438,10 @@
         if (quizState) quizState.classList.add('hidden');
         result.classList.remove('hidden');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Quiz done → release the Services sticky-snap lock.
-        document.dispatchEvent(new CustomEvent('wybe:quiz-end'));
+        // Quiz done → release the Services sticky-snap lock. Also
+        // carries the recommended plan on detail.plan so analytics
+        // (js/track.js) can label the Quiz Complete event.
+        document.dispatchEvent(new CustomEvent('wybe:quiz-end', { detail: { plan: plan } }));
       };
 
       // Reserve button → state B: hide the reserve CTA, reveal the name/email form.
