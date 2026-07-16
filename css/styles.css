@@ -11,14 +11,14 @@
    fresh page and see it immediately. `top: 0` at focus (not absolute
    position off-screen) because sr-only visually-hidden techniques
    sometimes still shift layout when focused. */
-/* Off-screen until keyboard-focused. `left: -9999px` is the safest
-   sr-only pattern — a transform can be clobbered by another rule; a
-   negative-left cannot. On :focus the link jumps to top-left of the
-   viewport with a lime pill background so it's unmissable. */
+/* Off-screen until keyboard-focused. Kept `left: 1rem` at all times
+   so the CSS box hasn't been moved horizontally; only `top` slides
+   the pill in and out of view. z-index 10000 puts it above the
+   fixed header (z-2000) when focused. */
 .wybe-skip-link {
   position: fixed;
-  top: auto;
-  left: -9999px;
+  top: -100px;
+  left: 1rem;
   z-index: 10000;
   padding: 12px 20px;
   background: #DDFF55;
@@ -31,11 +31,11 @@
   text-decoration: none;
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: top 0.15s ease;
 }
 .wybe-skip-link:focus,
 .wybe-skip-link:focus-visible {
   top: 1rem;
-  left: 1rem;
   outline: 2px solid #002233;
   outline-offset: 2px;
 }
@@ -88,12 +88,16 @@ body {
 }
 /* Every top-of-page section gets its own margin-top: var(--nav-h) so the
    fixed header never overlaps its content. .hero uses margin-top +
-   height math so the video begins exactly at the header's bottom edge. */
+   height math so the video begins exactly at the header's bottom edge.
+   Explicitly EXCLUDES the fixed <header class="wybe-header"> — pushing
+   the fixed bar down 97 px was creating the empty navy band above it. */
 .hero,
 main > *:first-child,
-body > header:first-of-type,
 body > section:first-of-type {
   margin-top: var(--nav-h);
+}
+.wybe-header {
+  margin-top: 0 !important;
 }
 
 h1, h2, h3, .font-heading {
@@ -1131,28 +1135,52 @@ h4, h5, h6, .wybe-subhead {
   text-align: right;
 }
 
+/* Reveal fail-safe (universal).
+   ---------------------------------------------------------------
+   Every reveal target starts at opacity: 1 / transform: none by
+   default. Only when the reveal system has successfully initialised
+   (main.js scenes.js + promise.js add `html.gsap-ready`) do the
+   hidden-initial states apply.
+   If any of those scripts fails to load or crashes before setting
+   the class, content stays visible instead of freezing at opacity 0.
+   Reduced-motion users force-override to visible regardless of
+   .gsap-ready. */
+html:not(.gsap-ready) [data-line],
+html:not(.gsap-ready) [data-splash],
+html:not(.gsap-ready) .wybe-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-line],
+  [data-splash],
+  [data-flip],
+  .wybe-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* Reveal-on-scroll (main.js IntersectionObserver adds .is-visible).
-   Safety: the hidden-initial state is scoped to html.js-active — a
-   class main.js sets synchronously. If the script fails to load or
-   crashes before that class is added, .wybe-reveal stays visible
-   (no invisible content). Reduced-motion users also skip the whole
-   fade because the media query below doesn't match for them. */
+   Hidden-initial state gated on html.gsap-ready per above. Reduced-
+   motion users skip the whole fade because the media query below
+   doesn't match for them. */
 @media (prefers-reduced-motion: no-preference) {
-  html.js-active .wybe-reveal {
+  html.gsap-ready .wybe-reveal {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  html.js-active .wybe-reveal.is-visible {
+  html.gsap-ready .wybe-reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
   }
   /* Stagger the cards inside a row by nth-child so they fade in in
      sequence when the parent grid enters the viewport. */
-  html.js-active .wybe-reveal:nth-child(2) { transition-delay: 0.08s; }
-  html.js-active .wybe-reveal:nth-child(3) { transition-delay: 0.16s; }
-  html.js-active .wybe-reveal:nth-child(4) { transition-delay: 0.24s; }
+  html.gsap-ready .wybe-reveal:nth-child(2) { transition-delay: 0.08s; }
+  html.gsap-ready .wybe-reveal:nth-child(3) { transition-delay: 0.16s; }
+  html.gsap-ready .wybe-reveal:nth-child(4) { transition-delay: 0.24s; }
 }
 
 /* ── UNIFIED CALCULATOR TILES ────────────────────────────

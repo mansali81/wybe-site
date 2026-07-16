@@ -1,10 +1,3 @@
-// Safety flag: gates the hidden-initial state of .wybe-reveal in
-// css/styles.css. If this script fails to load or execute for any
-// reason, `.js-active` is never set and .wybe-reveal elements stay
-// visible instead of hidden-forever at opacity: 0. Set as early as
-// possible (module top, before DOMContentLoaded).
-document.documentElement.classList.add('js-active');
-
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── FIXED NAV HEIGHT SYNC ────────────────────────────
@@ -239,14 +232,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // figures for a light, staggered reveal without needing GSAP.
   // CSS gates the transition behind prefers-reduced-motion: no-preference,
   // so reduced-motion users see the final state instantly.
+  //
+  // Safety flag: `html.gsap-ready` is added on this IIFE's success
+  // path. It gates the hidden-initial state of every reveal target
+  // (.wybe-reveal, [data-line], [data-splash]) in css/styles.css.
+  // If this IIFE never runs or aborts before setting the class,
+  // content stays visible (the fail-safe rules in styles.css force
+  // opacity: 1 on all reveal targets when the class isn't present).
   (function () {
     const items = document.querySelectorAll('.wybe-reveal');
+    const setReady = () => document.documentElement.classList.add('gsap-ready');
     if (!items.length || !('IntersectionObserver' in window)) {
       items.forEach(el => el.classList.add('is-visible')); // reveal statically
+      setReady();
       return;
     }
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       items.forEach(el => el.classList.add('is-visible'));
+      setReady();
       return;
     }
     const io = new IntersectionObserver((entries) => {
@@ -258,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
     items.forEach(el => io.observe(el));
+    setReady();
   })();
 
   // ── WEB3FORMS HANDLER ────────────────────────────────
