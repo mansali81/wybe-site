@@ -1332,11 +1332,23 @@ html:not(.gsap-ready) .wybe-reveal {
 .pillar-cell__name {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(24px, 2.6vw, 42px);
+  font-size: clamp(22px, 2.2vw, 34px);
   line-height: 1;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: #F6F2E8;
+}
+/* Short description below each pillar name — added when the pillars
+   strip was folded into #about. Small cream body copy so the four
+   cells read as one balanced row on desktop and stack cleanly on
+   mobile. */
+.pillar-cell__desc {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(246, 242, 232, 0.75);
+  margin: 4px 0 0;
 }
 
 /* Mobile + reduced-motion: reset any inline transforms JS might have
@@ -1347,118 +1359,6 @@ html:not(.gsap-ready) .wybe-reveal {
   .pillars-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* === PILLARS-3D START ===
-   3D rotating carousel for the Foundation section. Base state (no
-   `.is-3d-active` class) is a 2-col grid on mobile / 4-col on
-   desktop — this is what mobile users and reduced-motion users see.
-   Once js/pillars-3d.js confirms it's safe to enable 3D on desktop,
-   it adds `.is-3d-active` on the stage; only then does the ring
-   become a rotating prism.
-   To remove the feature completely, delete this whole block (through
-   PILLARS-3D END) plus the matching markup in index.html plus
-   js/pillars-3d.js. */
-.pillars-3d-stage {
-  margin-top: clamp(32px, 4vw, 56px);
-}
-.pillars-3d-ring {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 40px);
-  max-width: 900px;
-  margin: 0 auto;
-}
-@media (min-width: 900px) {
-  .pillars-3d-ring { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
-/* Each face styled like the original .pillar-cell card. */
-.pillar-face {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(8px, 0.8vw, 14px);
-  padding: 20px 22px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(221, 255, 85, 0.25); /* lime accent */
-  color: #F6F2E8;
-  text-align: left;
-}
-.pillar-face__index {
-  font-family: var(--font-subhead);
-  font-weight: 600;
-  font-size: clamp(12px, 1vw, 14px);
-  letter-spacing: 0.24em;
-  color: #DDFF55;
-}
-.pillar-face__name {
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(24px, 2.6vw, 42px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: #F6F2E8;
-}
-.pillar-face__desc {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 1.5;
-  color: rgba(246, 242, 232, 0.75);
-  margin: 6px 0 0;
-}
-
-/* .is-3d-active — JS adds this on desktop, no-reduced-motion.
-   The ring becomes a viewport-centered prism, faces rotate into a
-   cube arrangement. `.wybe-scene__pin` gets a fixed height so the
-   pin has something to pin against. */
-.pillars-3d-stage.is-3d-active {
-  perspective: 1200px;
-  perspective-origin: 50% 50%;
-}
-.pillars-3d-stage.is-3d-active .pillars-3d-ring {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 420px;
-  max-width: none;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.pillars-3d-stage.is-3d-active .pillar-face {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(520px, 80vw);
-  height: 320px;
-  margin: -160px 0 0 min(-260px, -40vw);
-  backface-visibility: hidden;
-  justify-content: center;
-  padding: 40px;
-  border-radius: 20px;
-  background: rgba(0, 34, 51, 0.85);
-  border: 1px solid rgba(221, 255, 85, 0.3);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  transition: opacity 0.4s ease;
-}
-.pillars-3d-stage.is-3d-active .pillar-face[data-face="0"] { transform: rotateY(0deg)   translateZ(320px); }
-.pillars-3d-stage.is-3d-active .pillar-face[data-face="1"] { transform: rotateY(90deg)  translateZ(320px); }
-.pillars-3d-stage.is-3d-active .pillar-face[data-face="2"] { transform: rotateY(180deg) translateZ(320px); }
-.pillars-3d-stage.is-3d-active .pillar-face[data-face="3"] { transform: rotateY(270deg) translateZ(320px); }
-
-/* Larger, editorial type on the active faces (they get more room). */
-.pillars-3d-stage.is-3d-active .pillar-face__name {
-  font-size: clamp(40px, 5vw, 64px);
-  margin-top: 8px;
-}
-.pillars-3d-stage.is-3d-active .pillar-face__desc {
-  font-size: 15px;
-  line-height: 1.55;
-  margin-top: 14px;
-  max-width: 380px;
-}
-/* === PILLARS-3D END === */
 
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────
