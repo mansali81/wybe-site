@@ -193,16 +193,61 @@ h4, h5, h6, .wybe-subhead {
   border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Brand lockup removed — the header's top-left slot is now an empty
-   <span class="wybe-brand-slot">. The old .wybe-brand / .wybe-brand__mark
-   rules are gone. The slot has zero width so it doesn't push the nav
-   links around; justify-between on the flex parent still pins them
-   to the right edge. */
-.wybe-brand-slot {
-  display: inline-block;
-  width: 0;
-  height: 64px;      /* matches the removed mark's height so the
-                        nav row's vertical rhythm is unchanged */
+/* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
+   Vertically centered inside the nav row. Hover mirrors the nav
+   links — a lime tint filter on the mark plus an animated underline
+   sweeping left → right. */
+.wybe-brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: #F6F2E8;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 6px 2px;
+}
+.wybe-brand__mark {
+  height: 64px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+/* Underline sweep — matches .wybe-nav-link's ::after so the brand
+   participates in the same hover language. */
+.wybe-brand::after {
+  content: '';
+  position: absolute;
+  left: 6px; right: 6px;
+  bottom: -2px;
+  height: 2px;
+  background: #DDFF55;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 1px;
+  pointer-events: none;
+}
+/* Lime hover tint. The filter chain re-maps any base colour to lime
+   (#DDFF55) — dark artwork inside the SVG lights up green on hover. */
+.wybe-brand:hover .wybe-brand__mark {
+  filter:
+    brightness(0)
+    saturate(100%)
+    invert(94%)
+    sepia(38%)
+    saturate(1090%)
+    hue-rotate(15deg)
+    brightness(103%)
+    contrast(101%);
+}
+.wybe-brand:hover::after { transform: scaleX(1); }
+.wybe-brand:focus-visible {
+  outline: 2px solid #DDFF55;
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 /* Desktop nav links */
