@@ -577,12 +577,10 @@
   <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-[96px]">
-        <!-- Brand: single combined SVG (logo + WYBE + tagline baked in).
-             Clicking the lockup routes to #home. -->
-        <a href="#home" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
-          <img src="images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
-               class="wybe-brand__mark" draggable="false">
-        </a>
+        <!-- Header logo slot intentionally left empty. Invisible spacer
+             keeps the flex row's justify-between behaviour so the nav
+             links stay right-aligned. -->
+        <span class="wybe-brand-slot" aria-hidden="true"></span>
         <!-- Desktop nav links -->
         <div class="hidden md:flex items-center gap-7">
           <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculators</a>
