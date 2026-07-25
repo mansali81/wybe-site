@@ -1307,56 +1307,10 @@ html:not(.gsap-ready) .wybe-reveal {
   margin: 0;
 }
 
-/* Four Pillars grid — sits inside a single .wybe-scene */
-.pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(24px, 3vw, 56px);
-  align-items: end;
-}
-.pillar-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(8px, 0.8vw, 14px);
-  border-top: 1px solid rgba(221, 255, 85, 0.35);
-  padding-top: clamp(18px, 1.8vw, 28px);
-}
-.pillar-cell__index {
-  font-family: var(--font-subhead);
-  font-weight: 600;
-  font-size: clamp(12px, 1vw, 14px);
-  letter-spacing: 0.24em;
-  color: #DDFF55;
-}
-.pillar-cell__name {
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(22px, 2.2vw, 34px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: #F6F2E8;
-}
-/* Short description below each pillar name — added when the pillars
-   strip was folded into #about. Small cream body copy so the four
-   cells read as one balanced row on desktop and stack cleanly on
-   mobile. */
-.pillar-cell__desc {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 1.5;
-  color: rgba(246, 242, 232, 0.75);
-  margin: 4px 0 0;
-}
-
 /* Mobile + reduced-motion: reset any inline transforms JS might have
-   set (line-inner starts at yPercent 105 for the reveal), collapse
-   the 4-col Pillars grid to 2 cols. */
+   set on .line-inner (starts at yPercent 105 for the scene reveal). */
 @media (prefers-reduced-motion: reduce), (max-width: 768px) {
   .line-inner { transform: none !important; }
-  .pillars-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 
