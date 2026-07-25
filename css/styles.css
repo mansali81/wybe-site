@@ -1458,127 +1458,119 @@ html:not(.gsap-ready) .wybe-reveal {
   .pillars-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* ── PROMISE + COMMITMENT MANIFESTO ─────────────────
-   Two large editorial statements on the site's navy field. Each block
-   has an oversized Inter Black heading sitting over a soft blurred lime
-   "splash" blob (radial gradient) that scales up on scroll before the
-   type wipes in — energetic, physical, not corporate. See js/promise.js
-   for the ScrollTrigger reveal. */
-/* Manifesto section — Promise + Commitment blocks with large lime
-   headings that GSAP promotes to their own compositor layers. Section
-   is a sealed stacking context (isolation: isolate + z-index: 0)
-   so those promoted layers composite INSIDE the section and can't
-   climb above the z-index: 2000 fixed header. */
-.wybe-manifesto {
-  position: relative;
-  z-index: 0;
-  isolation: isolate;
-  padding: clamp(48px, 6vw, 112px) 0; /* py-20 md:py-28 rhythm */
+/* === PILLARS-3D START ===
+   3D rotating carousel for the Foundation section. Base state (no
+   `.is-3d-active` class) is a 2-col grid on mobile / 4-col on
+   desktop — this is what mobile users and reduced-motion users see.
+   Once js/pillars-3d.js confirms it's safe to enable 3D on desktop,
+   it adds `.is-3d-active` on the stage; only then does the ring
+   become a rotating prism.
+   To remove the feature completely, delete this whole block (through
+   PILLARS-3D END) plus the matching markup in index.html plus
+   js/pillars-3d.js. */
+.pillars-3d-stage {
+  margin-top: clamp(32px, 4vw, 56px);
 }
-.wybe-manifesto__inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 6vw, 96px);
+.pillars-3d-ring {
   display: grid;
-  gap: clamp(40px, 5vw, 80px);
-  isolation: isolate;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+  max-width: 900px;
+  margin: 0 auto;
 }
-.wybe-statement {
-  position: relative;
-  max-width: 780px;
-  isolation: isolate; /* keeps the splash z-order predictable */
-  /* Clip the splash to the statement's bounds so it can bleed inside
-     but never pushes horizontal scroll on narrow viewports (390 px
-     mobile was the offender). `clip` preserves sticky descendants. */
-  overflow-x: clip;
-}
-.wybe-statement--offset {
-  margin-left: auto;
-  padding-left: clamp(24px, 8vw, 120px); /* dynamic right-drift */
+@media (min-width: 900px) {
+  .pillars-3d-ring { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-/* Splash: a wet-paint PNG (images/splash-green.png) painted behind each
-   heading. Bigger than the type so the heading sits inside the splash.
-   GSAP animates opacity + scale (+ rotation for the flipped variant). */
-.wybe-statement__splash {
-  position: absolute;
-  z-index: -1;
-  left:   clamp(-120px, -8vw, -40px);
-  top:    clamp(-100px, -10vw, -70px);
-  width:  clamp(420px, 70%, 780px);
-  height: auto;
-  /* Cap the splash at its container width so the 420 px min never
-     exceeds a narrow-viewport statement (was pushing horizontal
-     scroll at 390 px). */
-  max-width: 100%;
-  max-height: 300%;
-  object-fit: contain;
-  opacity: 0;
-  transform-origin: 40% 55%;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  /* will-change added dynamically by js/promise.js during the reveal
-     tween. Removed the static declaration — see hero-video note. */
+/* Each face styled like the original .pillar-cell card. */
+.pillar-face {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(8px, 0.8vw, 14px);
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(221, 255, 85, 0.25); /* lime accent */
+  color: #F6F2E8;
+  text-align: left;
 }
-/* Second block gets a horizontally flipped + slightly rotated variant so
-   the two splashes don't twin. The base transform is applied by GSAP via
-   scaleX/scaleY + rotation so it composes cleanly with the reveal tween. */
-.wybe-statement__splash--flip {
-  left: auto;
-  right:  clamp(-140px, -9vw, -50px);
-  top:    clamp(-90px, -9vw, -60px);
-  transform-origin: 60% 55%;
+.pillar-face__index {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  font-size: clamp(12px, 1vw, 14px);
+  letter-spacing: 0.24em;
+  color: #DDFF55;
 }
-
-/* Big editorial heading — Inter Black uppercase, lime accent. Tightened
-   size to ~40-64px per the spec so it reads punchy, not billboard. */
-.wybe-statement__heading {
+.pillar-face__name {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.05;
+  font-size: clamp(24px, 2.6vw, 42px);
+  line-height: 1;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: #DDFF55;
-  margin: 0 0 clamp(18px, 2vw, 30px);
-  text-shadow:
-    0 3px 20px rgba(0, 20, 30, 0.55),
-    0 1px 4px rgba(0, 0, 0, 0.40);
+  color: #F6F2E8;
 }
-
-/* Body copy — Raleway, cream, high contrast for legibility. */
-.wybe-statement__body {
+.pillar-face__desc {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: clamp(17px, 1.5vw, 22px);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(246, 242, 232, 0.75);
+  margin: 6px 0 0;
+}
+
+/* .is-3d-active — JS adds this on desktop, no-reduced-motion.
+   The ring becomes a viewport-centered prism, faces rotate into a
+   cube arrangement. `.wybe-scene__pin` gets a fixed height so the
+   pin has something to pin against. */
+.pillars-3d-stage.is-3d-active {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+.pillars-3d-stage.is-3d-active .pillars-3d-ring {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 420px;
+  max-width: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.pillars-3d-stage.is-3d-active .pillar-face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(520px, 80vw);
+  height: 320px;
+  margin: -160px 0 0 min(-260px, -40vw);
+  backface-visibility: hidden;
+  justify-content: center;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(0, 34, 51, 0.85);
+  border: 1px solid rgba(221, 255, 85, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.4s ease;
+}
+.pillars-3d-stage.is-3d-active .pillar-face[data-face="0"] { transform: rotateY(0deg)   translateZ(320px); }
+.pillars-3d-stage.is-3d-active .pillar-face[data-face="1"] { transform: rotateY(90deg)  translateZ(320px); }
+.pillars-3d-stage.is-3d-active .pillar-face[data-face="2"] { transform: rotateY(180deg) translateZ(320px); }
+.pillars-3d-stage.is-3d-active .pillar-face[data-face="3"] { transform: rotateY(270deg) translateZ(320px); }
+
+/* Larger, editorial type on the active faces (they get more room). */
+.pillars-3d-stage.is-3d-active .pillar-face__name {
+  font-size: clamp(40px, 5vw, 64px);
+  margin-top: 8px;
+}
+.pillars-3d-stage.is-3d-active .pillar-face__desc {
+  font-size: 15px;
   line-height: 1.55;
-  color: #F6F2E8;
-  max-width: 640px;
-  margin: 0;
+  margin-top: 14px;
+  max-width: 380px;
 }
+/* === PILLARS-3D END === */
 
-/* GSAP-driven initial states for the reveal (JS overrides these on
-   completion). If JS never runs the CSS below ensures nothing is stuck
-   invisible. */
-/* will-change on these two removed — js/promise.js sets it via GSAP
-   for the duration of the reveal tween only. Keeping it static
-   promoted the huge Promise / Commitment headings to permanent
-   compositor layers that painted above the fixed nav. */
-
-/* Reduced motion: show everything statically. */
-@media (prefers-reduced-motion: reduce) {
-  .wybe-statement__splash {
-    transform: scale(1);
-    opacity: 1;
-  }
-  .wybe-statement__heading,
-  .wybe-statement__body {
-    opacity: 1 !important;
-    transform: none !important;
-    clip-path: inset(0% 0% 0% 0%) !important;
-  }
-}
 
 /* ── SITE-WIDE HOVER REACTIVITY ──────────────────
    Applies to nav + footer text links (skips pill CTAs by class) and any

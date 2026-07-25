@@ -668,46 +668,6 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- PROMISE + COMMITMENT — editorial statements on the navy field.
-       No cards, no borders. Each block has a large uppercase Inter Black
-       heading sitting over a blurred lime "splash" blob for energy, then
-       a Raleway body paragraph in cream below. Commitment is slightly
-       right-offset on desktop so the pair reads as dynamic, not stacked
-       corporate. GSAP + ScrollTrigger reveals: splash in first, then the
-       heading + body wipe/fade in behind it. See js/promise.js. -->
-  <section class="wybe-manifesto" data-manifesto>
-    <div class="wybe-manifesto__inner">
-
-      <!-- PROMISE -->
-      <div class="wybe-statement" data-statement>
-        <img class="wybe-statement__splash" data-splash
-             src="images/splash-green.png" alt="" draggable="false"
-             onerror="this.style.visibility='hidden'">
-        <h2 class="wybe-statement__heading" data-line>Promise</h2>
-        <p class="wybe-statement__body" data-line>
-          Wellness is a daily discipline built into the fabric of daily life, not a 30-day challenge.
-        </p>
-      </div>
-
-      <!-- COMMITMENT — offset right on desktop; splash horizontally flipped
-           + rotated a bit so the pair reads as two distinct throws of paint. -->
-      <div class="wybe-statement wybe-statement--offset" data-statement>
-        <img class="wybe-statement__splash wybe-statement__splash--flip"
-             data-splash data-flip
-             src="images/splash-green.png" alt="" draggable="false"
-             onerror="this.style.visibility='hidden'">
-        <h2 class="wybe-statement__heading" data-line>Commitment</h2>
-        <p class="wybe-statement__body" data-line>
-          I hand you the real tools &mdash; the science, the structure, and the straight-up accountability &mdash; to build that discipline into your body, your nutrition, and your mind. For life, not for 30 days.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Section divider -->
-  <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
-
   <!-- #CALCULATORS -->
   <!-- CALCULATORS — one unified form → one report. Fill what you know
        and the results panel unlocks whichever metrics your inputs
@@ -1140,38 +1100,54 @@
   <!-- Section divider -->
   <div class="flex justify-center py-6"><div class="w-16 h-px bg-burgundy/70"></div></div>
 
-  <!-- THE FOUNDATION — one card, four pillars in a grid, wrapped in the
-       shared .wybe-scene sticky-snap pattern so the section pins into view
-       as the reader arrives and the copy reveals via line-masks. See
-       js/scenes.js for the reveal controller. -->
-  <section class="wybe-scene" data-scene>
+  <!-- THE FOUNDATION — heading + Four Pillars carousel. On desktop the
+       four faces rotate as the section is scroll-pinned. On mobile /
+       reduced-motion they render as a static 2×2 grid. All new
+       markup / CSS / JS lives inside the PILLARS-3D START/END
+       markers so the whole feature can be lifted out cleanly.
+       See js/pillars-3d.js for the ScrollTrigger controller. -->
+  <section class="wybe-scene" data-scene data-pillars-3d-section>
     <div class="wybe-scene__pin">
       <div class="wybe-scene__inner text-center">
         <p class="scene-eyebrow">
           <span class="line-mask"><span class="line-inner">The Foundation</span></span>
         </p>
         <h2 class="scene-title">
-          <span class="line-mask"><span class="line-inner">Four Pillars. One System.</span></span>
+          <span class="line-mask"><span class="line-inner">Four Pillars</span></span>
         </h2>
 
-        <div class="pillars-grid">
-          <div class="pillar-cell">
-            <span class="pillar-cell__index line-mask"><span class="line-inner">01</span></span>
-            <span class="pillar-cell__name line-mask"><span class="line-inner">Mindset</span></span>
-          </div>
-          <div class="pillar-cell">
-            <span class="pillar-cell__index line-mask"><span class="line-inner">02</span></span>
-            <span class="pillar-cell__name line-mask"><span class="line-inner">Nutrition</span></span>
-          </div>
-          <div class="pillar-cell">
-            <span class="pillar-cell__index line-mask"><span class="line-inner">03</span></span>
-            <span class="pillar-cell__name line-mask"><span class="line-inner">Training</span></span>
-          </div>
-          <div class="pillar-cell">
-            <span class="pillar-cell__index line-mask"><span class="line-inner">04</span></span>
-            <span class="pillar-cell__name line-mask"><span class="line-inner">Recovery</span></span>
+        <!-- === PILLARS-3D START ===
+             The four pillars in a rotating 3D ring. To fully remove
+             the feature, delete this block (through PILLARS-3D END)
+             AND the matching css/styles.css block AND
+             js/pillars-3d.js. The original stacked-grid layout can
+             be restored by pasting a <div class="pillars-grid"> with
+             four <div class="pillar-cell"> children in its place. -->
+        <div class="pillars-3d-stage" data-pillars-3d>
+          <div class="pillars-3d-ring">
+            <div class="pillar-face" data-face="0" aria-label="Pillar 1 of 4: Mindset">
+              <span class="pillar-face__index">01</span>
+              <span class="pillar-face__name">Mindset</span>
+              <p class="pillar-face__desc">Discipline, identity, and the quiet daily decisions that decide everything else.</p>
+            </div>
+            <div class="pillar-face" data-face="1" aria-label="Pillar 2 of 4: Nutrition">
+              <span class="pillar-face__index">02</span>
+              <span class="pillar-face__name">Nutrition</span>
+              <p class="pillar-face__desc">Evidence-based fuelling for the life and training you actually have.</p>
+            </div>
+            <div class="pillar-face" data-face="2" aria-label="Pillar 3 of 4: Training">
+              <span class="pillar-face__index">03</span>
+              <span class="pillar-face__name">Training</span>
+              <p class="pillar-face__desc">Progressive, periodised work built on biomechanics and honest measurement.</p>
+            </div>
+            <div class="pillar-face" data-face="3" aria-label="Pillar 4 of 4: Recovery">
+              <span class="pillar-face__index">04</span>
+              <span class="pillar-face__name">Recovery</span>
+              <p class="pillar-face__desc">Breath, sleep, mobility &mdash; the multipliers that let the rest actually compound.</p>
+            </div>
           </div>
         </div>
+        <!-- === PILLARS-3D END === -->
       </div>
     </div>
   </section>
@@ -2152,8 +2128,9 @@
   <script src="js/main.js"></script>
   <script src="js/track.js" defer></script>
   <script src="js/hero.js" defer></script>
-  <script src="js/promise.js" defer></script>
   <script src="js/scenes.js" defer></script>
+  <!-- === PILLARS-3D script wiring — remove alongside the CSS + markup block === -->
+  <script src="js/pillars-3d.js" defer></script>
   <script>
     // ── SERVICE TABS ──────────────────────────────────
     // Four stacked tabs. Click one to open that service's panel + swap the
