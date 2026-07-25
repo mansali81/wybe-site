@@ -21,8 +21,8 @@
   left: 1rem;
   z-index: 10000;
   padding: 12px 20px;
-  background: #DDFF55;
-  color: #002233;
+  background: #FF6600;
+  color: #000000;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 14px;
@@ -36,7 +36,7 @@
 .wybe-skip-link:focus,
 .wybe-skip-link:focus-visible {
   top: 1rem;
-  outline: 2px solid #002233;
+  outline: 2px solid #000000;
   outline-offset: 2px;
 }
 
@@ -160,8 +160,8 @@ h4, h5, h6, .wybe-subhead {
   z-index: 2000;                 /* wins over every promoted layer */
   isolation: isolate;            /* new stacking context — sealed */
   transform: translateZ(0);      /* dedicated compositor layer */
-  background: #002233;           /* opaque backdrop under the blur */
-  background-color: #002233;
+  background: #000000;           /* opaque backdrop under the blur */
+  background-color: #000000;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
@@ -223,7 +223,7 @@ h4, h5, h6, .wybe-subhead {
   left: 6px; right: 6px;
   bottom: -2px;
   height: 2px;
-  background: #DDFF55;
+  background: #FF6600;
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -231,7 +231,7 @@ h4, h5, h6, .wybe-subhead {
   pointer-events: none;
 }
 /* Lime hover tint. The filter chain re-maps any base colour to lime
-   (#DDFF55) — dark artwork inside the SVG lights up green on hover. */
+   (#FF6600) — dark artwork inside the SVG lights up green on hover. */
 .wybe-brand:hover .wybe-brand__mark {
   filter:
     brightness(0)
@@ -245,7 +245,7 @@ h4, h5, h6, .wybe-subhead {
 }
 .wybe-brand:hover::after { transform: scaleX(1); }
 .wybe-brand:focus-visible {
-  outline: 2px solid #DDFF55;
+  outline: 2px solid #FF6600;
   outline-offset: 4px;
   border-radius: 4px;
 }
@@ -268,20 +268,20 @@ h4, h5, h6, .wybe-subhead {
   left: 0; right: 0;
   bottom: -2px;
   height: 2px;
-  background: #DDFF55;
+  background: #FF6600;
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   border-radius: 1px;
 }
-.wybe-nav-link:hover { color: #DDFF55; }
+.wybe-nav-link:hover { color: #FF6600; }
 .wybe-nav-link:hover::after,
 .wybe-nav-link.is-active::after,
 .wybe-nav-link.text-burgundy::after { transform: scaleX(1); }
 .wybe-nav-link.is-active,
-.wybe-nav-link.text-burgundy { color: #DDFF55; }
+.wybe-nav-link.text-burgundy { color: #FF6600; }
 .wybe-nav-link:focus-visible {
-  outline: 2px solid #DDFF55;
+  outline: 2px solid #FF6600;
   outline-offset: 4px;
   border-radius: 4px;
 }
@@ -291,8 +291,8 @@ h4, h5, h6, .wybe-subhead {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #DDFF55;
-  color: #002233;
+  background: #FF6600;
+  color: #000000;
   font-family: var(--font-subhead);
   font-weight: 600;
   font-size: 13px;
@@ -302,12 +302,12 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 999px;
   text-decoration: none;
   transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(221, 255, 85, 0.15);
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
 }
 .wybe-cta:hover {
   transform: translateY(-1px) scale(1.03);
   filter: brightness(1.06);
-  box-shadow: 0 8px 22px rgba(221, 255, 85, 0.30);
+  box-shadow: 0 8px 22px rgba(255, 102, 0, 0.30);
 }
 .wybe-cta:focus-visible {
   outline: 2px solid #F6F2E8;
@@ -343,7 +343,7 @@ h4, h5, h6, .wybe-subhead {
 .wybe-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .wybe-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 .wybe-hamburger:focus-visible {
-  outline: 2px solid #DDFF55;
+  outline: 2px solid #FF6600;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -352,7 +352,7 @@ h4, h5, h6, .wybe-subhead {
 .wybe-mobile-menu {
   padding: 12px 24px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 34, 51, 0.95);
+  background: rgba(0, 0, 0, 0.95);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   display: flex;
@@ -371,9 +371,9 @@ h4, h5, h6, .wybe-subhead {
   transition: color 0.2s ease;
 }
 .wybe-mobile-link:hover,
-.wybe-mobile-link.is-active { color: #DDFF55; }
+.wybe-mobile-link.is-active { color: #FF6600; }
 .wybe-mobile-link:focus-visible {
-  outline: 2px solid #DDFF55;
+  outline: 2px solid #FF6600;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -457,6 +457,48 @@ h4, h5, h6, .wybe-subhead {
     will-change: transform;
   }
 
+  /* ── PARALLAX BACKGROUND UTILITY (.parallax-bg) ─────────────
+     Section-scoped image parallax. Wrap any content-flow image in
+     <figure class="parallax-bg"><img class="parallax-bg__img"></figure>
+     — the wrapper clips to its own box, the image is oversized inside
+     and translates on scroll via JS (see main.js: SCOPED PARALLAX).
+     Element-relative math means the effect works anywhere on the page,
+     not just at the top. iOS-safe: uses composited transforms, no
+     background-attachment: fixed (which iOS Safari drops silently).
+     A reduced-motion query hard-disables the transform site-wide. */
+  .parallax-bg {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .parallax-bg__img {
+    position: absolute;
+    inset: -12% 0;              /* runway for translateY */
+    width: 100%;
+    height: 124%;
+    object-fit: cover;
+    z-index: 0;
+    will-change: transform;
+    transform: translate3d(0, var(--parallax-y, 0px), 0);
+    transition: none;
+  }
+  /* Any non-image child of a .parallax-bg wrapper sits above the image. */
+  .parallax-bg > :not(.parallax-bg__img) {
+    position: relative;
+    z-index: 1;
+  }
+  /* Accessibility + iOS Safari safety: never parallax under reduced-motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .parallax-bg__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: none !important;
+      will-change: auto;
+    }
+  }
+
   /* Scroll progress indicator: a thin lime line at the very top of the page
      that fills left-to-right as the user scrolls. Populated by JS in
      main.js — see the wybe-scroll-progress block. */
@@ -465,8 +507,8 @@ h4, h5, h6, .wybe-subhead {
     top: 0; left: 0;
     height: 2px;
     width: 0%;
-    background: linear-gradient(90deg, rgba(221,255,85,0.6), rgba(221,255,85,1));
-    box-shadow: 0 0 10px rgba(221,255,85,0.5);
+    background: linear-gradient(90deg, rgba(255,102,0,0.6), rgba(255,102,0,1));
+    box-shadow: 0 0 10px rgba(255,102,0,0.5);
     z-index: 10000;
     pointer-events: none;
     transition: width 0.1s linear;
@@ -485,7 +527,7 @@ h4, h5, h6, .wybe-subhead {
   width: 100%;
   height: calc(100vh - var(--nav-h));
   overflow: hidden;
-  background: #002233;
+  background: #000000;
   z-index: 0;
   isolation: isolate;
 }
@@ -542,7 +584,7 @@ h4, h5, h6, .wybe-subhead {
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #DDFF55;
+  color: #FF6600;
   margin: 0 0 clamp(20px, 2.2vw, 30px);
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
@@ -560,8 +602,8 @@ h4, h5, h6, .wybe-subhead {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #DDFF55;
-  color: #002233;
+  background: #FF6600;
+  color: #000000;
   font-family: var(--font-subhead);
   font-weight: 600;
   font-size: 14px;
@@ -570,7 +612,7 @@ h4, h5, h6, .wybe-subhead {
   padding: 16px 32px;
   border-radius: 999px;
   text-decoration: none;
-  box-shadow: 0 6px 18px rgba(221, 255, 85, 0.20);
+  box-shadow: 0 6px 18px rgba(255, 102, 0, 0.20);
   transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
               filter 0.25s ease,
               box-shadow 0.25s ease,
@@ -584,7 +626,7 @@ h4, h5, h6, .wybe-subhead {
 .hero-cta:hover {
   transform: scale(1.05);
   filter: brightness(1.08);
-  box-shadow: 0 10px 28px rgba(221, 255, 85, 0.40);
+  box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
   background: #E4FF6A;
 }
 .hero-cta:hover .hero-cta__arrow { transform: translateX(4px); }
@@ -651,7 +693,7 @@ h4, h5, h6, .wybe-subhead {
   flex-direction: column;
   padding: 18px 18px 20px;
   background: rgba(0, 26, 36, 0.45) !important;
-  border: 1px solid rgba(221, 255, 85, 0.25);
+  border: 1px solid rgba(255, 102, 0, 0.25);
   border-radius: 8px;
   color: #F6F2E8 !important;
 }
@@ -661,7 +703,7 @@ h4, h5, h6, .wybe-subhead {
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #DDFF55 !important;
+  color: #FF6600 !important;
   margin: 0 0 8px;
 }
 .wybe-tier-card__price {
@@ -707,7 +749,7 @@ h4, h5, h6, .wybe-subhead {
   left: 0; top: 8px;
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: #DDFF55;
+  background: #FF6600;
 }
 
 .wybe-tier-cta {
@@ -715,8 +757,8 @@ h4, h5, h6, .wybe-subhead {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #DDFF55 !important;
-  color: #002233 !important;
+  background: #FF6600 !important;
+  color: #000000 !important;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 12px;
@@ -725,7 +767,7 @@ h4, h5, h6, .wybe-subhead {
   padding: 12px 18px;
   border-radius: 999px;
   text-decoration: none !important;
-  box-shadow: 0 3px 12px rgba(221, 255, 85, 0.14);
+  box-shadow: 0 3px 12px rgba(255, 102, 0, 0.14);
   transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1),
               filter 0.2s ease,
               box-shadow 0.2s ease;
@@ -733,7 +775,7 @@ h4, h5, h6, .wybe-subhead {
 .wybe-tier-cta:hover {
   transform: translateY(-1px);
   filter: brightness(1.06);
-  box-shadow: 0 6px 20px rgba(221, 255, 85, 0.35);
+  box-shadow: 0 6px 20px rgba(255, 102, 0, 0.35);
 }
 .wybe-tier-cta:focus { outline: none; }
 .wybe-tier-cta:focus-visible {
@@ -770,13 +812,13 @@ h4, h5, h6, .wybe-subhead {
   margin: 0;
 }
 .wybe-tier-enquiry a {
-  color: #DDFF55 !important;
+  color: #FF6600 !important;
   text-decoration: underline;
-  text-decoration-color: rgba(221, 255, 85, 0.4);
+  text-decoration-color: rgba(255, 102, 0, 0.4);
   text-underline-offset: 3px;
 }
 .wybe-tier-enquiry a:hover {
-  text-decoration-color: #DDFF55;
+  text-decoration-color: #FF6600;
 }
 
 /* Visually-hidden but AT-readable — used for form field labels
@@ -824,7 +866,7 @@ h4, h5, h6, .wybe-subhead {
    AT + keyboard until opened — JS removes the attribute on toggle.
 */
 .wybe-faq {
-  background: #002233;
+  background: #000000;
   color: #F6F2E8;
 }
 .wybe-faq__list {
@@ -859,19 +901,19 @@ h4, h5, h6, .wybe-subhead {
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 .wybe-faq__trigger:hover {
-  background: rgba(221, 255, 85, 0.05);
-  color: #DDFF55;
+  background: rgba(255, 102, 0, 0.05);
+  color: #FF6600;
 }
 .wybe-faq__trigger:focus { outline: none; }
 .wybe-faq__trigger:focus-visible {
-  outline: 2px solid #DDFF55;
+  outline: 2px solid #FF6600;
   outline-offset: -2px;
   border-radius: 2px;
 }
 .wybe-faq__trigger[aria-expanded="true"] {
-  color: #DDFF55;
-  border-left-color: #DDFF55;
-  background: rgba(221, 255, 85, 0.06);
+  color: #FF6600;
+  border-left-color: #FF6600;
+  background: rgba(255, 102, 0, 0.06);
 }
 /* Chevron that rotates 180° on open. Two absolute-positioned bars
    at 45°/-45° angles form the ˅ shape; when the trigger is
@@ -945,7 +987,7 @@ h4, h5, h6, .wybe-subhead {
    and the transformation caption dot; explicit width/height on every
    image so there's no CLS on load. */
 .wybe-results {
-  background: #002233;
+  background: #000000;
   color: #F6F2E8;
 }
 
@@ -953,8 +995,8 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   padding: 44px 24px 24px;
   background: #003348;
-  border: 1px solid rgba(221, 255, 85, 0.22);
-  border-top: 3px solid #DDFF55;
+  border: 1px solid rgba(255, 102, 0, 0.22);
+  border-top: 3px solid #FF6600;
   border-radius: 8px;
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -968,7 +1010,7 @@ h4, h5, h6, .wybe-subhead {
   font-weight: 900;
   font-size: 64px;
   line-height: 1;
-  color: #DDFF55;
+  color: #FF6600;
   opacity: 0.55;
   user-select: none;
 }
@@ -1000,8 +1042,8 @@ h4, h5, h6, .wybe-subhead {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #DDFF55;
-  color: #002233;
+  background: #FF6600;
+  color: #000000;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 13px;
@@ -1037,7 +1079,7 @@ h4, h5, h6, .wybe-subhead {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2px; /* the seam between before/after */
-  background: rgba(221, 255, 85, 0.35);
+  background: rgba(255, 102, 0, 0.35);
 }
 .wybe-transformation__img {
   display: block;
@@ -1060,7 +1102,7 @@ h4, h5, h6, .wybe-subhead {
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #DDFF55;
+  color: #FF6600;
 }
 .wybe-transformation__detail {
   font-weight: 400;
@@ -1132,7 +1174,7 @@ html:not(.gsap-ready) .wybe-reveal {
   color: #F6F2E8;
 }
 .ucalc-tile.is-locked   { opacity: 0.55; }
-.ucalc-tile.is-unlocked { border-color: rgba(221, 255, 85, 0.35); background: rgba(0, 34, 51, 0.55); }
+.ucalc-tile.is-unlocked { border-color: rgba(255, 102, 0, 0.35); background: rgba(0, 0, 0, 0.55); }
 
 .ucalc-tile-eyebrow {
   font-family: var(--font-subhead);
@@ -1140,7 +1182,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #DDFF55;
+  color: #FF6600;
   margin: 0 0 8px;
 }
 .ucalc-tile-value {
@@ -1163,7 +1205,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.06em;
-  color: #DDFF55;
+  color: #FF6600;
   margin: 6px 0 8px;
   min-height: 14px;
 }
@@ -1191,13 +1233,13 @@ html:not(.gsap-ready) .wybe-reveal {
    body text below AA contrast. Instead of touching every Tailwind
    utility inside each panel (there are hundreds), we override at the
    .service-panel level so the surface, text, price, form fields and
-   dividers all inherit the dark palette. Lime (#DDFF55) is preserved
+   dividers all inherit the dark palette. Lime (#FF6600) is preserved
    as the pricing / accent colour so it still POPs against the dark
    surface. */
 .service-panel {
   background: #003348 !important;                     /* charcoal-light surface */
   color: #F6F2E8 !important;
-  border: 1px solid rgba(221, 255, 85, 0.22);         /* subtle lime border */
+  border: 1px solid rgba(255, 102, 0, 0.22);         /* subtle lime border */
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
 }
 /* Headings inside a service card — cream (was text-charcoal). */
@@ -1216,7 +1258,7 @@ html:not(.gsap-ready) .wybe-reveal {
 .service-panel .text-charcoal\/80 {
   color: rgba(246, 242, 232, 0.85) !important;
 }
-/* Price accent — .text-burgundy is already lime (#DDFF55) in the
+/* Price accent — .text-burgundy is already lime (#FF6600) in the
    palette, so it reads great on the new dark surface. Kept as-is. */
 
 /* Form controls: dark, subtle border, cream text, lime focus. */
@@ -1234,7 +1276,7 @@ html:not(.gsap-ready) .wybe-reveal {
 .service-panel input:focus,
 .service-panel select:focus,
 .service-panel textarea:focus {
-  border-color: #DDFF55 !important;
+  border-color: #FF6600 !important;
   outline: none;
 }
 /* Small utility buttons inside cards (bg-cream style option buttons) —
@@ -1245,9 +1287,9 @@ html:not(.gsap-ready) .wybe-reveal {
   border-color: rgba(246, 242, 232, 0.22) !important;
 }
 .service-panel .bg-cream:hover {
-  background: #DDFF55 !important;
-  color: #002233 !important;
-  border-color: #DDFF55 !important;
+  background: #FF6600 !important;
+  color: #000000 !important;
+  border-color: #FF6600 !important;
 }
 /* Retake / secondary bordered buttons: cream outline stays readable. */
 .service-panel .border-charcoal\/25,
@@ -1274,7 +1316,7 @@ html:not(.gsap-ready) .wybe-reveal {
   z-index: 0;
   isolation: isolate;
   padding: clamp(64px, 8vw, 112px) 0;
-  background: #002233;
+  background: #000000;
 }
 
 .wybe-scene__pin {
@@ -1320,7 +1362,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-size: clamp(11px, 0.9vw, 14px);
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #DDFF55;
+  color: #FF6600;
   margin: 0 0 clamp(24px, 2.4vw, 40px);
 }
 .scene-title {
@@ -1348,7 +1390,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-size: clamp(56px, 10vw, 128px); /* text-5xl md:text-7xl-ish, was clamp(120px, 22vw, 320px) */
   line-height: 0.9;
   letter-spacing: -0.04em;
-  color: #DDFF55;
+  color: #FF6600;
   margin: 0;
 }
 
@@ -1382,7 +1424,7 @@ footer a:not([class*="bg-burgundy"])::after,
   position: absolute;
   left: 0; bottom: -4px;
   height: 2px; width: 100%;
-  background: #DDFF55;
+  background: #FF6600;
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform .45s cubic-bezier(0.19, 1, 0.22, 1);
@@ -1391,7 +1433,7 @@ footer a:not([class*="bg-burgundy"])::after,
 nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover,
 footer a:not([class*="bg-burgundy"]):hover,
 .wybe-hover-title:hover {
-  color: #DDFF55 !important;
+  color: #FF6600 !important;
   transform: translateY(-2px);
   letter-spacing: 0.01em;
 }
@@ -1457,7 +1499,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
     width: 30px;
     height: 30px;
     margin: -15px 0 0 -15px;
-    filter: drop-shadow(0 0 6px rgba(221, 255, 85, 0.55));
+    filter: drop-shadow(0 0 6px rgba(255, 102, 0, 0.55));
     transform: translate3d(var(--tx), var(--ty), 0);
     transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
                 filter 0.25s ease;
@@ -1468,7 +1510,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   .wybe-cursor__ring {
     width: 40px;
     height: 40px;
-    border: 1.5px solid rgba(221, 255, 85, 0.35);
+    border: 1.5px solid rgba(255, 102, 0, 0.35);
     border-radius: 50%;
     margin: -20px 0 0 -20px;
     transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1482,10 +1524,10 @@ footer a:not([class*="bg-burgundy"]):hover::after,
      Every hover state MUST re-declare the translate so it isn't
      clobbered by the scale/rotate that follows. */
   .wybe-cursor__kb.is-hover   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.15) rotate(-12deg);
-                                filter: drop-shadow(0 0 12px rgba(221, 255, 85, 0.85)); }
+                                filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.85)); }
   .wybe-cursor__ring.is-hover { width: 62px; height: 62px; margin: -31px 0 0 -31px;
-                                border-color: rgba(221, 255, 85, 0.9);
-                                background: rgba(221, 255, 85, 0.10); }
+                                border-color: rgba(255, 102, 0, 0.9);
+                                background: rgba(255, 102, 0, 0.10); }
   /* Title-hover (tabs, headings, nav links): even bigger swing, big ring. */
   .wybe-cursor__kb.is-hover-title   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.35) rotate(-18deg); }
   .wybe-cursor__ring.is-hover-title { width: 84px; height: 84px; margin: -42px 0 0 -42px; }

@@ -32,9 +32,9 @@
   // Kettlebell SVG mark. Horseshoe handle over a filled circle, in lime.
   const KETTLEBELL_SVG =
     '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M11 9 Q11 4 16 4 Q21 4 21 9" fill="none" stroke="#DDFF55" stroke-width="2.4" stroke-linecap="round"/>' +
-      '<circle cx="16" cy="20" r="8.5" fill="#DDFF55"/>' +
-      '<rect x="10" y="9" width="12" height="3" rx="1.2" fill="#DDFF55"/>' +
+      '<path d="M11 9 Q11 4 16 4 Q21 4 21 9" fill="none" stroke="#FF6600" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<circle cx="16" cy="20" r="8.5" fill="#FF6600"/>' +
+      '<rect x="10" y="9" width="12" height="3" rx="1.2" fill="#FF6600"/>' +
     '</svg>';
 
   const kb   = document.createElement('div');

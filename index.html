@@ -48,18 +48,18 @@
         extend: {
           colors: {
             // New brand palette (from Wybe_colorpalette.pdf):
-            //   #002233 dark navy (was 'charcoal'), #F6F2E8 warm off-white (was 'cream'), #DDFF55 lime (was 'burgundy').
+            //   #000000 dark navy (was 'charcoal'), #F6F2E8 warm off-white (was 'cream'), #FF6600 lime (was 'burgundy').
             //   Older token names kept so existing class names don't have to be renamed everywhere.
             cream: '#F6F2E8',
             'cream-dark': '#EDE7D8',
             'sage-tint': '#F0EDDF',
             'sage-mist': '#E9E4CE',
             'charcoal-muted': '#4A6070',
-            burgundy: '#DDFF55',
+            burgundy: '#FF6600',
             forest: '#001A24',
-            'burgundy-dark': '#C4E63C',
+            'burgundy-dark': '#E65500',
             'charcoal-light': '#003348',
-            charcoal: '#002233',
+            charcoal: '#000000',
           },
           fontFamily: {
             sans:    ['Raleway', 'Inter', 'sans-serif'],   // body default (Raleway light)
@@ -75,7 +75,7 @@
        via the --font-header / --font-subhead / --font-body variables. -->
   <style>
     body {
-      background-color: #002233;   /* Navy field */
+      background-color: #000000;   /* Navy field */
       color: #F6F2E8;
     }
     /* .wybe-header is excluded so its own `position: fixed; z-index: 2000`
@@ -176,7 +176,7 @@
       transform: translateY(-16px);
     }
     .wybe-story-progress-btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease; opacity: 0.55; }
-    .wybe-story-progress-btn.is-active { opacity: 1; background-color: #DDFF55; color: #002233; border-color: #DDFF55; }
+    .wybe-story-progress-btn.is-active { opacity: 1; background-color: #FF6600; color: #000000; border-color: #FF6600; }
 
     /* 6b. Left-rail (Style 1: big lime text + side bar).
        Sticky column of 4 label rows. Inactive rows are small, muted, no bar.
@@ -198,7 +198,7 @@
     }
     .wybe-rail-row::before {
       content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
-      width: 4px; background: #DDFF55; border-radius: 2px;
+      width: 4px; background: #FF6600; border-radius: 2px;
       transform: scaleY(0); transform-origin: 50% 50%;
       transition: transform .5s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -215,8 +215,8 @@
     }
     .wybe-rail-row.is-active           { opacity: 1; padding-left: 22px; }
     .wybe-rail-row.is-active::before   { transform: scaleY(1); }
-    .wybe-rail-row.is-active .wybe-rail-num   { color: #DDFF55; }
-    .wybe-rail-row.is-active .wybe-rail-label { color: #DDFF55; font-size: 32px; letter-spacing: -0.03em; }
+    .wybe-rail-row.is-active .wybe-rail-num   { color: #FF6600; }
+    .wybe-rail-row.is-active .wybe-rail-label { color: #FF6600; font-size: 32px; letter-spacing: -0.03em; }
     @media (min-width: 768px) {
       .wybe-rail-row.is-active .wybe-rail-label { font-size: 44px; }
     }
@@ -225,8 +225,8 @@
        the actual is-active swap; this is just an affordance so the title
        reacts to cursor even before it's activated. */
     .wybe-rail-row:not(.is-active):hover             { opacity: 0.95; padding-left: 22px; }
-    .wybe-rail-row:not(.is-active):hover::before     { transform: scaleY(0.55); background: rgba(221, 255, 85, 0.7); }
-    .wybe-rail-row:not(.is-active):hover .wybe-rail-num   { color: #DDFF55; }
+    .wybe-rail-row:not(.is-active):hover::before     { transform: scaleY(0.55); background: rgba(255, 102, 0, 0.7); }
+    .wybe-rail-row:not(.is-active):hover .wybe-rail-num   { color: #FF6600; }
     .wybe-rail-row:not(.is-active):hover .wybe-rail-label { color: #F6F2E8; font-size: 22px; letter-spacing: -0.02em; transform: translateX(4px); }
     .wybe-rail-row .wybe-rail-label { transform: translateX(0); }
 
@@ -235,9 +235,9 @@
        its border in lime and lifts slightly on hover. */
     .wybe-story-progress-btn:not(.is-active):hover {
       opacity: 0.95;
-      border-color: rgba(221, 255, 85, 0.7);
-      color: #DDFF55;
-      background: rgba(221, 255, 85, 0.06);
+      border-color: rgba(255, 102, 0, 0.7);
+      color: #FF6600;
+      background: rgba(255, 102, 0, 0.06);
       transform: translateY(-2px);
     }
     .wybe-story-progress-btn { transform: translateY(0); }
@@ -255,15 +255,15 @@
     }
     .wybe-calc-motif      {
       position: absolute; top: -8px; right: 0;
-      width: 44px; height: 44px; color: #DDFF55; opacity: 0.85;
+      width: 44px; height: 44px; color: #FF6600; opacity: 0.85;
       pointer-events: none;
     }
     .wybe-calc-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
     .wybe-calc-title      { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
-    .wybe-calc-title-rule { width: 40px; height: 3px; background: #DDFF55; margin-bottom: 22px; }
+    .wybe-calc-title-rule { width: 40px; height: 3px; background: #FF6600; margin-bottom: 22px; }
     /* Airy input rows: hairline underline, no box */
     .wybe-input-row       { display: block; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.18); transition: border-color .25s ease; }
-    .wybe-input-row:focus-within { border-color: #DDFF55; }
+    .wybe-input-row:focus-within { border-color: #FF6600; }
     .wybe-input-row label { display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 4px; }
     .wybe-input-row input,
     .wybe-input-row select {
@@ -272,11 +272,11 @@
       color: white; padding: 0; letter-spacing: -0.01em;
     }
     .wybe-input-row input::placeholder { color: rgba(255,255,255,0.25); }
-    .wybe-input-row select option { color: #002233; background: #F6F2E8; }
+    .wybe-input-row select option { color: #000000; background: #F6F2E8; }
     .wybe-input-row .info-tip { color: rgba(255,255,255,0.4); }
     .wybe-calc-cta        {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #DDFF55; color: #002233;
+      background: #FF6600; color: #000000;
       font-family: 'Inter', sans-serif; font-weight: 900;
       font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
       padding: 14px 28px; border-radius: 999px;
@@ -284,7 +284,7 @@
       transition: background-color .2s ease, transform .2s ease;
       margin-top: 20px;
     }
-    .wybe-calc-cta:hover  { background: #C4E63C; transform: translateX(2px); }
+    .wybe-calc-cta:hover  { background: #E65500; transform: translateX(2px); }
     .wybe-calc-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* 7. About Me: description swaps out, metrics fade in as user scrolls past. */
@@ -901,11 +901,19 @@
         </a>
       </div>
 
-      <!-- Portrait — bottom-flush on desktop so the runner grounds the section. -->
-      <div class="md:col-span-5 flex justify-center md:justify-end">
-        <img src="images/Treadmill.webp" alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
-             class="about-portrait block w-auto h-auto max-h-[480px] md:max-h-[620px] max-w-full object-contain">
-      </div>
+      <!-- Portrait — bottom-flush on desktop so the runner grounds the section.
+           Wrapped in .parallax-bg so the image drifts on scroll while the
+           column window stays in layout. Aspect ratio chosen to preserve
+           the original portrait footprint (roughly 4:5). -->
+      <figure class="md:col-span-5 flex justify-center md:justify-end m-0">
+        <div class="parallax-bg about-portrait w-full max-w-[420px] md:max-w-[480px]"
+             style="aspect-ratio: 4/5;">
+          <img src="images/Treadmill.webp"
+               alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
+               class="parallax-bg__img"
+               data-parallax-strength="0.18">
+        </div>
+      </figure>
     </div>
   </section>
 
@@ -2938,9 +2946,9 @@
       if (!form) return;
 
       const drawHeader = (doc, title) => {
-        doc.setFillColor(0, 34, 51); // charcoal navy
+        doc.setFillColor(0, 0, 0); // charcoal navy
         doc.rect(0, 0, 210, 28, 'F');
-        doc.setTextColor(221, 255, 85); // lime for brand
+        doc.setTextColor(255, 102, 0); // lime for brand
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
         doc.text('WYBE', 18, 16);
@@ -2966,7 +2974,7 @@
         const doc = new jsPDF({ unit: 'mm', format: 'a4' });
         drawHeader(doc, 'YOUR NUMBERS');
 
-        doc.setTextColor(0, 34, 51);
+        doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
         let y = 42;
@@ -2977,18 +2985,18 @@
         y += 4;
 
         const section = (label, value, category, note) => {
-          doc.setDrawColor(221, 255, 85);
+          doc.setDrawColor(255, 102, 0);
           doc.setLineWidth(0.6);
           doc.line(18, y, 192, y); y += 6;
 
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(11);
-          doc.setTextColor(0, 34, 51);
+          doc.setTextColor(0, 0, 0);
           doc.text(label, 18, y); y += 7;
 
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(24);
-          doc.setTextColor(0, 34, 51);
+          doc.setTextColor(0, 0, 0);
           doc.text(value, 18, y); y += 8;
 
           if (category) {
@@ -3015,11 +3023,11 @@
         if (s.ibw)  section('Ideal Body Weight',  s.ibw.point + ' kg',          'Range ' + s.ibw.low + '–' + s.ibw.high + ' kg', s.ibw.note);
 
         y += 2;
-        doc.setDrawColor(221, 255, 85);
+        doc.setDrawColor(255, 102, 0);
         doc.line(18, y, 192, y); y += 6;
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(11);
-        doc.setTextColor(0, 34, 51);
+        doc.setTextColor(0, 0, 0);
         doc.text('Inputs used', 18, y); y += 6;
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);

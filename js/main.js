@@ -364,6 +364,57 @@ document.addEventListener('DOMContentLoaded', () => {
     updateParallax();
   }
 
+  // ── SCOPED PARALLAX (.parallax-bg__img) ───────────────
+  // Section-scoped image parallax that works anywhere on the page.
+  // Every .parallax-bg__img inside its .parallax-bg wrapper is offset
+  // vertically as its wrapper crosses the viewport: image drifts DOWN
+  // (positive translateY) when the section is above center, UP when
+  // below. Wrapper's overflow:hidden clips the drift so nothing bleeds
+  // into adjacent sections. Uses composited translate3d + rAF throttle;
+  // no background-attachment:fixed anywhere (iOS drops it silently).
+  // reduceMotion pathway is a no-op — the media query in styles.css
+  // pins the image to its wrapper with transform:none.
+  (function() {
+    if (reduceMotion) return;
+    const imgs = document.querySelectorAll('.parallax-bg__img');
+    if (!imgs.length) return;
+    // Tunable per-image via data-parallax-strength (default 0.15 = subtle).
+    // 0.0 = static, 0.3 = strong. Kept low so text-over-image sections
+    // read cleanly instead of drawing the eye to motion.
+    const strengthOf = (img) => {
+      const raw = parseFloat(img.dataset.parallaxStrength);
+      return Number.isFinite(raw) ? raw : 0.15;
+    };
+    let ticking = false;
+    const update = () => {
+      const vh = window.innerHeight || 1;
+      const vcenter = vh / 2;
+      imgs.forEach(img => {
+        const wrap = img.closest('.parallax-bg');
+        if (!wrap) return;
+        const rect = wrap.getBoundingClientRect();
+        // Skip far off-screen (perf; ~1.5 viewport buffer either side).
+        if (rect.bottom < -vh * 0.5 || rect.top > vh * 1.5) return;
+        const wcenter = rect.top + rect.height / 2;
+        // Signed distance from viewport center. Positive when wrapper
+        // is below center; negative when above. Multiply by NEGATIVE
+        // strength so the image drifts opposite to scroll direction,
+        // which is the depth cue the eye reads as "further back".
+        const delta = wcenter - vcenter;
+        const y = -delta * strengthOf(img);
+        img.style.setProperty('--parallax-y', y.toFixed(1) + 'px');
+      });
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    window.addEventListener('resize', () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
+
   // ── SCROLLTRIGGER REFRESH ────────────────────────────
   // The fixed header + font-load can shift page geometry after
   // ScrollTriggers are created (in scenes.js / promise.js). Refresh

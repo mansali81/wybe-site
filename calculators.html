@@ -574,9 +574,9 @@
       if (!form) return;
 
       const drawHeader = (doc, title) => {
-        doc.setFillColor(0, 34, 51);
+        doc.setFillColor(0, 0, 0);
         doc.rect(0, 0, 210, 28, 'F');
-        doc.setTextColor(221, 255, 85);
+        doc.setTextColor(255, 102, 0);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
         doc.text('WYBE', 18, 16);
@@ -602,7 +602,7 @@
         const doc = new jsPDF({ unit: 'mm', format: 'a4' });
         drawHeader(doc, 'YOUR NUMBERS');
 
-        doc.setTextColor(0, 34, 51);
+        doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
         let y = 42;
@@ -613,18 +613,18 @@
         y += 4;
 
         const section = (label, value, category, note) => {
-          doc.setDrawColor(221, 255, 85);
+          doc.setDrawColor(255, 102, 0);
           doc.setLineWidth(0.6);
           doc.line(18, y, 192, y); y += 6;
 
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(11);
-          doc.setTextColor(0, 34, 51);
+          doc.setTextColor(0, 0, 0);
           doc.text(label, 18, y); y += 7;
 
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(24);
-          doc.setTextColor(0, 34, 51);
+          doc.setTextColor(0, 0, 0);
           doc.text(value, 18, y); y += 8;
 
           if (category) {
@@ -651,11 +651,11 @@
         if (s.ibw)  section('Ideal Body Weight',  s.ibw.point + ' kg',          'Range ' + s.ibw.low + '–' + s.ibw.high + ' kg', s.ibw.note);
 
         y += 2;
-        doc.setDrawColor(221, 255, 85);
+        doc.setDrawColor(255, 102, 0);
         doc.line(18, y, 192, y); y += 6;
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(11);
-        doc.setTextColor(0, 34, 51);
+        doc.setTextColor(0, 0, 0);
         doc.text('Inputs used', 18, y); y += 6;
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
