@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Hero video first-frame priming lives in js/hero.js (no pin/scrub).
+  // Hero is now text-only — no video, no controller (js/hero.js deleted).
 
   // ── PARALLAX ──────────────────────────────────────────
   // Elements tagged with [data-parallax] translate vertically with scroll.

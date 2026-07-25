@@ -621,28 +621,15 @@
        announce entering the main region. -->
   <main id="main" tabindex="-1">
 
-  <!-- HERO — native-scrolling hero. Video sits on its first decoded
-       frame (js/hero.js primes it as a poster); no pin, no scroll-scrub,
-       no ScrollTrigger. Text visibility is owned by CSS: a short
-       hero-enter fade-up runs once on load, gated by
-       prefers-reduced-motion.
-
-       Video source: images/Running.mp4 (mp4 / H.264). -->
+  <!-- HERO — text-only, native-scrolling hero on the solid navy
+       backdrop. The video that used to sit here (images/Running.mp4
+       + hero-tint gradient + js/hero.js primer) was removed; the
+       copy stack is now the whole hero surface. Text visibility is
+       owned by CSS: a short hero-enter fade-up runs once on load,
+       gated by prefers-reduced-motion. -->
   <section id="home" class="hero" data-hero>
     <div class="hero-frame">
-      <!-- Runner video: NEVER auto-plays. Primed to first frame by
-           js/hero.js so browsers show it as a poster. -->
-      <video id="hero-scrub" class="hero-video"
-             muted playsinline webkit-playsinline preload="auto"
-             disablepictureinpicture
-             aria-label="An athlete running on a treadmill, primed to the first frame as the hero poster.">
-        <source src="images/Running.mp4" type="video/mp4">
-      </video>
-      <div class="hero-tint" aria-hidden="true"></div>
-
-      <!-- Hero copy — vertically centered, left-aligned. Each child stays
-           hidden until scroll-scrub reveals it left-to-right (clip-path
-           wipe). By the end of the scroll all three are fully visible. -->
+      <!-- Hero copy — vertically centered, left-aligned. -->
       <div class="hero-content" data-hero-content>
         <h1 class="hero-tagline">
           Mind Coach<br>
@@ -2127,7 +2114,6 @@
   <script src="js/wybe-cursor.js" defer></script>
   <script src="js/main.js"></script>
   <script src="js/track.js" defer></script>
-  <script src="js/hero.js" defer></script>
   <script src="js/scenes.js" defer></script>
   <!-- === PILLARS-3D script wiring — remove alongside the CSS + markup block === -->
   <script src="js/pillars-3d.js" defer></script>

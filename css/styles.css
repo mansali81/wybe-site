@@ -473,87 +473,31 @@ h4, h5, h6, .wybe-subhead {
   }
 }
 
-/* ── HERO: GSAP + ScrollTrigger scroll-driven story ────
-   .hero        100vh section; ScrollTrigger pins it and scrubs the video
-                over ~500vh + a ~50vh read-beat hold at the end.
-   .hero-frame  the visible 100vw × 100vh viewport that stays put while
-                pinned. Everything else is layered inside it.
-     .hero-video   full-cover portrait mp4 (never auto-plays; scrubbed)
-     .hero-tint    dual-gradient overlay for text legibility
-     .hero-content .hero-tagline + .hero-sub + .hero-cta — visible on
-                   load; a short CSS fade-up entrance runs once at page
-                   load and reduced-motion users skip it */
+/* ── HERO: text-only, static ────────────────────────
+   Video removed — no ScrollTrigger, no scrub, no tint overlay.
+   .hero            fills the viewport height minus the fixed header
+   .hero-frame      flex-centered container for the copy stack
+   .hero-content    .hero-tagline + .hero-sub + .hero-cta — visible
+                    on load; a short CSS fade-up entrance runs once
+                    at page load and reduced-motion users skip it */
 .hero {
   position: relative;
   width: 100%;
-  /* margin-top: var(--nav-h) applied via the block above; height fills
-     exactly the remaining viewport so no scroll is needed to see the
-     entire video frame. */
   height: calc(100vh - var(--nav-h));
   overflow: hidden;
   background: #002233;
-  /* Seal the hero — the mp4 (compositor layer via will-change) and
-     the .hero-tint gradient (z-index 2) both composite inside this
-     stacking context, never above the z-index: 2000 fixed header. */
   z-index: 0;
   isolation: isolate;
 }
-/* Vertically center + left align the content block. The video and
-   gradient tint are absolutely positioned inside; only .hero-content
-   participates in the flex flow. Height fills the .hero container which
-   is already calc(100vh - 96px). */
 .hero-frame {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  isolation: isolate; /* second seal around the compositor layers */
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 0 clamp(24px, 6vw, 96px);
 }
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transform: scaleX(-1);
-  pointer-events: none;
-  z-index: 1;
-  /* will-change removed: the video no longer scrubs on scroll, so no
-     transform / object-position animation ever runs on it. Static
-     will-change was promoting the video to a permanent compositor
-     layer that painted over the fixed nav on iOS Safari. */
-}
-/* Dual-gradient legibility overlay:
-     - horizontal: strong navy on the left where the copy sits, fading to
-       transparent by ~60% so the runner on the right stays visible
-     - subtle bottom-up wash for footer edge contrast */
-.hero-tint {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0, 20, 30, 0.85) 0%,
-      rgba(0, 20, 30, 0.55) 45%,
-      rgba(0, 20, 30, 0.15) 75%,
-      rgba(0, 20, 30, 0)    100%
-    ),
-    linear-gradient(
-      180deg,
-      transparent 55%,
-      rgba(0, 20, 30, 0.45) 100%
-    );
-  pointer-events: none;
-  z-index: 2;
-}
-/* Content container is visible; individual children are wiped in from
-   left → right by the scroll-scrubbed GSAP timeline. Initial hidden
-   state matches the tween start so wipe and video scrub stay in sync. */
 .hero-content {
   position: relative;
   z-index: 4;
@@ -650,19 +594,9 @@ h4, h5, h6, .wybe-subhead {
 }
 
 /* ── HERO responsive ─────────────────────────────
-   Tablet + mobile: darken the overlay so text stays punchy on smaller
-   screens where the video reads more strongly, dial the headline down,
-   and make the CTA a full-width tappable target. */
+   Tablet + mobile: dial the headline down and make the CTA a
+   full-width tappable target. */
 @media (max-width: 768px) {
-  .hero-tint {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(0, 20, 30, 0.55) 0%,
-        rgba(0, 20, 30, 0.75) 55%,
-        rgba(0, 20, 30, 0.85) 100%
-      );
-  }
   .hero-frame {
     padding: 0 24px;
   }
