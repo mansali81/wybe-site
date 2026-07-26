@@ -613,34 +613,12 @@ h4, h5, h6, .wybe-subhead {
     object-position: right 20%;
   }
 }
-/* Tint layer: darkens the left half of the hero so the copy stays
-   above WCAG contrast, then fades to near-transparent on the right
-   where the subject sits. Pointer-events none so hover on the image
-   still passes through if we ever wire click behavior. */
-.hero-tint {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(30, 30, 30, 0.92) 0%,
-    rgba(30, 30, 30, 0.72) 30%,
-    rgba(30, 30, 30, 0.30) 65%,
-    rgba(30, 30, 30, 0.10) 100%
-  );
-}
-/* On narrow screens the subject would be washed out by the tint, so
-   dial the gradient back and let the image show more. */
+/* .hero-tint was the darkening gradient layer behind the copy. It
+   was removed from the HTML so the hero copy sits directly on the
+   image with only text-shadow for legibility (see the .hero-tagline
+   and .hero-sub blocks below). Kept a mobile-scoped block for the
+   hero image crop + copy anchoring on narrow screens. */
 @media (max-width: 767px) {
-  .hero-tint {
-    background: linear-gradient(
-      180deg,
-      rgba(30, 30, 30, 0.35) 0%,
-      rgba(30, 30, 30, 0.55) 50%,
-      rgba(30, 30, 30, 0.88) 100%
-    );
-  }
   .hero-bg .parallax-img {
     object-position: center center;
   }
