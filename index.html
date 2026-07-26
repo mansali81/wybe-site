@@ -635,7 +635,7 @@
        gated by prefers-reduced-motion. -->
   <section id="home" class="hero" data-hero>
     <div class="hero-frame">
-      <!-- Hero copy — vertically centered, left-aligned. -->
+      <!-- Hero copy — left column on desktop, top on mobile. -->
       <div class="hero-content" data-hero-content>
         <h1 class="hero-tagline">
           Mind Coach<br>
@@ -655,6 +655,16 @@
           </svg>
         </a>
       </div>
+      <!-- Hero image — right column on desktop, below copy on mobile.
+           Wrapped in .parallax-wrapper so it drifts on scroll. -->
+      <figure class="hero-media m-0">
+        <div class="parallax-wrapper w-full h-full">
+          <img src="images/Hero.webp"
+               alt="Mansoor Ahamad Ali coaching a client"
+               class="parallax-img"
+               data-parallax-speed="0.15">
+        </div>
+      </figure>
     </div>
   </section>
 
@@ -673,10 +683,23 @@
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream leading-tight">Know Your Numbers</h2>
       </div>
 
-      <!-- Single centered column. Form is shown on load; on Get Result
-           it hides and the results view replaces it in the same space.
-           Edit-inputs link at the top of the results toggles back. -->
-      <div class="max-w-2xl mx-auto">
+      <!-- Two-column: treadmill portrait on the left, form on the right.
+           Stacks to a single column on mobile with the image above the
+           form. Form is shown on load; on Get Result it hides and the
+           results view replaces it in the same space. Edit-inputs link
+           at the top of the results toggles back. -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
+        <!-- Treadmill image, left column, parallax. -->
+        <figure class="md:col-span-5 flex justify-center md:justify-start m-0">
+          <div class="parallax-wrapper w-full max-w-[420px] md:max-w-[480px]">
+            <img src="images/Treadmill.webp"
+                 alt="Treadmill session — coached run on a WYBE workout program"
+                 class="parallax-img"
+                 data-parallax-speed="0.15">
+          </div>
+        </figure>
+        <!-- Calculator form, right column. -->
+        <div class="md:col-span-7 max-w-2xl w-full mx-auto md:mx-0">
         <form id="unified-calc-form" data-view="form">
           <div class="wybe-calc-title-rule"></div>
 
@@ -848,7 +871,8 @@
             * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
           </p>
         </div>
-      </div>
+        </div><!-- /form column -->
+      </div><!-- /calculator grid -->
     </div>
   </section>
 
@@ -907,19 +931,13 @@
         </a>
       </div>
 
-      <!-- Portrait — bottom-flush on desktop so the runner grounds the section.
-           .parallax-wrapper defaults to height:60vh with the image over-
-           sized inside (top:-20%; height:140% = 20% runway per side).
-           data-parallax-speed capped at 0.15 so translateY stays inside
-           runway: with the default 0.4 and typical viewport (~800px),
-           rect.top * 0.4 = ±320px translation, but only ~120px of runway
-           exists on a 60vh wrapper, so anything higher exposes the
-           wrapper background. Bump the runway (top:-40%; height:180%)
-           in an inline override if a section wants a stronger speed. -->
+      <!-- Portrait — Mansoor headshot, right column of About.
+           .parallax-wrapper defaults to height:60vh; data-parallax-speed
+           capped at 0.15 so translateY stays inside the 25% runway. -->
       <figure class="md:col-span-5 flex justify-center md:justify-end m-0">
         <div class="parallax-wrapper about-portrait w-full max-w-[420px] md:max-w-[480px]">
-          <img src="images/Treadmill.webp"
-               alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
+          <img src="images/Profile Pic.webp"
+               alt="Portrait of Mansoor Ahamad Ali, WYBE founder and practitioner"
                class="parallax-img"
                data-parallax-speed="0.15">
         </div>
@@ -1970,7 +1988,9 @@
 
   <!-- #CONTACT — form panel over the animated canvas. -->
   <section id="contact" class="py-16 md:py-20">
-    <div class="max-w-2xl mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+      <!-- Form panel — left column on desktop, full width on mobile. -->
+      <div class="md:col-span-7 w-full">
       <div class="relative bg-charcoal/60 backdrop-blur-sm text-white overflow-hidden border border-burgundy/40">
         <div class="relative z-10 p-6 md:p-10 flex flex-col">
           <!-- FORM GROUP -->
@@ -2029,6 +2049,16 @@
           </div>
         </div>
       </div>
+      </div><!-- /contact form column -->
+      <!-- Contact image, right column, parallax. Stacks below on mobile. -->
+      <figure class="md:col-span-5 flex justify-center md:justify-end m-0">
+        <div class="parallax-wrapper w-full max-w-[420px] md:max-w-[480px]">
+          <img src="images/Contactus.webp"
+               alt="Reach out to WYBE — get in touch with Mansoor"
+               class="parallax-img"
+               data-parallax-speed="0.15">
+        </div>
+      </figure>
     </div>
   </section>
 
