@@ -160,8 +160,8 @@ h4, h5, h6, .wybe-subhead {
   z-index: 2000;                 /* wins over every promoted layer */
   isolation: isolate;            /* new stacking context — sealed */
   transform: translateZ(0);      /* dedicated compositor layer */
-  background: #000000;           /* opaque backdrop under the blur */
-  background-color: #000000;
+  background: #1E1E1E;           /* opaque backdrop under the blur */
+  background-color: #1E1E1E;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
@@ -230,18 +230,20 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 1px;
   pointer-events: none;
 }
-/* Lime hover tint. The filter chain re-maps any base colour to lime
-   (#FF6600) — dark artwork inside the SVG lights up green on hover. */
+/* Orange (#FF6600) hover tint. Filter chain first flattens the SVG to
+   solid black (brightness 0), then re-lifts it to the target orange via
+   invert/sepia/saturate/hue-rotate. Computed with Barrett Sonntag's
+   color-to-filter approximation for RGB (255,102,0). */
 .wybe-brand:hover .wybe-brand__mark {
   filter:
     brightness(0)
     saturate(100%)
-    invert(94%)
-    sepia(38%)
-    saturate(1090%)
-    hue-rotate(15deg)
+    invert(43%)
+    sepia(80%)
+    saturate(2900%)
+    hue-rotate(0deg)
     brightness(103%)
-    contrast(101%);
+    contrast(103%);
 }
 .wybe-brand:hover::after { transform: scaleX(1); }
 .wybe-brand:focus-visible {
@@ -526,7 +528,7 @@ h4, h5, h6, .wybe-subhead {
   width: 100%;
   height: calc(100vh - var(--nav-h));
   overflow: hidden;
-  background: #000000;
+  background: #1E1E1E;
   z-index: 0;
   isolation: isolate;
 }
@@ -865,7 +867,7 @@ h4, h5, h6, .wybe-subhead {
    AT + keyboard until opened — JS removes the attribute on toggle.
 */
 .wybe-faq {
-  background: #000000;
+  background: #1E1E1E;
   color: #F6F2E8;
 }
 .wybe-faq__list {
@@ -986,15 +988,15 @@ h4, h5, h6, .wybe-subhead {
    and the transformation caption dot; explicit width/height on every
    image so there's no CLS on load. */
 .wybe-results {
-  background: #000000;
+  background: #1E1E1E;
   color: #F6F2E8;
 }
 
 .wybe-testimonial {
   position: relative;
   padding: 44px 24px 24px;
-  background: #003348;
-  border: 1px solid rgba(255, 102, 0, 0.22);
+  background: #FFFFFF;
+  border: 1px solid rgba(30, 30, 30, 0.10);
   border-top: 3px solid #FF6600;
   border-radius: 8px;
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
@@ -1018,7 +1020,7 @@ h4, h5, h6, .wybe-subhead {
   font-weight: 400;
   font-size: 15px;
   line-height: 1.55;
-  color: rgba(246, 242, 232, 0.9);
+  color: #1E1E1E;
   margin: 0 0 20px;
   flex: 1;
   quotes: none; /* the ldquo/rdquo are baked into the copy */
@@ -1031,7 +1033,7 @@ h4, h5, h6, .wybe-subhead {
   align-items: center;
   gap: 12px;
   padding-top: 16px;
-  border-top: 1px solid rgba(246, 242, 232, 0.14);
+  border-top: 1px solid rgba(30, 30, 30, 0.14);
 }
 .wybe-testimonial__avatar {
   flex: 0 0 auto;
@@ -1042,7 +1044,7 @@ h4, h5, h6, .wybe-subhead {
   height: 40px;
   border-radius: 50%;
   background: #FF6600;
-  color: #000000;
+  color: #FFFFFF;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 13px;
@@ -1053,7 +1055,7 @@ h4, h5, h6, .wybe-subhead {
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 13px;
-  color: #F6F2E8;
+  color: #1E1E1E;
   margin: 0 0 2px;
   letter-spacing: 0.02em;
 }
@@ -1061,7 +1063,7 @@ h4, h5, h6, .wybe-subhead {
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 11px;
-  color: rgba(246, 242, 232, 0.65);
+  color: rgba(30, 30, 30, 0.65);
   margin: 0;
   letter-spacing: 0.02em;
 }
@@ -1086,7 +1088,7 @@ h4, h5, h6, .wybe-subhead {
   height: auto;
   aspect-ratio: 400 / 500;
   object-fit: cover;
-  background: #003348;
+  background: #FFFFFF;
 }
 .wybe-transformation__caption {
   display: flex;
@@ -1236,41 +1238,41 @@ html:not(.gsap-ready) .wybe-reveal {
    as the pricing / accent colour so it still POPs against the dark
    surface. */
 .service-panel {
-  background: #003348 !important;                     /* charcoal-light surface */
-  color: #F6F2E8 !important;
-  border: 1px solid rgba(255, 102, 0, 0.22);         /* subtle lime border */
+  background: #FFFFFF !important;                     /* white card surface */
+  color: #1E1E1E !important;
+  border: 1px solid rgba(30, 30, 30, 0.10);           /* subtle dark border */
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
 }
-/* Headings inside a service card — cream (was text-charcoal). */
+/* Headings inside a service card — dark on white. */
 .service-panel h2,
 .service-panel h3 {
-  color: #F6F2E8 !important;
+  color: #1E1E1E !important;
 }
 /* Any child text that leaned on text-charcoal / text-charcoal/N in
-   Tailwind — remap to a cream tint at AA-safe contrast. */
+   Tailwind — dark on the white panel (natural contrast). */
 .service-panel .text-charcoal,
 .service-panel [class*="text-charcoal/"] {
-  color: rgba(246, 242, 232, 0.9) !important;
+  color: #1E1E1E !important;
 }
-/* Eyebrow / helper text at .text-charcoal/70 → cream/70 (still AA). */
+/* Eyebrow / helper text at .text-charcoal/70,80 → dark at reduced alpha. */
 .service-panel .text-charcoal\/70,
 .service-panel .text-charcoal\/80 {
-  color: rgba(246, 242, 232, 0.85) !important;
+  color: rgba(30, 30, 30, 0.80) !important;
 }
-/* Price accent — .text-burgundy is already lime (#FF6600) in the
-   palette, so it reads great on the new dark surface. Kept as-is. */
+/* Price accent — .text-burgundy is already orange (#FF6600) in the
+   palette, so it reads well on the white surface. Kept as-is. */
 
-/* Form controls: dark, subtle border, cream text, lime focus. */
+/* Form controls: white surface, subtle dark border, dark text, orange focus. */
 .service-panel input:not([type="checkbox"]):not([type="hidden"]):not([type="radio"]),
 .service-panel select,
 .service-panel textarea {
-  background: rgba(0, 26, 36, 0.55) !important;
-  border-color: rgba(246, 242, 232, 0.25) !important;
-  color: #F6F2E8 !important;
+  background: #FFFFFF !important;
+  border-color: rgba(30, 30, 30, 0.20) !important;
+  color: #1E1E1E !important;
 }
 .service-panel input::placeholder,
 .service-panel textarea::placeholder {
-  color: rgba(246, 242, 232, 0.42) !important;
+  color: rgba(30, 30, 30, 0.45) !important;
 }
 .service-panel input:focus,
 .service-panel select:focus,
@@ -1279,27 +1281,26 @@ html:not(.gsap-ready) .wybe-reveal {
   outline: none;
 }
 /* Small utility buttons inside cards (bg-cream style option buttons) —
-   flip to a translucent dark chip so they don't look pasted on. */
+   subtle warm chip on the white surface. */
 .service-panel .bg-cream {
-  background: rgba(0, 26, 36, 0.5) !important;
-  color: #F6F2E8 !important;
-  border-color: rgba(246, 242, 232, 0.22) !important;
+  background: rgba(30, 30, 30, 0.04) !important;
+  color: #1E1E1E !important;
+  border-color: rgba(30, 30, 30, 0.18) !important;
 }
 .service-panel .bg-cream:hover {
   background: #FF6600 !important;
-  color: #000000 !important;
+  color: #FFFFFF !important;
   border-color: #FF6600 !important;
 }
-/* Retake / secondary bordered buttons: cream outline stays readable. */
+/* Retake / secondary bordered buttons: dark outline for readability on white. */
 .service-panel .border-charcoal\/25,
 .service-panel .border-charcoal\/20,
 .service-panel .border-charcoal\/15 {
-  border-color: rgba(246, 242, 232, 0.28) !important;
+  border-color: rgba(30, 30, 30, 0.25) !important;
 }
-/* Divider hairlines currently use burgundy (lime); keep them, but
-   any charcoal-hairline gets remapped to a subtle cream line. */
+/* Divider hairlines: subtle dark line on the white surface. */
 .service-panel .bg-charcoal {
-  background: rgba(246, 242, 232, 0.25) !important;
+  background: rgba(30, 30, 30, 0.15) !important;
 }
 
 /* ── WYBE SCENE — compact feature strip ─────────────────
@@ -1315,7 +1316,7 @@ html:not(.gsap-ready) .wybe-reveal {
   z-index: 0;
   isolation: isolate;
   padding: clamp(64px, 8vw, 112px) 0;
-  background: #000000;
+  background: #1E1E1E;
 }
 
 .wybe-scene__pin {
