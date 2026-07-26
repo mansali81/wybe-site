@@ -485,56 +485,36 @@ h4, h5, h6, .wybe-subhead {
     will-change: transform;
   }
 
-  /* ── PARALLAX UTILITY (.parallax-wrapper / .parallax-img) ─────────
-     Section-scoped image parallax. Wrap any content-flow image:
-       <div class="parallax-wrapper"><img class="parallax-img"></div>
-     Defaults to 60vh window; override with inline height / aspect-ratio
-     when a specific section needs different proportions. Per-image
-     speed via data-parallax-speed (default 0.4). JS in main.js runs
-     the cached-measurement parallax loop and writes translate3d
-     directly to img.style.transform each rAF frame. No background-
-     attachment: fixed anywhere (iOS Safari drops it silently). A
-     reduced-motion query hard-disables the transform site-wide.
-     Image is oversized to 150% with top:-25% — 25% of the wrapper
-     height is available as runway on each side before the wrapper
-     background peeks through during a fast scroll. */
+  /* ── IMAGE FRAME (.parallax-wrapper / .parallax-img) ──────────────
+     Site-wide image container. Historic class names kept for HTML
+     compatibility, but the parallax behavior is gone — images now
+     sit STATIC inside a frame and are shown IN FULL via object-fit:
+     contain. The container's dark background fills any letterbox
+     space above/below or beside the image; nothing is ever cropped.
+     Scroll-driven motion applies to text/content via .wybe-reveal,
+     never to <img> elements. */
   .parallax-wrapper {
-    overflow: hidden;
     position: relative;
-    height: 60vh;
-    /* Soft edge feather so the image blends with the page background
-       instead of reading as a hard-bordered "framed" rectangle. Radial
-       vignette keeps the center sharp and fades toward all four edges.
-       Sections that need a different fade (or none) can override this
-       mask on their own wrapper class. */
-    -webkit-mask-image: radial-gradient(ellipse 130% 120% at center, black 55%, transparent 100%);
-            mask-image: radial-gradient(ellipse 130% 120% at center, black 55%, transparent 100%);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: transparent;
   }
   .parallax-img {
     position: absolute;
-    top: -40%;
-    left: 0;
+    inset: 0;
     width: 100%;
-    height: 180%;
-    object-fit: cover;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transform: none;
+    will-change: auto;
   }
   /* Content children of a .parallax-wrapper (captions, overlays) sit above. */
   .parallax-wrapper > :not(.parallax-img) {
     position: relative;
     z-index: 1;
-  }
-  /* Accessibility: never parallax under reduced-motion. Pin the image
-     to its wrapper with the original crop (top:0/height:100%) so the
-     visual anchor doesn't jump when a user toggles the OS setting. */
-  @media (prefers-reduced-motion: reduce) {
-    .parallax-img {
-      top: 0;
-      height: 100%;
-      transform: none !important;
-      will-change: auto;
-    }
   }
 
   /* Scroll progress indicator: a thin lime line at the very top of the page
@@ -609,45 +589,11 @@ h4, h5, h6, .wybe-subhead {
   -webkit-mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
           mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
 }
-/* Hero image: back to object-fit COVER so the frame fills edge to
-   edge, with per-breakpoint object-position values tuned so the
-   subject's head is never clipped by the crop window.
-   Source (Hero.webp) is a 4:5 portrait (1080x1350) — the head sits
-   in the upper ~25% of the frame, so the vertical crop origin has
-   to stay in the 8-15% range to keep the top of the head above the
-   nav-bar edge on every viewport.
-   The .parallax-img default (top:-40%; height:180%) is overridden
-   here with a smaller oversize (top:-8%; height:116%) so the parallax
-   translation is well inside the visible-crop window at every scroll
-   position — head stays inside the visible slice throughout, not
-   just at scrollY:0. */
-.hero-bg .parallax-img {
-  top: -8%;
-  height: 116%;
-  object-fit: cover;
-  /* Mobile default — subject centered horizontally, head-safe crop. */
-  object-position: 50% 10%;
-}
-/* Tablet 481-1024 — slight right bias, keep head visible. */
-@media (min-width: 481px) {
-  .hero-bg .parallax-img {
-    object-position: 60% 10%;
-  }
-}
-/* Laptop 1025-1440 — subject on right so copy on the left is legible;
-   head crop stays generous. */
-@media (min-width: 1025px) {
-  .hero-bg .parallax-img {
-    object-position: 78% 12%;
-  }
-}
-/* Desktop 1441+ — same rightward composition, tiny extra headroom on
-   the head since portrait-in-landscape gets tighter as width grows. */
-@media (min-width: 1441px) {
-  .hero-bg .parallax-img {
-    object-position: 85% 15%;
-  }
-}
+/* Hero image inherits the site-wide .parallax-img rule (object-fit:
+   contain, no crop, no transform). The dark hero background fills
+   the letterbox space either side of the 4:5 portrait on a landscape
+   viewport. No per-breakpoint object-position tuning is needed since
+   the entire frame is always visible. */
 /* .hero-tint was the darkening gradient layer behind the copy. It
    was removed from the HTML so the hero copy sits directly on the
    image with only text-shadow for legibility (see the .hero-tagline
@@ -1122,30 +1068,41 @@ h4, h5, h6, .wybe-subhead {
   color: #F6F2E8;
 }
 
-/* Horizontal-scroll wrapper for the testimonial track. On desktop,
-   .testimonials-container is pinned by GSAP ScrollTrigger and the
-   inner .testimonials-track translates left as the user scrolls —
-   cards slide in like a stack. On mobile/tablet (below 768 px) the
-   pin isn't set up and the flex row wraps to a natural vertical
-   stack for scroll-friendliness. */
+/* Testimonials — native horizontal scroll (swipe / trackpad).
+   No GSAP pin, no scroll-hijack, no pin-spacer eating vertical
+   space. The .testimonials-container is a horizontally-scrollable
+   viewport; cards snap to center as the user swipes. Mobile stacks
+   vertically (flex-wrap:wrap) for a natural single-column feed. */
 .testimonials-container {
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 102, 0, 0.5) transparent;
+  padding-bottom: 8px;             /* room for the scrollbar so it doesn't cover cards */
+}
+.testimonials-container::-webkit-scrollbar { height: 6px; }
+.testimonials-container::-webkit-scrollbar-track { background: transparent; }
+.testimonials-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 0, 0.5); border-radius: 3px;
 }
 .testimonials-track {
   display: flex;
-  flex-wrap: wrap;                 /* mobile default: wrap to stack */
+  flex-wrap: wrap;                 /* mobile default: stack vertically */
   gap: 24px;
 }
 .testimonials-track .wybe-testimonial {
   flex: 1 1 100%;
   max-width: 100%;
+  scroll-snap-align: center;
 }
 @media (min-width: 768px) {
   .testimonials-track {
-    flex-wrap: nowrap;             /* desktop: single row for GSAP */
+    flex-wrap: nowrap;             /* desktop: single horizontal row */
     width: max-content;
-    will-change: transform;
+    padding: 0 4px;
   }
   .testimonials-track .wybe-testimonial {
     flex: 0 0 min(70vw, 520px);
@@ -1713,28 +1670,13 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   background: #FFFFFF;
 }
 
-/* ── ABOUT PORTRAIT ──────────────────────────────
-   Reverted to the site-default parallax behavior: image uses the
-   standard .parallax-img crop-and-translate treatment (top:-40%;
-   height:180%; object-fit:cover) so the About portrait moves in
-   step with the rest of the site's parallax sections. The tall
-   wrapper (aspect 4:5 on desktop, matching a portrait footprint)
-   makes room for a comfortable crop while giving the parallax
-   effect enough visible translation.
-   NOTE: this crops top/bottom of the photo. If a full uncropped
-   photo becomes the priority again, revert this to object-fit:
-   contain + transform:none (see git history for the exact block). */
+/* ── ABOUT PORTRAIT FRAME ──────────────────────────
+   Portrait (Profile Pic.webp is 1:1) sits fully contained inside
+   this square frame. No parallax, no crop. */
 .parallax-wrapper.about-portrait {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   height: auto;
   max-width: 100%;
-}
-@media (min-width: 768px) {
-  .parallax-wrapper.about-portrait {
-    height: 100%;
-    min-height: 520px;
-    aspect-ratio: auto;
-  }
 }
 
 /* ── STAT BADGE COMPONENT ──────────────────────────

@@ -313,17 +313,22 @@
     .wybe-input-row select option { color: #000000; background: #F6F2E8; font-weight: 400; font-style: normal; font-size: 15px; }
     .wybe-input-row .info-tip { color: rgba(255,255,255,0.4); }
 
-    /* Calculator image column: stretch to match the form's height on
-       desktop so it never reads as a small framed thumbnail beside a
-       tall form. Mobile keeps the utility default (60vh) since the
-       image stacks above the form there. Parallax logic is untouched
-       — .parallax-img still translates via the cached-offset loop. */
+    /* Calculator image column: give the frame a defined height on
+       desktop so the contained image reads at a comfortable size
+       beside the form. Image is object-fit: contain (site default),
+       so the treadmill sits fully visible with any letterbox space
+       filled by the dark page bg. Mobile stacks naturally. */
     @media (min-width: 768px) {
       #calculators .parallax-wrapper {
-        height: 100%;
         min-height: 480px;
       }
     }
+    /* Give explicit heights to the parallax-wrapper on the home page
+       so containers don't collapse to zero when the .parallax-img is
+       absolutely positioned inside them. */
+    .hero-bg { /* filled by the .hero-bg rule in styles.css (position:absolute; inset:0) */ }
+    #calculators .parallax-wrapper,
+    #contact .parallax-wrapper { min-height: 380px; }
     .wybe-calc-cta        {
       display: inline-flex; align-items: center; gap: 8px;
       background: #FF6600; color: #000000;
