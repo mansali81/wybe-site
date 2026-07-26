@@ -160,15 +160,20 @@ h4, h5, h6, .wybe-subhead {
   z-index: 2000;                 /* wins over every promoted layer */
   isolation: isolate;            /* new stacking context — sealed */
   transform: translateZ(0);      /* dedicated compositor layer */
-  background: #1E1E1E;           /* opaque backdrop under the blur */
-  background-color: #1E1E1E;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  /* Transparent at page-top so the logo + nav sit directly over the
+     hero image. The .is-scrolled state (toggled by main.js once the
+     user scrolls past ~50 px) restores the solid backdrop + blur
+     for readability over the darker content sections below. */
+  background: transparent;
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+              box-shadow 0.25s ease, backdrop-filter 0.25s ease,
+              -webkit-backdrop-filter 0.25s ease;
 }
-.wybe-header.is-scrolled,
 .wybe-nav.is-scrolled + * { /* no-op guard */ }
 
 /* Inner nav bar is now a normal-flow child of the fixed header. Kept
@@ -185,12 +190,16 @@ h4, h5, h6, .wybe-subhead {
   border: 0;
   box-shadow: none;
 }
-/* Deepened shadow + border once the user has scrolled past ~50 px.
-   main.js toggles .is-scrolled on both .wybe-header AND #wybe-nav
-   so historic selectors targeting either still work. */
+/* Solid header once the user has scrolled past ~50 px. Restores the
+   dark backdrop + blur that was suppressed at page-top so the logo
+   and nav links stay legible over the darker content sections. */
 .wybe-header.is-scrolled {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  background: #1E1E1E;
+  background-color: #1E1E1E;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
   border-bottom-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
 /* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
@@ -213,7 +222,14 @@ h4, h5, h6, .wybe-subhead {
   object-fit: contain;
   flex-shrink: 0;
   display: block;
+  /* Base drop-shadow lifts the SVG off the raw hero image at page-top
+     when the header is transparent. Suppressed once .is-scrolled is on
+     — the solid dark backdrop provides its own separation. */
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
   transition: filter 0.3s ease, transform 0.3s ease;
+}
+.wybe-header.is-scrolled .wybe-brand__mark {
+  filter: none;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
@@ -252,17 +268,25 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 4px;
 }
 
-/* Desktop nav links */
+/* Desktop nav links. Text-shadow keeps them legible over the raw
+   hero image at page-top (transparent header) then gets suppressed
+   inside .is-scrolled since the solid dark bar provides its own
+   contrast. Wider letter-spacing (0.11em ≈ 2 px at 18 px) mirrors
+   the modern-landing-page nav aesthetic. */
 .wybe-nav-link {
   position: relative;
   font-family: var(--font-subhead);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.11em;
   color: #F6F2E8;
   text-decoration: none;
   padding: 6px 2px;
-  transition: color 0.25s ease;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+.wybe-header.is-scrolled .wybe-nav-link {
+  text-shadow: none;
 }
 .wybe-nav-link::after {
   content: '';
@@ -646,17 +670,24 @@ h4, h5, h6, .wybe-subhead {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Hero subheadline — two lines of lime Inter SemiBold uppercase. */
+/* Hero headline — three-line role stack, large, white, bold. Sits
+   directly on the hero image with only text-shadow for legibility
+   (no background box). Text-shadow uses a double stack: a tight
+   near-black shadow for edge sharpness + a wider softer one that
+   fades halo-style, so text stays readable on both dark and busy
+   image regions. */
 .hero-tagline {
   font-family: var(--font-subhead);
-  font-weight: 600;
-  font-size: clamp(20px, 2.4vw, 30px);
-  line-height: 1.2;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  font-size: clamp(28px, 4.2vw, 56px);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #FF6600;
+  color: #FFFFFF;
   margin: 0 0 clamp(20px, 2.2vw, 30px);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 4px 18px rgba(0, 0, 0, 0.50);
 }
 .hero-sub {
   font-family: var(--font-body);
@@ -665,8 +696,10 @@ h4, h5, h6, .wybe-subhead {
   line-height: 1.5;
   max-width: 520px;
   margin: 0 0 clamp(24px, 2.6vw, 36px);
-  color: rgba(246, 242, 232, 0.92);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 3px 14px rgba(0, 0, 0, 0.50);
 }
 .hero-cta {
   display: inline-flex;
