@@ -86,18 +86,25 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
-/* Every top-of-page section gets its own margin-top: var(--nav-h) so the
-   fixed header never overlaps its content. .hero uses margin-top +
-   height math so the video begins exactly at the header's bottom edge.
-   Explicitly EXCLUDES the fixed <header class="wybe-header"> — pushing
-   the fixed bar down 97 px was creating the empty navy band above it. */
-.hero,
-main > *:first-child,
-body > section:first-of-type {
+/* Every top-of-page section EXCEPT the hero gets its own margin-top:
+   var(--nav-h) so the fixed header never overlaps its content.
+   The hero is deliberately excluded so it extends to the top edge of
+   the viewport under the transparent .wybe-header — the header now
+   sits ON the hero image rather than over a 97 px band of body bg,
+   which is what was making the header read as a "solid box" even
+   though its own background is transparent.
+   Also excludes the fixed <header class="wybe-header"> itself —
+   pushing the fixed bar down 97 px would create an empty navy band
+   above it. */
+main > *:first-child:not(.hero),
+body > section:first-of-type:not(.hero) {
   margin-top: var(--nav-h);
 }
 .wybe-header {
   margin-top: 0 !important;
+}
+.hero {
+  margin-top: 0;
 }
 
 h1, h2, h3, .font-heading {
@@ -561,18 +568,25 @@ h4, h5, h6, .wybe-subhead {
 .hero {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - var(--nav-h));
+  /* Hero fills the full viewport height. It starts at top:0 (see the
+     :not(.hero) exclusion in the margin-top rule above) so the hero
+     image extends UNDER the transparent header, giving the impression
+     of a header floating on the image instead of a solid dark bar. */
+  min-height: 100vh;
   overflow: hidden;
   background: #1E1E1E;
   z-index: 0;
   isolation: isolate;
-  padding: 24px 0;
+  /* Padding-top matches --nav-h so copy inside .hero-frame stays
+     below the fixed header when centered — the image still fills
+     top-to-bottom, but the readable copy area is header-safe. */
+  padding: var(--nav-h) 0 24px;
 }
 .hero-frame {
   position: relative;
   z-index: 2;
   width: 100%;
-  min-height: calc(100vh - var(--nav-h) - 48px);
+  min-height: calc(100vh - var(--nav-h) - 24px);
   display: flex;
   align-items: center;
   justify-content: flex-start;
