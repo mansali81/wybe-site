@@ -609,20 +609,43 @@ h4, h5, h6, .wybe-subhead {
   -webkit-mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
           mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
 }
-/* Hero image: object-fit CONTAIN so the whole subject/character is
-   visible. Cover was cropping the head/feet because the source photo
-   is portrait (4:5) and the hero is landscape. Contain preserves the
-   full frame; the wrapper's radial mask + the dark page background
-   fill the letterbox space on either side of the image. Positioned
-   to the right on desktop so copy on the left has room, centered on
-   mobile (see max-width: 767px block below). */
+/* Hero image: back to object-fit COVER so the frame fills edge to
+   edge, with per-breakpoint object-position values tuned so the
+   subject's head is never clipped by the crop window.
+   Source (Hero.webp) is a 4:5 portrait (1080x1350) — the head sits
+   in the upper ~25% of the frame, so the vertical crop origin has
+   to stay in the 8-15% range to keep the top of the head above the
+   nav-bar edge on every viewport.
+   The .parallax-img default (top:-40%; height:180%) is overridden
+   here with a smaller oversize (top:-8%; height:116%) so the parallax
+   translation is well inside the visible-crop window at every scroll
+   position — head stays inside the visible slice throughout, not
+   just at scrollY:0. */
 .hero-bg .parallax-img {
-  object-fit: contain;
-  object-position: center right;
+  top: -8%;
+  height: 116%;
+  object-fit: cover;
+  /* Mobile default — subject centered horizontally, head-safe crop. */
+  object-position: 50% 10%;
 }
-@media (min-width: 1024px) {
+/* Tablet 481-1024 — slight right bias, keep head visible. */
+@media (min-width: 481px) {
   .hero-bg .parallax-img {
-    object-position: right center;
+    object-position: 60% 10%;
+  }
+}
+/* Laptop 1025-1440 — subject on right so copy on the left is legible;
+   head crop stays generous. */
+@media (min-width: 1025px) {
+  .hero-bg .parallax-img {
+    object-position: 78% 12%;
+  }
+}
+/* Desktop 1441+ — same rightward composition, tiny extra headroom on
+   the head since portrait-in-landscape gets tighter as width grows. */
+@media (min-width: 1441px) {
+  .hero-bg .parallax-img {
+    object-position: 85% 15%;
   }
 }
 /* .hero-tint was the darkening gradient layer behind the copy. It
@@ -631,9 +654,6 @@ h4, h5, h6, .wybe-subhead {
    and .hero-sub blocks below). Kept a mobile-scoped block for the
    hero image crop + copy anchoring on narrow screens. */
 @media (max-width: 767px) {
-  .hero-bg .parallax-img {
-    object-position: center center;
-  }
   .hero-frame {
     align-items: flex-end;
     padding-bottom: 48px;

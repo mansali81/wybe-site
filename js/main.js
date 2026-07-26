@@ -540,13 +540,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!heroImg) return;
     window.gsap.registerPlugin(window.ScrollTrigger);
     window.gsap.to(heroImg, {
-      // yPercent moves the img by % of its OWN height. Image is 180%
-      // of wrapper (see .parallax-img in styles.css), so yPercent:-20
-      // = 36% of wrapper translation. Runway on the image is 40% each
-      // side (top:-40%; height:180%), so 36% stays inside the runway
-      // and the wrapper background never peeks at the top or bottom
-      // even at the extremes of the scroll range.
-      yPercent: -20,
+      // Hero image runway is now 8% each side (top:-8%; height:116%
+      // in the .hero-bg .parallax-img override), so translation must
+      // stay inside ~8% of wrapper height to avoid revealing the
+      // wrapper background. yPercent moves by % of the img's OWN
+      // height (116% of wrapper), so yPercent:-6 = 6.96% of wrapper
+      // — safely inside the runway at every scrub position, INCLUDING
+      // the end of the range. At scrollY:0 (start of the top-top -->
+      // bottom-top trigger), the tween progress is 0 → transform is
+      // translate3d(0, 0, 0) — no residual offset at rest.
+      yPercent: -6,
       ease: 'none',
       scrollTrigger: {
         trigger: '#home',
