@@ -604,6 +604,15 @@ h4, h5, h6, .wybe-subhead {
   object-fit: cover;
   object-position: center right;
 }
+/* Laptop / desktop: shift the crop UP so the subject's head stays in
+   frame. The image is a 4:5 portrait; cover on a landscape hero was
+   trimming the top of the frame. Mobile keeps center-center (see
+   the max-width: 767px block below). */
+@media (min-width: 1024px) {
+  .hero-bg .parallax-img {
+    object-position: right 20%;
+  }
+}
 /* Tint layer: darkens the left half of the hero so the copy stays
    above WCAG contrast, then fades to near-transparent on the right
    where the subject sits. Pointer-events none so hover on the image
