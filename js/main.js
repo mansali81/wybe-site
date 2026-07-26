@@ -365,41 +365,117 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── SCOPED PARALLAX (.parallax-img) ───────────────────
-  // Section-scoped image parallax. Every .parallax-img inside its
-  // .parallax-wrapper translates by (rect.top * speed) as its wrapper
-  // moves through the viewport. Wrapper's overflow:hidden clips the
-  // drift; the img is oversized (height:140%, top:-20%) so translations
-  // never expose the wrapper background. Composited translate3d + rAF
-  // throttle + passive scroll listener — no background-attachment:fixed
-  // anywhere (iOS Safari drops it silently). Per-image speed override
-  // via data-parallax-speed (default 0.4).
-  // reduceMotion path: early-return here + CSS media query in styles.css
-  // pins the image with transform:none.
+  // Cached-measurement parallax. Layout is read ONCE per
+  // load/resize/fonts.ready — never inside the scroll handler —
+  // then scroll frames translate images using only window.scrollY
+  // and the cached wrapper offsets. This avoids the layout-thrash
+  // (interleaved getBoundingClientRect + style write) that caused
+  // stutter in the prior implementation. IntersectionObserver skips
+  // scroll-frame work for wrappers outside the viewport, so extra
+  // parallax sections cost effectively zero when off-screen.
+  // Writes are batched: all reads first, then all transforms, so
+  // no read forces a synchronous layout mid-loop. Transform is
+  // set directly (translate3d) for GPU compositing.
+  // reduceMotion path: early-return here + CSS @media pin the img.
   (function() {
     if (reduceMotion) return;
-    const imgs = document.querySelectorAll('.parallax-img');
+    const imgs = Array.from(document.querySelectorAll('.parallax-img'));
     if (!imgs.length) return;
+
     const speedOf = (img) => {
       const raw = parseFloat(img.dataset.parallaxSpeed);
       return Number.isFinite(raw) ? raw : 0.4;
     };
+
+    // One entry per image: cached wrapper reference, absolute
+    // document offset of the wrapper top, wrapper height, per-image
+    // speed, and IntersectionObserver-driven visibility flag.
+    const entries = imgs.map(img => ({
+      img,
+      wrap: img.parentElement,
+      wrapTop: 0,
+      wrapHeight: 0,
+      speed: speedOf(img),
+      inView: false,
+    })).filter(e => e.wrap);
+    if (!entries.length) return;
+
+    const byWrap = new Map(entries.map(e => [e.wrap, e]));
+
+    // Re-measure every entry's wrapper geometry. Safe to call
+    // getBoundingClientRect here because no style writes are
+    // interleaved — one sync layout, done.
+    const measure = () => {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      for (let i = 0; i < entries.length; i++) {
+        const rect = entries[i].wrap.getBoundingClientRect();
+        entries[i].wrapTop = rect.top + sy;
+        entries[i].wrapHeight = rect.height;
+      }
+    };
+
+    // Skip off-screen wrappers. rootMargin gives a small buffer so
+    // a wrapper entering the viewport already has a fresh transform.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((records) => {
+        for (let i = 0; i < records.length; i++) {
+          const e = byWrap.get(records[i].target);
+          if (e) e.inView = records[i].isIntersecting;
+        }
+      }, { rootMargin: '20% 0px' });
+      entries.forEach(e => io.observe(e.wrap));
+    } else {
+      entries.forEach(e => { e.inView = true; });
+    }
+
     let ticking = false;
+    // Reusable job buffer — avoids per-frame array alloc that would
+    // trigger minor GC pauses during long scrolls.
+    const jobs = new Array(entries.length);
+    let jobCount = 0;
+
     const update = () => {
-      imgs.forEach(img => {
-        const wrap = img.parentElement;
-        if (!wrap) return;
-        const rect = wrap.getBoundingClientRect();
-        const y = rect.top * speedOf(img);
-        img.style.setProperty('--parallax-y', y.toFixed(1) + 'px');
-      });
+      const sy = window.scrollY || window.pageYOffset || 0;
+      jobCount = 0;
+      // Reads first: pure math against cached values + window.scrollY.
+      // No DOM API that could force a synchronous layout.
+      for (let i = 0; i < entries.length; i++) {
+        const e = entries[i];
+        if (!e.inView) continue;
+        const rectTop = e.wrapTop - sy;
+        jobs[jobCount++] = [e.img, rectTop * e.speed];
+      }
+      // Writes second: all transforms in a single pass, no interleaved
+      // reads to trigger layout thrash regardless of image count.
+      for (let i = 0; i < jobCount; i++) {
+        jobs[i][0].style.transform =
+          'translate3d(0,' + jobs[i][1].toFixed(1) + 'px,0)';
+      }
       ticking = false;
     };
-    window.addEventListener('scroll', () => {
+
+    const requestUpdate = () => {
       if (!ticking) { requestAnimationFrame(update); ticking = true; }
-    }, { passive: true });
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+
+    // Debounced re-measure on resize (150 ms) — one measure and one
+    // update per settled resize, not per raw resize event.
+    let rzT;
     window.addEventListener('resize', () => {
-      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      clearTimeout(rzT);
+      rzT = setTimeout(() => { measure(); update(); }, 150);
     }, { passive: true });
+
+    // Fonts and full-page load both shift layout after initial paint;
+    // re-measure so wrapTop doesn't drift stale.
+    window.addEventListener('load', () => { measure(); update(); }, { once: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { measure(); update(); });
+    }
+
+    measure();
     update();
   })();
 

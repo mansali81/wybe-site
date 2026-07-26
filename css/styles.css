@@ -464,10 +464,14 @@ h4, h5, h6, .wybe-subhead {
        <div class="parallax-wrapper"><img class="parallax-img"></div>
      Defaults to 60vh window; override with inline height / aspect-ratio
      when a specific section needs different proportions. Per-image
-     speed via data-parallax-speed (default 0.4). JS in main.js does
-     the transform update via requestAnimationFrame; no background-
+     speed via data-parallax-speed (default 0.4). JS in main.js runs
+     the cached-measurement parallax loop and writes translate3d
+     directly to img.style.transform each rAF frame. No background-
      attachment: fixed anywhere (iOS Safari drops it silently). A
-     reduced-motion query hard-disables the transform site-wide. */
+     reduced-motion query hard-disables the transform site-wide.
+     Image is oversized to 150% with top:-25% — 25% of the wrapper
+     height is available as runway on each side before the wrapper
+     background peeks through during a fast scroll. */
   .parallax-wrapper {
     overflow: hidden;
     position: relative;
@@ -475,13 +479,13 @@ h4, h5, h6, .wybe-subhead {
   }
   .parallax-img {
     position: absolute;
-    top: -20%;
+    top: -25%;
     left: 0;
     width: 100%;
-    height: 140%;
+    height: 150%;
     object-fit: cover;
     will-change: transform;
-    transform: translate3d(0, var(--parallax-y, 0px), 0);
+    transform: translate3d(0, 0, 0);
   }
   /* Content children of a .parallax-wrapper (captions, overlays) sit above. */
   .parallax-wrapper > :not(.parallax-img) {
