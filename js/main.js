@@ -483,6 +483,42 @@ document.addEventListener('DOMContentLoaded', () => {
     update();
   })();
 
+  // ── HORIZONTAL TESTIMONIALS (GSAP ScrollTrigger pin+scrub) ──
+  // Pin the #results section while the testimonial track translates
+  // horizontally the length of its overflow. As the user scrolls
+  // vertically, cards slide in from the right like a stack. Desktop
+  // only — matchMedia gates activation to viewports ≥ 768 px where
+  // the .testimonials-track flex row is nowrap. Below that the CSS
+  // fallback (flex-wrap: wrap) gives a natural single-column stack
+  // without any pinning gymnastics on small screens.
+  window.addEventListener('load', () => {
+    if (reduceMotion) return;
+    if (!window.gsap || !window.ScrollTrigger) return;
+    if (!window.matchMedia('(min-width: 768px)').matches) return;
+    const track = document.querySelector('.testimonials-track');
+    const container = document.querySelector('.testimonials-container');
+    const section = document.getElementById('results');
+    if (!track || !container || !section) return;
+    // Overflow amount = how far the track extends past the container.
+    // Recomputed on refresh so resize / font-load / reflow stays honest.
+    const overflow = () => Math.max(0, track.scrollWidth - container.clientWidth);
+    if (overflow() <= 0) return;   // nothing to scroll; skip pin
+    window.gsap.registerPlugin(window.ScrollTrigger);
+    window.gsap.to(track, {
+      x: () => -overflow(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + overflow(),
+        scrub: 0.6,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+  }, { once: true });
+
   // ── HERO PARALLAX (GSAP ScrollTrigger scrub) ──────────
   // Full-height hero image gets its own dedicated GSAP scrub instead
   // of the cached-offset rAF loop above, so the motion is tied

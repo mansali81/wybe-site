@@ -636,15 +636,15 @@
         <!-- Brand: single combined SVG (logo + WYBE + tagline baked in).
              Clicking the lockup routes to #home. -->
         <a href="#home" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
-          <img src="images/Logo.svg" alt="" class="wybe-brand__icon" draggable="false" aria-hidden="true">
-          <span class="wybe-brand__text">WYBE</span>
+          <img src="images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
+               class="wybe-brand__mark" draggable="false">
         </a>
-        <!-- Desktop nav links -->
+        <!-- Desktop nav links. Order: Services, Calculator, My Publication,
+             CTA. Uppercase via CSS on .wybe-nav-link so the visible text
+             stays natural-case and screen readers announce sentence case. -->
         <div class="hidden md:flex items-center gap-7">
-          <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculators</a>
           <a href="#services"     data-nav-link class="wybe-nav-link">Services</a>
-          <a href="#results"      data-nav-link class="wybe-nav-link">Results</a>
-          <a href="#faq"          data-nav-link class="wybe-nav-link">FAQ</a>
+          <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculator</a>
           <a href="publication.html"            class="wybe-nav-link">My Publication</a>
           <a href="#contact" class="wybe-cta">Book Now</a>
         </div>
@@ -660,10 +660,8 @@
     </div>
     <!-- Mobile menu — full-width dropdown on the dark background. -->
     <div id="mobile-menu" class="wybe-mobile-menu hidden md:hidden" role="menu">
-      <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculators</a>
       <a href="#services"    class="wybe-mobile-link" role="menuitem">Services</a>
-      <a href="#results"     class="wybe-mobile-link" role="menuitem">Results</a>
-      <a href="#faq"         class="wybe-mobile-link" role="menuitem">FAQ</a>
+      <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculator</a>
       <a href="publication.html" class="wybe-mobile-link" role="menuitem">My Publication</a>
       <a href="#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
     </div>
@@ -1021,13 +1019,14 @@
         </p>
       </div>
 
-      <!-- Testimonial grid (2-up tablet+, 1-col mobile).
-           Amit K. is the first REAL client testimonial (consented via
-           the site owner). The other three are still placeholders —
-           swap them as more written consent lands. Grid switched to
-           2-column so Amit's longer multi-paragraph testimonial reads
-           comfortably at any screen width. -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Testimonial track — horizontal scroll on desktop, natural
+           single-column stack on mobile. .testimonials-container is the
+           viewport; .testimonials-track is the flex row of cards. GSAP
+           ScrollTrigger (main.js: HORIZONTAL TESTIMONIALS block) pins
+           the container and translates the track left as the user
+           scrolls, so cards slide in from the right like a stack. -->
+      <div class="testimonials-container">
+      <div class="testimonials-track">
         <article class="wybe-testimonial wybe-reveal">
           <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
           <blockquote class="wybe-testimonial__body">
@@ -1083,7 +1082,8 @@
             </div>
           </div>
         </article>
-      </div>
+      </div><!-- /.testimonials-track -->
+      </div><!-- /.testimonials-container -->
 
       <!-- Transformations strip: 4 before/after pairs -->
       <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->

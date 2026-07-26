@@ -209,66 +209,30 @@ h4, h5, h6, .wybe-subhead {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* Brand: small mark icon + WYBE wordmark as TEXT. Typography specs
-   applied to the text so font-size / weight / letter-spacing can be
-   tuned without touching the SVG. Icon is a compact 40 px mark; the
-   old 64 px combined lockup (mark + wordmark + tagline) is retired
-   from the header (still available as images/Logo, Brand and
-   Tagline.svg if reused elsewhere). */
+/* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
+   Vertically centered inside the nav row. Hover mirrors the nav links —
+   an orange tint filter on the mark plus an animated underline sweep. */
 .wybe-brand {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
   color: #F6F2E8;
   text-decoration: none;
   cursor: pointer;
   padding: 6px 2px;
 }
-.wybe-brand__icon {
-  width: 40px;
-  height: 40px;
+.wybe-brand__mark {
+  height: 64px;
+  width: auto;
+  max-width: 100%;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
   transition: filter 0.3s ease, transform 0.3s ease;
 }
-.wybe-brand__text {
-  font-family: var(--font-subhead);
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  line-height: 1;
-  text-transform: uppercase;
-  color: inherit;
-  /* Text-shadow matches the mark's drop-shadow so both edges of the
-     lockup lift off the hero image identically when the header is
-     transparent. Suppressed inside .is-scrolled below. */
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-/* Responsive: shrink the wordmark on small screens per the spec. */
-@media (max-width: 640px) {
-  .wybe-brand__text {
-    font-size: 22px;
-    letter-spacing: 3px;
-  }
-  .wybe-brand__icon {
-    width: 32px;
-    height: 32px;
-  }
-  .wybe-brand {
-    gap: 8px;
-  }
-}
-/* Solid-header state — separation from a solid backdrop makes both
-   the icon shadow and the wordmark shadow redundant. */
-.wybe-header.is-scrolled .wybe-brand__icon {
+.wybe-header.is-scrolled .wybe-brand__mark {
   filter: none;
-}
-.wybe-header.is-scrolled .wybe-brand__text {
-  text-shadow: none;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
@@ -285,10 +249,8 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 1px;
   pointer-events: none;
 }
-/* Hover: wordmark turns orange, icon SVG recoloured via a filter
-   chain to match. */
-.wybe-brand:hover .wybe-brand__text { color: #FF6600; }
-.wybe-brand:hover .wybe-brand__icon {
+/* Hover: SVG recoloured to orange via filter chain. */
+.wybe-brand:hover .wybe-brand__mark {
   filter:
     brightness(0)
     saturate(100%)
@@ -306,17 +268,18 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 4px;
 }
 
-/* Desktop nav links. Text-shadow keeps them legible over the raw
-   hero image at page-top (transparent header) then gets suppressed
-   inside .is-scrolled since the solid dark bar provides its own
-   contrast. Wider letter-spacing (0.11em ≈ 2 px at 18 px) mirrors
-   the modern-landing-page nav aesthetic. */
+/* Desktop nav links. Uppercase per site style. Text-shadow keeps
+   them legible over the raw hero image at page-top (transparent
+   header) then gets suppressed inside .is-scrolled since the solid
+   dark bar provides its own contrast. Wider letter-spacing
+   (0.11em ≈ 2 px at 18 px) mirrors the modern-landing-page aesthetic. */
 .wybe-nav-link {
   position: relative;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 18px;
   letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: #F6F2E8;
   text-decoration: none;
   padding: 6px 2px;
@@ -425,9 +388,10 @@ h4, h5, h6, .wybe-subhead {
 }
 .wybe-mobile-link {
   font-family: var(--font-subhead);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: #F6F2E8;
   text-decoration: none;
   padding: 10px 4px;
@@ -645,17 +609,20 @@ h4, h5, h6, .wybe-subhead {
   -webkit-mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
           mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
 }
+/* Hero image: object-fit CONTAIN so the whole subject/character is
+   visible. Cover was cropping the head/feet because the source photo
+   is portrait (4:5) and the hero is landscape. Contain preserves the
+   full frame; the wrapper's radial mask + the dark page background
+   fill the letterbox space on either side of the image. Positioned
+   to the right on desktop so copy on the left has room, centered on
+   mobile (see max-width: 767px block below). */
 .hero-bg .parallax-img {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center right;
 }
-/* Laptop / desktop: shift the crop UP so the subject's head stays in
-   frame. The image is a 4:5 portrait; cover on a landscape hero was
-   trimming the top of the frame. Mobile keeps center-center (see
-   the max-width: 767px block below). */
 @media (min-width: 1024px) {
   .hero-bg .parallax-img {
-    object-position: right 20%;
+    object-position: right center;
   }
 }
 /* .hero-tint was the darkening gradient layer behind the copy. It
@@ -1133,6 +1100,37 @@ h4, h5, h6, .wybe-subhead {
 .wybe-results {
   background: #1E1E1E;
   color: #F6F2E8;
+}
+
+/* Horizontal-scroll wrapper for the testimonial track. On desktop,
+   .testimonials-container is pinned by GSAP ScrollTrigger and the
+   inner .testimonials-track translates left as the user scrolls —
+   cards slide in like a stack. On mobile/tablet (below 768 px) the
+   pin isn't set up and the flex row wraps to a natural vertical
+   stack for scroll-friendliness. */
+.testimonials-container {
+  position: relative;
+  overflow: hidden;
+}
+.testimonials-track {
+  display: flex;
+  flex-wrap: wrap;                 /* mobile default: wrap to stack */
+  gap: 24px;
+}
+.testimonials-track .wybe-testimonial {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+@media (min-width: 768px) {
+  .testimonials-track {
+    flex-wrap: nowrap;             /* desktop: single row for GSAP */
+    width: max-content;
+    will-change: transform;
+  }
+  .testimonials-track .wybe-testimonial {
+    flex: 0 0 min(70vw, 520px);
+    max-width: none;
+  }
 }
 
 .wybe-testimonial {
