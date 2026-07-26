@@ -1656,9 +1656,33 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 }
 
 /* ── ABOUT PORTRAIT ──────────────────────────────
-   No longer masks — the default radial vignette on .parallax-wrapper
-   (in the parallax utility block above) fades all four edges into the
-   page background, which is what we want across every section image. */
+   The Profile Pic must display in full (no crop). Parallax needs the
+   image oversized inside a smaller frame — those two goals are
+   incompatible, so this scope overrides the parallax positioning on
+   just the About portrait: image sits flush inside the wrapper with
+   object-fit:contain (guarantees the whole photo is visible on any
+   wrapper aspect ratio) and no scroll transform. Wrapper still gets
+   the default radial vignette from .parallax-wrapper so edges blend
+   with the page background. */
+.about-portrait .parallax-img {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: none !important;
+  will-change: auto;
+}
+/* Aspect-ratio the wrapper to match the image (Profile Pic.webp is
+   2048x2048 = 1:1) so contain has zero letterbox — the image fills
+   the wrapper exactly with no empty space top or bottom. Wrapper
+   height override wins over the .parallax-wrapper { height: 60vh }
+   utility default because the class-name specificity is equal and
+   this block is later in the cascade. */
+.parallax-wrapper.about-portrait {
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
 
 /* ── INFO TOOLTIP ─────────────────────────────────
    Small "?" badge that reveals a measurement hint on hover/focus.
