@@ -634,8 +634,18 @@
        owned by CSS: a short hero-enter fade-up runs once on load,
        gated by prefers-reduced-motion. -->
   <section id="home" class="hero" data-hero>
+    <!-- Background image layer — full-bleed behind copy, parallax on
+         scroll. Object-position: right so the subject stays visible on
+         the right side of the frame, copy overlaid on the left. -->
+    <div class="hero-bg parallax-wrapper" aria-hidden="true">
+      <img src="images/Hero.webp"
+           alt=""
+           class="parallax-img hero-bg__img"
+           data-parallax-speed="0.15">
+    </div>
+    <!-- Gradient tint for text contrast on the left side. -->
+    <div class="hero-tint" aria-hidden="true"></div>
     <div class="hero-frame">
-      <!-- Hero copy — left column on desktop, top on mobile. -->
       <div class="hero-content" data-hero-content>
         <h1 class="hero-tagline">
           Mind Coach<br>
@@ -655,16 +665,6 @@
           </svg>
         </a>
       </div>
-      <!-- Hero image — right column on desktop, below copy on mobile.
-           Wrapped in .parallax-wrapper so it drifts on scroll. -->
-      <figure class="hero-media m-0">
-        <div class="parallax-wrapper w-full h-full">
-          <img src="images/Hero.webp"
-               alt="Mansoor Ahamad Ali coaching a client"
-               class="parallax-img"
-               data-parallax-speed="0.15">
-        </div>
-      </figure>
     </div>
   </section>
 
