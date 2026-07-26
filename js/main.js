@@ -379,7 +379,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // reduceMotion path: early-return here + CSS @media pin the img.
   (function() {
     if (reduceMotion) return;
-    const imgs = Array.from(document.querySelectorAll('.parallax-img'));
+    // Skip the hero image: it's driven by a dedicated GSAP ScrollTrigger
+    // scrub (added below) that pins it to the section scroll progress.
+    // Running both systems on the same node would fight over the
+    // transform property every frame.
+    const imgs = Array.from(document.querySelectorAll('.parallax-img:not(.hero-bg__img)'));
     if (!imgs.length) return;
 
     const speedOf = (img) => {
@@ -478,6 +482,45 @@ document.addEventListener('DOMContentLoaded', () => {
     measure();
     update();
   })();
+
+  // ── HERO PARALLAX (GSAP ScrollTrigger scrub) ──────────
+  // Full-height hero image gets its own dedicated GSAP scrub instead
+  // of the cached-offset rAF loop above, so the motion is tied
+  // directly to the section's scroll progress (0 -> 1 as the section
+  // moves from "top-of-viewport" to "bottom-at-top-of-viewport"). The
+  // image translates yPercent 0 -> -25 across that range, giving a
+  // pronounced Squarespace-index-style parallax where copy scrolls
+  // over a slower-moving background.
+  //
+  // GSAP + ScrollTrigger are loaded via <script defer>, so they're
+  // NOT defined when this main.js file's IIFE first runs. Hooking
+  // window.load guarantees both are on window by the time we call
+  // them. invalidateOnRefresh recomputes start/end on resize so the
+  // scrub range stays aligned when the viewport height changes.
+  window.addEventListener('load', () => {
+    if (reduceMotion) return;
+    if (!window.gsap || !window.ScrollTrigger) return;
+    const heroImg = document.querySelector('.hero-bg__img');
+    if (!heroImg) return;
+    window.gsap.registerPlugin(window.ScrollTrigger);
+    window.gsap.to(heroImg, {
+      // yPercent moves the img by % of its OWN height. Image is 180%
+      // of wrapper (see .parallax-img in styles.css), so yPercent:-20
+      // = 36% of wrapper translation. Runway on the image is 40% each
+      // side (top:-40%; height:180%), so 36% stays inside the runway
+      // and the wrapper background never peeks at the top or bottom
+      // even at the extremes of the scroll range.
+      yPercent: -20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#home',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+  }, { once: true });
 
   // ── SCROLLTRIGGER REFRESH ────────────────────────────
   // The fixed header + font-load can shift page geometry after
