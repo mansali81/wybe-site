@@ -1694,32 +1694,69 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 }
 
 /* ── ABOUT PORTRAIT ──────────────────────────────
-   The Profile Pic must display in full (no crop). Parallax needs the
-   image oversized inside a smaller frame — those two goals are
-   incompatible, so this scope overrides the parallax positioning on
-   just the About portrait: image sits flush inside the wrapper with
-   object-fit:contain (guarantees the whole photo is visible on any
-   wrapper aspect ratio) and no scroll transform. Wrapper still gets
-   the default radial vignette from .parallax-wrapper so edges blend
-   with the page background. */
-.about-portrait .parallax-img {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transform: none !important;
-  will-change: auto;
-}
-/* Aspect-ratio the wrapper to match the image (Profile Pic.webp is
-   2048x2048 = 1:1) so contain has zero letterbox — the image fills
-   the wrapper exactly with no empty space top or bottom. Wrapper
-   height override wins over the .parallax-wrapper { height: 60vh }
-   utility default because the class-name specificity is equal and
-   this block is later in the cascade. */
+   Reverted to the site-default parallax behavior: image uses the
+   standard .parallax-img crop-and-translate treatment (top:-40%;
+   height:180%; object-fit:cover) so the About portrait moves in
+   step with the rest of the site's parallax sections. The tall
+   wrapper (aspect 4:5 on desktop, matching a portrait footprint)
+   makes room for a comfortable crop while giving the parallax
+   effect enough visible translation.
+   NOTE: this crops top/bottom of the photo. If a full uncropped
+   photo becomes the priority again, revert this to object-fit:
+   contain + transform:none (see git history for the exact block). */
 .parallax-wrapper.about-portrait {
+  aspect-ratio: 4 / 5;
   height: auto;
-  aspect-ratio: 1 / 1;
+  max-width: 100%;
+}
+@media (min-width: 768px) {
+  .parallax-wrapper.about-portrait {
+    height: 100%;
+    min-height: 520px;
+    aspect-ratio: auto;
+  }
+}
+
+/* ── STAT BADGE COMPONENT ──────────────────────────
+   Reusable orange badge for stat callouts. Angled bottom-left
+   corner via clip-path matches the "cut corner" look from the
+   reference. Subtle hover lift (translateY + shadow) so a single
+   stat feels tactile without demanding attention. Uses the
+   site's --font-header for the big number and --font-subhead for
+   the uppercase label so type inherits the system rather than
+   redefining sizes locally. */
+.stat-badge {
+  background: #FF6600;
+  color: #FFFFFF;
+  padding: 22px 20px 26px;
+  border-radius: 10px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 26px 100%, 0 calc(100% - 26px));
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  cursor: default;
+}
+.stat-badge:hover {
+  transform: translateY(-3px);
+  background-color: #E65500;
+  box-shadow: 0 14px 32px rgba(255, 102, 0, 0.35);
+}
+.stat-badge__number {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(28px, 3.4vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0;
+}
+.stat-badge__label {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 12px 0 0;
 }
 
 /* ── INFO TOOLTIP ─────────────────────────────────
