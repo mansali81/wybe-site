@@ -209,34 +209,66 @@ h4, h5, h6, .wybe-subhead {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
-   Vertically centered inside the nav row. Hover mirrors the nav
-   links — a lime tint filter on the mark plus an animated underline
-   sweeping left → right. */
+/* Brand: small mark icon + WYBE wordmark as TEXT. Typography specs
+   applied to the text so font-size / weight / letter-spacing can be
+   tuned without touching the SVG. Icon is a compact 40 px mark; the
+   old 64 px combined lockup (mark + wordmark + tagline) is retired
+   from the header (still available as images/Logo, Brand and
+   Tagline.svg if reused elsewhere). */
 .wybe-brand {
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 12px;
   color: #F6F2E8;
   text-decoration: none;
   cursor: pointer;
   padding: 6px 2px;
 }
-.wybe-brand__mark {
-  height: 64px;
-  width: auto;
-  max-width: 100%;
+.wybe-brand__icon {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
-  /* Base drop-shadow lifts the SVG off the raw hero image at page-top
-     when the header is transparent. Suppressed once .is-scrolled is on
-     — the solid dark backdrop provides its own separation. */
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
   transition: filter 0.3s ease, transform 0.3s ease;
 }
-.wybe-header.is-scrolled .wybe-brand__mark {
+.wybe-brand__text {
+  font-family: var(--font-subhead);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: inherit;
+  /* Text-shadow matches the mark's drop-shadow so both edges of the
+     lockup lift off the hero image identically when the header is
+     transparent. Suppressed inside .is-scrolled below. */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+/* Responsive: shrink the wordmark on small screens per the spec. */
+@media (max-width: 640px) {
+  .wybe-brand__text {
+    font-size: 22px;
+    letter-spacing: 3px;
+  }
+  .wybe-brand__icon {
+    width: 32px;
+    height: 32px;
+  }
+  .wybe-brand {
+    gap: 8px;
+  }
+}
+/* Solid-header state — separation from a solid backdrop makes both
+   the icon shadow and the wordmark shadow redundant. */
+.wybe-header.is-scrolled .wybe-brand__icon {
   filter: none;
+}
+.wybe-header.is-scrolled .wybe-brand__text {
+  text-shadow: none;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
@@ -253,11 +285,10 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 1px;
   pointer-events: none;
 }
-/* Orange (#FF6600) hover tint. Filter chain first flattens the SVG to
-   solid black (brightness 0), then re-lifts it to the target orange via
-   invert/sepia/saturate/hue-rotate. Computed with Barrett Sonntag's
-   color-to-filter approximation for RGB (255,102,0). */
-.wybe-brand:hover .wybe-brand__mark {
+/* Hover: wordmark turns orange, icon SVG recoloured via a filter
+   chain to match. */
+.wybe-brand:hover .wybe-brand__text { color: #FF6600; }
+.wybe-brand:hover .wybe-brand__icon {
   filter:
     brightness(0)
     saturate(100%)
@@ -680,15 +711,24 @@ h4, h5, h6, .wybe-subhead {
 .hero-tagline {
   font-family: var(--font-subhead);
   font-weight: 700;
-  font-size: clamp(28px, 4.2vw, 56px);
-  line-height: 1.1;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 72px;
+  line-height: 72px;
+  letter-spacing: -1px;
   color: #FFFFFF;
   margin: 0 0 clamp(20px, 2.2vw, 30px);
+  /* Dual-layer text-shadow keeps the title readable directly on the
+     hero image (no background box). Tight near-black shadow for edge
+     sharpness + wider soft halo for busy regions. */
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.55),
     0 4px 18px rgba(0, 0, 0, 0.50);
+}
+/* Responsive scale-down for small screens per the type spec. */
+@media (max-width: 640px) {
+  .hero-tagline {
+    font-size: 38px;
+    line-height: 42px;
+  }
 }
 .hero-sub {
   font-family: var(--font-body);
