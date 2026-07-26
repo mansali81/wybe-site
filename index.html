@@ -460,7 +460,7 @@
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
-      "reviewCount": "3",
+      "reviewCount": "4",
       "bestRating": "5",
       "worstRating": "1"
     },
@@ -482,6 +482,12 @@
         "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
         "author":       { "@type": "Person", "name": "Aisha N." },
         "reviewBody":   "The nutrition consult alone paid for itself in a week. No fads, no supplements to buy — just a way of eating I can hold onto for the rest of my life."
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author":       { "@type": "Person", "name": "Amit Kumar", "jobTitle": "Entrepreneur" },
+        "reviewBody":   "I've had the pleasure of training with Mansoor, and the difference in my strength, fitness, and confidence has been incredible. What really sets him apart is his attention to detail—every exercise is explained thoroughly, with a strong focus on proper form and technique to maximise results while preventing injury. His expertise in building core strength is exceptional. Every session is carefully structured to improve stability, balance, and functional strength, and I've noticed significant improvements in both my workouts and everyday movements. Mansoor doesn't just push you to work harder; he makes sure you understand why you're doing each exercise and how it benefits your body. If you're looking for a knowledgeable, motivating, and detail-oriented personal trainer who genuinely cares about helping you achieve your goals, I can't recommend Mansoor highly enough."
       }
     ]
   }
@@ -940,9 +946,13 @@
         </p>
       </div>
 
-      <!-- Testimonial grid (3-up desktop, 1-col mobile) -->
-      <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Testimonial grid (2-up tablet+, 1-col mobile).
+           Amit K. is the first REAL client testimonial (consented via
+           the site owner). The other three are still placeholders —
+           swap them as more written consent lands. Grid switched to
+           2-column so Amit's longer multi-paragraph testimonial reads
+           comfortably at any screen width. -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <article class="wybe-testimonial wybe-reveal">
           <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
           <blockquote class="wybe-testimonial__body">
@@ -979,6 +989,22 @@
             <div class="wybe-testimonial__id">
               <p class="wybe-testimonial__name">Aisha N.</p>
               <p class="wybe-testimonial__context">Nutrition reset &middot; Ongoing &middot; Abu Dhabi</p>
+            </div>
+          </div>
+        </article>
+        <!-- Real client — Amit Kumar, added 2026-07-26. Consent on file with site owner. -->
+        <article class="wybe-testimonial wybe-reveal">
+          <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
+          <blockquote class="wybe-testimonial__body">
+            <p class="mb-3">I&rsquo;ve had the pleasure of training with Mansoor, and the difference in my strength, fitness, and confidence has been incredible. What really sets him apart is his attention to detail&mdash;every exercise is explained thoroughly, with a strong focus on proper form and technique to maximise results while preventing injury.</p>
+            <p class="mb-3">His expertise in building core strength is exceptional. Every session is carefully structured to improve stability, balance, and functional strength, and I&rsquo;ve noticed significant improvements in both my workouts and everyday movements. Mansoor doesn&rsquo;t just push you to work harder; he makes sure you understand why you&rsquo;re doing each exercise and how it benefits your body.</p>
+            <p>If you&rsquo;re looking for a knowledgeable, motivating, and detail-oriented personal trainer who genuinely cares about helping you achieve your goals, I can&rsquo;t recommend Mansoor highly enough.</p>
+          </blockquote>
+          <div class="wybe-testimonial__meta">
+            <span class="wybe-testimonial__avatar" aria-hidden="true">AK</span>
+            <div class="wybe-testimonial__id">
+              <p class="wybe-testimonial__name">Amit Kumar</p>
+              <p class="wybe-testimonial__context">Entrepreneur &middot; Strength &amp; core</p>
             </div>
           </div>
         </article>
