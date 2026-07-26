@@ -457,42 +457,41 @@ h4, h5, h6, .wybe-subhead {
     will-change: transform;
   }
 
-  /* ── PARALLAX BACKGROUND UTILITY (.parallax-bg) ─────────────
-     Section-scoped image parallax. Wrap any content-flow image in
-     <figure class="parallax-bg"><img class="parallax-bg__img"></figure>
-     — the wrapper clips to its own box, the image is oversized inside
-     and translates on scroll via JS (see main.js: SCOPED PARALLAX).
-     Element-relative math means the effect works anywhere on the page,
-     not just at the top. iOS-safe: uses composited transforms, no
-     background-attachment: fixed (which iOS Safari drops silently).
-     A reduced-motion query hard-disables the transform site-wide. */
-  .parallax-bg {
-    position: relative;
+  /* ── PARALLAX UTILITY (.parallax-wrapper / .parallax-img) ─────────
+     Section-scoped image parallax. Wrap any content-flow image:
+       <div class="parallax-wrapper"><img class="parallax-img"></div>
+     Defaults to 60vh window; override with inline height / aspect-ratio
+     when a specific section needs different proportions. Per-image
+     speed via data-parallax-speed (default 0.4). JS in main.js does
+     the transform update via requestAnimationFrame; no background-
+     attachment: fixed anywhere (iOS Safari drops it silently). A
+     reduced-motion query hard-disables the transform site-wide. */
+  .parallax-wrapper {
     overflow: hidden;
-    isolation: isolate;
+    position: relative;
+    height: 60vh;
   }
-  .parallax-bg__img {
+  .parallax-img {
     position: absolute;
-    inset: -12% 0;              /* runway for translateY */
+    top: -20%;
+    left: 0;
     width: 100%;
-    height: 124%;
+    height: 140%;
     object-fit: cover;
-    z-index: 0;
     will-change: transform;
     transform: translate3d(0, var(--parallax-y, 0px), 0);
-    transition: none;
   }
-  /* Any non-image child of a .parallax-bg wrapper sits above the image. */
-  .parallax-bg > :not(.parallax-bg__img) {
+  /* Content children of a .parallax-wrapper (captions, overlays) sit above. */
+  .parallax-wrapper > :not(.parallax-img) {
     position: relative;
     z-index: 1;
   }
-  /* Accessibility + iOS Safari safety: never parallax under reduced-motion. */
+  /* Accessibility: never parallax under reduced-motion. Pin the image
+     to its wrapper with the original crop (top:0/height:100%) so the
+     visual anchor doesn't jump when a user toggles the OS setting. */
   @media (prefers-reduced-motion: reduce) {
-    .parallax-bg__img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
+    .parallax-img {
+      top: 0;
       height: 100%;
       transform: none !important;
       will-change: auto;

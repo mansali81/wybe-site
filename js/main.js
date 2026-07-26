@@ -364,44 +364,32 @@ document.addEventListener('DOMContentLoaded', () => {
     updateParallax();
   }
 
-  // ── SCOPED PARALLAX (.parallax-bg__img) ───────────────
-  // Section-scoped image parallax that works anywhere on the page.
-  // Every .parallax-bg__img inside its .parallax-bg wrapper is offset
-  // vertically as its wrapper crosses the viewport: image drifts DOWN
-  // (positive translateY) when the section is above center, UP when
-  // below. Wrapper's overflow:hidden clips the drift so nothing bleeds
-  // into adjacent sections. Uses composited translate3d + rAF throttle;
-  // no background-attachment:fixed anywhere (iOS drops it silently).
-  // reduceMotion pathway is a no-op — the media query in styles.css
-  // pins the image to its wrapper with transform:none.
+  // ── SCOPED PARALLAX (.parallax-img) ───────────────────
+  // Section-scoped image parallax. Every .parallax-img inside its
+  // .parallax-wrapper translates by (rect.top * speed) as its wrapper
+  // moves through the viewport. Wrapper's overflow:hidden clips the
+  // drift; the img is oversized (height:140%, top:-20%) so translations
+  // never expose the wrapper background. Composited translate3d + rAF
+  // throttle + passive scroll listener — no background-attachment:fixed
+  // anywhere (iOS Safari drops it silently). Per-image speed override
+  // via data-parallax-speed (default 0.4).
+  // reduceMotion path: early-return here + CSS media query in styles.css
+  // pins the image with transform:none.
   (function() {
     if (reduceMotion) return;
-    const imgs = document.querySelectorAll('.parallax-bg__img');
+    const imgs = document.querySelectorAll('.parallax-img');
     if (!imgs.length) return;
-    // Tunable per-image via data-parallax-strength (default 0.15 = subtle).
-    // 0.0 = static, 0.3 = strong. Kept low so text-over-image sections
-    // read cleanly instead of drawing the eye to motion.
-    const strengthOf = (img) => {
-      const raw = parseFloat(img.dataset.parallaxStrength);
-      return Number.isFinite(raw) ? raw : 0.15;
+    const speedOf = (img) => {
+      const raw = parseFloat(img.dataset.parallaxSpeed);
+      return Number.isFinite(raw) ? raw : 0.4;
     };
     let ticking = false;
     const update = () => {
-      const vh = window.innerHeight || 1;
-      const vcenter = vh / 2;
       imgs.forEach(img => {
-        const wrap = img.closest('.parallax-bg');
+        const wrap = img.parentElement;
         if (!wrap) return;
         const rect = wrap.getBoundingClientRect();
-        // Skip far off-screen (perf; ~1.5 viewport buffer either side).
-        if (rect.bottom < -vh * 0.5 || rect.top > vh * 1.5) return;
-        const wcenter = rect.top + rect.height / 2;
-        // Signed distance from viewport center. Positive when wrapper
-        // is below center; negative when above. Multiply by NEGATIVE
-        // strength so the image drifts opposite to scroll direction,
-        // which is the depth cue the eye reads as "further back".
-        const delta = wcenter - vcenter;
-        const y = -delta * strengthOf(img);
+        const y = rect.top * speedOf(img);
         img.style.setProperty('--parallax-y', y.toFixed(1) + 'px');
       });
       ticking = false;

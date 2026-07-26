@@ -908,16 +908,20 @@
       </div>
 
       <!-- Portrait — bottom-flush on desktop so the runner grounds the section.
-           Wrapped in .parallax-bg so the image drifts on scroll while the
-           column window stays in layout. Aspect ratio chosen to preserve
-           the original portrait footprint (roughly 4:5). -->
+           .parallax-wrapper defaults to height:60vh with the image over-
+           sized inside (top:-20%; height:140% = 20% runway per side).
+           data-parallax-speed capped at 0.15 so translateY stays inside
+           runway: with the default 0.4 and typical viewport (~800px),
+           rect.top * 0.4 = ±320px translation, but only ~120px of runway
+           exists on a 60vh wrapper, so anything higher exposes the
+           wrapper background. Bump the runway (top:-40%; height:180%)
+           in an inline override if a section wants a stronger speed. -->
       <figure class="md:col-span-5 flex justify-center md:justify-end m-0">
-        <div class="parallax-bg about-portrait w-full max-w-[420px] md:max-w-[480px]"
-             style="aspect-ratio: 4/5;">
+        <div class="parallax-wrapper about-portrait w-full max-w-[420px] md:max-w-[480px]">
           <img src="images/Treadmill.webp"
                alt="Mansoor Ahamad Ali, WYBE practitioner and personal trainer, coaching a client through a treadmill session"
-               class="parallax-bg__img"
-               data-parallax-strength="0.18">
+               class="parallax-img"
+               data-parallax-speed="0.15">
         </div>
       </figure>
     </div>
