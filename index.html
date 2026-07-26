@@ -271,9 +271,59 @@
       font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px;
       color: white; padding: 0; letter-spacing: -0.01em;
     }
-    .wybe-input-row input::placeholder { color: rgba(255,255,255,0.25); }
-    .wybe-input-row select option { color: #000000; background: #F6F2E8; }
+    /* Native <select> looks OS-ish and out of place next to the airy
+       inputs. Strip the OS chrome and paint our own chevron (orange,
+       matches the section accent) as a background-image on the right.
+       padding-right leaves room so the value text never runs under it. */
+    .wybe-input-row select {
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      cursor: pointer;
+      padding-right: 28px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF6600' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 2px center;
+      background-size: 18px 18px;
+    }
+    .wybe-input-row select::-ms-expand { display: none; }
+    /* Focus state — the row's underline already flips to orange via
+       :focus-within; also drop the OS blue focus ring on the control. */
+    .wybe-input-row input:focus,
+    .wybe-input-row select:focus { outline: none; box-shadow: none; }
+    /* Placeholder text reads as a hint, not a filled value. Lighter
+       colour + thinner weight + smaller size + italic so it's visually
+       distinct from the 22 px / 900 answer text. */
+    .wybe-input-row input::placeholder {
+      color: rgba(255, 255, 255, 0.32);
+      font-weight: 400;
+      font-size: 15px;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+    /* Empty <select> ("Select…" state) also styled as a hint. */
+    .wybe-input-row select:invalid,
+    .wybe-input-row select:has(option[value=""]:checked) {
+      color: rgba(255, 255, 255, 0.32);
+      font-weight: 400;
+      font-size: 15px;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+    .wybe-input-row select option { color: #000000; background: #F6F2E8; font-weight: 400; font-style: normal; font-size: 15px; }
     .wybe-input-row .info-tip { color: rgba(255,255,255,0.4); }
+
+    /* Calculator image column: stretch to match the form's height on
+       desktop so it never reads as a small framed thumbnail beside a
+       tall form. Mobile keeps the utility default (60vh) since the
+       image stacks above the form there. Parallax logic is untouched
+       — .parallax-img still translates via the cached-offset loop. */
+    @media (min-width: 768px) {
+      #calculators .parallax-wrapper {
+        height: 100%;
+        min-height: 480px;
+      }
+    }
     .wybe-calc-cta        {
       display: inline-flex; align-items: center; gap: 8px;
       background: #FF6600; color: #000000;
@@ -688,10 +738,13 @@
            form. Form is shown on load; on Get Result it hides and the
            results view replaces it in the same space. Edit-inputs link
            at the top of the results toggles back. -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
-        <!-- Treadmill image, left column, parallax. -->
-        <figure class="md:col-span-5 flex justify-center md:justify-start m-0">
-          <div class="parallax-wrapper w-full max-w-[420px] md:max-w-[480px]">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
+        <!-- Treadmill image, left column, parallax. Stretches to fill
+             the form column height on desktop (via #calculators
+             .parallax-wrapper { height: 100% } in the style block
+             above). Mobile keeps the default 60vh and stacks above. -->
+        <figure class="md:col-span-5 flex justify-center md:justify-start m-0 md:h-full">
+          <div class="parallax-wrapper w-full md:h-full">
             <img src="images/Treadmill.webp"
                  alt="Treadmill session — coached run on a WYBE workout program"
                  class="parallax-img"
@@ -705,41 +758,41 @@
 
           <div class="wybe-input-row">
             <label for="ucalc-gender">Gender</label>
-            <select id="ucalc-gender">
-              <option value="">Select&hellip;</option>
+            <select id="ucalc-gender" required>
+              <option value="" selected>Select&hellip;</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-age">Age</label>
-            <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="32">
+            <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="e.g. 32">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-height">Height (cm)</label>
-            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="178">
+            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="e.g. 178">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-weight">Weight (kg)</label>
-            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="78">
+            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="e.g. 78">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-neck">Neck (cm)</label>
-            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="38">
+            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="e.g. 38">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-waist">Waist (cm)</label>
-            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="85">
+            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="e.g. 85">
           </div>
           <!-- Female-only conditional row — JS toggles .hidden on gender change. -->
           <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
             <label for="ucalc-hip">Hip (cm)</label>
-            <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="95">
+            <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="e.g. 95">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-activity">Activity level</label>
-            <select id="ucalc-activity">
-              <option value="">Select&hellip;</option>
+            <select id="ucalc-activity" required>
+              <option value="" selected>Select&hellip;</option>
               <option value="1.2">Sedentary, desk job, no training</option>
               <option value="1.375">Lightly active, 1-3 days/week</option>
               <option value="1.55">Moderately active, 3-5 days/week</option>
