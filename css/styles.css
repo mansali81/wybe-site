@@ -589,11 +589,30 @@ h4, h5, h6, .wybe-subhead {
   -webkit-mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
           mask-image: radial-gradient(ellipse 150% 130% at center, black 45%, transparent 105%);
 }
-/* Hero image inherits the site-wide .parallax-img rule (object-fit:
-   contain, no crop, no transform). The dark hero background fills
-   the letterbox space either side of the 4:5 portrait on a landscape
-   viewport. No per-breakpoint object-position tuning is needed since
-   the entire frame is always visible. */
+/* Hero image OVERRIDE — the hero is a background/back-layer image,
+   so it uses object-fit: cover + a right-anchored object-position to
+   keep the subject on the right of the frame (copy sits on the left).
+   The image is a touch oversized (top:-6%; height:112%) to give the
+   GSAP scrub tween (yPercent -5) safe runway with no wrapper-bg peek
+   at the scrub extremes. This is a scoped override — every OTHER
+   .parallax-img on the site (about, calc, contact) still uses the
+   site-default contain / no-transform / no-crop treatment. */
+.hero-bg .parallax-img {
+  top: -6%;
+  height: 112%;
+  object-fit: cover;
+  object-position: 75% 15%;
+}
+@media (min-width: 1025px) {
+  .hero-bg .parallax-img {
+    object-position: 80% 15%;
+  }
+}
+@media (min-width: 1441px) {
+  .hero-bg .parallax-img {
+    object-position: 85% 15%;
+  }
+}
 /* .hero-tint was the darkening gradient layer behind the copy. It
    was removed from the HTML so the hero copy sits directly on the
    image with only text-shadow for legibility (see the .hero-tagline
@@ -1068,25 +1087,17 @@ h4, h5, h6, .wybe-subhead {
   color: #F6F2E8;
 }
 
-/* Testimonials — native horizontal scroll (swipe / trackpad).
-   No GSAP pin, no scroll-hijack, no pin-spacer eating vertical
-   space. The .testimonials-container is a horizontally-scrollable
-   viewport; cards snap to center as the user swipes. Mobile stacks
-   vertically (flex-wrap:wrap) for a natural single-column feed. */
+/* Testimonials — scroll-driven horizontal motion, no pin, no spacer.
+   The container is a fixed viewport (overflow:hidden). The inner
+   track is a flex row wider than the viewport; JS (main.js:
+   TESTIMONIALS SLIDER) translates the track's X based on how far
+   the #results section has passed through the viewport, so cards
+   slide from right to left as the user scrolls normally. No GSAP
+   pin → the section takes only its natural height with zero dead
+   vertical space. Mobile stacks vertically. */
 .testimonials-container {
   position: relative;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 102, 0, 0.5) transparent;
-  padding-bottom: 8px;             /* room for the scrollbar so it doesn't cover cards */
-}
-.testimonials-container::-webkit-scrollbar { height: 6px; }
-.testimonials-container::-webkit-scrollbar-track { background: transparent; }
-.testimonials-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 102, 0, 0.5); border-radius: 3px;
+  overflow: hidden;
 }
 .testimonials-track {
   display: flex;
@@ -1096,16 +1107,16 @@ h4, h5, h6, .wybe-subhead {
 .testimonials-track .wybe-testimonial {
   flex: 1 1 100%;
   max-width: 100%;
-  scroll-snap-align: center;
 }
 @media (min-width: 768px) {
   .testimonials-track {
-    flex-wrap: nowrap;             /* desktop: single horizontal row */
+    flex-wrap: nowrap;             /* desktop: single row for scroll-driven translate */
     width: max-content;
-    padding: 0 4px;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
   }
   .testimonials-track .wybe-testimonial {
-    flex: 0 0 min(70vw, 520px);
+    flex: 0 0 min(65vw, 480px);
     max-width: none;
   }
 }

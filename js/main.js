@@ -364,19 +364,84 @@ document.addEventListener('DOMContentLoaded', () => {
     updateParallax();
   }
 
-  // ── IMAGES ARE STATIC ─────────────────────────────────
-  // Every image on the site is now a static, fully-visible
-  // (object-fit: contain) element inside its .parallax-wrapper
-  // frame. NO transform-based parallax is applied to any <img>.
-  // Scroll-driven motion is limited to text/content via the
-  // existing .wybe-reveal IntersectionObserver (fade+slide-up on
-  // entry, single-shot). The old cached-offset rAF parallax loop,
-  // the GSAP hero-image scrub, and the GSAP testimonials pin+scrub
-  // have been removed to eliminate:
-  //   1. image cropping caused by transform + oversized image;
-  //   2. dead vertical space created by ScrollTrigger's pin-spacer.
-  // Testimonials scroll natively via CSS overflow-x on the
-  // .testimonials-container — no pin, no spacer.
+  // ── HERO PARALLAX (subtle, no crop-fighting) ──────────
+  // Only the HERO image gets a parallax transform. Every other
+  // image on the site is object-fit:contain + transform:none.
+  // GSAP scrub tied to #home scroll progress. yPercent stays inside
+  // the 6% runway defined by the .hero-bg .parallax-img override
+  // (top:-6%; height:112%) so no wrapper-bg peeks at the extremes.
+  window.addEventListener('load', () => {
+    if (reduceMotion) return;
+    if (!window.gsap || !window.ScrollTrigger) return;
+    const heroImg = document.querySelector('.hero-bg__img');
+    if (!heroImg) return;
+    window.gsap.registerPlugin(window.ScrollTrigger);
+    window.gsap.to(heroImg, {
+      yPercent: -5,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#home',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+  }, { once: true });
+
+  // ── TESTIMONIALS SLIDER (scroll-driven, no pin) ──────
+  // Translates the .testimonials-track horizontally based on how
+  // far the #results section has passed through the viewport.
+  // Progress 0 (section top just entered viewport bottom) → track
+  // at x=0. Progress 1 (section bottom just exited viewport top)
+  // → track fully shifted left by its overflow amount.
+  // No ScrollTrigger pin — the section keeps its natural height,
+  // zero dead vertical space, and the horizontal motion happens
+  // during the normal vertical scroll through the section.
+  (function() {
+    if (reduceMotion) return;
+    const track = document.querySelector('.testimonials-track');
+    const container = document.querySelector('.testimonials-container');
+    const section = document.getElementById('results');
+    if (!track || !container || !section) return;
+    // Mobile stacks vertically (CSS flex-wrap:wrap); skip transform.
+    const mql = window.matchMedia('(min-width: 768px)');
+    let overflow = 0, sectionTop = 0, sectionHeight = 0, vh = 0;
+
+    const measure = () => {
+      if (!mql.matches) { overflow = 0; return; }
+      const rect = section.getBoundingClientRect();
+      sectionTop = rect.top + (window.scrollY || window.pageYOffset || 0);
+      sectionHeight = rect.height;
+      vh = window.innerHeight || 1;
+      overflow = Math.max(0, track.scrollWidth - container.clientWidth);
+    };
+
+    let ticking = false;
+    const update = () => {
+      if (overflow <= 0) { track.style.transform = 'translate3d(0,0,0)'; ticking = false; return; }
+      const sy = window.scrollY || window.pageYOffset || 0;
+      // travel = distance the section moves from "top hits viewport
+      // bottom" to "bottom hits viewport top" = sectionHeight + vh.
+      const travel = sectionHeight + vh;
+      const raw = (sy + vh - sectionTop) / travel;
+      const progress = Math.max(0, Math.min(1, raw));
+      const x = -progress * overflow;
+      track.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
+      ticking = false;
+    };
+    const req = () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    };
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', () => { measure(); req(); }, { passive: true });
+    window.addEventListener('load', () => { measure(); req(); }, { once: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { measure(); req(); });
+    }
+    measure();
+    update();
+  })();
 
   // ── SCROLLTRIGGER REFRESH ────────────────────────────
   // The fixed header + font-load can shift page geometry after
