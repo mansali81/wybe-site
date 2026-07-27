@@ -364,6 +364,73 @@ document.addEventListener('DOMContentLoaded', () => {
     updateParallax();
   }
 
+  // ── WRAPPER PARALLAX (translates .parallax-wrapper, NOT the img) ──
+  // Every image on the site stays static (object-fit:contain) and
+  // fully visible — never crops. To restore the parallax "feel"
+  // without touching the image transform, we translate the WRAPPER
+  // itself by a small amount tied to the wrapper's viewport progress.
+  // Range: ±20 px. rAF-throttled. IntersectionObserver gates so
+  // off-screen wrappers cost nothing. Hero uses its own GSAP scrub
+  // below; excluded here.
+  (function() {
+    if (reduceMotion) return;
+    const wraps = Array.from(
+      document.querySelectorAll('.parallax-wrapper:not(.hero-bg)')
+    );
+    if (!wraps.length) return;
+    const entries = wraps.map(w => ({
+      el: w, top: 0, height: 0, inView: false,
+    }));
+    const byEl = new Map(entries.map(e => [e.el, e]));
+    const measure = () => {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      for (let i = 0; i < entries.length; i++) {
+        const r = entries[i].el.getBoundingClientRect();
+        entries[i].top = r.top + sy;
+        entries[i].height = r.height;
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((recs) => {
+        for (let i = 0; i < recs.length; i++) {
+          const e = byEl.get(recs[i].target);
+          if (e) e.inView = recs[i].isIntersecting;
+        }
+      }, { rootMargin: '20% 0px' });
+      entries.forEach(e => io.observe(e.el));
+    } else {
+      entries.forEach(e => { e.inView = true; });
+    }
+    let ticking = false;
+    const update = () => {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      const vh = window.innerHeight || 1;
+      for (let i = 0; i < entries.length; i++) {
+        const e = entries[i];
+        if (!e.inView) continue;
+        // Progress: 0 when wrapper top is at viewport bottom, 1 when
+        // wrapper bottom exits viewport top.
+        const travel = e.height + vh;
+        const p = Math.max(0, Math.min(1, (sy + vh - e.top) / travel));
+        // ±20 px translation around 0.5 progress.
+        const y = (p - 0.5) * -40;
+        e.el.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)';
+      }
+      ticking = false;
+    };
+    const req = () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    };
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', () => { measure(); req(); }, { passive: true });
+    window.addEventListener('load', () => { measure(); req(); }, { once: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { measure(); req(); });
+    }
+    measure();
+    update();
+  })();
+
   // ── HERO PARALLAX (subtle, no crop-fighting) ──────────
   // Only the HERO image gets a parallax transform. Every other
   // image on the site is object-fit:contain + transform:none.

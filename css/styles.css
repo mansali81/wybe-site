@@ -277,7 +277,7 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   font-family: var(--font-subhead);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;                      /* was 18 — reduced by 2 pt per ask */
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: #F6F2E8;
@@ -564,14 +564,41 @@ h4, h5, h6, .wybe-subhead {
   min-height: calc(100vh - var(--nav-h) - 24px);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;              /* CENTER hero content per ask */
   padding: 0 clamp(24px, 6vw, 96px);
 }
 .hero-content {
   position: relative;
   z-index: 4;
-  max-width: 40rem;
+  max-width: 46rem;
   color: #F6F2E8;
+  text-align: center;                   /* center-align the copy stack */
+}
+/* Left-side gradient tint — dark on the left so the hero copy stays
+   above WCAG contrast even when the image on the right is bright.
+   Fades to fully-transparent past the middle. */
+.hero-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(30, 30, 30, 0.90) 0%,
+    rgba(30, 30, 30, 0.60) 30%,
+    rgba(30, 30, 30, 0.20) 60%,
+    rgba(30, 30, 30, 0.00) 100%
+  );
+}
+@media (max-width: 767px) {
+  .hero-tint {
+    background: linear-gradient(
+      180deg,
+      rgba(30, 30, 30, 0.35) 0%,
+      rgba(30, 30, 30, 0.55) 50%,
+      rgba(30, 30, 30, 0.85) 100%
+    );
+  }
 }
 /* Background image layer for the hero. Absolute-positioned so the
    image sits behind the copy; overrides the utility .parallax-wrapper
@@ -1706,16 +1733,17 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   clip-path: polygon(0 0, 100% 0, 100% 100%, 26px 100%, 0 calc(100% - 26px));
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   cursor: default;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 .stat-badge:hover {
   transform: translateY(-3px);
   background-color: #E65500;
-  box-shadow: 0 14px 32px rgba(255, 102, 0, 0.35);
+  box-shadow: 0 14px 32px rgba(255, 102, 0, 0.45);
 }
 .stat-badge__number {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(28px, 3.4vw, 38px);
+  font-size: clamp(24px, 2.8vw, 32px);
   line-height: 1;
   letter-spacing: -0.02em;
   color: #FFFFFF;
@@ -1724,13 +1752,45 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 .stat-badge__label {
   font-family: var(--font-subhead);
   font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 10px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.95);
-  margin: 12px 0 0;
+  margin: 8px 0 0;
 }
+/* Smaller variant used on the About portrait overlap and on mobile. */
+.stat-badge.stat-badge--sm {
+  padding: 14px 14px 18px;
+  border-radius: 8px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+.stat-badge--sm .stat-badge__number {
+  font-size: 22px;
+}
+.stat-badge--sm .stat-badge__label {
+  font-size: 9px;
+  letter-spacing: 0.10em;
+  margin-top: 6px;
+}
+
+/* Vertical stack of stat badges overlapping the About portrait's
+   right edge (desktop only). Each badge sits half inside the image
+   column, half outside — half its width overlaps the portrait, the
+   other half sits over the section background. */
+.stat-badge-stack {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  transform: translateX(50%);              /* half-in / half-out */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 5;
+  width: 148px;
+  pointer-events: none;                    /* section clicks/hovers still work behind */
+}
+.stat-badge-stack .stat-badge { pointer-events: auto; }
 
 /* ── INFO TOOLTIP ─────────────────────────────────
    Small "?" badge that reveals a measurement hint on hover/focus.
@@ -1739,54 +1799,58 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 9999px;
-  background: #5A7A65;
-  color: #fff;
+  background: rgba(255, 102, 0, 0.85);
+  color: #FFFFFF;
   font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 900;
   line-height: 1;
-  margin-left: 6px;
+  margin-left: 8px;
   position: relative;
   cursor: help;
   user-select: none;
   vertical-align: middle;
 }
+.info-tip:hover { background: #FF6600; }
 .info-tip::after {
   content: attr(data-tip);
   position: absolute;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
   width: max-content;
-  max-width: 220px;
-  background: #1A2E22;
-  color: #fff;
+  max-width: 260px;
+  background: #000000;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.55;
   text-transform: none;
   letter-spacing: 0;
   text-align: left;
-  padding: 8px 10px;
-  border-radius: 2px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 102, 0, 0.5);
+  border-radius: 4px;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.15s ease;
   z-index: 30;
-  white-space: normal;
+  white-space: pre-line;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
 }
 .info-tip::before {
   content: '';
   position: absolute;
-  bottom: calc(100% + 3px);
+  bottom: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
-  border-top-color: #1A2E22;
+  border-top-color: rgba(255, 102, 0, 0.5);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.15s ease;
