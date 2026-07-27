@@ -277,7 +277,7 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   font-family: var(--font-subhead);
   font-weight: 700;
-  font-size: 16px;                      /* was 18 — reduced by 2 pt per ask */
+  font-size: 14px;                      /* reduced 18 → 16 → 14 (two more pt) */
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: #F6F2E8;
@@ -714,9 +714,10 @@ h4, h5, h6, .wybe-subhead {
   font-weight: 400;
   font-size: clamp(15px, 1.15vw, 18px);
   line-height: 1.5;
-  max-width: 520px;
-  margin: 0 0 clamp(24px, 2.6vw, 36px);
+  max-width: 560px;
+  margin: 0 auto clamp(24px, 2.6vw, 36px);   /* auto = centered horizontally */
   color: rgba(255, 255, 255, 0.95);
+  text-align: center;
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.55),
     0 3px 14px rgba(0, 0, 0, 0.50);
@@ -1784,25 +1785,28 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   color: rgba(255, 255, 255, 0.95);
   margin: 8px 0 0;
 }
-/* Smaller variant used on the About portrait overlap and on mobile. */
+/* Smaller variant used on the About portrait overlap and on mobile.
+   Trimmed padding + type sizes another ~2 pt to match the "reduce
+   the metric box" ask. */
 .stat-badge.stat-badge--sm {
-  padding: 14px 14px 18px;
-  border-radius: 8px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  padding: 11px 12px 15px;
+  border-radius: 7px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 16px 100%, 0 calc(100% - 16px));
 }
 .stat-badge--sm .stat-badge__number {
-  font-size: 22px;
+  font-size: 20px;
 }
 .stat-badge--sm .stat-badge__label {
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 0.10em;
-  margin-top: 6px;
+  margin-top: 5px;
 }
 
 /* Vertical stack of stat badges overlapping the About portrait's
    right edge (desktop only). Each badge sits half inside the image
    column, half outside — half its width overlaps the portrait, the
-   other half sits over the section background. */
+   other half sits over the section background. Slightly smaller
+   width to match the reduced badge scale. */
 .stat-badge-stack {
   position: absolute;
   top: 40px;
@@ -1810,12 +1814,21 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   transform: translateX(50%);              /* half-in / half-out */
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   z-index: 5;
-  width: 148px;
+  width: 128px;                            /* was 148 — reduced ~2 pt */
   pointer-events: none;                    /* section clicks/hovers still work behind */
 }
 .stat-badge-stack .stat-badge { pointer-events: auto; }
+
+/* Push the About text column further right on desktop so the
+   badges (which stick out ~64 px past the image's right edge) don't
+   overlap the eyebrow/heading/paragraph. */
+@media (min-width: 768px) {
+  .about-text-col {
+    padding-left: 80px;
+  }
+}
 
 /* ── INFO TOOLTIP ─────────────────────────────────
    Small "?" badge that reveals a measurement hint on hover/focus.

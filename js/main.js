@@ -488,10 +488,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const update = () => {
       if (overflow <= 0) { track.style.transform = 'translate3d(0,0,0)'; ticking = false; return; }
       const sy = window.scrollY || window.pageYOffset || 0;
-      // travel = distance the section moves from "top hits viewport
-      // bottom" to "bottom hits viewport top" = sectionHeight + vh.
-      const travel = sectionHeight + vh;
-      const raw = (sy + vh - sectionTop) / travel;
+      // Progress: 0 when the section top is at viewport top (user
+      // has just reached the section — FIRST CARD MUST BE VISIBLE
+      // HERE), 1 when the section has fully scrolled past. This is
+      // "section-relative scroll" — the horizontal slide only starts
+      // once the user is actually reading the section, not while
+      // the section is still approaching the viewport.
+      const distance = Math.max(1, sectionHeight - vh * 0.4);
+      const raw = (sy - sectionTop) / distance;
       const progress = Math.max(0, Math.min(1, raw));
       const x = -progress * overflow;
       track.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
