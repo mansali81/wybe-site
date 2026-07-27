@@ -29,19 +29,19 @@
   if (!supportsHover.matches) return;
   if (!motionOK.matches) return;
 
-  // Kettlebell SVG mark. Horseshoe handle over a filled circle, in lime.
-  const KETTLEBELL_SVG =
+  // Minimised brand mark: solid orange dot for the pointer, ripple
+  // rings emit behind it on movement (see rippleTick below).
+  const BRAND_MARK_SVG =
     '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M11 9 Q11 4 16 4 Q21 4 21 9" fill="none" stroke="#FF6600" stroke-width="2.4" stroke-linecap="round"/>' +
-      '<circle cx="16" cy="20" r="8.5" fill="#FF6600"/>' +
-      '<rect x="10" y="9" width="12" height="3" rx="1.2" fill="#FF6600"/>' +
+      '<circle cx="16" cy="16" r="9" fill="#FF6600"/>' +
+      '<circle cx="16" cy="16" r="4" fill="#1E1E1E"/>' +
     '</svg>';
 
   const kb   = document.createElement('div');
   const ring = document.createElement('div');
   kb.className   = 'wybe-cursor wybe-cursor__kb';
   ring.className = 'wybe-cursor wybe-cursor__ring';
-  kb.innerHTML   = KETTLEBELL_SVG;
+  kb.innerHTML   = BRAND_MARK_SVG;
   kb.setAttribute('aria-hidden', 'true');
   ring.setAttribute('aria-hidden', 'true');
 
@@ -65,6 +65,20 @@
     ring.classList.add('is-visible');
   }
 
+  // Ripple emitter — spawns an expanding orange ring every ~48 px of
+  // pointer travel. Rings animate via CSS keyframes and self-remove
+  // after 900 ms via the animationend listener.
+  let lastRipX = -1000, lastRipY = -1000;
+  const RIPPLE_STEP = 48;
+  function spawnRipple(x, y) {
+    const r = document.createElement('div');
+    r.className = 'wybe-cursor__ripple';
+    r.style.left = x + 'px';
+    r.style.top  = y + 'px';
+    document.body.appendChild(r);
+    r.addEventListener('animationend', () => r.remove(), { once: true });
+  }
+
   window.addEventListener('pointermove', (e) => {
     mx = e.clientX;
     my = e.clientY;
@@ -75,6 +89,12 @@
     kb.style.setProperty('--tx', mx + 'px');
     kb.style.setProperty('--ty', my + 'px');
     showOnce();
+    // Emit a ripple ring when the pointer has travelled RIPPLE_STEP px.
+    const dx = mx - lastRipX, dy = my - lastRipY;
+    if (dx * dx + dy * dy >= RIPPLE_STEP * RIPPLE_STEP) {
+      spawnRipple(mx, my);
+      lastRipX = mx; lastRipY = my;
+    }
   }, { passive: true });
 
   // If the pointer leaves the window, fade the cursor and park it off-screen.

@@ -1687,6 +1687,31 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   /* Title-hover (tabs, headings, nav links): even bigger swing, big ring. */
   .wybe-cursor__kb.is-hover-title   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.35) rotate(-18deg); }
   .wybe-cursor__ring.is-hover-title { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+
+  /* Ripple ring — spawned periodically by wybe-cursor.js as the
+     pointer moves. Each ripple is a fresh div, positioned via top/
+     left (set inline by JS), then animated by CSS from small +
+     opaque to large + fully transparent. Self-removes on
+     animationend (JS). */
+  .wybe-cursor__ripple {
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 102, 0, 0.75);
+    background: transparent;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.75;
+    animation: wybe-cursor-ripple 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+  @keyframes wybe-cursor-ripple {
+    to {
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0;
+    }
+  }
 }
 /* Fallback: hide the custom cursor DOM entirely on touch / coarse
    pointers AND for reduced-motion users. Native cursor takes over. */
