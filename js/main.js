@@ -457,13 +457,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { once: true });
 
   // ── TESTIMONIAL TRUNCATION + MODAL ────────────────────
-  // Any .wybe-testimonial__body whose scrollHeight exceeds its
-  // clientHeight (i.e., content is clipped by the CSS max-height)
-  // gets .is-truncated. CSS then reveals the fade gradient at the
-  // bottom and shows the sibling "Read More" button.
-  // Clicking "Read More" clones the card's blockquote + meta into
-  // the modal (#testimonial-modal) and opens it. Closes via the ×
-  // button, backdrop click, or Escape key.
+  // Bodies that overflow (scrollHeight > clientHeight) get
+  // .is-truncated. CSS then reveals the fade gradient + shows
+  // the sibling "Read More" button. Click flow uses event
+  // delegation with lazy modal lookup so it works regardless of
+  // parse order (the modal lives at the end of <body>, added
+  // after main.js — but DOMContentLoaded fires only after the
+  // whole document is parsed, so the lookup at handler-fire time
+  // always succeeds).
   (function() {
     const check = () => {
       document.querySelectorAll('.wybe-testimonial__body').forEach(b => {
@@ -477,44 +478,65 @@ document.addEventListener('DOMContentLoaded', () => {
       document.fonts.ready.then(check);
     }
 
-    const modal = document.getElementById('testimonial-modal');
-    if (!modal) return;
-    const modalBody = modal.querySelector('[data-modal-body]');
-    const modalMeta = modal.querySelector('[data-modal-meta]');
+    // Lazy modal accessor — resolves on first click, cached after.
+    // If the modal element is missing for any reason, we still
+    // early-return gracefully without breaking scroll.
+    let cache = null;
+    const getModal = () => {
+      if (cache) return cache;
+      const modal = document.getElementById('testimonial-modal');
+      if (!modal) return null;
+      cache = {
+        modal,
+        body: modal.querySelector('[data-modal-body]'),
+        meta: modal.querySelector('[data-modal-meta]'),
+      };
+      return cache;
+    };
 
     const openWith = (article) => {
+      const m = getModal();
+      if (!m) return;
       const body = article.querySelector('.wybe-testimonial__body');
       const meta = article.querySelector('.wybe-testimonial__meta');
       if (!body || !meta) return;
       const bodyClone = body.cloneNode(true);
       bodyClone.classList.remove('is-truncated');
-      modalBody.innerHTML = '';
-      modalMeta.innerHTML = '';
-      modalBody.appendChild(bodyClone);
-      modalMeta.appendChild(meta.cloneNode(true));
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
+      m.body.innerHTML = '';
+      m.meta.innerHTML = '';
+      m.body.appendChild(bodyClone);
+      m.meta.appendChild(meta.cloneNode(true));
+      m.modal.classList.add('is-open');
+      m.modal.setAttribute('aria-hidden', 'false');
       document.documentElement.style.overflow = 'hidden';
     };
     const close = () => {
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
+      const m = getModal();
+      if (!m) return;
+      m.modal.classList.remove('is-open');
+      m.modal.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
-      modalBody.innerHTML = '';
-      modalMeta.innerHTML = '';
+      m.body.innerHTML = '';
+      m.meta.innerHTML = '';
     };
 
+    // Delegated click handler — always wired, no early-return.
     document.addEventListener('click', (e) => {
       const more = e.target.closest('[data-testimonial-more]');
       if (more) {
+        e.preventDefault();
         const art = more.closest('.wybe-testimonial');
         if (art) openWith(art);
         return;
       }
-      if (e.target.closest('[data-modal-close]')) close();
+      if (e.target.closest('[data-modal-close]')) {
+        e.preventDefault();
+        close();
+      }
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+      const m = getModal();
+      if (e.key === 'Escape' && m && m.modal.classList.contains('is-open')) close();
     });
   })();
 

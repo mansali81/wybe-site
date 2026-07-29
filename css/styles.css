@@ -1160,7 +1160,7 @@ h4, h5, h6, .wybe-subhead {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 500px;                  /* uniform card height — sized to fit Amit's testimonial without a Read More */
+  min-height: 640px;                  /* uniform card height — sized to Amit's full 3-paragraph testimonial + meta + padding */
 }
 .wybe-testimonial__quote {
   position: absolute;
@@ -1183,12 +1183,13 @@ h4, h5, h6, .wybe-subhead {
   flex: 1;
   quotes: none; /* the ldquo/rdquo are baked into the copy */
   /* Cap body height so ALL cards render at the same uniform shape.
-     Sized to fit Amit's 3-paragraph testimonial fully (~330 px) so
-     Amit shows NO "Read More" button. Longer testimonials
-     (Zarine, Anahita) exceed this cap → JS toggles .is-truncated
-     when scrollHeight > clientHeight and CSS reveals the fade
-     gradient + the "Read More" button below. */
-  max-height: 330px;
+     Sized to fit Amit's full 3-paragraph testimonial (~460 px on
+     typical desktop) so Amit's card shows NO fade + NO "Read More".
+     Zarine's testimonial (~700 px, 4 long paragraphs) exceeds this
+     cap → JS toggles .is-truncated → CSS reveals fade + Read More
+     button. Anahita (~470 px) sits close to Amit's natural size so
+     may or may not truncate; the JS check handles both cases. */
+  max-height: 520px;
   overflow: hidden;
   position: relative;
 }
