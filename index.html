@@ -1121,6 +1121,7 @@
             <p class="mb-3">His expertise in building core strength is exceptional. Every session is carefully structured to improve stability, balance, and functional strength, and I&rsquo;ve noticed significant improvements in both my workouts and everyday movements. Mansoor doesn&rsquo;t just push you to work harder; he makes sure you understand why you&rsquo;re doing each exercise and how it benefits your body.</p>
             <p>If you&rsquo;re looking for a knowledgeable, motivating, and detail-oriented personal trainer who genuinely cares about helping you achieve your goals, I can&rsquo;t recommend Mansoor highly enough.</p>
           </blockquote>
+          <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
           <div class="wybe-testimonial__meta">
             <span class="wybe-testimonial__avatar" aria-hidden="true">AK</span>
             <div class="wybe-testimonial__id">
@@ -1129,19 +1130,20 @@
             </div>
           </div>
         </article>
-        <!-- Real client — Zarine Chamas, Nutrition Consultation. -->
+        <!-- Real client — Zarine Chamas, Nutrition Consultation.
+             Full text (verbatim from client). Body is visually clipped
+             to the standard card height by CSS + JS; a "Read More"
+             button opens the full text in a modal overlay. -->
         <article class="wybe-testimonial wybe-reveal">
           <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
           <blockquote class="wybe-testimonial__body">
-            <p class="mb-3">Working with Mansoor has been genuinely refreshing. What stood out to me from the very first consultation was how passionate he is about helping people improve their health. You can immediately tell that this isn&rsquo;t just a profession for him &mdash; he genuinely cares about understanding the person sitting in front of him and finding solutions that are realistic, sustainable, and backed by knowledge.</p>
-            <p class="mb-3">Unlike many nutritional experts who focus solely on meal plans or calorie counting, Mansoor took the time to understand my health, lifestyle, and the bigger picture. Every recommendation had a purpose, and he explained the reasoning behind it in a way that made everything easy to understand. It never felt like I was being handed a generic plan &mdash; it felt like I was being educated and empowered to make better decisions for the long term.</p>
+            <p class="mb-3">Working with Mansoor has been genuinely refreshing. What stood out to me from the very first consultation was how passionate he is about helping people improve their health. You can immediately tell that this isn't just a profession for him, he genuinely cares about understanding the person sitting in front of him and finding solutions that are realistic, sustainable, and backed by knowledge.</p>
+            <p class="mb-3">Unlike many nutritional experts who focus solely on meal plans or calorie counting, Mansoor took the time to understand my health, lifestyle, and the bigger picture. Every recommendation had a purpose, and he explained the reasoning behind it in a way that made everything easy to understand. It never felt like I was being handed a generic plan; it felt like I was being educated and empowered to make better decisions for the long term.</p>
             <p class="mb-3">His depth of knowledge, combined with his ability to listen without judgment, made the entire experience incredibly comfortable. I left the consultation feeling informed, motivated, and confident that I had a plan designed specifically for me.</p>
-            <p>If you&rsquo;re looking for someone who is incredibly knowledgeable, genuinely invested in your success, and clearly passionate about what he does, I couldn&rsquo;t recommend Mansoor more highly.</p>
+            <p>If you're looking for someone who is incredibly knowledgeable, genuinely invested in your success, and clearly passionate about what he does, I couldn't recommend Mansoor more highly.</p>
           </blockquote>
+          <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
           <div class="wybe-testimonial__meta">
-            <!-- Photo avatar (replaces the initials chip used on other
-                 cards). Same size/shape via the __avatar-photo variant
-                 so the meta row stays balanced. -->
             <img src="images/testimonials/zarine.webp"
                  alt="Zarine Chamas"
                  class="wybe-testimonial__avatar wybe-testimonial__avatar--photo"
@@ -1180,6 +1182,21 @@
         </article>
       </div><!-- /.testimonials-track -->
       </div><!-- /.testimonials-container -->
+
+      <!-- Testimonial modal — populated by JS on "Read More" click. -->
+      <div id="testimonial-modal" class="testimonial-modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="testimonial-modal__backdrop" data-modal-close></div>
+        <div class="testimonial-modal__card" role="document">
+          <button type="button" class="testimonial-modal__close" data-modal-close aria-label="Close testimonial">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="w-5 h-5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="testimonial-modal__body" data-modal-body></div>
+          <div class="testimonial-modal__meta" data-modal-meta></div>
+        </div>
+      </div>
 
       <!-- Transformations strip: 4 before/after pairs -->
       <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->

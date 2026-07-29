@@ -1160,6 +1160,7 @@ h4, h5, h6, .wybe-subhead {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 400px;                  /* uniform card height across the row */
 }
 .wybe-testimonial__quote {
   position: absolute;
@@ -1178,12 +1179,131 @@ h4, h5, h6, .wybe-subhead {
   font-size: 15px;
   line-height: 1.55;
   color: #1E1E1E;
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   flex: 1;
   quotes: none; /* the ldquo/rdquo are baked into the copy */
+  /* Cap body height so cards match the uniform 400 px shape. Long
+     testimonials get clipped; JS toggles .is-truncated when
+     scrollHeight > clientHeight and CSS then reveals the fade
+     gradient + the "Read More" button below. */
+  max-height: 230px;
+  overflow: hidden;
+  position: relative;
 }
 .wybe-testimonial__body::before,
 .wybe-testimonial__body::after { content: none; }
+.wybe-testimonial__body.is-truncated::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 56px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 90%);
+}
+
+/* Read-More button — orange, inline under a truncated body. Hidden
+   by default; JS reveals it only on cards where the body actually
+   overflows (via the .is-truncated class on the sibling body). */
+.wybe-testimonial__more {
+  display: none;
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  padding: 6px 0;
+  margin-bottom: 12px;
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #FF6600;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.wybe-testimonial__more:hover {
+  color: #E65500;
+  transform: translateX(2px);
+}
+.wybe-testimonial__body.is-truncated + .wybe-testimonial__more {
+  display: inline-block;
+}
+
+/* Testimonial modal — full-screen overlay with a white card
+   showing the full testimonial. Populated by JS from the clicked
+   article's blockquote + meta. */
+.testimonial-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.testimonial-modal.is-open {
+  display: flex;
+}
+.testimonial-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+.testimonial-modal__card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  background: #FFFFFF;
+  color: #1E1E1E;
+  border-top: 3px solid #FF6600;
+  border-radius: 10px;
+  padding: 48px 32px 32px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+.testimonial-modal__close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border: 0;
+  background: transparent;
+  color: #1E1E1E;
+  cursor: pointer;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.testimonial-modal__close:hover {
+  background: rgba(30, 30, 30, 0.08);
+  color: #FF6600;
+}
+/* Inside the modal, the body is un-clipped and the fade + more
+   button are stripped so the reader sees the full testimonial. */
+.testimonial-modal__body .wybe-testimonial__body {
+  max-height: none;
+  overflow: visible;
+  margin-bottom: 20px;
+}
+.testimonial-modal__body .wybe-testimonial__body.is-truncated::after {
+  content: none;
+}
+.testimonial-modal__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(30, 30, 30, 0.14);
+}
+.testimonial-modal__meta .wybe-testimonial__avatar {
+  width: 44px;
+  height: 44px;
+}
 
 .wybe-testimonial__meta {
   display: flex;
