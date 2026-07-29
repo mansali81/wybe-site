@@ -1113,20 +1113,23 @@
            scrolls, so cards slide in from the right like a stack. -->
       <div class="testimonials-container">
       <div class="testimonials-track">
-        <!-- Real client — Amit Kumar, added 2026-07-26. Consent on file with site owner. -->
+        <!-- Real client — Amit Kumar. Verbatim testimonial + photo. -->
         <article class="wybe-testimonial wybe-reveal">
           <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
           <blockquote class="wybe-testimonial__body">
-            <p class="mb-3">I&rsquo;ve had the pleasure of training with Mansoor, and the difference in my strength, fitness, and confidence has been incredible. What really sets him apart is his attention to detail&mdash;every exercise is explained thoroughly, with a strong focus on proper form and technique to maximise results while preventing injury.</p>
-            <p class="mb-3">His expertise in building core strength is exceptional. Every session is carefully structured to improve stability, balance, and functional strength, and I&rsquo;ve noticed significant improvements in both my workouts and everyday movements. Mansoor doesn&rsquo;t just push you to work harder; he makes sure you understand why you&rsquo;re doing each exercise and how it benefits your body.</p>
-            <p>If you&rsquo;re looking for a knowledgeable, motivating, and detail-oriented personal trainer who genuinely cares about helping you achieve your goals, I can&rsquo;t recommend Mansoor highly enough.</p>
+            <p class="mb-3">I've had the pleasure of training with Mansoor, and the difference in my strength, fitness, and confidence has been incredible. What really sets him apart is his attention to detail, every exercise is explained thoroughly, with a strong focus on proper form and technique to maximise results while preventing injury.</p>
+            <p class="mb-3">His expertise in building core strength is exceptional. Every session is carefully structured to improve stability, balance, and functional strength, and I've noticed significant improvements in both my workouts and everyday movements. Mansoor doesn't just push you to work harder; he makes sure you understand why you're doing each exercise and how it benefits your body.</p>
+            <p>If you're looking for a knowledgeable, motivating, and detail-oriented personal trainer who genuinely cares about helping you achieve your goals, I can't recommend Mansoor highly enough.</p>
           </blockquote>
           <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
           <div class="wybe-testimonial__meta">
-            <span class="wybe-testimonial__avatar" aria-hidden="true">AK</span>
+            <img src="images/testimonials/amit.webp"
+                 alt="Amit Kumar"
+                 class="wybe-testimonial__avatar wybe-testimonial__avatar--photo"
+                 loading="lazy" decoding="async">
             <div class="wybe-testimonial__id">
               <p class="wybe-testimonial__name">Amit Kumar</p>
-              <p class="wybe-testimonial__context">Entrepreneur &middot; Strength &amp; core</p>
+              <p class="wybe-testimonial__context">Entrepreneur &middot; Form and Technique, Posture &amp; Flexibility</p>
             </div>
           </div>
         </article>
@@ -1151,6 +1154,23 @@
             <div class="wybe-testimonial__id">
               <p class="wybe-testimonial__name">Zarine Chamas</p>
               <p class="wybe-testimonial__context">Founder, Momentum Uncensored &middot; Nutrition Consultation</p>
+            </div>
+          </div>
+        </article>
+        <!-- Real client — Anahita Kameli, Nutrition Consultation. -->
+        <article class="wybe-testimonial wybe-reveal">
+          <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
+          <blockquote class="wybe-testimonial__body">
+            <p class="mb-3">Consulting with Mansoor was a complete game-changer for my health, as he focuses on the absolute fundamentals. In just one session, he taught me how to actually read nutrition labels, understand the basics of each food element, and figure out what my body genuinely needs versus what it doesn't, an approach and delivery style I haven't found anywhere else.</p>
+            <p class="mb-3">What made the experience even better is that it didn't feel like a formal coaching session at all; it felt like an open conversation where he truly took the time to make sure I understood everything. He effortlessly broke down complex terminology into bite-sized, simple pieces that were easy to retain and remember for a long time to come.</p>
+            <p>Ever since, I've been equipped to make conscious, healthy choices every day. The results speak for themselves: I've been steadily losing fat while gaining muscle, just with better knowledge and understanding of food! If you want a nutritional coach who gives you a real, sustainable education rather than a quick fix, I cannot recommend Mansoor enough!</p>
+          </blockquote>
+          <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
+          <div class="wybe-testimonial__meta">
+            <span class="wybe-testimonial__avatar" aria-hidden="true">AK</span>
+            <div class="wybe-testimonial__id">
+              <p class="wybe-testimonial__name">Anahita Kameli</p>
+              <p class="wybe-testimonial__context">Sr. Project Manager &middot; Nutrition Consultation</p>
             </div>
           </div>
         </article>
@@ -1183,20 +1203,11 @@
       </div><!-- /.testimonials-track -->
       </div><!-- /.testimonials-container -->
 
-      <!-- Testimonial modal — populated by JS on "Read More" click. -->
-      <div id="testimonial-modal" class="testimonial-modal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="testimonial-modal__backdrop" data-modal-close></div>
-        <div class="testimonial-modal__card" role="document">
-          <button type="button" class="testimonial-modal__close" data-modal-close aria-label="Close testimonial">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="w-5 h-5">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-          <div class="testimonial-modal__body" data-modal-body></div>
-          <div class="testimonial-modal__meta" data-modal-meta></div>
-        </div>
-      </div>
+      <!-- Testimonial modal is defined at the END of <body> (outside
+           #results) so it isn't inside the GSAP-pinned wrapper. A
+           transformed ancestor breaks position:fixed, which was why
+           the modal previously appeared below the fold. -->
+
 
       <!-- Transformations strip: 4 before/after pairs -->
       <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->
@@ -3379,5 +3390,25 @@
       }
     })();
   </script>
+
+  <!-- Testimonial modal — MUST live at the top level of <body>, not
+       inside #results (which GSAP transforms via pin). position:fixed
+       inside a transformed ancestor becomes relative to that ancestor,
+       so a modal nested in #results appeared off-viewport after pin
+       activated. Living here as a body-level child keeps it truly
+       viewport-fixed regardless of scroll. -->
+  <div id="testimonial-modal" class="testimonial-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="testimonial-modal__backdrop" data-modal-close></div>
+    <div class="testimonial-modal__card" role="document">
+      <button type="button" class="testimonial-modal__close" data-modal-close aria-label="Close testimonial">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="w-5 h-5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="testimonial-modal__body" data-modal-body></div>
+      <div class="testimonial-modal__meta" data-modal-meta></div>
+    </div>
+  </div>
 </body>
 </html>
