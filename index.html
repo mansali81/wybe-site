@@ -1099,9 +1099,10 @@
 
       <!-- Header -->
       <div class="text-center mb-10 md:mb-12 max-w-2xl mx-auto">
-        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Client Results</p>
+        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Success Stories</p>
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-2 leading-tight">My Client Feels</h2>
+        <!-- "My Client Feels" h2 removed per ask; the eyebrow above
+             now carries the section title. -->
       </div>
 
       <!-- Testimonial track — horizontal scroll on desktop, natural
@@ -1128,16 +1129,26 @@
             </div>
           </div>
         </article>
+        <!-- Real client — Zarine Chamas, Nutrition Consultation. -->
         <article class="wybe-testimonial wybe-reveal">
           <span class="wybe-testimonial__quote" aria-hidden="true">&ldquo;</span>
           <blockquote class="wybe-testimonial__body">
-            Mansoor built a plan around my calendar, not the other way around. Six months in I was 9&nbsp;kg lighter, stronger in every lift, and eating more, not less.
+            <p class="mb-3">Working with Mansoor has been genuinely refreshing. What stood out to me from the very first consultation was how passionate he is about helping people improve their health. You can immediately tell that this isn&rsquo;t just a profession for him &mdash; he genuinely cares about understanding the person sitting in front of him and finding solutions that are realistic, sustainable, and backed by knowledge.</p>
+            <p class="mb-3">Unlike many nutritional experts who focus solely on meal plans or calorie counting, Mansoor took the time to understand my health, lifestyle, and the bigger picture. Every recommendation had a purpose, and he explained the reasoning behind it in a way that made everything easy to understand. It never felt like I was being handed a generic plan &mdash; it felt like I was being educated and empowered to make better decisions for the long term.</p>
+            <p class="mb-3">His depth of knowledge, combined with his ability to listen without judgment, made the entire experience incredibly comfortable. I left the consultation feeling informed, motivated, and confident that I had a plan designed specifically for me.</p>
+            <p>If you&rsquo;re looking for someone who is incredibly knowledgeable, genuinely invested in your success, and clearly passionate about what he does, I couldn&rsquo;t recommend Mansoor more highly.</p>
           </blockquote>
           <div class="wybe-testimonial__meta">
-            <span class="wybe-testimonial__avatar" aria-hidden="true">SR</span>
+            <!-- Photo avatar (replaces the initials chip used on other
+                 cards). Same size/shape via the __avatar-photo variant
+                 so the meta row stays balanced. -->
+            <img src="images/testimonials/zarine.webp"
+                 alt="Zarine Chamas"
+                 class="wybe-testimonial__avatar wybe-testimonial__avatar--photo"
+                 loading="lazy" decoding="async">
             <div class="wybe-testimonial__id">
-              <p class="wybe-testimonial__name">Sarah R.</p>
-              <p class="wybe-testimonial__context">Fat loss &middot; 6 months &middot; Dubai</p>
+              <p class="wybe-testimonial__name">Zarine Chamas</p>
+              <p class="wybe-testimonial__context">Founder, Momentum Uncensored &middot; Nutrition Consultation</p>
             </div>
           </div>
         </article>

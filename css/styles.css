@@ -1207,6 +1207,18 @@ h4, h5, h6, .wybe-subhead {
   font-size: 13px;
   letter-spacing: 0.04em;
 }
+/* Photo avatar variant — for testimonials with an actual client
+   headshot instead of initials. Same 40 px circle, image cropped
+   via object-fit:cover, subtle orange ring so it reads as part of
+   the same visual family as the initials chips. */
+.wybe-testimonial__avatar--photo {
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  object-fit: cover;
+  object-position: center 25%;                 /* bias toward the face */
+  box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.85);
+}
 .wybe-testimonial__id { min-width: 0; }
 .wybe-testimonial__name {
   font-family: var(--font-subhead);
