@@ -456,63 +456,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { once: true });
 
-  // ── TESTIMONIALS SLIDER (scroll-driven, no pin) ──────
-  // Translates the .testimonials-track horizontally based on how
-  // far the #results section has passed through the viewport.
-  // Progress 0 (section top just entered viewport bottom) → track
-  // at x=0. Progress 1 (section bottom just exited viewport top)
-  // → track fully shifted left by its overflow amount.
-  // No ScrollTrigger pin — the section keeps its natural height,
-  // zero dead vertical space, and the horizontal motion happens
-  // during the normal vertical scroll through the section.
-  (function() {
+  // ── TESTIMONIALS PIN + SCRUB (GSAP ScrollTrigger) ────
+  // #results is pinned when its top hits the viewport top. During
+  // the pin, the horizontal .testimonials-track translates left
+  // (right-to-left card reveal) driven by scroll progress. After
+  // the last card lands centered, a DWELL segment holds the track
+  // at its final position for an additional 40% of the horizontal
+  // scroll distance — so the user sees the last card, feels the
+  // page "hold," and needs one more scroll gesture before the pin
+  // releases and the page continues.
+  // Desktop only (matchMedia >= 768). Mobile CSS keeps flex-wrap
+  // vertical, so no pin is needed there.
+  // GSAP is loaded via <script defer>, so we hook window.load to
+  // guarantee window.gsap + window.ScrollTrigger are defined.
+  window.addEventListener('load', () => {
     if (reduceMotion) return;
+    if (!window.gsap || !window.ScrollTrigger) return;
+    if (!window.matchMedia('(min-width: 768px)').matches) return;
     const track = document.querySelector('.testimonials-track');
     const container = document.querySelector('.testimonials-container');
     const section = document.getElementById('results');
     if (!track || !container || !section) return;
-    // Mobile stacks vertically (CSS flex-wrap:wrap); skip transform.
-    const mql = window.matchMedia('(min-width: 768px)');
-    let overflow = 0, sectionTop = 0, sectionHeight = 0, vh = 0;
 
-    const measure = () => {
-      if (!mql.matches) { overflow = 0; return; }
-      const rect = section.getBoundingClientRect();
-      sectionTop = rect.top + (window.scrollY || window.pageYOffset || 0);
-      sectionHeight = rect.height;
-      vh = window.innerHeight || 1;
-      overflow = Math.max(0, track.scrollWidth - container.clientWidth);
-    };
+    window.gsap.registerPlugin(window.ScrollTrigger);
 
-    let ticking = false;
-    const update = () => {
-      if (overflow <= 0) { track.style.transform = 'translate3d(0,0,0)'; ticking = false; return; }
-      const sy = window.scrollY || window.pageYOffset || 0;
-      // Progress: 0 when the section top is at viewport top (user
-      // has just reached the section — FIRST CARD MUST BE VISIBLE
-      // HERE), 1 when the section has fully scrolled past. This is
-      // "section-relative scroll" — the horizontal slide only starts
-      // once the user is actually reading the section, not while
-      // the section is still approaching the viewport.
-      const distance = Math.max(1, sectionHeight - vh * 0.4);
-      const raw = (sy - sectionTop) / distance;
-      const progress = Math.max(0, Math.min(1, raw));
-      const x = -progress * overflow;
-      track.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
-      ticking = false;
-    };
-    const req = () => {
-      if (!ticking) { requestAnimationFrame(update); ticking = true; }
-    };
-    window.addEventListener('scroll', req, { passive: true });
-    window.addEventListener('resize', () => { measure(); req(); }, { passive: true });
-    window.addEventListener('load', () => { measure(); req(); }, { once: true });
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => { measure(); req(); });
-    }
-    measure();
-    update();
-  })();
+    // Horizontal overflow of the track past the container.
+    // Recomputed on every ScrollTrigger refresh so resize / font-
+    // load / reflow stays honest.
+    const overflow = () => Math.max(0, track.scrollWidth - container.clientWidth);
+    if (overflow() <= 0) return;
+
+    // Dwell = 40% of the horizontal scroll distance. Chosen so the
+    // last card visibly holds for ~150-300 px of vertical scroll on
+    // typical viewports before the pin releases — enough to read
+    // "the page paused on the last card" without feeling stuck.
+    const DWELL_RATIO = 0.4;
+
+    const tl = window.gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + (overflow() * (1 + DWELL_RATIO)),
+        scrub: 0.5,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+    // First tween: horizontal reveal (0 → -overflow) takes 1 unit
+    // of timeline "time".
+    tl.to(track, {
+      x: () => -overflow(),
+      ease: 'none',
+      duration: 1,
+    });
+    // Second tween: empty dwell (no movement) takes DWELL_RATIO
+    // units. When the timeline auto-maps to the scroll range, this
+    // occupies the last DWELL_RATIO / (1 + DWELL_RATIO) = ~29% of
+    // pin scroll — that's the "hold on the last card" segment.
+    tl.to({}, { duration: DWELL_RATIO });
+  }, { once: true });
 
   // ── SCROLLTRIGGER REFRESH ────────────────────────────
   // The fixed header + font-load can shift page geometry after
