@@ -540,67 +540,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  // ── TESTIMONIALS PIN + SCRUB (GSAP ScrollTrigger) ────
-  // #results is pinned when its top hits the viewport top. The
-  // pinned timeline has three phases:
-  //   1. FIRST dwell — track holds at x:0 so the user can read
-  //      the first card (Amit) before any motion starts. Without
-  //      this, the horizontal slide fires on the very first scroll
-  //      pixel and card 1 "jumps up" toward card 2.
-  //   2. Horizontal reveal — track translates 0 → -overflow
-  //      (right-to-left card sequence).
-  //   3. LAST dwell — track holds at x:-overflow so the user can
-  //      read the final card before the pin releases.
-  // Symmetric dwells (0.4 units each side of a 1-unit reveal).
-  // Timeline maps to a pin distance of overflow × 1.8 → first
-  // dwell = ~22% of pin scroll, reveal = ~56%, last dwell = ~22%.
-  // Desktop only. Mobile CSS uses flex-wrap:wrap for a natural
-  // vertical stack (no pin math on narrow viewports).
-  // GSAP is loaded via <script defer>, so we hook window.load.
-  window.addEventListener('load', () => {
-    if (reduceMotion) return;
-    if (!window.gsap || !window.ScrollTrigger) return;
-    if (!window.matchMedia('(min-width: 768px)').matches) return;
-    const track = document.querySelector('.testimonials-track');
+  // ── TESTIMONIALS CLICK-DRAG SCROLLER ─────────────────
+  // Native horizontal overflow-scroll on .testimonials-container
+  // handles trackpad/wheel. This IIFE adds click-and-hold + drag
+  // so mouse users can drag cards horizontally too. Also normalises
+  // vertical wheel over the container to horizontal scroll (so a
+  // regular scroll wheel drags the row instead of scrolling the
+  // page while the pointer is over the testimonials).
+  // No GSAP pin — the section is normal-flow, zero dead vertical
+  // space. Mobile stacks vertically via CSS flex-wrap:wrap.
+  (function() {
     const container = document.querySelector('.testimonials-container');
-    const section = document.getElementById('results');
-    if (!track || !container || !section) return;
+    if (!container) return;
 
-    window.gsap.registerPlugin(window.ScrollTrigger);
+    let isDown = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
 
-    const overflow = () => Math.max(0, track.scrollWidth - container.clientWidth);
-    if (overflow() <= 0) return;
+    const onDown = (e) => {
+      // Only left mouse button, and skip clicks on the Read More
+      // button so those still register as clicks (not drag).
+      if (e.button !== undefined && e.button !== 0) return;
+      if (e.target.closest('[data-testimonial-more]')) return;
+      isDown = true;
+      moved = false;
+      startX = (e.pageX !== undefined ? e.pageX : e.touches[0].pageX);
+      startScroll = container.scrollLeft;
+      container.classList.add('is-dragging');
+    };
+    const onMove = (e) => {
+      if (!isDown) return;
+      const x = (e.pageX !== undefined ? e.pageX : e.touches[0].pageX);
+      const dx = x - startX;
+      if (Math.abs(dx) > 3) moved = true;
+      container.scrollLeft = startScroll - dx;
+      if (e.cancelable) e.preventDefault();
+    };
+    const onUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      container.classList.remove('is-dragging');
+      // If the pointer moved beyond the drag threshold, swallow the
+      // trailing click so it doesn't fire on whatever card ended up
+      // under the pointer.
+      if (moved) {
+        const stop = (ev) => { ev.stopPropagation(); ev.preventDefault();
+          window.removeEventListener('click', stop, true); };
+        window.addEventListener('click', stop, true);
+      }
+    };
 
-    const FIRST_DWELL = 0.4;
-    const REVEAL      = 1.0;
-    const LAST_DWELL  = 0.4;
-    const TOTAL       = FIRST_DWELL + REVEAL + LAST_DWELL;   // 1.8
+    container.addEventListener('mousedown', onDown);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    // Touch — passive:true so the browser can still do fast
+    // native inertial scroll if we don't call preventDefault.
+    container.addEventListener('touchstart', onDown, { passive: true });
+    container.addEventListener('touchmove', onMove, { passive: true });
+    container.addEventListener('touchend', onUp);
 
-    const tl = window.gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        // Pin scroll distance = overflow × TOTAL so the REVEAL
-        // segment corresponds to exactly `overflow` pixels of
-        // vertical scroll (unit-scaled to timeline duration).
-        end: () => '+=' + (overflow() * TOTAL),
-        scrub: 0.5,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    });
-    // Phase 1 — FIRST dwell: empty tween, x holds at 0.
-    tl.to({}, { duration: FIRST_DWELL });
-    // Phase 2 — horizontal reveal.
-    tl.to(track, {
-      x: () => -overflow(),
-      ease: 'none',
-      duration: REVEAL,
-    });
-    // Phase 3 — LAST dwell: empty tween, x holds at -overflow.
-    tl.to({}, { duration: LAST_DWELL });
-  }, { once: true });
+    // Vertical wheel over the container translates to horizontal
+    // scroll — cleaner than requiring shift+wheel.
+    container.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        container.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, { passive: false });
+  })();
 
   // ── SCROLLTRIGGER REFRESH ────────────────────────────
   // The fixed header + font-load can shift page geometry after

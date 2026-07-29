@@ -1115,21 +1115,35 @@ h4, h5, h6, .wybe-subhead {
   color: #F6F2E8;
 }
 
-/* Testimonials — scroll-driven horizontal motion, no pin, no spacer.
-   The container is a fixed viewport (overflow:hidden). The inner
-   track is a flex row wider than the viewport; JS (main.js:
-   TESTIMONIALS SLIDER) translates the track's X based on how far
-   the #results section has passed through the viewport, so cards
-   slide from right to left as the user scrolls normally. No GSAP
-   pin → the section takes only its natural height with zero dead
-   vertical space. Mobile stacks vertically. */
+/* Testimonials — native horizontal scroll + click-drag. No GSAP
+   pin (so no vertical dead space). Trackpad two-finger horizontal
+   scrolls natively; JS wires click+hold+drag on the container to
+   translate the track's scrollLeft. Cards snap to slots.
+   Mobile stacks vertically (flex-wrap:wrap). */
 .testimonials-container {
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 102, 0, 0.5) transparent;
+  padding-bottom: 8px;
+  cursor: grab;
+  user-select: none;                /* prevent text selection while dragging */
+}
+.testimonials-container.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;           /* disable snap during drag for smooth motion */
+}
+.testimonials-container::-webkit-scrollbar { height: 6px; }
+.testimonials-container::-webkit-scrollbar-track { background: transparent; }
+.testimonials-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 0, 0.5); border-radius: 3px;
 }
 .testimonials-track {
   display: flex;
-  flex-wrap: wrap;                 /* mobile default: stack vertically */
+  flex-wrap: wrap;                  /* mobile default: stack vertically */
   gap: 24px;
 }
 .testimonials-track .wybe-testimonial {
@@ -1138,14 +1152,14 @@ h4, h5, h6, .wybe-subhead {
 }
 @media (min-width: 768px) {
   .testimonials-track {
-    flex-wrap: nowrap;             /* desktop: single row for scroll-driven translate */
+    flex-wrap: nowrap;              /* desktop: single horizontal row */
     width: max-content;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
+    padding: 0 4px;
   }
   .testimonials-track .wybe-testimonial {
     flex: 0 0 min(65vw, 480px);
     max-width: none;
+    scroll-snap-align: center;
   }
 }
 
@@ -1160,7 +1174,12 @@ h4, h5, h6, .wybe-subhead {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 640px;                  /* uniform card height — sized to Amit's full 3-paragraph testimonial + meta + padding */
+  /* No min-height — each card sizes to its natural content. Amit's
+     testimonial fits fully (no Read More), so his card sets the
+     natural benchmark. Zarine's body exceeds the body max-height
+     below, gets truncated, and shows Read More — but her card
+     still renders at the SAME height as Amit's because the body
+     is capped to the same visible max. */
 }
 .wybe-testimonial__quote {
   position: absolute;
@@ -1239,9 +1258,11 @@ h4, h5, h6, .wybe-subhead {
   inset: 0;
   z-index: 5000;
   display: none;
-  align-items: center;
+  align-items: flex-start;              /* anchor top per ask */
   justify-content: center;
-  padding: 24px;
+  padding: 40px 24px 24px;
+  overflow-y: auto;                     /* let the modal itself scroll if content overflows viewport */
+  -webkit-overflow-scrolling: touch;
 }
 .testimonial-modal.is-open {
   display: flex;
@@ -1259,8 +1280,7 @@ h4, h5, h6, .wybe-subhead {
   z-index: 1;
   width: 100%;
   max-width: 640px;
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
+  margin-bottom: 40px;                  /* breathing room at bottom of scroll region */
   background: #FFFFFF;
   color: #1E1E1E;
   border-top: 3px solid #FF6600;
