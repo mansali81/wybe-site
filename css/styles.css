@@ -1201,13 +1201,13 @@ h4, h5, h6, .wybe-subhead {
   margin: 0 0 12px;
   flex: 1;
   quotes: none; /* the ldquo/rdquo are baked into the copy */
-  /* Cap body height so ALL cards render at the same uniform shape.
-     Sized to fit Amit's full 3-paragraph testimonial (~460 px on
-     typical desktop) so Amit's card shows NO fade + NO "Read More".
-     Zarine's testimonial (~700 px, 4 long paragraphs) exceeds this
-     cap → JS toggles .is-truncated → CSS reveals fade + Read More
-     button. Anahita (~470 px) sits close to Amit's natural size so
-     may or may not truncate; the JS check handles both cases. */
+  /* Body height cap is DYNAMIC. JS measures the FIRST card
+     (Amit — benchmark) on load / resize / fonts.ready and writes
+     max-height inline on every body so cards match his exact
+     natural shape. The CSS value below is only a fallback for
+     pre-JS paint. Amit's cap = his own natural scrollHeight →
+     his body renders fully with no truncation. Any longer card
+     (Zarine) exceeds the cap → is-truncated → fade + Read More. */
   max-height: 520px;
   overflow: hidden;
   position: relative;

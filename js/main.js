@@ -457,23 +457,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { once: true });
 
   // ── TESTIMONIAL TRUNCATION + MODAL ────────────────────
-  // Bodies that overflow (scrollHeight > clientHeight) get
-  // .is-truncated. CSS then reveals the fade gradient + shows
-  // the sibling "Read More" button. Click flow uses event
-  // delegation with lazy modal lookup so it works regardless of
-  // parse order (the modal lives at the end of <body>, added
-  // after main.js — but DOMContentLoaded fires only after the
-  // whole document is parsed, so the lookup at handler-fire time
-  // always succeeds).
+  // The FIRST testimonial card (Amit) is the benchmark — every
+  // body is capped at Amit's natural scrollHeight so all cards
+  // render at exactly the same shape. Amit fits fully (his cap
+  // = his own content). Longer testimonials exceed the cap →
+  // .is-truncated → fade gradient + "Read More" button.
+  // Read-more click uses event delegation with lazy modal lookup
+  // (modal lives at end of <body>, always resolvable by then).
   (function() {
+    const bodies = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
     const check = () => {
-      document.querySelectorAll('.wybe-testimonial__body').forEach(b => {
+      const all = bodies();
+      if (!all.length) return;
+      // Reset inline max-height so we can measure true natural
+      // scrollHeights (including Amit, in case a previous run
+      // capped him).
+      all.forEach(b => { b.style.maxHeight = 'none'; });
+      // Amit is the first card. His natural height is the cap
+      // for every subsequent card so heights unify.
+      const benchmark = all[0].scrollHeight;
+      // Apply cap + re-evaluate truncation.
+      all.forEach(b => {
+        b.style.maxHeight = benchmark + 'px';
         b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
       });
     };
+    // Two passes: one on DOMContentLoaded (rough), one after full
+    // load + fonts.ready when metrics have settled.
     check();
-    window.addEventListener('resize', check, { passive: true });
     window.addEventListener('load', check, { once: true });
+    window.addEventListener('resize', check, { passive: true });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(check);
     }
