@@ -457,18 +457,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { once: true });
 
   // ── TESTIMONIALS PIN + SCRUB (GSAP ScrollTrigger) ────
-  // #results is pinned when its top hits the viewport top. During
-  // the pin, the horizontal .testimonials-track translates left
-  // (right-to-left card reveal) driven by scroll progress. After
-  // the last card lands centered, a DWELL segment holds the track
-  // at its final position for an additional 40% of the horizontal
-  // scroll distance — so the user sees the last card, feels the
-  // page "hold," and needs one more scroll gesture before the pin
-  // releases and the page continues.
-  // Desktop only (matchMedia >= 768). Mobile CSS keeps flex-wrap
-  // vertical, so no pin is needed there.
-  // GSAP is loaded via <script defer>, so we hook window.load to
-  // guarantee window.gsap + window.ScrollTrigger are defined.
+  // #results is pinned when its top hits the viewport top. The
+  // pinned timeline has three phases:
+  //   1. FIRST dwell — track holds at x:0 so the user can read
+  //      the first card (Amit) before any motion starts. Without
+  //      this, the horizontal slide fires on the very first scroll
+  //      pixel and card 1 "jumps up" toward card 2.
+  //   2. Horizontal reveal — track translates 0 → -overflow
+  //      (right-to-left card sequence).
+  //   3. LAST dwell — track holds at x:-overflow so the user can
+  //      read the final card before the pin releases.
+  // Symmetric dwells (0.4 units each side of a 1-unit reveal).
+  // Timeline maps to a pin distance of overflow × 1.8 → first
+  // dwell = ~22% of pin scroll, reveal = ~56%, last dwell = ~22%.
+  // Desktop only. Mobile CSS uses flex-wrap:wrap for a natural
+  // vertical stack (no pin math on narrow viewports).
+  // GSAP is loaded via <script defer>, so we hook window.load.
   window.addEventListener('load', () => {
     if (reduceMotion) return;
     if (!window.gsap || !window.ScrollTrigger) return;
@@ -480,41 +484,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.gsap.registerPlugin(window.ScrollTrigger);
 
-    // Horizontal overflow of the track past the container.
-    // Recomputed on every ScrollTrigger refresh so resize / font-
-    // load / reflow stays honest.
     const overflow = () => Math.max(0, track.scrollWidth - container.clientWidth);
     if (overflow() <= 0) return;
 
-    // Dwell = 40% of the horizontal scroll distance. Chosen so the
-    // last card visibly holds for ~150-300 px of vertical scroll on
-    // typical viewports before the pin releases — enough to read
-    // "the page paused on the last card" without feeling stuck.
-    const DWELL_RATIO = 0.4;
+    const FIRST_DWELL = 0.4;
+    const REVEAL      = 1.0;
+    const LAST_DWELL  = 0.4;
+    const TOTAL       = FIRST_DWELL + REVEAL + LAST_DWELL;   // 1.8
 
     const tl = window.gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: () => '+=' + (overflow() * (1 + DWELL_RATIO)),
+        // Pin scroll distance = overflow × TOTAL so the REVEAL
+        // segment corresponds to exactly `overflow` pixels of
+        // vertical scroll (unit-scaled to timeline duration).
+        end: () => '+=' + (overflow() * TOTAL),
         scrub: 0.5,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
-    // First tween: horizontal reveal (0 → -overflow) takes 1 unit
-    // of timeline "time".
+    // Phase 1 — FIRST dwell: empty tween, x holds at 0.
+    tl.to({}, { duration: FIRST_DWELL });
+    // Phase 2 — horizontal reveal.
     tl.to(track, {
       x: () => -overflow(),
       ease: 'none',
-      duration: 1,
+      duration: REVEAL,
     });
-    // Second tween: empty dwell (no movement) takes DWELL_RATIO
-    // units. When the timeline auto-maps to the scroll range, this
-    // occupies the last DWELL_RATIO / (1 + DWELL_RATIO) = ~29% of
-    // pin scroll — that's the "hold on the last card" segment.
-    tl.to({}, { duration: DWELL_RATIO });
+    // Phase 3 — LAST dwell: empty tween, x holds at -overflow.
+    tl.to({}, { duration: LAST_DWELL });
   }, { once: true });
 
   // ── SCROLLTRIGGER REFRESH ────────────────────────────
