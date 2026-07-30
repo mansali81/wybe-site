@@ -613,14 +613,13 @@ document.addEventListener('DOMContentLoaded', () => {
     container.addEventListener('touchmove', onMove, { passive: true });
     container.addEventListener('touchend', onUp);
 
-    // Vertical wheel over the container translates to horizontal
-    // scroll — cleaner than requiring shift+wheel.
-    container.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        container.scrollLeft += e.deltaY;
-        e.preventDefault();
-      }
-    }, { passive: false });
+    // NOTE: no wheel-to-horizontal handler. A previous version
+    // called preventDefault() on every vertical wheel over the
+    // container, which trapped the page — user reported "page
+    // stuck at Success Stories, does not move". Vertical wheel
+    // now bubbles naturally so scrolling past the section works.
+    // Horizontal input still comes from: trackpad two-finger
+    // horizontal, native scrollbar, click-and-drag (above).
   })();
 
   // ── SCROLLTRIGGER REFRESH ────────────────────────────

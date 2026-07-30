@@ -1223,16 +1223,22 @@ h4, h5, h6, .wybe-subhead {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 90%);
 }
 
-/* Read-More button — orange, inline under a truncated body. Hidden
-   by default; JS reveals it only on cards where the body actually
-   overflows (via the .is-truncated class on the sibling body). */
+/* Read-More button — absolute OVERLAY on the fade gradient at the
+   bottom of a truncated body. Positioned absolute so it takes ZERO
+   flow height, meaning every card renders at exactly the same
+   total height regardless of whether Read More appears or not.
+   Fixes the "Amit card smaller than Zarine/Anahita" bug: without
+   this, Zarine and Anahita cards had ~14 px extra height for the
+   inline button. */
 .wybe-testimonial__more {
-  display: none;
-  align-self: flex-start;
+  display: none;                        /* hidden by default */
+  position: absolute;                   /* overlay → zero flow height */
+  left: 24px;
+  bottom: 88px;                         /* sits just above the meta row */
+  z-index: 3;
   background: transparent;
   border: 0;
-  padding: 6px 0;
-  margin-bottom: 12px;
+  padding: 6px 8px 6px 0;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 12px;
