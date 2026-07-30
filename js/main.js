@@ -465,30 +465,43 @@ document.addEventListener('DOMContentLoaded', () => {
   // Read-more click uses event delegation with lazy modal lookup
   // (modal lives at end of <body>, always resolvable by then).
   (function() {
-    const bodies = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
-    const check = () => {
-      const all = bodies();
-      if (!all.length) return;
-      // Reset inline max-height so we can measure true natural
-      // scrollHeights (including Amit, in case a previous run
-      // capped him).
-      all.forEach(b => { b.style.maxHeight = 'none'; });
-      // Amit is the first card. His natural height is the cap
-      // for every subsequent card so heights unify.
-      const benchmark = all[0].scrollHeight;
-      // Apply cap + re-evaluate truncation.
-      all.forEach(b => {
+    const cards   = () => Array.from(document.querySelectorAll('.wybe-testimonial'));
+    const bodies  = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
+
+    const equalize = () => {
+      const allCards  = cards();
+      const allBodies = bodies();
+      if (!allCards.length) return;
+
+      // Step 1: reset any inline styles from a previous pass so we
+      // can re-measure natural sizes cleanly.
+      allBodies.forEach(b => { b.style.maxHeight = 'none'; });
+      allCards.forEach(c  => { c.style.height    = 'auto'; });
+
+      // Step 2: measure natural scrollHeights. Amit is the first
+      // card → his natural body height is the benchmark cap so
+      // longer bodies (Zarine / Anahita) get clipped to match.
+      const benchmark = allBodies[0].scrollHeight;
+      allBodies.forEach(b => {
         b.style.maxHeight = benchmark + 'px';
         b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
       });
+
+      // Step 3: force uniform card height across the row. Read
+      // synchronous offsetHeight of each card AFTER the body cap
+      // is applied (browsers flush layout on read), pick the
+      // tallest, then write it back to every card. This guarantees
+      // visual uniformity regardless of Read More button, fade
+      // pseudo, or any other per-card variance.
+      const tallest = allCards.reduce((h, c) => Math.max(h, c.offsetHeight), 0);
+      allCards.forEach(c => { c.style.height = tallest + 'px'; });
     };
-    // Two passes: one on DOMContentLoaded (rough), one after full
-    // load + fonts.ready when metrics have settled.
-    check();
-    window.addEventListener('load', check, { once: true });
-    window.addEventListener('resize', check, { passive: true });
+
+    equalize();
+    window.addEventListener('load',   equalize, { once: true });
+    window.addEventListener('resize', equalize, { passive: true });
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(check);
+      document.fonts.ready.then(equalize);
     }
 
     // Lazy modal accessor — resolves on first click, cached after.
