@@ -197,13 +197,21 @@ h4, h5, h6, .wybe-subhead {
   border: 0;
   box-shadow: none;
 }
-/* Header stays FULLY TRANSPARENT at every scroll position per ask.
-   Previous behavior restored a solid #1E1E1E background + blur +
-   shadow once the user scrolled past ~50 px. That rule is now a
-   no-op — the only thing left on scroll is the drop-shadow removal
-   on the logo (handled further down) so the mark still reads over
-   dark content sections. */
-.wybe-header.is-scrolled { /* intentionally empty — bg stays transparent */ }
+/* Header stays FULLY TRANSPARENT at every scroll position. */
+.wybe-header.is-scrolled { /* bg stays transparent */ }
+
+/* Hide-on-scroll: main.js adds .is-hiding while the user is
+   actively scrolling (any scrollY > 50) and removes it after
+   ~180 ms of idle. The header slides UP out of view and fades so
+   nothing sits over the content while the reader is moving. */
+.wybe-header {
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, backdrop-filter 0.25s ease;
+}
+.wybe-header.is-hiding {
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
    Vertically centered inside the nav row. Hover mirrors the nav links —
@@ -362,9 +370,11 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 1px;
   transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.2s ease;
 }
-.wybe-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.wybe-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-.wybe-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* Open state: three lines flip to orange (no X animation — bars
+   stay visible so the user knows the menu is theirs to close). */
+.wybe-hamburger[aria-expanded="true"] span {
+  background: #FF6600;
+}
 .wybe-hamburger:focus-visible {
   outline: 2px solid #FF6600;
   outline-offset: 2px;
@@ -372,15 +382,22 @@ h4, h5, h6, .wybe-subhead {
 }
 
 /* Mobile menu — full width dropdown on the nav's own background. */
+/* Dropdown menu — anchored to the burger (RIGHT side of the nav)
+   as a compact panel, NOT a full-width bar. Transparent background
+   (no dark fill) with a text-shadow on each link so items stay
+   readable over any hero image tone. */
 .wybe-mobile-menu {
-  padding: 12px 24px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.95);
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  position: absolute;
+  top: 100%;
+  right: 16px;
+  min-width: 200px;
+  padding: 12px 18px 16px;
+  background: transparent;
+  border: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
+  text-align: right;
 }
 .wybe-mobile-link {
   font-family: var(--font-subhead);
@@ -390,8 +407,9 @@ h4, h5, h6, .wybe-subhead {
   text-transform: uppercase;
   color: #F6F2E8;
   text-decoration: none;
-  padding: 10px 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 4px;
+  border: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75), 0 0 3px rgba(0, 0, 0, 0.6);
   transition: color 0.2s ease;
 }
 .wybe-mobile-link:hover,
@@ -1907,6 +1925,41 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   background: #FFFFFF;
 }
 
+/* Metrics overlay — 2x2 grid centered over the About portrait
+   figure. Absolute-positioned with translate(-50%, -50%) so it
+   sits exactly at the visual center of the image column. Cards
+   have a soft backdrop blur so numbers remain legible over any
+   photo tone underneath. */
+.about-metrics {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: min(78%, 320px);
+  pointer-events: none;
+}
+.about-metrics .stat-badge {
+  pointer-events: auto;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+/* On very narrow screens fall back to a horizontal band pinned to
+   the bottom of the image so the copy underneath still fits. */
+@media (max-width: 480px) {
+  .about-metrics {
+    top: auto;
+    bottom: 12px;
+    transform: translate(-50%, 0);
+    width: min(92%, 340px);
+    gap: 8px;
+  }
+}
+
 /* ── ABOUT PORTRAIT FRAME ──────────────────────────
    Portrait (Profile Pic.webp is 1:1) sits fully contained inside
    this square frame. No parallax, no crop. */
@@ -2054,6 +2107,63 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   color: #FF6600;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
+}
+/* Upsell block under the Work Out Program tiers — "if you're not
+   sure about form and technique, book a consultation" pitch with
+   the +$69 add-on math. */
+.service-card__upsell {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px dashed rgba(255, 102, 0, 0.45);
+  border-radius: 6px;
+  background: rgba(255, 102, 0, 0.06);
+}
+.service-card__upsell p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #1E1E1E;
+}
+.service-card__upsell a {
+  color: #FF6600;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.service-card__upsell a:hover { color: #E65500; }
+.service-card__upsell strong { color: #1E1E1E; font-weight: 700; }
+/* Note block for services with no direct price (Personal Training). */
+.service-card__note {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: rgba(30, 30, 30, 0.04);
+  border: 1px solid rgba(30, 30, 30, 0.10);
+  border-radius: 6px;
+}
+.service-card__note p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #1E1E1E;
+}
+.service-card__note strong { color: #1E1E1E; font-weight: 700; }
+/* CTA-style tier row (e.g. Personal Training "Book Now / Enquire"). */
+.service-tier--cta {
+  background: #FF6600;
+  border-color: #FF6600;
+  color: #FFFFFF;
+}
+.service-tier--cta .service-tier__level,
+.service-tier--cta .service-tier__now {
+  color: #FFFFFF;
+}
+.service-tier--cta:hover {
+  background: #E65500;
+  border-color: #E65500;
 }
 .service-card__faq:hover {
   color: #E65500;

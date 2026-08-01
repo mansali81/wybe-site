@@ -52,20 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // ── NAV: scroll-shadow toggle ─────────────────────────
-  // After ~50 px of scroll, deepen the nav shadow (CSS class .is-scrolled).
+  // Header .is-scrolled toggle (kept for legacy CSS hooks) + hide-
+  // on-scroll behaviour: the header vanishes while the user is
+  // actively scrolling and reappears ~180 ms after they stop.
   (function () {
     const nav = document.getElementById('wybe-nav');
     if (!nav) return;
+    const header = nav.closest('.wybe-header') || document.querySelector('.wybe-header');
     let ticking = false;
+    let idleTimer;
     const update = () => {
       const on = window.scrollY > 50;
       nav.classList.toggle('is-scrolled', on);
-      // Deepened shadow now lives on the .wybe-header wrapper (the fixed,
-      // isolated compositor layer). Toggle the class there too so the CSS
-      // rule that owns the shadow fires. Historic listeners on the
-      // .wybe-nav class keep working unchanged.
-      const header = nav.closest('.wybe-header') || document.querySelector('.wybe-header');
-      if (header) header.classList.toggle('is-scrolled', on);
+      if (header) {
+        header.classList.toggle('is-scrolled', on);
+        // Hide while actively scrolling (any scroll ≥ 50 px).
+        header.classList.add('is-hiding');
+        clearTimeout(idleTimer);
+        // Show again once scroll has been idle for a moment.
+        idleTimer = setTimeout(() => header.classList.remove('is-hiding'), 180);
+      }
       ticking = false;
     };
     window.addEventListener('scroll', () => {
@@ -492,12 +498,22 @@ document.addEventListener('DOMContentLoaded', () => {
       allCards.forEach(c => { c.style.height = cardH + 'px'; });
     };
 
+    // Fire equalize after every layout-shifting milestone: initial
+    // DOMContentLoaded pass, full window.load (all images decoded),
+    // fonts.ready, resize, AND when any testimonial <img> finishes
+    // loading (photo avatars can shift meta row height by a few px
+    // and throw the measurement off before this).
     equalize();
     window.addEventListener('load',   equalize, { once: true });
     window.addEventListener('resize', equalize, { passive: true });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(equalize);
     }
+    document.querySelectorAll('.wybe-testimonial img').forEach(img => {
+      if (img.complete) return;
+      img.addEventListener('load',  equalize, { once: true });
+      img.addEventListener('error', equalize, { once: true });
+    });
 
     // Read More expands the clicked card downward IN PLACE.
     // .is-expanded on the article overrides the JS-set fixed
