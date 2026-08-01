@@ -197,17 +197,13 @@ h4, h5, h6, .wybe-subhead {
   border: 0;
   box-shadow: none;
 }
-/* Solid header once the user has scrolled past ~50 px. Restores the
-   dark backdrop + blur that was suppressed at page-top so the logo
-   and nav links stay legible over the darker content sections. */
-.wybe-header.is-scrolled {
-  background: #1E1E1E;
-  background-color: #1E1E1E;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
-  border-bottom-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
-}
+/* Header stays FULLY TRANSPARENT at every scroll position per ask.
+   Previous behavior restored a solid #1E1E1E background + blur +
+   shadow once the user scrolled past ~50 px. That rule is now a
+   no-op — the only thing left on scroll is the drop-shadow removal
+   on the logo (handled further down) so the mark still reads over
+   dark content sections. */
+.wybe-header.is-scrolled { /* intentionally empty — bg stays transparent */ }
 
 /* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
    Vertically centered inside the nav row. Hover mirrors the nav links —
