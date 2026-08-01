@@ -97,13 +97,18 @@
           <img src="/images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
                class="wybe-brand__mark" draggable="false">
         </a>
-        <div class="hidden md:flex items-center gap-7">
-          <a href="/#calculators"     class="wybe-nav-link">Calculators</a>
-          <a href="/#services"        class="wybe-nav-link">Services</a>
-          <a href="/publication.html" class="wybe-nav-link">My Publication</a>
-          <a href="/#contact"         class="wybe-cta">Book Now</a>
-        </div>
+        <button id="menu-btn" type="button" class="wybe-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+    </div>
+    <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
+      <a href="/"                   class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="/about.html"         class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="/#services"          class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="/#calculators"       class="wybe-mobile-link" role="menuitem">Calculator</a>
+      <a href="/publication.html"   class="wybe-mobile-link" role="menuitem">My Publication</a>
+      <a href="/faq.html"           class="wybe-mobile-link" role="menuitem">FAQ</a>
     </div>
   </nav>
   </header>
@@ -187,6 +192,7 @@
     </div>
   </footer>
 
+  <script src="/js/wybe-cursor.js" defer></script>
   <script src="/js/main.js"></script>
 </body>
 </html>

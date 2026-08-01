@@ -103,13 +103,18 @@
           <img src="/images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
                class="wybe-brand__mark" draggable="false">
         </a>
-        <div class="hidden md:flex items-center gap-7">
-          <a href="/#calculators"     class="wybe-nav-link">Calculators</a>
-          <a href="/#services"        class="wybe-nav-link">Services</a>
-          <a href="/publication.html" class="wybe-nav-link">My Publication</a>
-          <a href="/#contact"         class="wybe-cta">Book Now</a>
-        </div>
+        <button id="menu-btn" type="button" class="wybe-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+    </div>
+    <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
+      <a href="/"                   class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="/about.html"         class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="/#services"          class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="/#calculators"       class="wybe-mobile-link" role="menuitem">Calculator</a>
+      <a href="/publication.html"   class="wybe-mobile-link" role="menuitem">My Publication</a>
+      <a href="/faq.html"           class="wybe-mobile-link" role="menuitem">FAQ</a>
     </div>
   </nav>
   </header>
@@ -123,107 +128,109 @@
 
       <div class="legal-prose">
 
-        <div class="legal-callout">
-          <p>WYBE takes your privacy seriously. This policy explains what personal data we collect, why we collect it, how we protect it, and what rights you have — including the specific protections that apply if you are a UAE resident (under the PDPL) or an EU/UK visitor (under GDPR-equivalent standards).</p>
-        </div>
+        <p>WYBE values your privacy. We have prepared this policy to explain to you what personal data we process about you and why, how we protect it, and what rights you have in relation to such data. In particular, if you are a UAE resident, this tells you what rights you have under the Personal Data Protection Law (PDPL), and if you are an EU/UK visitor, this informs you of your rights under GDPR-equivalent legislation.</p>
 
-        <h2>1. Who We Are</h2>
-        <p>WYBE is a personal training, human-performance nutrition, and mind-coaching business operated by Mansoor Ahamad Ali Mohamed, based in Dubai, United Arab Emirates.</p>
-        <p>For the purposes of applicable data-protection law, WYBE is the <strong>data controller</strong> of the personal information you submit through this website or during a WYBE service engagement. You can reach us at <a href="mailto:mansoor@wybe.fit">mansoor@wybe.fit</a> for any privacy-related question or request.</p>
+        <h2>1. Who WYBE serves and who we are</h2>
+        <p>WYBE provides digital work out program, personal training, human-performance related nutrition advice and personal coaching consultancy services. Our operator is Mansoor Ahamad Ali Mohamed, located at Dubai, United Arab Emirates. For the purposes of data-protection legislation, WYBE considers itself a data controller in respect of any personal data relating to users of this website or other services which may be offered by WYBE.</p>
+        <p>You may contact WYBE via &ldquo;contact us form&rdquo; on the website for any questions or requests concerning data-protection matters.</p>
 
-        <h2>2. What Information We Collect</h2>
+        <h2>2. What information do we collect?</h2>
         <h3>Contact information</h3>
-        <p>Name, email address, phone number, city/country, and any message content you submit through our contact form, WhatsApp, or Instagram DM.</p>
-        <h3>Health, fitness &amp; body-composition data</h3>
-        <p>When you use the on-site calculators or submit an intake form for a WYBE service, we may collect: gender, age, height, weight, neck/waist/hip measurements, current activity level, training history, injuries or medical conditions you choose to disclose, nutrition goals, and progress photographs you upload.</p>
-        <p>Health-adjacent data is a <strong>special category</strong> under both UAE PDPL and GDPR. We only collect what we need to design a safe, effective program for you, and we treat it accordingly.</p>
-        <h3>Payment information</h3>
-        <p>Payment card details are collected and processed by our third-party payment provider (see §4). WYBE receives a transaction reference and the amount paid — <strong>not</strong> your full card number.</p>
-        <h3>Technical &amp; usage data</h3>
-        <p>Standard log data automatically recorded by our hosting provider (IP address, browser type, pages visited, referrer, timestamp), and — where you have not opted out — aggregate analytics data (see §9 on cookies).</p>
+        <p>Name, email address, mobile number, city/country and message contents from messages sent to WYBE via contact form, WhatsApp or Instagram DM. You may also provide additional information when messaging or requesting a service.</p>
 
-        <h2>3. How We Use It</h2>
-        <p>We use your personal data only for the purposes below, and only to the extent necessary:</p>
-        <ul>
-          <li>To deliver the WYBE service you have booked (program design, session planning, nutrition guidance, progress tracking);</li>
-          <li>To communicate with you about scheduling, changes, invoices, and post-session follow-ups;</li>
-          <li>To respond to enquiries submitted through the website or messaging channels;</li>
-          <li>To generate PDF reports and calculator outputs at your explicit request;</li>
-          <li>To improve the safety and quality of the service (e.g. anonymised progress benchmarking);</li>
-          <li>To meet legal, tax, and record-keeping obligations under UAE law.</li>
-        </ul>
-        <p>We do <strong>not</strong> sell your personal data. We do <strong>not</strong> use your health or fitness data for advertising or profiling.</p>
+        <h3>Health, fitness &amp; body composition data</h3>
+        <p>Use of calculators or completing a form for a WYBE service may involve us collecting gender, age, height, weight, neck, waist, hip measurements, activity level, training history, injuries or medical conditions (if disclosed), nutrition goals and a progress photo (if uploaded). Where disclosed, such information shall be processed by us in accordance with applicable data-protection laws.</p>
+        <p>Health-related information falls under special categories of personal data under both the UAE PDPL and the GDPR. We ask that you provide only the information strictly necessary to design your program, and treat such information with the requisite confidentiality and care.</p>
 
-        <h2>4. Third-Party Tools</h2>
-        <p>To deliver the website and its services, WYBE relies on a limited number of vetted third-party providers. Each is a data processor in their own right and is bound by their own privacy policy:</p>
-        <ul>
-          <li><strong>Vercel Inc.</strong> — website hosting and content delivery. Processes IP and request-log data.</li>
-          <li><strong>Google LLC</strong> — Google Fonts (font delivery) and, if enabled on the page, Google Analytics 4 for aggregate usage measurement.</li>
-          <li><strong>Web3Forms</strong> — inbound contact-form delivery, forwarding your submission to the WYBE email inbox.</li>
-          <li><strong>Payment processors</strong> — Stripe or an equivalent provider handles card processing when checkout is offered. Their privacy policies apply to the payment step.</li>
-          <li><strong>Meta Platforms (WhatsApp, Instagram) and Google (YouTube, TikTok)</strong> — used only if you choose to contact WYBE through these platforms; the platforms' own policies govern those interactions.</li>
-        </ul>
-        <p>WYBE keeps this list under review and will update it here when a processor is added or removed.</p>
+        <h3>Payment data</h3>
+        <p>Your card details are collected and processed by our payment-processing partner (see section 4). WYBE receives payment confirmation details and an identifier for the payment, but not your card information.</p>
 
-        <h2>5. Data Storage &amp; Security</h2>
-        <p>Personal data is stored on encrypted-at-rest infrastructure provided by our hosting and processor partners. Access on the WYBE side is limited to Mansoor Ahamad Ali Mohamed and (where operationally needed) a small, named assistant, both bound by confidentiality obligations.</p>
-        <p>We retain personal data only as long as needed for the purpose it was collected — typically:</p>
-        <ul>
-          <li>Client intake and program records: for the duration of the engagement + <strong>3 years</strong> for follow-up and defence of any claims;</li>
-          <li>Payment records: <strong>7 years</strong>, as required for UAE accounting/VAT compliance;</li>
-          <li>Marketing consents (photo, testimonial): until you withdraw consent or the material is retired;</li>
-          <li>Aggregate analytics: rolling <strong>14 months</strong> in Google Analytics.</li>
-        </ul>
-        <p>No online system is perfectly secure. In the event of a personal-data breach affecting your rights, we will notify you and (where required) the competent authority in line with applicable law.</p>
+        <h3>Technical and other information</h3>
+        <p>Our hosting provider collects standard log data (IP address, browser type, etc.) and, if you have consented to such processing (see section 9 below), analytics data (also see section 9).</p>
 
-        <h2>6. Your Rights</h2>
-        <p>Regardless of where you live, you can ask WYBE to:</p>
+        <h2>3. How do we use your information?</h2>
+        <p>We process your personal data only for the purposes listed below. We process your data only to the extent strictly necessary for these purposes, and no further.</p>
         <ul>
-          <li><strong>Access</strong> the personal data we hold about you;</li>
-          <li><strong>Correct</strong> data that is inaccurate or incomplete;</li>
-          <li><strong>Delete</strong> data we no longer need to keep;</li>
-          <li><strong>Restrict or object</strong> to certain processing (for example, marketing use of a testimonial);</li>
-          <li><strong>Withdraw consent</strong> you previously gave, at any time, without affecting the lawfulness of processing before withdrawal;</li>
-          <li><strong>Port</strong> your data to another provider, in a common machine-readable format.</li>
+          <li>To provide the WYBE service purchased (development of a personalized program, correspondence, nutrition and training planning, and progress tracking);</li>
+          <li>To correspond with you about the WYBE service (notably, to schedule or remind you of sessions and other services, send invoices and follow-ups);</li>
+          <li>To answer your queries submitted through the website or via the above-mentioned messengers;</li>
+          <li>To generate reports or calculator results in PDF format upon your request;</li>
+          <li>To continuously improve the safety and quality of our service on an anonymous basis;</li>
+          <li>To comply with legal obligations (notably, tax and accounting obligations under the UAE Federal Decree-Law No. 45 of 2021).</li>
         </ul>
-        <p>To exercise any of these rights, email <a href="mailto:mansoor@wybe.fit">mansoor@wybe.fit</a>. We will verify your identity and respond within <strong>30 days</strong>. Complex requests may take longer; we will keep you informed.</p>
+        <p>We do not sell your data, and we do not use your health/fitness data for advertising purposes.</p>
 
-        <h2>7. UAE PDPL Compliance (Federal Decree-Law No. 45 of 2021)</h2>
-        <p>If you reside in the United Arab Emirates, your personal data is processed under the UAE Personal Data Protection Law ("PDPL"). In addition to the rights set out in §6, PDPL specifically gives you:</p>
+        <h2>4. Third-party processors</h2>
+        <p>To provide our service, WYBE engages a limited number of third-party processors. Each of them is a data processor in its own right, and processes data under its own privacy policy:</p>
         <ul>
-          <li>The right to be informed of the categories of your data being processed, the purposes, and any onward disclosure;</li>
-          <li>The right to lodge a complaint with the UAE Data Office if you consider that our processing infringes the PDPL;</li>
-          <li>The right, where automated decision-making produces a significant effect on you, to request human review;</li>
-          <li>Additional safeguards where your data is transferred to a country not deemed by the UAE Data Office to provide an adequate level of protection.</li>
+          <li><strong>Vercel Inc.</strong> provides website hosting and content-delivery services to WYBE; processes data strictly necessary for the functioning of the website (notably, your IP address and request logs).</li>
+          <li><strong>Google LLC</strong> provides font-rendering services (Google Fonts) and, if enabled (see section 9 below), Google Analytics 4 web analytics services.</li>
+          <li><strong>Web3Forms</strong> provides contact-form processing services; forwards your message to the WYBE email address.</li>
+          <li><strong>Stripe</strong> or another payment processor collects and processes your payment information, if you choose to make one (see section 4 of the Terms of Service).</li>
+          <li><strong>Meta Platforms Inc.</strong> (WhatsApp, Instagram) and <strong>Google LLC</strong> (YouTube, TikTok) are used to process your messages, if any, sent to WYBE via those platforms; your data is processed under their own privacy policies.</li>
         </ul>
-        <p>WYBE relies on the following lawful bases under the PDPL: performance of a contract with you (for service delivery), your explicit consent (for health data and marketing use), and legitimate interests (for website operation and dispute defence) — balanced against your rights and freedoms.</p>
-        <p>Where personal data is transferred outside the UAE (for example, to Vercel data centres or Google servers), we rely on the transfer safeguards prescribed by the UAE Data Office and, where required, obtain your explicit consent.</p>
+        <p>WYBE reserves the right to update this list at any time, as appropriate, and will notify you here if a new processor is engaged.</p>
 
-        <h2>8. GDPR Rights (EU/EEA/UK Visitors)</h2>
-        <p>If you are located in the European Economic Area, the United Kingdom, or Switzerland, you also enjoy the rights set out under the EU General Data Protection Regulation (GDPR) and its UK equivalent. These are functionally aligned with the rights in §6 above, and additionally include:</p>
+        <h2>5. How long is personal data kept and how is it secured?</h2>
+        <p>Your personal data is stored in an encrypted form on servers provided by our hosting and payment-processing partners. Access to your data on WYBE premises is restricted to Mansoor Ahamad Ali Mohamed and, if applicable, a named assistant, who are bound by confidentiality undertakings.</p>
+        <p>We keep your personal data only for as long as it takes to fulfill the purpose for which it was processed, unless a longer retention period is required by law. In particular:</p>
         <ul>
-          <li>The right to lodge a complaint with your local data-protection authority (for example, the Data Protection Commission in Ireland, the CNIL in France, or the ICO in the United Kingdom);</li>
-          <li>The right to object at any time to processing based on legitimate interests, and to profiling;</li>
-          <li>Specific protections for cross-border transfers of your data outside the EEA/UK — WYBE relies on Standard Contractual Clauses (or equivalent transfer mechanisms) with its non-EEA processors.</li>
+          <li>records of our services to you (your program details) are deleted upon completion of services and 3 years thereafter, to allow for potential follow-up and legal claims,</li>
+          <li>payment data is deleted 7 years after the calendar year of processing, in accordance with UAE tax laws,</li>
+          <li>marketing consents (use of photos, testimonials) are revoked upon your request or deletion of the relevant media,</li>
+          <li>analytics data (Google Analytics) is retained for a rolling 14-month period.</li>
         </ul>
-        <p>WYBE does not have an EU/UK establishment and, given the volume of EU/UK visitors, is not required to appoint an EU representative. If EU/UK activity grows to the threshold at which appointment is required under GDPR Article 27, this policy will be updated accordingly.</p>
+        <p>Please note that no system is completely safe. Should your personal data be compromised in a way that adversely affects your rights, we will notify you and, where appropriate, the relevant data-protection authority.</p>
 
-        <h2>9. Cookies &amp; Similar Technologies</h2>
-        <p>WYBE uses a minimal set of cookies and browser storage:</p>
+        <h2>6. What rights do you have in relation to your data?</h2>
+        <p>Regardless of your location, you have the following rights in relation to your personal data:</p>
         <ul>
-          <li><strong>Strictly necessary</strong> — session and preference cookies used to make the website work (e.g. remembering that a mobile menu is open). No consent required.</li>
-          <li><strong>Analytics</strong> — Google Analytics 4, if enabled on a given page, sets a first-party cookie to distinguish unique visitors in an aggregate way. You can opt out via your browser settings, a browser extension, or by declining consent where a banner is present.</li>
+          <li>Request access to the data we hold about you;</li>
+          <li>Request correction of inaccurate or incomplete data;</li>
+          <li>Request deletion of data no longer necessary for the purpose for which it was processed;</li>
+          <li>Object to or restrict processing of your data (e.g. to marketing use of your media);</li>
+          <li>Withdraw consent to processing at any time, to the extent such processing was based on your consent, without affecting the lawfulness of processing up to that point;</li>
+          <li>Request portability of your data to another data controller, in a structured, commonly-used and machine-readable format.</li>
         </ul>
-        <p>WYBE does <strong>not</strong> use advertising cookies, retargeting pixels, or cross-site tracking scripts.</p>
+        <p>To exercise your rights, please contact <a href="mailto:mansoor@wybe.fit">mansoor@wybe.fit</a> and we will respond within 30 days, having verified your request. In case of complicated requests, we may ask you to further clarify your message or provide additional documentation.</p>
+
+        <h2>7. Your rights under the UAE Personal Data Protection Law (PDPL) (UAE residents only)</h2>
+        <p>This policy applies to all UAE residents who use the WYBE service. In addition to the rights listed in section 6 above, UAE residents have the following rights under the UAE Federal Decree-Law No. 45 of 2021:</p>
+        <ul>
+          <li>Right to be informed about the categories of personal data processed, and the purpose of processing;</li>
+          <li>Right to complain to the UAE Data Office if you believe your rights have been infringed;</li>
+          <li>Right to human intervention in the event of automated processing having a legal or similarly significant effect on you;</li>
+          <li>Right to additional safeguards, where your data is processed in a country outside of the UAE not recognised by the UAE Data Office as providing an adequate level of protection.</li>
+        </ul>
+        <p>In accordance with the PDPL, WYBE processes personal data on the following grounds:</p>
+        <ul>
+          <li>performance of a contract with the data subject (you),</li>
+          <li>consent (health/nutrition data and marketing),</li>
+          <li>and legitimate interests (operating the website and defending or enforcing legal rights), to the extent such interests are not overridden by your rights or freedoms.</li>
+        </ul>
+        <p>Where personal data is transferred outside of the UAE (e.g. to Vercel or Google LLC), such transfers are either restricted to data centres located within the UAE or they are made pursuant to the additional safeguards set by the UAE Data Office and, where necessary, your explicit consent.</p>
+
+        <h2>8. Your rights under the GDPR (EU residents only)</h2>
+        <p>If you are a resident of an EU Member State, the UK or Switzerland, you have the following rights in addition to those listed in section 6 above:</p>
+        <ul>
+          <li>Right to complain to your local Data Protection Authority (e.g. DPC in Ireland, CNIL in France, ICO in the UK).</li>
+          <li>Right to object to processing based on legitimate interests, at any time, and to profiling.</li>
+          <li>Right to additional safeguards for transfers of personal data to countries outside the EEA/UK, where such transfers are restricted by the GDPR. In particular, WYBE has Standard Contractual Clauses with all our third-party processors, and such transfers are made pursuant to the additional safeguards set by the GDPR.</li>
+        </ul>
+        <p>WYBE does not have an EU/UK establishment and, due to the limited number of EU/UK clients, is not obliged to appoint an EU representative. If we reach a volume of activity in the EU/UK requiring such designation under Article 27 of the GDPR, this policy will be updated accordingly.</p>
+
+        <h2>9. Cookies and similar technologies</h2>
+        <p>WYBE does not use cookies or similar technologies to track your browsing habits or behavioural patterns, nor do we use any advertising cookies, retargeting pixels or other advertising technologies. We do not share your browsing data with third parties. Our website uses strictly necessary cookies such as session or preference cookies to ensure the website works correctly and remembers your choices (e.g. mobile menu being open). You do not need to give consent for these cookies.</p>
+        <p>If Analytics is enabled on the website, Google Analytics 4 sets a first-party cookie necessary to differentiate users in an aggregated manner. You can opt out of Analytics cookies by disabling cookies in your browser or using an opt-out browser add-on, if available.</p>
 
         <h2>10. Children</h2>
-        <p>WYBE services are directed at adults (18+). We do not knowingly collect personal data from anyone under 18 without verifiable parental consent. If you believe a minor has submitted information through the website, contact us and we will delete it.</p>
+        <p>WYBE services are intended for adults only. We do not knowingly collect personal data from children. If you are aware that a child has provided us with personal data, please notify us so we can delete such data. If you are a parent or guardian and you wish to consent to a child accessing our service, you may contact us via the form on the website or DM us on any of the social media platforms.</p>
 
-        <h2>11. Changes to This Policy</h2>
-        <p>We may update this Privacy Policy from time to time. The "Last updated" date at the top of the page indicates the most recent revision. Where changes are material, we will notify active clients by email and, where practicable, display a banner on this page for at least 30 days.</p>
+        <h2>11. Changes to this policy</h2>
+        <p>This policy may be updated from time to time. The date of the last update is listed at the beginning of this policy. If we make any changes that affect your rights or obligations, we will notify all affected clients by email and, where possible, display a message on this page for at least 30 days.</p>
 
-        <h2>12. Contact</h2>
-        <p>For any privacy question, request, or complaint, email <a href="mailto:mansoor@wybe.fit">mansoor@wybe.fit</a>. Include enough detail to identify the request and — where relevant — proof of identity.</p>
+        <h2>12. Contact information</h2>
+        <p>If you have any questions or concerns about this policy, you may contact WYBE via &ldquo;contact us form&rdquo; on the website, including to assert your rights under this policy. Please describe your request clearly and, where applicable, confirm your identity.</p>
 
       </div>
     </div>
@@ -242,6 +249,7 @@
     </div>
   </footer>
 
+  <script src="/js/wybe-cursor.js" defer></script>
   <script src="/js/main.js"></script>
 </body>
 </html>
