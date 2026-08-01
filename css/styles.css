@@ -1255,6 +1255,22 @@ h4, h5, h6, .wybe-subhead {
 .wybe-testimonial__body.is-truncated + .wybe-testimonial__more {
   display: inline-block;
 }
+/* Expanded state — Read More click adds .is-expanded to the article,
+   which overrides the JS-set fixed height + body max-height so the
+   card grows DOWNWARD to show its full content. Fade pseudo also
+   suppressed. Click Read Less to collapse back. */
+.wybe-testimonial.is-expanded {
+  height: auto !important;
+}
+.wybe-testimonial.is-expanded .wybe-testimonial__body {
+  max-height: none !important;
+}
+.wybe-testimonial.is-expanded .wybe-testimonial__body.is-truncated::after {
+  content: none;
+}
+.wybe-testimonial.is-expanded .wybe-testimonial__more {
+  bottom: 24px;                         /* re-anchor button to card bottom when expanded */
+}
 
 /* Testimonial modal — full-screen overlay with a white card
    showing the full testimonial. Populated by JS from the clicked
@@ -1902,6 +1918,22 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   aspect-ratio: 1 / 1;
   height: auto;
   max-width: 100%;
+}
+
+/* ── SECTION TITLES (orange, uppercase, uniform size) ──
+   Every section on the homepage uses this for its H2/H3 heading
+   so titles read as one visual family. Same font-size across
+   the site regardless of whether the section is About, Body
+   Composition, Success Stories, Transformations, or Services. */
+.section-title {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(24px, 3.2vw, 36px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: #FF6600;
+  margin: 0;
 }
 
 /* ── STAT BADGE COMPONENT ──────────────────────────

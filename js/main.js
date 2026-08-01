@@ -468,33 +468,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards   = () => Array.from(document.querySelectorAll('.wybe-testimonial'));
     const bodies  = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
 
+    // Every card is sized to fit Amit's testimonial exactly.
+    // Longer cards (Zarine, Anahita) truncate to Amit's body
+    // height + show Read More; clicking Read More expands THAT
+    // card downward in place (no modal).
     const equalize = () => {
       const allCards  = cards();
       const allBodies = bodies();
       if (!allCards.length) return;
-
-      // Step 1: reset any inline styles from a previous pass so we
-      // can re-measure natural sizes cleanly.
+      // Reset inline heights so any expanded card can collapse
+      // back cleanly on subsequent re-runs.
       allBodies.forEach(b => { b.style.maxHeight = 'none'; });
-      allCards.forEach(c  => { c.style.height    = 'auto'; });
-
-      // Step 2: measure natural scrollHeights. Amit is the first
-      // card → his natural body height is the benchmark cap so
-      // longer bodies (Zarine / Anahita) get clipped to match.
-      const benchmark = allBodies[0].scrollHeight;
+      allCards.forEach(c  => { c.style.height    = 'auto'; c.classList.remove('is-expanded'); });
+      // Amit is card 0 → his body scrollHeight is the benchmark.
+      const bodyCap = allBodies[0].scrollHeight;
+      // Cap every body to Amit's body height + toggle is-truncated.
       allBodies.forEach(b => {
-        b.style.maxHeight = benchmark + 'px';
+        b.style.maxHeight = bodyCap + 'px';
         b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
       });
-
-      // Step 3: force uniform card height across the row. Read
-      // synchronous offsetHeight of each card AFTER the body cap
-      // is applied (browsers flush layout on read), pick the
-      // tallest, then write it back to every card. This guarantees
-      // visual uniformity regardless of Read More button, fade
-      // pseudo, or any other per-card variance.
-      const tallest = allCards.reduce((h, c) => Math.max(h, c.offsetHeight), 0);
-      allCards.forEach(c => { c.style.height = tallest + 'px'; });
+      // Amit's card total is the benchmark card height.
+      const cardH = allCards[0].offsetHeight;
+      allCards.forEach(c => { c.style.height = cardH + 'px'; });
     };
 
     equalize();
@@ -504,65 +499,17 @@ document.addEventListener('DOMContentLoaded', () => {
       document.fonts.ready.then(equalize);
     }
 
-    // Lazy modal accessor — resolves on first click, cached after.
-    // If the modal element is missing for any reason, we still
-    // early-return gracefully without breaking scroll.
-    let cache = null;
-    const getModal = () => {
-      if (cache) return cache;
-      const modal = document.getElementById('testimonial-modal');
-      if (!modal) return null;
-      cache = {
-        modal,
-        body: modal.querySelector('[data-modal-body]'),
-        meta: modal.querySelector('[data-modal-meta]'),
-      };
-      return cache;
-    };
-
-    const openWith = (article) => {
-      const m = getModal();
-      if (!m) return;
-      const body = article.querySelector('.wybe-testimonial__body');
-      const meta = article.querySelector('.wybe-testimonial__meta');
-      if (!body || !meta) return;
-      const bodyClone = body.cloneNode(true);
-      bodyClone.classList.remove('is-truncated');
-      m.body.innerHTML = '';
-      m.meta.innerHTML = '';
-      m.body.appendChild(bodyClone);
-      m.meta.appendChild(meta.cloneNode(true));
-      m.modal.classList.add('is-open');
-      m.modal.setAttribute('aria-hidden', 'false');
-      document.documentElement.style.overflow = 'hidden';
-    };
-    const close = () => {
-      const m = getModal();
-      if (!m) return;
-      m.modal.classList.remove('is-open');
-      m.modal.setAttribute('aria-hidden', 'true');
-      document.documentElement.style.overflow = '';
-      m.body.innerHTML = '';
-      m.meta.innerHTML = '';
-    };
-
-    // Delegated click handler — always wired, no early-return.
+    // Read More expands the clicked card downward IN PLACE.
+    // .is-expanded on the article overrides the JS-set fixed
+    // height + body max-height via CSS !important rules.
     document.addEventListener('click', (e) => {
       const more = e.target.closest('[data-testimonial-more]');
-      if (more) {
-        e.preventDefault();
-        const art = more.closest('.wybe-testimonial');
-        if (art) openWith(art);
-        return;
-      }
-      if (e.target.closest('[data-modal-close]')) {
-        e.preventDefault();
-        close();
-      }
-    });
-    document.addEventListener('keydown', (e) => {
-      const m = getModal();
-      if (e.key === 'Escape' && m && m.modal.classList.contains('is-open')) close();
+      if (!more) return;
+      e.preventDefault();
+      const art = more.closest('.wybe-testimonial');
+      if (!art) return;
+      const isOpen = art.classList.toggle('is-expanded');
+      more.innerHTML = isOpen ? 'Read Less ↑' : 'Read More →';
     });
   })();
 

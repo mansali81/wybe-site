@@ -684,18 +684,11 @@
           <img src="images/Logo,%20Brand%20and%20Tagline.svg" alt="WYBE — Wellness You Build Everyday"
                class="wybe-brand__mark" draggable="false">
         </a>
-        <!-- Desktop nav links. Order: Services, Calculator, My Publication,
-             CTA. Uppercase via CSS on .wybe-nav-link so the visible text
-             stays natural-case and screen readers announce sentence case. -->
-        <div class="hidden md:flex items-center gap-7">
-          <a href="#services"     data-nav-link class="wybe-nav-link">Services</a>
-          <a href="#calculators"  data-nav-link class="wybe-nav-link">Calculator</a>
-          <a href="publication.html"            class="wybe-nav-link">My Publication</a>
-          <a href="#contact" class="wybe-cta">Book Now</a>
-        </div>
-        <!-- Hamburger (mobile) -->
+        <!-- Right side: burger menu on ALL viewports (desktop + mobile).
+             Book Now removed per ask. Menu list: Home, About, Services,
+             Calculator, My Publication, FAQ. -->
         <button id="menu-btn" type="button"
-                class="wybe-hamburger md:hidden"
+                class="wybe-hamburger"
                 aria-label="Open menu"
                 aria-controls="mobile-menu"
                 aria-expanded="false">
@@ -703,12 +696,14 @@
         </button>
       </div>
     </div>
-    <!-- Mobile menu — full-width dropdown on the dark background. -->
-    <div id="mobile-menu" class="wybe-mobile-menu hidden md:hidden" role="menu">
-      <a href="#services"    class="wybe-mobile-link" role="menuitem">Services</a>
-      <a href="#calculators" class="wybe-mobile-link" role="menuitem">Calculator</a>
+    <!-- Menu — full-width dropdown, dark background, all viewports. -->
+    <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
+      <a href="#home"           class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="about.html"      class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="#services"       class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="#calculators"    class="wybe-mobile-link" role="menuitem">Calculator</a>
       <a href="publication.html" class="wybe-mobile-link" role="menuitem">My Publication</a>
-      <a href="#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
+      <a href="faq.html"        class="wybe-mobile-link" role="menuitem">FAQ</a>
     </div>
   </nav>
   </header>
@@ -742,16 +737,16 @@
     <div class="hero-frame">
       <div class="hero-content" data-hero-content>
         <h1 class="hero-tagline">
-          Personal Trainer<br>
-          Sports Nutritionist<br>
-          Personal Coach
+          Personal Coach<br>
+          Fitness Trainer<br>
+          Sports Nutritionist
         </h1>
         <p class="hero-sub">
           Wellness is more than a 30 day challenge.<br>
           It&rsquo;s what you build, every day, for the rest of your life.
         </p>
         <a href="#contact" class="hero-cta">
-          <span>Consult Now</span>
+          <span>Book Now</span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                class="hero-cta__arrow" aria-hidden="true">
@@ -784,40 +779,20 @@
         <!-- Badge stack — desktop only, positioned over the image
              right edge. Mobile-visible copy of these badges lives
              below in the text column. -->
-        <div class="stat-badge-stack hidden md:flex" aria-hidden="true">
-          <div class="stat-badge stat-badge--sm">
-            <p class="stat-badge__number">20+</p>
-            <p class="stat-badge__label">Years<br>Coaching</p>
-          </div>
-          <div class="stat-badge stat-badge--sm">
-            <p class="stat-badge__number">100+</p>
-            <p class="stat-badge__label">Clients<br>Transformed</p>
-          </div>
-          <div class="stat-badge stat-badge--sm">
-            <p class="stat-badge__number">Lvl 4</p>
-            <p class="stat-badge__label">UAE<br>REPS</p>
-          </div>
-          <div class="stat-badge stat-badge--sm">
-            <p class="stat-badge__number">12</p>
-            <p class="stat-badge__label">Certifications<br>Achieved</p>
-          </div>
-        </div>
       </figure>
       <div class="md:col-span-6 order-last md:order-2 relative z-10 about-text-col">
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Trainer, Coach &amp; Nutritionist</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
         <div class="w-12 h-px bg-burgundy mb-5"></div>
 
-        <p class="font-sans text-base text-white/85 leading-relaxed mb-4">
-          Mansoor is the coach in your corner &mdash; equal parts trainer, mentor, and human-performance nutritionist. With two decades of hands-on work in the UAE and beyond, he doesn&rsquo;t hand out cookie-cutter plans.
-        </p>
         <p class="font-sans text-base text-white/85 leading-relaxed mb-8">
-          Every program is built around <strong class="text-white">your</strong> body, <strong class="text-white">your</strong> schedule, and the results you&rsquo;re actually chasing &mdash; science-grounded, coach-led, and delivered without the noise.
+          I'm Mansoor, a personal coach, personal fitness trainer and sports nutritionist with over two decades of hands-on coaching and training experience. My work blends biomechanics, kinesology, valsalva manuever, nutrition, and mindset coaching to build results that actually last. I hold twelve accredited certifications and work only with three clients at a time, so I design each program one-on-one to suit your individual needs.
         </p>
 
-        <!-- Mobile-only 2x2 badge grid (hidden on md+ where the
-             vertical badge stack overlaps the image instead). -->
-        <div class="grid grid-cols-2 gap-3 mb-8 max-w-md md:hidden">
+        <!-- Metrics 2x2 grid — visible on ALL viewports now, centered
+             (mx-auto) per ask. Vertical badge stack overlapping the
+             portrait removed. -->
+        <div class="grid grid-cols-2 gap-3 mb-8 max-w-md mx-auto">
           <div class="stat-badge stat-badge--sm">
             <p class="stat-badge__number">20+</p>
             <p class="stat-badge__label">Years<br>Coaching</p>
@@ -853,7 +828,7 @@
       <!-- Section header — single heading, no eyebrow, no subtext. -->
       <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream leading-tight">Body Composition</h2>
+        <h2 class="section-title">Body Composition</h2>
       </div>
 
       <!-- Two-column: treadmill portrait on the left, form on the right.
@@ -881,16 +856,7 @@
             <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-height">Height (cm)<span class="info-tip" tabindex="0" role="button" aria-label="Height reference: feet-inches to centimetres" data-tip="Height reference:
-5'0" = 152.4 cm
-5'2" = 157.5 cm
-5'4" = 162.6 cm
-5'6" = 167.6 cm
-5'8" = 172.7 cm
-5'10" = 177.8 cm
-6'0" = 182.9 cm
-6'2" = 188.0 cm
-6'4" = 193.0 cm">i</span></label>
+            <label for="ucalc-height">Height (cm)</label>
             <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="">
           </div>
           <div class="wybe-input-row">
@@ -898,28 +864,11 @@
             <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-neck">Neck (cm)<span class="info-tip" tabindex="0" role="button" aria-label="Neck circumference reference" data-tip="Neck circumference:
-12" = 30.5 cm
-13" = 33.0 cm
-14" = 35.6 cm
-15" = 38.1 cm
-16" = 40.6 cm
-17" = 43.2 cm
-18" = 45.7 cm">i</span></label>
+            <label for="ucalc-neck">Neck (cm)</label>
             <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-waist">Waist (cm)<span class="info-tip" tabindex="0" role="button" aria-label="Waist circumference reference" data-tip="Waist circumference:
-26" = 66.0 cm
-28" = 71.1 cm
-30" = 76.2 cm
-32" = 81.3 cm
-34" = 86.4 cm
-36" = 91.4 cm
-38" = 96.5 cm
-40" = 101.6 cm
-42" = 106.7 cm
-44" = 111.8 cm">i</span></label>
+            <label for="ucalc-waist">Waist (cm)</label>
             <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="">
           </div>
           <!-- Female-only conditional row — JS toggles .hidden on gender change. -->
@@ -1099,10 +1048,8 @@
 
       <!-- Header -->
       <div class="text-center mb-10 md:mb-12 max-w-2xl mx-auto">
-        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Success Stories</p>
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <!-- "My Client Feels" h2 removed per ask; the eyebrow above
-             now carries the section title. -->
+        <h2 class="section-title">Success Stories</h2>
       </div>
 
       <!-- Testimonial track — horizontal scroll on desktop, natural
@@ -1189,9 +1136,8 @@
       <!-- PLACEHOLDER: replace with real client content once written consent is on file. -->
       <div class="mt-14 md:mt-20">
         <div class="text-center mb-8 md:mb-10 max-w-xl mx-auto">
-          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Transformations</p>
           <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-          <h3 class="font-sans text-2xl md:text-3xl font-bold text-cream leading-tight">Twelve to Twenty-Four Weeks of Work.</h3>
+          <h3 class="section-title">Transformations</h3>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
@@ -1823,197 +1769,6 @@
        skip the transition (see .wybe-faq__answer). Every visible Q&A
        is duplicated verbatim into the FAQPage JSON-LD in <head> so
        Google's Rich Results test passes. -->
-  <section id="faq" class="wybe-faq relative py-8 md:py-12">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="text-center mb-10 md:mb-12">
-        <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">FAQ</p>
-        <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Questions, Answered.</h2>
-        <p class="font-sans text-base text-cream/80 leading-relaxed">
-          The things people ask most before booking. If yours isn&rsquo;t here, send it via <a href="#contact" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">the contact form</a>.
-        </p>
-      </div>
-
-      <ul class="wybe-faq__list" role="list">
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q1" aria-expanded="false" aria-controls="faq-a1" data-faq-trigger>
-              <span>Do you train in person or online?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a1" role="region" aria-labelledby="faq-q1" class="wybe-faq__answer" hidden>
-            <p>Both. Personal training in-person is <strong>UAE-only</strong>. Fitness &amp; nutrition consultations are online. Digital Workout Plans are digital products sent via email.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q2" aria-expanded="false" aria-controls="faq-a2" data-faq-trigger>
-              <span>Where in Dubai do you train clients?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a2" role="region" aria-labelledby="faq-q2" class="wybe-faq__answer" hidden>
-            <p>Sessions run out of several gyms across the UAE, and residence gyms for clients whose home includes a private facility. Exact venue is agreed once your application is accepted &mdash; I don&rsquo;t list a single fixed address because the roster is capped at a maximum of 3 clients only, and location follows the client, not the other way around.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q3" aria-expanded="false" aria-controls="faq-a3" data-faq-trigger>
-              <span>How much do sessions cost?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a3" role="region" aria-labelledby="faq-q3" class="wybe-faq__answer" hidden>
-            <p>Live pricing is on the Services section, except for 1-on-1 personal training in the UAE. That investment is discussed privately &mdash; and yes, I am a premium trainer. I only take a <strong>maximum of 3 clients per month</strong> and will not provide more than 12 sessions per month. Sessions are not capped at 1 hour.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q4" aria-expanded="false" aria-controls="faq-a4" data-faq-trigger>
-              <span>What qualifications do you hold?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a4" role="region" aria-labelledby="faq-q4" class="wybe-faq__answer" hidden>
-            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q5" aria-expanded="false" aria-controls="faq-a5" data-faq-trigger>
-              <span>How do I get started?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a5" role="region" aria-labelledby="faq-q5" class="wybe-faq__answer" hidden>
-            <p>Pick a service, choose your plan, pay online, book my calendar, and just show up.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q6" aria-expanded="false" aria-controls="faq-a6" data-faq-trigger>
-              <span>Do you work with beginners?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a6" role="region" aria-labelledby="faq-q6" class="wybe-faq__answer" hidden>
-            <p>Yes. I work with clients at every level, from complete beginners to advanced athletes.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q7" aria-expanded="false" aria-controls="faq-a7" data-faq-trigger>
-              <span>What is your cancellation and refund policy?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a7" role="region" aria-labelledby="faq-q7" class="wybe-faq__answer" hidden>
-            <p>Digital Workout Plans are non-refundable. For Fitness &amp; Nutrition Consultations, less than 24-hour notice or a no-show is not refundable or rescheduled; more than 24-hour notice can be rescheduled but not refunded. Monthly programmes run in whole calendar months and are non-refundable mid-month, but you can pause with two weeks&rsquo; notice, subject to written approval from my team. Any cancellation or reschedule must be done by email or over a call and needs to be approved. Full terms are sent with your booking confirmation.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q8" aria-expanded="false" aria-controls="faq-a8" data-faq-trigger>
-              <span>Who do you train?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a8" role="region" aria-labelledby="faq-q8" class="wybe-faq__answer" hidden>
-            <p>Adults, children (age 10 and above), and geriatric clients &mdash; all genders welcome.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q9" aria-expanded="false" aria-controls="faq-a9" data-faq-trigger>
-              <span>Do you offer group training?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a9" role="region" aria-labelledby="faq-q9" class="wybe-faq__answer" hidden>
-            <p>No. I&rsquo;m not in favour of group training because it&rsquo;s difficult to supervise everyone properly. Poor technique or the wrong movement pattern causes injury, and if supervision is compromised I&rsquo;m not doing justice to the clients who pay me.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q10" aria-expanded="false" aria-controls="faq-a10" data-faq-trigger>
-              <span>How long does a session last?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a10" role="region" aria-labelledby="faq-q10" class="wybe-faq__answer" hidden>
-            <p>My sessions are not 1 hour &mdash; the length is the time you need to complete the schedule of exercises assigned that day. Each session includes mobility drills, workout, cool-down, and stretches, with education and motivation consistently woven in.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q11" aria-expanded="false" aria-controls="faq-a11" data-faq-trigger>
-              <span>What should I wear?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a11" role="region" aria-labelledby="faq-q11" class="wybe-faq__answer" hidden>
-            <p>A comfortable gym outfit and shoes. Lifting shoes are mandatory on leg days.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q12" aria-expanded="false" aria-controls="faq-a12" data-faq-trigger>
-              <span>What should I bring?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a12" role="region" aria-labelledby="faq-q12" class="wybe-faq__answer" hidden>
-            <p>A water bottle (or lime-salt water), a gym mat, and a towel.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q13" aria-expanded="false" aria-controls="faq-a13" data-faq-trigger>
-              <span>If I train at home, do I need equipment?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a13" role="region" aria-labelledby="faq-q13" class="wybe-faq__answer" hidden>
-            <p>I&rsquo;ll bring small equipment when necessary. Eventually, depending on your goals and training type, you may need a pair of dumbbells and a fitness ball.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q14" aria-expanded="false" aria-controls="faq-a14" data-faq-trigger>
-              <span>After how many sessions will I see improvements?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a14" role="region" aria-labelledby="faq-q14" class="wybe-faq__answer" hidden>
-            <p>It would be a lie to give a definite timeline &mdash; different bodies react on different timelines depending on effort, diet, and recovery. Realistically, <strong>12 weeks</strong> should give good results if you&rsquo;re consistent, follow the diet plan, and allow enough recovery.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q15" aria-expanded="false" aria-controls="faq-a15" data-faq-trigger>
-              <span>When can I start training again after delivery?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a15" role="region" aria-labelledby="faq-q15" class="wybe-faq__answer" hidden>
-            <p>Usually it&rsquo;s recommended to wait 6 weeks before training after a natural birth, and 12 weeks after a C-section. Medical clearance from your doctor is required in either case.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q16" aria-expanded="false" aria-controls="faq-a16" data-faq-trigger>
-              <span>How are the workout programs designed?</span>
-              <span class="wybe-faq__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div id="faq-a16" role="region" aria-labelledby="faq-q16" class="wybe-faq__answer" hidden>
-            <p>The workout programs are tailored to your individual needs, goals, and fitness level.</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
 
 
 
@@ -2071,42 +1826,13 @@
 
 
   <!-- MY PUBLICATION — shared .wybe-scene sticky-snap. -->
-  <section id="publication" class="wybe-scene" data-scene>
-    <div class="wybe-scene__pin">
-      <div class="wybe-scene__inner text-center">
-        <!-- Eyebrow ("Long-Form Writing") replaced with "My Publication"
-             as the orange eyebrow. Old h2 "My Publication" removed to
-             avoid duplication — the eyebrow now IS the section title. -->
-        <p class="scene-eyebrow" style="font-size: clamp(14px, 1.4vw, 18px); letter-spacing: 0.22em;">
-          <span class="line-mask"><span class="line-inner">My Publication</span></span>
-        </p>
-        <p class="scene-body" style="margin: clamp(20px, 2.4vw, 32px) auto clamp(28px, 3vw, 44px);">
-          <span class="line-mask"><span class="line-inner">Detailed essays on training, nutrition, and building wellness</span></span>
-          <span class="line-mask"><span class="line-inner">as a daily discipline. Field notes from two decades</span></span>
-          <span class="line-mask"><span class="line-inner">of working with real people.</span></span>
-        </p>
-        <div class="line-mask" style="display: inline-block;">
-          <span class="line-inner" style="display: inline-block;">
-            <a href="publication.html"
-               class="inline-flex items-center gap-3 bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
-              <span>Read the Essays</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
 
 
   <!-- #CONTACT — form panel over the animated canvas. -->
   <section id="contact" class="py-8 md:py-12">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
-      <!-- Form panel — left column on desktop, full width on mobile. -->
-      <div class="md:col-span-7 w-full">
+      <!-- Form panel — RIGHT column on desktop (image is now LEFT). -->
+      <div class="md:col-span-7 order-last md:order-2 w-full">
       <div class="relative bg-charcoal/60 backdrop-blur-sm text-white overflow-hidden border border-burgundy/40">
         <div class="relative z-10 p-6 md:p-10 flex flex-col">
           <!-- FORM GROUP -->
@@ -2166,9 +1892,8 @@
         </div>
       </div>
       </div><!-- /contact form column -->
-      <!-- Contact image, right column. No max-width cap so the image
-           fills its column at full column width. Stacks below on mobile. -->
-      <figure class="md:col-span-5 flex justify-center md:justify-end m-0">
+      <!-- Contact image — LEFT column on desktop (was right). -->
+      <figure class="md:col-span-5 order-first md:order-1 flex justify-center md:justify-start m-0">
         <div class="parallax-wrapper contact-image w-full">
           <img src="images/Contactus.webp"
                alt="Reach out to WYBE — get in touch with Mansoor"
