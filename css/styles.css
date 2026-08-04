@@ -1925,21 +1925,22 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   background: #FFFFFF;
 }
 
-/* Metrics overlay — 2x2 grid centered over the About portrait
-   figure. Absolute-positioned with translate(-50%, -50%) so it
-   sits exactly at the visual center of the image column. Cards
-   have a soft backdrop blur so numbers remain legible over any
-   photo tone underneath. */
+/* Metrics overlay — VERTICAL STACK of 4 badges pinned to the
+   RIGHT edge of the About portrait figure. Each badge sits half
+   inside the image and half outside (translated +50 % on X so
+   the vertical midline of the stack lines up with the image's
+   right edge). Soft backdrop blur + shadow so numbers stay
+   readable over any photo tone. */
 .about-metrics {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 0;
+  transform: translate(50%, -50%);        /* half-in / half-out */
   z-index: 5;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  width: min(78%, 320px);
+  width: 140px;
   pointer-events: none;
 }
 .about-metrics .stat-badge {
@@ -1948,15 +1949,22 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
 }
-/* On very narrow screens fall back to a horizontal band pinned to
-   the bottom of the image so the copy underneath still fits. */
-@media (max-width: 480px) {
+/* On very narrow screens where "half outside" would push the
+   badges off the viewport, fall back to a horizontal band pinned
+   to the bottom of the image, fully inside. */
+@media (max-width: 640px) {
   .about-metrics {
     top: auto;
     bottom: 12px;
-    transform: translate(-50%, 0);
+    right: 50%;
+    transform: translate(50%, 0);
+    flex-direction: row;
+    flex-wrap: wrap;
     width: min(92%, 340px);
     gap: 8px;
+  }
+  .about-metrics .stat-badge {
+    flex: 1 1 calc(50% - 4px);
   }
 }
 
