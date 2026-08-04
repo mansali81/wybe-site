@@ -363,6 +363,16 @@
     @media (min-width: 768px) {
       #calculators .parallax-wrapper { min-height: 560px; height: 100%; }
     }
+    /* Calculator form fills its column height on md+ so the LCD-
+       style card is exactly the same height as the treadmill image
+       beside it. Form becomes a flex column with the tier stack
+       expanding to fill available space. */
+    @media (min-width: 768px) {
+      #unified-calc-form, #ucalc-view-results {
+        height: 100%;
+        min-height: 560px;
+      }
+    }
     /* Contact image — bigger frame per the "enlarge contact image"
        ask. No max-width; the container's column width governs. */
     #contact .contact-image { min-height: 420px; }
@@ -838,8 +848,10 @@
            at the top of the results toggles back. -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
         <!-- Calculator form — LEFT column now (was right). Image
-             stacks BELOW form on mobile via order-last. -->
-        <div class="md:col-span-7 order-first md:order-1 max-w-2xl w-full mx-auto md:mx-0">
+             stacks BELOW form on mobile via order-last. md:h-full
+             so this column fills the grid row (matches image
+             column's stretched height). -->
+        <div class="md:col-span-7 order-first md:order-1 max-w-2xl w-full mx-auto md:mx-0 md:h-full">
         <form id="unified-calc-form" data-view="form">
           <div class="wybe-calc-title-rule"></div>
 
