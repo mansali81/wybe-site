@@ -474,28 +474,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards   = () => Array.from(document.querySelectorAll('.wybe-testimonial'));
     const bodies  = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
 
-    // Every card is sized to fit Amit's testimonial exactly.
-    // Longer cards (Zarine, Anahita) truncate to Amit's body
-    // height + show Read More; clicking Read More expands THAT
-    // card downward in place (no modal).
+    // Amit's card is the benchmark. Cards size INTRINSICALLY to
+    // (padding + body + Read-More button if present + meta) — no
+    // forced height, so Amit's card ends exactly where his text
+    // ends. Longer bodies (Zarine, Anahita) get a body max-height
+    // cap equal to Amit's natural scrollHeight, so their bodies
+    // truncate to Amit's height and their cards land at the same
+    // visible total. Read More expands the body in place.
     const equalize = () => {
       const allCards  = cards();
       const allBodies = bodies();
       if (!allCards.length) return;
-      // Reset inline heights so any expanded card can collapse
-      // back cleanly on subsequent re-runs.
+      // Reset any inline overrides from a previous pass.
       allBodies.forEach(b => { b.style.maxHeight = 'none'; });
-      allCards.forEach(c  => { c.style.height    = 'auto'; c.classList.remove('is-expanded'); });
-      // Amit is card 0 → his body scrollHeight is the benchmark.
+      allCards.forEach(c  => { c.style.removeProperty('height'); c.classList.remove('is-expanded'); });
+      // Force layout flush so subsequent scrollHeight reads are
+      // truly the natural values.
+      void allCards[0].offsetHeight;
       const bodyCap = allBodies[0].scrollHeight;
-      // Cap every body to Amit's body height + toggle is-truncated.
       allBodies.forEach(b => {
         b.style.maxHeight = bodyCap + 'px';
         b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
       });
-      // Amit's card total is the benchmark card height.
-      const cardH = allCards[0].offsetHeight;
-      allCards.forEach(c => { c.style.height = cardH + 'px'; });
     };
 
     // Fire equalize after every layout-shifting milestone: initial

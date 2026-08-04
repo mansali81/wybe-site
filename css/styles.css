@@ -1213,15 +1213,14 @@ h4, h5, h6, .wybe-subhead {
   line-height: 1.55;
   color: #1E1E1E;
   margin: 0 0 12px;
-  flex: 1;
   quotes: none; /* the ldquo/rdquo are baked into the copy */
-  /* Body height cap is DYNAMIC. JS measures the FIRST card
-     (Amit — benchmark) on load / resize / fonts.ready and writes
-     max-height inline on every body so cards match his exact
-     natural shape. The CSS value below is only a fallback for
-     pre-JS paint. Amit's cap = his own natural scrollHeight →
-     his body renders fully with no truncation. Any longer card
-     (Zarine) exceeds the cap → is-truncated → fade + Read More. */
+  /* Body sizes to its content. JS sets an inline max-height
+     equal to AMIT'S natural scrollHeight so longer bodies
+     (Zarine, Anahita) truncate to match Amit's card shape. The
+     CSS value below is only a pre-JS-paint fallback. NO flex:1
+     on this element — that used to make the body stretch to
+     fill any card height and leave empty space between the last
+     line of text and the meta row on Amit's card. */
   max-height: 520px;
   overflow: hidden;
   position: relative;
@@ -1237,22 +1236,21 @@ h4, h5, h6, .wybe-subhead {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 90%);
 }
 
-/* Read-More button — absolute OVERLAY on the fade gradient at the
-   bottom of a truncated body. Positioned absolute so it takes ZERO
-   flow height, meaning every card renders at exactly the same
-   total height regardless of whether Read More appears or not.
-   Fixes the "Amit card smaller than Zarine/Anahita" bug: without
-   this, Zarine and Anahita cards had ~14 px extra height for the
-   inline button. */
+/* Read-More button — in-flow, directly under the truncated body.
+   Only appears when the body has .is-truncated (JS-toggled when
+   scrollHeight > clientHeight). Amit's card fits fully → no
+   button and no extra flow height. Uniform card heights come
+   from the equal max-height cap on every body: since every
+   truncated body renders at Amit's exact scrollHeight, all cards
+   end up the same visible height whether or not they carry a
+   Read More button. */
 .wybe-testimonial__more {
-  display: none;                        /* hidden by default */
-  position: absolute;                   /* overlay → zero flow height */
-  left: 24px;
-  bottom: 88px;                         /* sits just above the meta row */
-  z-index: 3;
+  display: none;
+  align-self: flex-start;
   background: transparent;
   border: 0;
-  padding: 6px 8px 6px 0;
+  padding: 6px 0 0;
+  margin: 0 0 12px;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 12px;
@@ -1269,21 +1267,15 @@ h4, h5, h6, .wybe-subhead {
 .wybe-testimonial__body.is-truncated + .wybe-testimonial__more {
   display: inline-block;
 }
-/* Expanded state — Read More click adds .is-expanded to the article,
-   which overrides the JS-set fixed height + body max-height so the
-   card grows DOWNWARD to show its full content. Fade pseudo also
-   suppressed. Click Read Less to collapse back. */
-.wybe-testimonial.is-expanded {
-  height: auto !important;
-}
+/* Expanded state — Read More click adds .is-expanded to the article.
+   Body cap lifts so the full text renders; fade pseudo suppressed.
+   Card height is intrinsic (no forced inline height any more), so
+   the article grows downward on its own. Click Read Less to collapse. */
 .wybe-testimonial.is-expanded .wybe-testimonial__body {
   max-height: none !important;
 }
 .wybe-testimonial.is-expanded .wybe-testimonial__body.is-truncated::after {
   content: none;
-}
-.wybe-testimonial.is-expanded .wybe-testimonial__more {
-  bottom: 24px;                         /* re-anchor button to card bottom when expanded */
 }
 
 /* Testimonial modal — full-screen overlay with a white card
