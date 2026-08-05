@@ -262,17 +262,16 @@
     .wybe-calc-title      { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
     .wybe-calc-title-rule { width: 40px; height: 3px; background: #FF6600; margin-bottom: 22px; }
     /* Airy input rows: hairline underline, no box */
-    /* Give the form a "calculator" look-and-feel: each input row is a
-       small pill/tile with subtle border + dark surface (like an LCD
-       cell). The value inside uses a tabular-nums Inter Black so it
-       reads as a display readout, not free-form text. */
-    #unified-calc-form { display: grid; gap: 12px; }
+    /* Compact calculator rows so all fields fit within the 640 px
+       card without inner scrolling. Reduced padding + smaller value
+       font vs the previous LCD variant. */
+    #unified-calc-form { display: grid; gap: 8px; }
     .wybe-input-row {
       display: grid; grid-template-columns: 1fr auto; align-items: end;
-      padding: 12px 16px; gap: 4px;
+      padding: 6px 12px; gap: 2px;
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 10px;
+      border-radius: 8px;
       transition: border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
     }
     .wybe-input-row:focus-within {
@@ -284,13 +283,13 @@
       grid-column: 1 / -1;
       display: flex; align-items: center;
       font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(255,255,255,0.55); margin-bottom: 2px;
+      font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); margin-bottom: 0;
     }
     .wybe-input-row input,
     .wybe-input-row select {
       display: block; width: 100%; background: transparent; border: 0; outline: 0;
-      font-family: 'Inter', sans-serif; font-weight: 900; font-size: 24px;
+      font-family: 'Inter', sans-serif; font-weight: 900; font-size: 17px;
       color: #FFFFFF; padding: 0; letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
     }
@@ -365,7 +364,9 @@
          they are guaranteed to be the exact same height on desktop.
          No more grid-stretch guesswork. */
       #calculators .parallax-wrapper { height: 640px; min-height: 640px; }
-      #unified-calc-form, #ucalc-view-results { height: 640px; min-height: 640px; overflow-y: auto; }
+      /* Overflow removed — compact rows above now fit the 640 px
+         cap without a scrollbar. */
+      #unified-calc-form, #ucalc-view-results { height: 640px; min-height: 640px; }
     }
     /* Contact image — bigger frame per the "enlarge contact image"
        ask. No max-width; the container's column width governs. */
@@ -1233,7 +1234,7 @@
           <div class="service-card__upsell">
             <p>If you're not sure about the right form and technique, <a href="#services" data-scroll="fc">book a consultation</a> <strong class="upsell-price">(+USD 69)</strong> &mdash; total <strong class="upsell-price">USD 108</strong>.</p>
           </div>
-          <a class="service-card__faq" href="faq.html" aria-label="FAQs about Work Out Program"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
+          <a class="service-card__faq" href="faq.html" data-faq-open aria-label="FAQs about Work Out Program"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
         <!-- 2. Fitness Consultation — Online (Single / Multiple)
              with a small Offline (Only in UAE) note underneath. -->
@@ -1248,7 +1249,7 @@
             </ul>
             <p class="service-subgroup__note">(Offline &mdash; Only in UAE)</p>
           </div>
-          <a class="service-card__faq" href="faq.html" aria-label="FAQs about Fitness Consultation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
+          <a class="service-card__faq" href="faq.html" data-faq-open aria-label="FAQs about Fitness Consultation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
         <!-- 3. Nutrition Consultation — Online (Single / Multiple / Monthly). -->
         <article class="service-card">
@@ -1262,7 +1263,7 @@
               <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_nc_monthly"  target="_blank" rel="noopener"><span class="service-tier__level">Monthly</span><span class="service-tier__price"><s class="service-tier__was">$998</s><span class="service-tier__now">$749</span></span></a></li>
             </ul>
           </div>
-          <a class="service-card__faq" href="faq.html" aria-label="FAQs about Nutrition Consultation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
+          <a class="service-card__faq" href="faq.html" data-faq-open aria-label="FAQs about Nutrition Consultation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
         <!-- 4. Personal Training — capped roster note + inline
              orange "Book Now" (styled like a price row, not a
@@ -1274,7 +1275,7 @@
             <p>Roster is capped to <strong>3 selected clients per month</strong>. Investment discussed privately upon selection.</p>
           </div>
           <a href="#contact" class="service-book-now">Book Now</a>
-          <a class="service-card__faq" href="faq.html" aria-label="FAQs about Personal Training"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
+          <a class="service-card__faq" href="faq.html" data-faq-open aria-label="FAQs about Personal Training"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
       </div>
     </div>
@@ -1296,17 +1297,17 @@
        then the waitlist form flows normally below so it stays fully
        usable (a pinned form would strand the submit button). -->
   <section id="book" class="py-8 md:py-12">
-    <!-- 2-column layout: left = brand block (Coming Soon / 1825 DAYS /
-         tagline / description). Right = waitlist form (name + email
-         only). Mobile stacks left block above form. -->
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+    <div class="max-w-6xl mx-auto px-6">
+      <!-- Centered section title (matches Body Composition /
+           Success Stories / Services / Transformations). -->
+      <div class="text-center mb-8 md:mb-10">
+        <h2 class="section-title">Book</h2>
+        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
+      </div>
+      <!-- 2-column layout below: left brand block, right form. -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
       <!-- LEFT block -->
       <div class="text-left">
-        <!-- Section title "BOOK" in orange with the small orange
-             rule (mirrors Body Composition / Success Stories /
-             Services). -->
-        <h2 class="section-title">Book</h2>
-        <div class="w-10 h-px bg-burgundy mt-4 mb-6"></div>
         <p class="scene-eyebrow" style="margin-bottom: 8px;">
           <span class="line-mask"><span class="line-inner">Coming Soon</span></span>
         </p>
@@ -1346,6 +1347,7 @@
           <p class="font-sans text-sm text-cream/60">I&rsquo;ll be in touch as soon as the book is ready.</p>
         </div>
       </div>
+      </div><!-- /.grid -->
     </div>
   </section>
 
@@ -1355,6 +1357,14 @@
 
   <!-- #CONTACT — form panel over the animated canvas. -->
   <section id="contact" class="py-8 md:py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <!-- Centered section title (matches Body Composition /
+           Success Stories / Services / Book). -->
+      <div class="text-center mb-8 md:mb-10">
+        <h2 class="section-title">Contact us</h2>
+        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
+      </div>
+    </div>
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
       <!-- Form panel — RIGHT column on desktop (image is now LEFT). -->
       <div class="md:col-span-7 order-last md:order-2 w-full">
@@ -2623,6 +2633,24 @@
        so a modal nested in #results appeared off-viewport after pin
        activated. Living here as a body-level child keeps it truly
        viewport-fixed regardless of scroll. -->
+  <!-- FAQ modal — opens on any service-card FAQ click. Content
+       is fetched from /faq.html on first open, cached for subsequent
+       opens. Matches the site theme (dark bg, orange accent). -->
+  <div id="faq-modal" class="faq-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="faq-modal__backdrop" data-faq-close></div>
+    <div class="faq-modal__card" role="document">
+      <button type="button" class="faq-modal__close" data-faq-close aria-label="Close FAQ">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="w-5 h-5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="faq-modal__body" data-faq-body>
+        <p class="faq-modal__loading">Loading&hellip;</p>
+      </div>
+    </div>
+  </div>
+
   <div id="testimonial-modal" class="testimonial-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="testimonial-modal__backdrop" data-modal-close></div>
     <div class="testimonial-modal__card" role="document">
