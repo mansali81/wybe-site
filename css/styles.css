@@ -704,23 +704,19 @@ h4, h5, h6, .wybe-subhead {
 .hero-tagline {
   font-family: var(--font-subhead);
   font-weight: 700;
-  font-size: 72px;
-  line-height: 72px;
+  font-size: 70px;                      /* was 72, -2 pt */
+  line-height: 70px;
   letter-spacing: -1px;
   color: #FFFFFF;
   margin: 0 0 clamp(20px, 2.2vw, 30px);
-  /* Dual-layer text-shadow keeps the title readable directly on the
-     hero image (no background box). Tight near-black shadow for edge
-     sharpness + wider soft halo for busy regions. */
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.55),
     0 4px 18px rgba(0, 0, 0, 0.50);
 }
-/* Responsive scale-down for small screens per the type spec. */
 @media (max-width: 640px) {
   .hero-tagline {
-    font-size: 38px;
-    line-height: 42px;
+    font-size: 36px;                    /* was 38 */
+    line-height: 40px;
   }
 }
 .hero-sub {
@@ -2037,10 +2033,28 @@ footer a:not([class*="bg-burgundy"]):hover::after,
    so titles read as one visual family. Same font-size across
    the site regardless of whether the section is About, Body
    Composition, Success Stories, Transformations, or Services. */
+/* Site-wide -2 pt heading trim.
+   Tailwind text-* utilities are overridden here so every heading
+   on every page shrinks by 2 px in one place. !important is used
+   deliberately to win over the Tailwind CDN's injected utility
+   classes (specificity ties otherwise, and the CDN injects late).
+   text-2xl 24 → 22, text-3xl 30 → 28, text-4xl 36 → 34,
+   text-5xl 48 → 46. Both base and md: variants covered. */
+.text-2xl { font-size: 22px !important; }
+.text-3xl { font-size: 28px !important; }
+.text-4xl { font-size: 34px !important; }
+.text-5xl { font-size: 46px !important; }
+@media (min-width: 768px) {
+  .md\:text-2xl { font-size: 22px !important; }
+  .md\:text-3xl { font-size: 28px !important; }
+  .md\:text-4xl { font-size: 34px !important; }
+  .md\:text-5xl { font-size: 46px !important; }
+}
+
 .section-title {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(24px, 3.2vw, 36px);
+  font-size: clamp(22px, 3vw, 34px);     /* -2 pt across the clamp range */
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.15;
@@ -2087,7 +2101,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 .service-card__title {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: 18px;
+  font-size: 16px;                       /* was 18, -2 pt */
   letter-spacing: -0.01em;
   color: #1E1E1E;
   margin: 0 0 6px;
