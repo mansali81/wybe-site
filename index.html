@@ -361,17 +361,11 @@
        full-size features. */
     #calculators .parallax-wrapper { min-height: 420px; }
     @media (min-width: 768px) {
-      #calculators .parallax-wrapper { min-height: 560px; height: 100%; }
-    }
-    /* Calculator form fills its column height on md+ so the LCD-
-       style card is exactly the same height as the treadmill image
-       beside it. Form becomes a flex column with the tier stack
-       expanding to fill available space. */
-    @media (min-width: 768px) {
-      #unified-calc-form, #ucalc-view-results {
-        height: 100%;
-        min-height: 560px;
-      }
+      /* Fixed 640 px on both the form card and the image wrapper so
+         they are guaranteed to be the exact same height on desktop.
+         No more grid-stretch guesswork. */
+      #calculators .parallax-wrapper { height: 640px; min-height: 640px; }
+      #unified-calc-form, #ucalc-view-results { height: 640px; min-height: 640px; overflow-y: auto; }
     }
     /* Contact image — bigger frame per the "enlarge contact image"
        ask. No max-width; the container's column width governs. */
@@ -1223,61 +1217,63 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-6 md:mb-8">
         <h2 class="section-title">Services</h2>
+        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 items-stretch">
-        <!-- 1. Work Out Program — 3 tiers (Beginner/Intermediate/Advanced),
-             each strike-through USD 59 → active USD 39. Consultation
-             upsell at the bottom. Stripe URLs are placeholders. -->
+        <!-- 1. Work Out Program — 3 tiers. Level labels shortened
+             to keep price on same line at narrow widths. -->
         <article class="service-card">
           <h3 class="service-card__title">Work Out Program</h3>
           <p class="service-card__hint">Choose your level</p>
           <ul class="service-card__tiers">
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_beginner"     target="_blank" rel="noopener"><span class="service-tier__level">Beginner</span>    <span class="service-tier__price"><s class="service-tier__was">USD 59</s><span class="service-tier__now">USD 39</span></span></a></li>
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_intermediate" target="_blank" rel="noopener"><span class="service-tier__level">Intermediate</span><span class="service-tier__price"><s class="service-tier__was">USD 59</s><span class="service-tier__now">USD 39</span></span></a></li>
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_advanced"     target="_blank" rel="noopener"><span class="service-tier__level">Advanced</span>    <span class="service-tier__price"><s class="service-tier__was">USD 59</s><span class="service-tier__now">USD 39</span></span></a></li>
+            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_beginner"     target="_blank" rel="noopener"><span class="service-tier__level">Beginner</span><span class="service-tier__price"><s class="service-tier__was">$59</s><span class="service-tier__now">$39</span></span></a></li>
+            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_intermediate" target="_blank" rel="noopener"><span class="service-tier__level">Inter&shy;mediate</span><span class="service-tier__price"><s class="service-tier__was">$59</s><span class="service-tier__now">$39</span></span></a></li>
+            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_advanced"     target="_blank" rel="noopener"><span class="service-tier__level">Advanced</span><span class="service-tier__price"><s class="service-tier__was">$59</s><span class="service-tier__now">$39</span></span></a></li>
           </ul>
           <div class="service-card__upsell">
-            <p>If you're not sure about the right form and technique,
-              <a href="#services" data-scroll="fc">book a consultation</a>
-              (<strong>+USD 69</strong>) — total <strong>USD 108</strong>.</p>
+            <p>If you're not sure about the right form and technique, <a href="#services" data-scroll="fc">book a consultation</a> <strong class="upsell-price">(+USD 69)</strong> &mdash; total <strong class="upsell-price">USD 108</strong>.</p>
           </div>
           <a class="service-card__faq" href="faq.html" aria-label="FAQs about Work Out Program"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
-        <!-- 2. Fitness Consultation — single 1-hour session, online + UAE
-             live options at the previously-published rates. Introductory
-             price on both. -->
+        <!-- 2. Fitness Consultation — Online (Single / Multiple)
+             with a small Offline (Only in UAE) note underneath. -->
         <article class="service-card">
           <h3 class="service-card__title">Fitness Consultation</h3>
           <p class="service-card__hint">1-hour session</p>
-          <ul class="service-card__tiers">
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_fc_online" target="_blank" rel="noopener"><span class="service-tier__level">Online</span>       <span class="service-tier__price"><s class="service-tier__was">USD 99</s> <span class="service-tier__now">USD 69</span></span></a></li>
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_fc_uae"    target="_blank" rel="noopener"><span class="service-tier__level">Live &middot; UAE</span><span class="service-tier__price"><s class="service-tier__was">USD 275</s><span class="service-tier__now">USD 159</span></span></a></li>
-          </ul>
+          <div class="service-subgroup">
+            <p class="service-subgroup__label">Online</p>
+            <ul class="service-card__tiers">
+              <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_fc_single"   target="_blank" rel="noopener"><span class="service-tier__level">Single</span><span class="service-tier__price"><s class="service-tier__was">$99</s><span class="service-tier__now">$69</span></span></a></li>
+              <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_fc_multiple" target="_blank" rel="noopener"><span class="service-tier__level">Multiple</span><span class="service-tier__price"><s class="service-tier__was">$249</s><span class="service-tier__now">$179</span></span></a></li>
+            </ul>
+            <p class="service-subgroup__note">(Offline &mdash; Only in UAE)</p>
+          </div>
           <a class="service-card__faq" href="faq.html" aria-label="FAQs about Fitness Consultation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
-        <!-- 3. Nutrition Consultation — single session at the previous
-             published rate. -->
+        <!-- 3. Nutrition Consultation — Online (Single / Multiple / Monthly). -->
         <article class="service-card">
           <h3 class="service-card__title">Nutrition Consultation</h3>
-          <p class="service-card__hint">Single session</p>
-          <ul class="service-card__tiers">
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_nc_single" target="_blank" rel="noopener"><span class="service-tier__level">Single Session</span><span class="service-tier__price"><s class="service-tier__was">USD 298</s><span class="service-tier__now">USD 199</span></span></a></li>
-          </ul>
+          <p class="service-card__hint">Choose your plan</p>
+          <div class="service-subgroup">
+            <p class="service-subgroup__label">Online</p>
+            <ul class="service-card__tiers">
+              <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_nc_single"   target="_blank" rel="noopener"><span class="service-tier__level">Single</span><span class="service-tier__price"><s class="service-tier__was">$298</s><span class="service-tier__now">$199</span></span></a></li>
+              <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_nc_multiple" target="_blank" rel="noopener"><span class="service-tier__level">Multiple</span><span class="service-tier__price"><s class="service-tier__was">$598</s><span class="service-tier__now">$449</span></span></a></li>
+              <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_nc_monthly"  target="_blank" rel="noopener"><span class="service-tier__level">Monthly</span><span class="service-tier__price"><s class="service-tier__was">$998</s><span class="service-tier__now">$749</span></span></a></li>
+            </ul>
+          </div>
           <a class="service-card__faq" href="faq.html" aria-label="FAQs about Nutrition Consultation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
-        <!-- 4. Personal Training — capped roster of 5 clients/month.
-             Pricing is discussed privately; card shows the constraint
-             + a Book-Now CTA that jumps to the contact form. -->
+        <!-- 4. Personal Training — capped roster note + inline
+             orange "Book Now" (styled like a price row, not a
+             button). -->
         <article class="service-card">
           <h3 class="service-card__title">Personal Training</h3>
           <p class="service-card__hint">1-on-1 &middot; UAE only</p>
           <div class="service-card__note">
-            <p>Roster capped to a <strong>maximum of 5 clients per month</strong>. Investment is discussed privately.</p>
+            <p>Roster is capped to <strong>3 selected clients per month</strong>. Investment discussed privately upon selection.</p>
           </div>
-          <a class="service-tier service-tier--cta" href="#contact">
-            <span class="service-tier__level">Book Now</span>
-            <span class="service-tier__now">Enquire</span>
-          </a>
+          <a href="#contact" class="service-book-now">Book Now</a>
           <a class="service-card__faq" href="faq.html" aria-label="FAQs about Personal Training"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
       </div>
@@ -1306,6 +1302,11 @@
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
       <!-- LEFT block -->
       <div class="text-left">
+        <!-- Section title "BOOK" in orange with the small orange
+             rule (mirrors Body Composition / Success Stories /
+             Services). -->
+        <h2 class="section-title">Book</h2>
+        <div class="w-10 h-px bg-burgundy mt-4 mb-6"></div>
         <p class="scene-eyebrow" style="margin-bottom: 8px;">
           <span class="line-mask"><span class="line-inner">Coming Soon</span></span>
         </p>

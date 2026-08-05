@@ -1213,17 +1213,16 @@ h4, h5, h6, .wybe-subhead {
   line-height: 1.55;
   color: #1E1E1E;
   margin: 0 0 12px;
-  quotes: none; /* the ldquo/rdquo are baked into the copy */
-  /* Body sizes to its content. JS sets an inline max-height
-     equal to AMIT'S natural scrollHeight so longer bodies
-     (Zarine, Anahita) truncate to match Amit's card shape. The
-     CSS value below is only a pre-JS-paint fallback. NO flex:1
-     on this element — that used to make the body stretch to
-     fill any card height and leave empty space between the last
-     line of text and the meta row on Amit's card. */
+  quotes: none;
   max-height: 520px;
   overflow: hidden;
   position: relative;
+}
+/* Non-Amit cards flex-fill their body so they can be locked to
+   Amit's total card height without leaving empty space. Amit's
+   card (:first-child) stays intrinsic — no flex, no forced height. */
+.wybe-testimonial:not(:first-child) .wybe-testimonial__body {
+  flex: 1 1 auto;
 }
 .wybe-testimonial__body::before,
 .wybe-testimonial__body::after { content: none; }
@@ -2108,9 +2107,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
-/* Upsell block under the Work Out Program tiers — "if you're not
-   sure about form and technique, book a consultation" pitch with
-   the +$69 add-on math. */
+/* Upsell block under the Work Out Program tiers. */
 .service-card__upsell {
   margin-top: 14px;
   padding: 10px 12px;
@@ -2123,7 +2120,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 12px;
-  line-height: 1.45;
+  line-height: 1.55;
   color: #1E1E1E;
 }
 .service-card__upsell a {
@@ -2133,7 +2130,58 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   text-underline-offset: 3px;
 }
 .service-card__upsell a:hover { color: #E65500; }
-.service-card__upsell strong { color: #1E1E1E; font-weight: 700; }
+/* Price tokens INSIDE the upsell copy — bumped to tabular Inter
+   Black so "USD 69" and "USD 108" read cleanly (previous inherit
+   from body font made "69" look mushy on some screens). */
+.service-card__upsell .upsell-price {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  color: #1E1E1E;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Sub-group inside a service card (e.g. "Online" heading above a
+   set of tier rows). */
+.service-subgroup { margin-top: 4px; }
+.service-subgroup__label {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FF6600;
+  margin: 0 0 6px;
+}
+.service-subgroup__note {
+  margin: 8px 0 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 11px;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+/* Personal Training "Book Now" — orange inline text row styled
+   like a price row (per ask), NOT a filled button. */
+.service-book-now {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 10px 0;
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #FF6600;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.service-book-now:hover {
+  color: #E65500;
+  transform: translateX(3px);
+}
 /* Note block for services with no direct price (Personal Training). */
 .service-card__note {
   margin-bottom: 12px;

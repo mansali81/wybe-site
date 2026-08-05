@@ -485,16 +485,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const allCards  = cards();
       const allBodies = bodies();
       if (!allCards.length) return;
-      // Reset any inline overrides from a previous pass.
+      // Reset overrides from any previous pass.
       allBodies.forEach(b => { b.style.maxHeight = 'none'; });
-      allCards.forEach(c  => { c.style.removeProperty('height'); c.classList.remove('is-expanded'); });
-      // Force layout flush so subsequent scrollHeight reads are
-      // truly the natural values.
+      allCards.forEach(c => { c.style.removeProperty('height'); c.classList.remove('is-expanded'); });
+      // Force layout flush.
       void allCards[0].offsetHeight;
+      // Cap every body to Amit's body scrollHeight so truncated
+      // ones still show is-truncated + Read More.
       const bodyCap = allBodies[0].scrollHeight;
       allBodies.forEach(b => {
         b.style.maxHeight = bodyCap + 'px';
         b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
+      });
+      // Measure Amit's TOTAL card height (natural — no forcing on Amit).
+      const amitH = allCards[0].offsetHeight;
+      // Lock every OTHER card to Amit's height. Their bodies flex-fill
+      // via the :not(:first-child) rule in styles.css so no empty
+      // space appears between text and meta.
+      allCards.forEach((c, i) => {
+        if (i === 0) return;
+        c.style.height = amitH + 'px';
       });
     };
 
