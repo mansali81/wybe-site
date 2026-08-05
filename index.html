@@ -1289,22 +1289,20 @@
         <article class="service-card">
           <h3 class="service-card__title">Personal Training</h3>
           <p class="service-card__hint">1-on-1 &middot; UAE only</p>
-          <ul class="service-card__tiers">
-            <li class="service-tier service-tier--info">
-              <span class="service-tier__level">Roster</span>
-              <span class="service-tier__now">Capped</span>
-            </li>
-            <li class="service-tier service-tier--info">
-              <span class="service-tier__level">Clients</span>
-              <span class="service-tier__now">3 / month</span>
-            </li>
-            <li>
-              <a class="service-tier" href="#contact">
-                <span class="service-tier__level">Investment</span>
-                <span class="service-tier__now">Book Now</span>
-              </a>
-            </li>
-          </ul>
+          <!-- Single info box with three bullet points in black. -->
+          <div class="service-card__pt-box">
+            <ul class="service-pt-list">
+              <li>Roster capped</li>
+              <li>3 Selected Clients</li>
+              <li>Fee</li>
+            </ul>
+          </div>
+          <!-- CTA anchored bottom-right of the card. Replace the
+               PLACEHOLDER href with the real calendar-booking URL
+               (Cal.com / Calendly / Google Calendar). -->
+          <a class="service-pt-cta" href="https://PLACEHOLDER_calendar_link" target="_blank" rel="noopener">
+            Consult Now &rarr;
+          </a>
           <a class="service-card__faq" href="#" data-faq-open aria-label="FAQs about Personal Training"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ</span></a>
         </article>
       </div>
