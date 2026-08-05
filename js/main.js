@@ -463,68 +463,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { once: true });
 
   // ── FAQ MODAL ─────────────────────────────────────────
-  // Any element with [data-faq-open] opens the #faq-modal on the
-  // same page. On first click the modal body is populated via
-  // fetch of /faq.html — we extract the <ul class="wybe-faq__list">
-  // + section header and inject them into the modal card, then
-  // cache the result so subsequent opens are instant.
-  // Existing wybe-faq accordion JS (see below) still handles the
-  // click-to-expand behaviour once the list is in the DOM.
-  (function() {
-    let cachedHtml = null;
-    let loading = false;
-    const getModalEls = () => {
+  // Any element with [data-faq-open] opens the #faq-modal. The FAQ
+  // list markup is embedded directly in index.html inside the modal
+  // (no fetch needed — instant open, no network dependency). The
+  // existing WYBE FAQ ACCORDION IIFE further below handles per-Q
+  // click-to-expand once the list is in the DOM.
+  document.addEventListener('click', (e) => {
+    const trg = e.target.closest('[data-faq-open]');
+    if (trg) {
+      e.preventDefault();
+      e.stopPropagation();
       const modal = document.getElementById('faq-modal');
-      if (!modal) return null;
-      return {
-        modal,
-        body: modal.querySelector('[data-faq-body]'),
-      };
-    };
-    const inject = (m, html) => {
-      m.body.innerHTML = html;
-    };
-    const open = () => {
-      const m = getModalEls();
-      if (!m) return;
-      m.modal.classList.add('is-open');
-      m.modal.setAttribute('aria-hidden', 'false');
+      if (!modal) return;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
       document.documentElement.style.overflow = 'hidden';
-      if (cachedHtml) {
-        inject(m, cachedHtml);
-        return;
-      }
-      if (loading) return;
-      loading = true;
-      fetch('/faq.html').then(r => r.text()).then(text => {
-        const doc = new DOMParser().parseFromString(text, 'text/html');
-        const section = doc.querySelector('#faq') || doc.querySelector('.wybe-faq');
-        cachedHtml = section ? section.innerHTML : '<p class="faq-modal__loading">Failed to load FAQ.</p>';
-        inject(m, cachedHtml);
-        loading = false;
-      }).catch(() => {
-        cachedHtml = '<p class="faq-modal__loading">Failed to load FAQ.</p>';
-        inject(m, cachedHtml);
-        loading = false;
-      });
-    };
-    const close = () => {
-      const m = getModalEls();
-      if (!m) return;
-      m.modal.classList.remove('is-open');
-      m.modal.setAttribute('aria-hidden', 'true');
+      return;
+    }
+    if (e.target.closest('[data-faq-close]')) {
+      e.preventDefault();
+      const modal = document.getElementById('faq-modal');
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
-    };
-    document.addEventListener('click', (e) => {
-      const trg = e.target.closest('[data-faq-open]');
-      if (trg) { e.preventDefault(); open(); return; }
-      if (e.target.closest('[data-faq-close]')) { e.preventDefault(); close(); }
-    });
-    document.addEventListener('keydown', (e) => {
-      const m = getModalEls();
-      if (e.key === 'Escape' && m && m.modal.classList.contains('is-open')) close();
-    });
-  })();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('faq-modal');
+    if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+    }
+  });
 
   // ── TESTIMONIAL TRUNCATION + MODAL ────────────────────
   // The FIRST testimonial card (Amit) is the benchmark — every

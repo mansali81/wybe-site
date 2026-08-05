@@ -2241,6 +2241,65 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   color: rgba(30, 30, 30, 0.55);
 }
 
+/* Work Out Program add-on checkbox row — checkbox on the left,
+   copy + "+$39" on the right. Aligned in a card-style container. */
+.service-addon {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px dashed rgba(255, 102, 0, 0.45);
+  border-radius: 6px;
+  background: rgba(255, 102, 0, 0.06);
+  cursor: pointer;
+}
+.service-addon input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: #FF6600;
+  cursor: pointer;
+}
+.service-addon__label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+.service-addon__title {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 12px;
+  color: #1E1E1E;
+  line-height: 1.35;
+}
+.service-addon__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.service-addon__sub {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: #1E1E1E;
+}
+
+/* Non-clickable info-tier variant used on Personal Training. Same
+   row layout as a real .service-tier but no hover / no cursor. */
+li.service-tier.service-tier--info,
+.service-tier.service-tier--info {
+  cursor: default;
+}
+.service-tier.service-tier--info:hover {
+  background: rgba(30, 30, 30, 0.04);
+  border-color: rgba(30, 30, 30, 0.10);
+  transform: none;
+}
+
 /* Personal Training "Book Now" — orange inline text row styled
    like a price row (per ask), NOT a filled button. */
 .service-book-now {
