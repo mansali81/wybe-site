@@ -2359,15 +2359,28 @@ li.service-tier.service-tier--info,
   transform: none;
 }
 
-/* Personal Training box — single info panel with three bullets in
-   black on a light-tinted background (matches the other .service-
-   card__note pattern but taller). Consult Now sits below/right. */
+/* Personal Training box — single info panel with a bold title, a
+   three-bullet list, and the "Consult now" WhatsApp link right-
+   aligned INSIDE the box on its own row. Flex column so the CTA
+   can use align-self:flex-end without needing a wrapper div. */
 .service-card__pt-box {
   margin-top: 4px;
   padding: 14px 16px;
   background: rgba(30, 30, 30, 0.04);
   border: 1px solid rgba(30, 30, 30, 0.10);
   border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.service-pt-title {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: #1E1E1E;
+  margin: 0;
+  line-height: 1.3;
 }
 .service-pt-list {
   list-style: disc;
@@ -2384,13 +2397,10 @@ li.service-tier.service-tier--info,
   color: #1E1E1E;
   line-height: 1.4;
 }
-/* Consult Now — orange text link anchored to the bottom-right of
-   the Personal Training card (still leaves the FAQ CTA at bottom-
-   left thanks to its own position:absolute). */
+/* Consult now — orange WhatsApp link, right-aligned inside the box
+   via align-self on the flex parent (.service-card__pt-box). */
 .service-pt-cta {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
+  align-self: flex-end;
   display: inline-flex;
   align-items: center;
   gap: 4px;
