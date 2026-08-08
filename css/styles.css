@@ -1289,23 +1289,24 @@ h4, h5, h6, .wybe-subhead {
 }
 
 /* ── FAQ MODAL ─────────────────────────────────────
-   Full-screen overlay opened by the FAQ CTA on any service card.
-   Content is fetched from /faq.html on first open (main.js:
-   FAQ MODAL block) and cached. Dark background matches site theme;
-   the FAQ list inside inherits .wybe-faq styles already defined
-   further down in this file. */
+   Full-screen popup opened by any service card's FAQ CTA. Hidden
+   by default via display:none; the .is-open class flips it on.
+   !important on position/z-index/display is a hard guard against
+   the body-level wildcard rule in index.html that otherwise
+   promotes it to a static inline block. Backdrop dims the page;
+   the card centers over it and scrolls internally when needed. */
 .faq-modal {
-  position: fixed;
+  display: none !important;
+  position: fixed !important;
   inset: 0;
-  z-index: 5100;
-  display: none;
-  align-items: flex-start;
+  z-index: 5100 !important;
+  align-items: center;
   justify-content: center;
-  padding: 40px 24px 24px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 24px;
 }
-.faq-modal.is-open { display: flex; }
+.faq-modal.is-open {
+  display: flex !important;
+}
 /* Backdrop — semi-transparent black per spec. Dims everything
    behind the modal. Click to close (data-faq-close). */
 .faq-modal__backdrop {
@@ -1325,8 +1326,7 @@ h4, h5, h6, .wybe-subhead {
   z-index: 1;
   width: 100%;
   max-width: 780px;
-  margin-bottom: 40px;
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 48px);        /* leaves 24 px margin above/below */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   background: #1E1E1E;
