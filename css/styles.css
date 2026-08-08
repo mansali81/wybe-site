@@ -2092,7 +2092,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 .section-title {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(18px, 2.6vw, 30px);   /* third -2 pt trim across the clamp */
+  font-size: clamp(16px, 2.4vw, 28px);   /* fourth -2 pt trim across the clamp */
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.15;
