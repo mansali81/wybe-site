@@ -1306,26 +1306,35 @@ h4, h5, h6, .wybe-subhead {
   -webkit-overflow-scrolling: touch;
 }
 .faq-modal.is-open { display: flex; }
+/* Transparent-glass backdrop — the site background is still
+   visible behind the modal (per user ask), just very lightly
+   dimmed + blurred so the modal content pops. */
 .faq-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
-  -webkit-backdrop-filter: blur(6px);
-          backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
   cursor: pointer;
 }
+/* Modal card is a glass panel: mostly-transparent surface, subtle
+   orange border, backdrop-blur so the accordion text stays readable
+   over any page section. */
 .faq-modal__card {
   position: relative;
   z-index: 1;
   width: 100%;
   max-width: 780px;
   margin-bottom: 40px;
-  background: #1E1E1E;
+  background: rgba(30, 30, 30, 0.75);
   color: #F6F2E8;
+  border: 1px solid rgba(255, 102, 0, 0.35);
   border-top: 3px solid #FF6600;
   border-radius: 10px;
   padding: 48px 32px 32px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
 }
 .faq-modal__close {
   position: absolute;

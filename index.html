@@ -2690,6 +2690,35 @@
        so a modal nested in #results appeared off-viewport after pin
        activated. Living here as a body-level child keeps it truly
        viewport-fixed regardless of scroll. -->
+  <!-- FAQ modal wiring — inline, self-contained. Direct click
+       listeners on every [data-faq-open] + [data-faq-close] so a
+       failure elsewhere in main.js can't break open/close. -->
+  <script>
+    (function() {
+      var openBtns  = document.querySelectorAll('[data-faq-open]');
+      var closeEls  = document.querySelectorAll('[data-faq-close]');
+      var modal     = document.getElementById('faq-modal');
+      if (!modal) return;
+      function open(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflow = 'hidden';
+      }
+      function close(e) {
+        if (e) e.preventDefault();
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflow = '';
+      }
+      for (var i = 0; i < openBtns.length; i++) openBtns[i].addEventListener('click', open);
+      for (var j = 0; j < closeEls.length; j++) closeEls[j].addEventListener('click', close);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+      });
+    })();
+  </script>
+
   <!-- FAQ modal — opens on any service-card FAQ click. Content
        is fetched from /faq.html on first open, cached for subsequent
        opens. Matches the site theme (dark bg, orange accent). -->

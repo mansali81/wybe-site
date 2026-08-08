@@ -488,41 +488,11 @@ document.addEventListener('DOMContentLoaded', () => {
     update();
   })();
 
-  // ── FAQ MODAL ─────────────────────────────────────────
-  // Any element with [data-faq-open] opens the #faq-modal. The FAQ
-  // list markup is embedded directly in index.html inside the modal
-  // (no fetch needed — instant open, no network dependency). The
-  // existing WYBE FAQ ACCORDION IIFE further below handles per-Q
-  // click-to-expand once the list is in the DOM.
-  document.addEventListener('click', (e) => {
-    const trg = e.target.closest('[data-faq-open]');
-    if (trg) {
-      e.preventDefault();
-      e.stopPropagation();
-      const modal = document.getElementById('faq-modal');
-      if (!modal) return;
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.documentElement.style.overflow = 'hidden';
-      return;
-    }
-    if (e.target.closest('[data-faq-close]')) {
-      e.preventDefault();
-      const modal = document.getElementById('faq-modal');
-      if (!modal) return;
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.documentElement.style.overflow = '';
-    }
-  });
-  document.addEventListener('keydown', (e) => {
-    const modal = document.getElementById('faq-modal');
-    if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) {
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.documentElement.style.overflow = '';
-    }
-  });
+  // FAQ modal wiring moved out of this file — see the inline
+  // script block at the end of index.html. That block attaches
+  // listeners directly to each FAQ trigger (no delegation, no
+  // dependency on earlier IIFEs completing) so a failure elsewhere
+  // in main.js can't silently break FAQ open/close.
 
   // ── TESTIMONIAL TRUNCATION + MODAL ────────────────────
   // The FIRST testimonial card (Amit) is the benchmark — every
