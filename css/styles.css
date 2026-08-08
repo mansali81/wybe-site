@@ -1307,19 +1307,24 @@ h4, h5, h6, .wybe-subhead {
 .faq-modal.is-open {
   display: flex !important;
 }
-/* Backdrop — semi-transparent black per spec. Dims everything
-   behind the modal. Click to close (data-faq-close). */
+/* Backdrop — dim + frosted-glass. Blurs the Services section
+   behind the modal instead of hiding it under a solid layer.
+   Click to close (data-faq-close). */
 .faq-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.60);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
   cursor: pointer;
   opacity: 0;
   transition: opacity 200ms ease;
 }
 .faq-modal.is-open .faq-modal__backdrop { opacity: 1; }
-/* Modal card — solid dark surface, orange top border. Enters with
-   a subtle fade + scale-up. Scrolls internally when the FAQ list
+/* Modal card — translucent frosted surface, orange top border.
+   Card background is glass; text inside stays fully opaque via
+   the __title / __body / .wybe-faq colour rules. Enters with a
+   subtle fade + scale-up. Scrolls internally when the FAQ list
    is taller than the viewport. */
 .faq-modal__card {
   position: relative;
@@ -1329,8 +1334,11 @@ h4, h5, h6, .wybe-subhead {
   max-height: calc(100vh - 48px);        /* leaves 24 px margin above/below */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: #1E1E1E;
+  background: rgba(30, 30, 30, 0.35);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
   color: #F6F2E8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-top: 3px solid #FF6600;
   border-radius: 10px;
   padding: 48px 32px 32px;
@@ -1342,6 +1350,20 @@ h4, h5, h6, .wybe-subhead {
 .faq-modal.is-open .faq-modal__card {
   opacity: 1;
   transform: scale(1);
+}
+/* Frosted card has a translucent background, so answer body text
+   is promoted to fully opaque here (defaults elsewhere are 85 %
+   on a solid #1E1E1E surface). Titles and questions are already
+   fully opaque via their own colour rules. */
+.faq-modal__card .wybe-faq__answer,
+.faq-modal__card .wybe-faq__answer p {
+  color: #F6F2E8;
+}
+.faq-modal__card .wybe-faq__item {
+  border-bottom-color: rgba(246, 242, 232, 0.22);
+}
+.faq-modal__card .wybe-faq__item:first-child {
+  border-top-color: rgba(246, 242, 232, 0.22);
 }
 /* Dynamic title populated by JS ("FAQs — Fitness Consultation"). */
 .faq-modal__title {
