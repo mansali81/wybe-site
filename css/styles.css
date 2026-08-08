@@ -2631,3 +2631,70 @@ li.service-tier.service-tier--info,
   opacity: 1;
   visibility: visible;
 }
+
+/* ── BODY COMPOSITION SECTION — image-behind-form composite ─────────
+   Scoped exclusively to #body-composition-section. The Treadmill
+   figure is promoted to an absolute-positioned background layer that
+   the calculator form sits on top of, so the two visually blend into
+   one asset. Nothing outside this id is affected. */
+#body-composition-section .grid.grid-cols-1 {
+  position: relative;
+  gap: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 640px;
+}
+
+#body-composition-section figure {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 30%;
+  width: 70%;
+  height: 100%;
+  margin: 0;
+  z-index: 0;
+}
+
+#body-composition-section figure .parallax-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+#body-composition-section figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  filter: saturate(0.95) brightness(0.92) contrast(1.02);
+}
+
+#body-composition-section figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0) 55%);
+  pointer-events: none;
+}
+
+#body-composition-section .calculator-form-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+}
+
+#body-composition-section form {
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid #ff6600;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(255,102,0,0.15);
+}
+
+#body-composition-section .wybe-calc-cta {
+  width: auto;
+  justify-self: end;
+  padding: 8px 18px;
+  font-size: 11px;
+}

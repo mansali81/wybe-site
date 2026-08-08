@@ -260,7 +260,6 @@
     }
     .wybe-calc-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
     .wybe-calc-title      { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
-    .wybe-calc-title-rule { width: 40px; height: 3px; background: #FF6600; margin-bottom: 22px; }
     /* Airy input rows: hairline underline, no box */
     /* Compact calculator rows so all fields fit within the 640 px
        card without inner scrolling. Reduced padding + smaller value
@@ -829,7 +828,7 @@
        and the results panel unlocks whichever metrics your inputs
        support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
   <section id="calculators" class="wybe-story relative overflow-visible py-8 md:py-12">
-    <div class="w-full max-w-6xl mx-auto px-6">
+    <div id="body-composition-section" class="w-full max-w-6xl mx-auto px-6">
       <!-- Section header — single heading, no eyebrow, no subtext. -->
       <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
         <h2 class="section-title">Body Composition</h2>
@@ -846,10 +845,8 @@
              stacks BELOW form on mobile via order-last. md:h-full
              so this column fills the grid row (matches image
              column's stretched height). -->
-        <div class="md:col-span-7 order-first md:order-1 max-w-2xl w-full mx-auto md:mx-0 md:h-full">
+        <div class="calculator-form-wrapper md:col-span-7 order-first md:order-1 max-w-2xl w-full mx-auto md:mx-0 md:h-full">
         <form id="unified-calc-form" data-view="form">
-          <div class="wybe-calc-title-rule"></div>
-
           <div class="wybe-input-row">
             <label for="ucalc-gender">Gender</label>
             <select id="ucalc-gender" required>
