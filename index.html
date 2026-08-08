@@ -1226,22 +1226,51 @@
         <article class="service-card">
           <h3 class="service-card__title">Work Out Program</h3>
           <p class="service-card__hint">Choose your level</p>
+          <!-- Tier rows carry base + combo prices as data attrs so
+               the JS below can flip the visible price when the
+               user ticks the consultation add-on. Pricing tables:
+                 Launch (base):   $39 / $69 / $119
+                 Standard:        $59 / $99 / $169
+                 Launch combo:    $88 / $118 / $168
+                 Standard combo:  $108 / $148 / $218 -->
           <ul class="service-card__tiers">
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_beginner"     target="_blank" rel="noopener"><span class="service-tier__level">Beginner</span><span class="service-tier__price"><s class="service-tier__was">$59</s><span class="service-tier__now">$39</span></span></a></li>
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_intermediate" target="_blank" rel="noopener"><span class="service-tier__level">Inter&shy;mediate</span><span class="service-tier__price"><s class="service-tier__was">$59</s><span class="service-tier__now">$39</span></span></a></li>
-            <li><a class="service-tier" href="https://buy.stripe.com/PLACEHOLDER_wop_advanced"     target="_blank" rel="noopener"><span class="service-tier__level">Advanced</span><span class="service-tier__price"><s class="service-tier__was">$59</s><span class="service-tier__now">$39</span></span></a></li>
+            <li><a class="service-tier"
+                   href="https://buy.stripe.com/PLACEHOLDER_wop_beginner"     target="_blank" rel="noopener"
+                   data-wop-tier data-base="39" data-was="59" data-combo="88" data-combo-was="108">
+                <span class="service-tier__level">Beginner <span class="service-tier__length">(3 mo.)</span></span>
+                <span class="service-tier__price">
+                  <s class="service-tier__was">$59</s>
+                  <span class="service-tier__now">$39</span>
+                </span>
+              </a></li>
+            <li><a class="service-tier"
+                   href="https://buy.stripe.com/PLACEHOLDER_wop_intermediate" target="_blank" rel="noopener"
+                   data-wop-tier data-base="69" data-was="99" data-combo="118" data-combo-was="148">
+                <span class="service-tier__level">Inter&shy;mediate <span class="service-tier__length">(6 mo.)</span></span>
+                <span class="service-tier__price">
+                  <s class="service-tier__was">$99</s>
+                  <span class="service-tier__now">$69</span>
+                </span>
+              </a></li>
+            <li><a class="service-tier"
+                   href="https://buy.stripe.com/PLACEHOLDER_wop_advanced"     target="_blank" rel="noopener"
+                   data-wop-tier data-base="119" data-was="169" data-combo="168" data-combo-was="218">
+                <span class="service-tier__level">Advanced <span class="service-tier__length">(12 mo.)</span></span>
+                <span class="service-tier__price">
+                  <s class="service-tier__was">$169</s>
+                  <span class="service-tier__now">$119</span>
+                </span>
+              </a></li>
           </ul>
-          <!-- Add-on: consultation checkbox. When ticked, the +$69
-               is bundled into the tier's checkout at the payment
-               page. No "total" line here per ask — the sum is
-               shown on Stripe checkout, not on the card. -->
+          <!-- Add-on: consultation checkbox. Toggling ticks flips
+               every tier row's price display to its combo value
+               (base + $49) via the WOP ADD-ON toggle in main.js. -->
           <label class="service-addon">
             <input type="checkbox" name="wop_addon_consult" value="1" data-service-addon="wop-consult">
             <span class="service-addon__label">
-              <span class="service-addon__title">Not sure about form and technique?</span>
+              <span class="service-addon__title">Not sure about form and technique? <span class="service-addon__price">(+$49)</span></span>
               <span class="service-addon__row">
-                <span class="service-addon__sub">Book a consultation</span>
-                <span class="service-tier__now">+$39</span>
+                <span class="service-addon__sub">Book a consultation &mdash; tiers update to combo pricing</span>
               </span>
             </span>
           </label>

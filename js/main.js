@@ -462,6 +462,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { once: true });
 
+  // ── WORK OUT PROGRAM ADD-ON TOGGLE ───────────────────
+  // Ticking the [data-service-addon="wop-consult"] checkbox flips
+  // every [data-wop-tier] row's visible "was"/"now" prices from
+  // base to combo (base + $49 consultation). Untick to revert.
+  (function() {
+    const box = document.querySelector('input[data-service-addon="wop-consult"]');
+    if (!box) return;
+    const tiers = document.querySelectorAll('[data-wop-tier]');
+    if (!tiers.length) return;
+    const update = () => {
+      const on = box.checked;
+      tiers.forEach(t => {
+        const now = t.querySelector('.service-tier__now');
+        const was = t.querySelector('.service-tier__was');
+        const base = t.dataset.base;
+        const combo = t.dataset.combo;
+        const wasBase = t.dataset.was;
+        const wasCombo = t.dataset.comboWas;
+        if (now) now.textContent = '$' + (on ? combo : base);
+        if (was) was.textContent = '$' + (on ? wasCombo : wasBase);
+      });
+    };
+    box.addEventListener('change', update);
+    update();
+  })();
+
   // ── FAQ MODAL ─────────────────────────────────────────
   // Any element with [data-faq-open] opens the #faq-modal. The FAQ
   // list markup is embedded directly in index.html inside the modal
