@@ -2730,9 +2730,9 @@ li.service-tier.service-tier--info,
   max-width: 620px;
   height: auto;
   margin: 0 auto;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: transparent;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border: 2px solid #ff6600;
   border-radius: 16px;
   box-shadow: 0 0 25px rgba(255,102,0,0.15);
