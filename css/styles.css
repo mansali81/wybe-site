@@ -2698,3 +2698,59 @@ li.service-tier.service-tier--info,
   padding: 8px 18px;
   font-size: 11px;
 }
+
+/* ── CONTACT US SECTION — centred glass card, no image ─────────────
+   Scoped exclusively to #contact-us-section. The Contactus figure
+   has been removed from the DOM; the display:none rule below is a
+   safety net in case the figure is ever re-added. Nothing outside
+   this id is affected. */
+#contact-us-section figure {
+  display: none;
+}
+
+#contact-us-section .grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: auto;
+  gap: 0;
+}
+
+#contact-us-section .form-column-wrapper {
+  grid-column: unset;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: static;
+}
+
+#contact-us-section .contact-card {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  margin: 0 auto;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid #ff6600;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(255,102,0,0.15);
+  text-align: center;
+}
+
+#contact-us-section .contact-card form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#contact-us-section .contact-card form > div {
+  width: 100%;
+  justify-content: center;
+}
+
+#contact-us-section .contact-card input,
+#contact-us-section .contact-card textarea {
+  text-align: center;
+}
