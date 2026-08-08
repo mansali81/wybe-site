@@ -2702,15 +2702,14 @@
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <h2 class="faq-modal__title" data-faq-title>FAQs</h2>
       <div class="faq-modal__body" data-faq-body>
 <div class="max-w-3xl mx-auto px-6">
       <div class="text-center mb-10 md:mb-12">
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">FAQ</p>
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Questions, Answered.</h2>
-        <p class="font-sans text-base text-cream/80 leading-relaxed">
-          The things people ask most before booking. If yours isn&rsquo;t here, send it via <a href="#contact" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">the contact form</a>.
+        <p class="font-sans text-base text-cream/80 leading-relaxed text-center">
+          The things people ask most before booking.<br>
+          If yours isn&rsquo;t here, send it via <a href="#contact" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">the contact form</a>.
         </p>
       </div>
 
@@ -2734,7 +2733,7 @@
             </button>
           </h3>
           <div id="faq-a2" role="region" aria-labelledby="faq-q2" class="wybe-faq__answer" hidden>
-            <p>Sessions run out of several gyms across the UAE, and residence gyms for clients whose home includes a private facility. Exact venue is agreed once your application is accepted &mdash; I don&rsquo;t list a single fixed address because the roster is capped at a maximum of 3 clients only, and location follows the client, not the other way around.</p>
+            <p>Sessions run out of several gyms across the UAE, and residence gyms for clients whose home includes a private facility. Exact venue is agreed once your application is accepted. I don&rsquo;t list a single fixed address because the roster is capped at a maximum of 3 clients only, and location follows the client, not the other way around.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="wop fc nc pt">
@@ -2745,7 +2744,7 @@
             </button>
           </h3>
           <div id="faq-a3" role="region" aria-labelledby="faq-q3" class="wybe-faq__answer" hidden>
-            <p>Live pricing is on the Services section, except for 1-on-1 personal training in the UAE. That investment is discussed privately &mdash; and yes, I am a premium trainer. I only take a <strong>maximum of 3 clients per month</strong> and will not provide more than 12 sessions per month. Sessions are not capped at 1 hour.</p>
+            <p>Live pricing is on the Services section, except for 1-on-1 personal training in the UAE. That investment is discussed privately. Yes, I am a premium trainer. I only take a <strong>maximum of 3 clients per month</strong> and will not provide more than 12 sessions per month. Sessions are not capped at 1 hour.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="wop fc nc pt">
@@ -2800,7 +2799,7 @@
             </button>
           </h3>
           <div id="faq-a8" role="region" aria-labelledby="faq-q8" class="wybe-faq__answer" hidden>
-            <p>Adults, children (age 10 and above), and geriatric clients &mdash; all genders welcome.</p>
+            <p>Adults, children (age 10 and above), and geriatric clients. All genders welcome.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="pt">
@@ -2822,7 +2821,7 @@
             </button>
           </h3>
           <div id="faq-a10" role="region" aria-labelledby="faq-q10" class="wybe-faq__answer" hidden>
-            <p>My sessions are not 1 hour &mdash; the length is the time you need to complete the schedule of exercises assigned that day. Each session includes mobility drills, workout, cool-down, and stretches, with education and motivation consistently woven in.</p>
+            <p>My sessions are not 1 hour. The length is the time you need to complete the schedule of exercises assigned that day. Each session includes mobility drills, workout, cool-down, and stretches, with education and motivation consistently woven in.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="pt">
@@ -2866,7 +2865,7 @@
             </button>
           </h3>
           <div id="faq-a14" role="region" aria-labelledby="faq-q14" class="wybe-faq__answer" hidden>
-            <p>It would be a lie to give a definite timeline &mdash; different bodies react on different timelines depending on effort, diet, and recovery. Realistically, <strong>12 weeks</strong> should give good results if you&rsquo;re consistent, follow the diet plan, and allow enough recovery.</p>
+            <p>It would be a lie to give a definite timeline. Different bodies react on different timelines depending on effort, diet, and recovery. Realistically, <strong>12 weeks</strong> should give good results if you&rsquo;re consistent, follow the diet plan, and allow enough recovery.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="pt fc">
@@ -2924,16 +2923,8 @@
     (function () {
       var modal = document.getElementById('faq-modal');
       if (!modal) return;
-      var titleEl = modal.querySelector('[data-faq-title]');
       var items   = modal.querySelectorAll('.wybe-faq__item');
       var lastFocus = null;
-
-      var SERVICE_NAMES = {
-        wop: 'Work Out Program',
-        fc:  'Fitness Consultation',
-        nc:  'Nutrition Consultation',
-        pt:  'Personal Training'
-      };
 
       // Filter the accordion so only questions relevant to the
       // clicked service are visible. Each <li> carries
@@ -2981,9 +2972,6 @@
         lastFocus = trigger || document.activeElement;
         var key = trigger && trigger.getAttribute('data-faq-service');
         applyFilter(key);
-        if (titleEl) titleEl.textContent = key
-          ? 'FAQs — ' + (SERVICE_NAMES[key] || '')
-          : 'FAQs';
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.documentElement.style.overflow = 'hidden';

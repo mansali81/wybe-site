@@ -1365,17 +1365,6 @@ h4, h5, h6, .wybe-subhead {
 .faq-modal__card .wybe-faq__item:first-child {
   border-top-color: rgba(246, 242, 232, 0.22);
 }
-/* Dynamic title populated by JS ("FAQs — Fitness Consultation"). */
-.faq-modal__title {
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(18px, 2.4vw, 24px);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #FF6600;
-  margin: 0 0 20px;
-  padding-right: 40px;   /* clear the × button */
-}
 .faq-modal__close {
   position: absolute;
   top: 12px; right: 12px;
