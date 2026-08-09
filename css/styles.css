@@ -2783,47 +2783,67 @@ li.service-tier.service-tier--info,
    above this breakpoint stay untouched. Scoped to three sections
    with narrow, unique selectors so nothing leaks. */
 @media (max-width: 767px) {
-  /* 1) ABOUT ME — take the stat badges out of the absolute overlay
-        and drop them into normal flow BELOW the portrait so the
-        whole face/torso is visible. The existing max-width:640px
-        rule above pinned the badges to the bottom of the image;
-        this newer 767px rule fully removes the overlay. */
+  /* 1) ABOUT ME — put the stat stack back on the right edge of the
+        portrait (matching the desktop treatment) but scaled down so
+        it only covers ~30-35 % of the image width and the face/torso
+        remain mostly visible. A single vertical column, not a 2x2
+        grid, mirrors the desktop stack layout. */
   .about-metrics {
-    position: static;
-    top: auto;
-    right: auto;
+    position: absolute;
+    top: 50%;
+    right: 0;
     bottom: auto;
-    transform: none;
+    /* Mostly-inside overlap: 20 % of the stack sits over the section
+       background outside the image, 80 % overlaps the portrait — so
+       on a 352 px image the outside ledge is ~23 px, fitting inside
+       the container's px-6 (24 px) side padding. */
+    transform: translate(20%, -50%);
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 340px;
-    margin: 16px auto 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 32%;
+    max-width: 130px;
+    margin: 0;
     gap: 8px;
-    pointer-events: auto;
+    pointer-events: none;
   }
   .about-metrics .stat-badge {
-    flex: 1 1 calc(50% - 4px);
+    flex: 0 0 auto;
+    pointer-events: auto;
+    padding: 8px 10px 12px;
+    border-radius: 6px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .about-metrics .stat-badge__number {
+    font-size: 17px;
+  }
+  .about-metrics .stat-badge__label {
+    font-size: 7px;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
   }
 
-  /* 2) BODY COMPOSITION — expand the (currently right-side 70%)
-        background figure to full width so the calculator card sits
-        on top of the whole image instead of a narrow sliver. Desktop
-        rule stays at left:30%/width:70% via the base declaration. */
+  /* 2) BODY COMPOSITION — hide the treadmill background entirely on
+        mobile per ask. The calculator card is the only visible element
+        in this section; it keeps its own dark rgba(0,0,0,0.55) glass +
+        orange border chrome so it doesn't read as empty without the
+        photo behind it. Desktop full-bleed image layout is untouched. */
   #body-composition-section figure {
-    left: 0;
-    width: 100%;
+    display: none;
   }
-  /* Uniform dark wash on mobile since the form now sits over the
-     centre of the image, not its right side. */
-  #body-composition-section figure::after {
-    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.70) 100%);
+  /* With no image, the 640 px min-height reserved for the background
+     would leave dead space above/below the form. Collapse it. Border-
+     radius + overflow-hidden on the grid were only there to clip the
+     image; both can be reset. */
+  #body-composition-section .grid.grid-cols-1 {
+    min-height: auto;
+    border-radius: 0;
+    overflow: visible;
   }
-  /* Give the form breathing room; the desktop 40px padding cramps
-     the columns at 400 px wide. */
+  /* Form has its own padding/border/glow; the wrapper doesn't need
+     the desktop 40 px inset when there's no image to sit atop. */
   #body-composition-section .calculator-form-wrapper {
-    padding: 20px 12px;
+    padding: 0;
   }
 
   /* 3) FAQ MODAL — collapse the nested paddings so the questions
