@@ -525,10 +525,24 @@ h4, h5, h6, .wybe-subhead {
     transform: none;
     will-change: auto;
   }
-  /* Content children of a .parallax-wrapper (captions, overlays) sit above. */
-  .parallax-wrapper > :not(.parallax-img) {
+  /* Content children of a .parallax-wrapper (captions, overlays) sit
+     above the image. <picture> is excluded here because it's just a
+     transparent wrapper for the real .parallax-img inside — giving it
+     position:relative would make IT the containing block and collapse
+     the absolute-positioned <img> to 0x0. */
+  .parallax-wrapper > :not(.parallax-img):not(picture) {
     position: relative;
     z-index: 1;
+  }
+  /* Belt-and-braces: any <picture> directly inside a .parallax-wrapper
+     stays a transparent full-size passthrough so the inner .parallax-img
+     resolves its 100 % width/height against .parallax-wrapper, not
+     against a collapsed <picture>. */
+  .parallax-wrapper > picture {
+    position: static;
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   /* Parallax opt-in: images tagged with [data-parallax] are sized 130 %
      of their wrapper (116 % in "gentle" mode) so the JS translateY sweep
