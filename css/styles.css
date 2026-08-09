@@ -2212,15 +2212,21 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   transform: translateX(2px);
 }
 .service-tier__level {
+  /* Column so the "(3 mo.)" qualifier below drops onto its own line
+     — inline flow was wrapping mid-word on the longer labels. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   font-family: var(--font-subhead);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #1E1E1E;
+  line-height: 1.2;
 }
-/* "(3 mo.)" — plan-length note inline with tier level. Softer
-   weight + smaller size so it reads as a qualifier, not a label. */
+/* "(3 mo.)" — plan-length note on its own line under the tier label.
+   Softer weight + smaller size so it reads as a qualifier. */
 .service-tier__length {
   font-family: var(--font-body);
   font-weight: 400;
@@ -2228,7 +2234,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   letter-spacing: 0;
   text-transform: none;
   color: rgba(30, 30, 30, 0.55);
-  margin-left: 4px;
+  margin-top: 2px;
 }
 /* "(+$49)" price token inside the add-on title — matches the
    orange tier-now price so users see the surcharge inline. */
@@ -2251,6 +2257,18 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   font-size: 11px;
   color: rgba(30, 30, 30, 0.45);
   text-decoration: line-through;
+}
+/* Discount badge — takes the same slot as .service-tier__was for
+   tiers where we show a "-15 %" / "-20 %" savings label instead
+   of a struck-through old price. Same size so the row heights stay
+   aligned across tiers; orange to read as promotional. */
+.service-tier__discount {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 11px;
+  color: #FF6600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 .service-tier__now {
   font-family: var(--font-header);
@@ -2324,11 +2342,16 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   margin: 0 0 6px;
 }
 .service-subgroup__note {
-  margin: 8px 0 0;
+  /* Renders inline next to .service-subgroup__label (e.g. "Offline
+     (Only in UAE)") when appended as a sibling <span> inside the
+     label. Kept as a small softer qualifier. */
+  margin-left: 6px;
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 11px;
   color: rgba(30, 30, 30, 0.55);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* Work Out Program add-on checkbox row — checkbox on the left,
@@ -2405,13 +2428,16 @@ li.service-tier.service-tier--info,
   gap: 10px;
 }
 .service-pt-title {
-  font-family: var(--font-subhead);
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.02em;
+  /* Matches .service-pt-list li exactly so the title reads as the
+     first bullet, not a distinct heading. */
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
   color: #1E1E1E;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 .service-pt-list {
   list-style: disc;
@@ -2428,10 +2454,10 @@ li.service-tier.service-tier--info,
   color: #1E1E1E;
   line-height: 1.4;
 }
-/* Consult now — orange WhatsApp link, right-aligned inside the box
-   via align-self on the flex parent (.service-card__pt-box). */
+/* Consult now — orange WhatsApp link, left-aligned inside the box
+   (under the bullet list) via align-self on the flex parent. */
 .service-pt-cta {
-  align-self: flex-end;
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 4px;
