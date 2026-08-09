@@ -2440,18 +2440,6 @@ li.service-tier.service-tier--info,
   flex-direction: column;
   gap: 10px;
 }
-.service-pt-title {
-  /* Matches .service-pt-list li exactly so the title reads as the
-     first bullet, not a distinct heading. */
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
-  color: #1E1E1E;
-  margin: 0;
-  line-height: 1.4;
-}
 .service-pt-list {
   list-style: disc;
   padding-left: 20px;
@@ -2468,9 +2456,12 @@ li.service-tier.service-tier--info,
   line-height: 1.4;
 }
 /* Consult now — orange WhatsApp link, left-aligned inside the box
-   (under the bullet list) via align-self on the flex parent. */
+   (under the bullet list) via align-self on the flex parent.
+   margin-top adds to the parent's 10 px gap so there's a visible
+   ~24 px break between the last bullet and the CTA. */
 .service-pt-cta {
   align-self: flex-start;
+  margin-top: 14px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
