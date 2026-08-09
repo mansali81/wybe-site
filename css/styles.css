@@ -2692,12 +2692,19 @@ li.service-tier.service-tier--info,
   height: 100%;
 }
 
+/* Static cover image — DELIBERATELY no data-parallax on this <img>
+   (see index.html). The 130 % oversize + translateY sweep from the
+   global .parallax-img[data-parallax] rule made this frame taller
+   than the calculator card next to it and looked off. Keep the rule
+   for other sections; this one stays flush with the card edges. */
 #body-composition-section figure img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 38%;
   filter: saturate(0.95) brightness(0.92) contrast(1.02);
+  transform: none;
+  will-change: auto;
 }
 
 #body-composition-section figure::after {
