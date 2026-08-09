@@ -530,6 +530,29 @@ h4, h5, h6, .wybe-subhead {
     position: relative;
     z-index: 1;
   }
+  /* Parallax opt-in: images tagged with [data-parallax] are sized 130 %
+     of their wrapper (116 % in "gentle" mode) so the JS translateY sweep
+     stays within the overhang and never reveals the wrapper's empty
+     edge. Untagged .parallax-img keeps the site-wide object-fit:contain
+     "always visible in full" default above. Bottom is auto so the height
+     rule wins over the base .parallax-img inset:0. */
+  .parallax-img[data-parallax] {
+    position: absolute;
+    top: -15%;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    height: 130%;
+    object-fit: cover;
+    /* object-position intentionally not set — per-image scoped rules
+       (e.g. #body-composition-section figure img at 'center 38%') keep
+       their framing since they have higher specificity here. */
+  }
+  .parallax-img[data-parallax][data-parallax-mode="gentle"] {
+    top: -8%;
+    height: 116%;
+  }
 
   /* Scroll progress indicator: a thin lime line at the very top of the page
      that fills left-to-right as the user scrolls. Populated by JS in

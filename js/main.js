@@ -331,44 +331,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Hero is now text-only — no video, no controller (js/hero.js deleted).
 
-  // ── PARALLAX ──────────────────────────────────────────
-  // Elements tagged with [data-parallax] translate vertically with scroll.
-  // If they also have [data-parallax-3d], a perspective rotateX + slight
-  // scale-down is applied so the element appears to tilt back and recede
-  // as the user scrolls past — gives the hero video a cinematic 3D feel.
-  const parallaxEls = document.querySelectorAll('[data-parallax]');
-  if (parallaxEls.length && !reduceMotion) {
-    let ticking = false;
-    const updateParallax = () => {
-      const y = window.scrollY;
-      parallaxEls.forEach(el => {
-        const speed = parseFloat(el.dataset.parallax) || 0.3;
-        const ty = y * speed;
-        const is3d = el.dataset.parallax3d === 'true' || el.dataset.parallax3d === '';
-        if (is3d) {
-          // Tilt up to ~10° on a full viewport-height of scroll, plus a base
-          // zoom (1.2× = 20% in) so the hero video reads closer-up. The scale
-          // still tapers slightly on scroll for the parallax depth effect.
-          const vh = Math.max(1, window.innerHeight);
-          const progress = Math.min(1, y / vh);
-          const angle = progress * 10;          // 0° → 10°
-          const scale = 1.45 - progress * 0.07; // 1.45 → 1.38
-          el.style.transform =
-            `translate3d(0, ${ty}px, 0) rotateX(${angle}deg) scale(${scale})`;
-        } else {
-          el.style.transform = `translate3d(0, ${ty}px, 0)`;
+  // ── PER-ELEMENT PARALLAX (unified) ────────────────────
+  // Any [data-parallax] element translates vertically as the user scrolls
+  // through it. Speed is read from data-parallax-speed (0.1–0.3 range,
+  // default 0.15) so hero/large banners can use ~0.2–0.3 and small inline
+  // images ~0.1–0.15. IntersectionObserver gates the scroll work: only
+  // in-view elements have their transform recalculated on each frame,
+  // and will-change:transform is set only while in view. A single rAF
+  // loop batches every visible element's update — never one listener
+  // per image. The (p - 0.5) * speed * height formula is clamped to
+  // ±15 % of wrapper height (±8 % in "gentle" mode) so the translateY
+  // sweep never reveals the wrapper's empty edge, matching the 130 %
+  // (or 116 %) img-height overhang enforced in CSS.
+  (function () {
+    if (reduceMotion) return;
+    const els = Array.from(document.querySelectorAll('[data-parallax]'));
+    if (!els.length) return;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const speedMul = isMobile ? 0.5 : 1;    // scroll-linked transforms
+                                             // jank on iOS Safari
+    const entries = els.map(el => ({
+      el,
+      // Progress is measured off the visible frame (the wrapper), not the
+      // oversized img inside — otherwise the 30 % overhang would make the
+      // motion start/end 15 % outside the viewable box.
+      frame: el.closest('.parallax-wrapper') || el.parentElement || el,
+      speed: (parseFloat(el.dataset.parallaxSpeed) || 0.15) * speedMul,
+      overhang: el.dataset.parallaxMode === 'gentle' ? 0.08 : 0.15,
+      top: 0,
+      height: 0,
+      inView: false,
+    }));
+    const byEl = new Map(entries.map(e => [e.el, e]));
+    const measure = () => {
+      const sy = window.scrollY || 0;
+      for (let i = 0; i < entries.length; i++) {
+        const r = entries[i].frame.getBoundingClientRect();
+        entries[i].top = r.top + sy;
+        entries[i].height = r.height;
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      const byFrame = new Map(entries.map(e => [e.frame, e]));
+      const io = new IntersectionObserver((recs) => {
+        for (let i = 0; i < recs.length; i++) {
+          const e = byFrame.get(recs[i].target);
+          if (!e) continue;
+          e.inView = recs[i].isIntersecting;
+          e.el.style.willChange = e.inView ? 'transform' : '';
         }
+      }, { rootMargin: '20% 0px' });
+      entries.forEach(e => io.observe(e.frame));
+    } else {
+      entries.forEach(e => {
+        e.inView = true;
+        e.el.style.willChange = 'transform';
       });
+    }
+    let ticking = false;
+    const update = () => {
+      const sy = window.scrollY || 0;
+      const vh = window.innerHeight || 1;
+      for (let i = 0; i < entries.length; i++) {
+        const e = entries[i];
+        if (!e.inView || !e.height) continue;
+        // Progress 0..1: 0 as the element enters from the bottom, 1 as
+        // it exits at the top. Uses the wrapper's actual travel so
+        // shorter elements move less time-wise but the same amplitude.
+        const travel = e.height + vh;
+        const p = Math.max(0, Math.min(1, (sy + vh - e.top) / travel));
+        // Raw amplitude scales with wrapper height so the visual feel
+        // is consistent regardless of viewport size.
+        const raw = (p - 0.5) * e.speed * e.height;
+        const cap = e.height * e.overhang;
+        const y = raw > cap ? cap : raw < -cap ? -cap : raw;
+        e.el.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)';
+      }
       ticking = false;
     };
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    }, { passive: true });
-    updateParallax();
-  }
+    const req = () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    };
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', () => { measure(); req(); }, { passive: true });
+    window.addEventListener('load', () => { measure(); req(); }, { once: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { measure(); req(); });
+    }
+    measure();
+    update();
+  })();
 
   // ── WRAPPER PARALLAX (translates .parallax-wrapper, NOT the img) ──
   // Every image on the site stays static (object-fit:contain) and
@@ -382,7 +434,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (reduceMotion) return;
     const wraps = Array.from(
       document.querySelectorAll('.parallax-wrapper:not(.hero-bg)')
-    );
+    // Skip wrappers that contain an image already using the per-element
+    // parallax module above, so the two systems never double-transform.
+    ).filter(w => !w.querySelector('[data-parallax]'));
     if (!wraps.length) return;
     const entries = wraps.map(w => ({
       el: w, top: 0, height: 0, inView: false,
