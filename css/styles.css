@@ -2754,3 +2754,75 @@ li.service-tier.service-tier--info,
 #contact-us-section .contact-card textarea {
   text-align: center;
 }
+
+/* ── MOBILE-ONLY LAYOUT FIXES (max-width: 767px) ────────────────────
+   All rules below apply exclusively to phones. Desktop/tablet layouts
+   above this breakpoint stay untouched. Scoped to three sections
+   with narrow, unique selectors so nothing leaks. */
+@media (max-width: 767px) {
+  /* 1) ABOUT ME — take the stat badges out of the absolute overlay
+        and drop them into normal flow BELOW the portrait so the
+        whole face/torso is visible. The existing max-width:640px
+        rule above pinned the badges to the bottom of the image;
+        this newer 767px rule fully removes the overlay. */
+  .about-metrics {
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    transform: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 340px;
+    margin: 16px auto 0;
+    gap: 8px;
+    pointer-events: auto;
+  }
+  .about-metrics .stat-badge {
+    flex: 1 1 calc(50% - 4px);
+  }
+
+  /* 2) BODY COMPOSITION — expand the (currently right-side 70%)
+        background figure to full width so the calculator card sits
+        on top of the whole image instead of a narrow sliver. Desktop
+        rule stays at left:30%/width:70% via the base declaration. */
+  #body-composition-section figure {
+    left: 0;
+    width: 100%;
+  }
+  /* Uniform dark wash on mobile since the form now sits over the
+     centre of the image, not its right side. */
+  #body-composition-section figure::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.70) 100%);
+  }
+  /* Give the form breathing room; the desktop 40px padding cramps
+     the columns at 400 px wide. */
+  #body-composition-section .calculator-form-wrapper {
+    padding: 20px 12px;
+  }
+
+  /* 3) FAQ MODAL — collapse the nested paddings so the questions
+        use ~86% of the viewport width instead of ~60%. Also shrink
+        the × button so a smaller top padding still clears it. */
+  .faq-modal {
+    padding: 12px;
+  }
+  .faq-modal__card {
+    padding: 40px 16px 24px;   /* top clears the shrunk close btn */
+  }
+  .faq-modal__close {
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+  }
+  /* Neutralise the Tailwind .max-w-3xl.mx-auto.px-6 wrapper inside
+     the modal body — its px-6 (24 px) doubles the side padding on
+     mobile for no gain. */
+  .faq-modal .max-w-3xl {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
