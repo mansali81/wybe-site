@@ -701,13 +701,12 @@ h4, h5, h6, .wybe-subhead {
     align-items: flex-end;
     padding-bottom: 48px;
   }
-  /* The <picture> element in index.html already swaps to a portrait
-     3:4 crop (Hero-mobile.webp) on this breakpoint; that asset is
-     pre-centred on the subject, so object-position needs to be
-     50 % 50 % here — the desktop 75 % 15 % anchor would push the
-     already-centred subject off-screen. */
+  /* Mobile source is /images/hero-mobile.webp (1350x1080, subject
+     left-of-centre). Bias the crop 40 % from the left so the face +
+     dumbbell stay in frame on portrait phone containers without
+     hitting the desktop 75 % 15 % anchor. */
   .hero-bg .parallax-img {
-    object-position: 50% 50%;
+    object-position: 40% 50%;
   }
 }
 /* Hero copy is visible by default — no scroll or JS required. Pre-JS

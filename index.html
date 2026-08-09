@@ -731,12 +731,12 @@
          the right side of the frame, copy overlaid on the left. -->
     <div class="hero-bg parallax-wrapper" aria-hidden="true">
       <picture>
-        <!-- Portrait crop for phones. The landscape original at 1.59
-             aspect gets cover-cropped hard on 0.5-0.7 phone containers;
-             this pre-cropped 3:4 asset (1224x1632, subject centred)
-             keeps the face + dumbbell + bench fully in frame. -->
-        <source media="(max-width: 767px)" srcset="images/Hero-mobile.webp">
-        <img src="images/Hero.webp"
+        <!-- Mobile source: a tighter 1350x1080 crop composed for phones
+             (face + torso + dumbbell prominent, less wall backdrop).
+             The desktop Hero.webp (2592x1632) stays the fallback for
+             everything above the 767 px breakpoint. -->
+        <source media="(max-width: 767px)" srcset="/images/hero-mobile.webp" type="image/webp">
+        <img src="/images/Hero.webp"
              alt=""
              class="parallax-img hero-bg__img"
              data-parallax-speed="0.15">
