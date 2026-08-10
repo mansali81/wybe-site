@@ -1974,68 +1974,27 @@ footer a:not([class*="bg-burgundy"]):hover::after,
   }
   .wybe-cursor.is-visible { opacity: 1; }
 
-  /* Kettlebell cursor. SVG below is a horseshoe-handle over a solid ball,
-     the universally-readable kettlebell silhouette. */
+  /* Single solid orange ball. Sized to match the visual footprint of
+     the previous kettlebell dot + its lagging ring composite, but as
+     ONE element — no inner black centre, no thin outer ring, no
+     ripple emissions. Hover scales it up for interactive-element
+     affordance. */
   .wybe-cursor__kb {
-    width: 30px;
-    height: 30px;
-    margin: -15px 0 0 -15px;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    background: #FF6600;
+    border-radius: 50%;
     filter: drop-shadow(0 0 6px rgba(255, 102, 0, 0.55));
     transform: translate3d(var(--tx), var(--ty), 0);
     transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
                 filter 0.25s ease;
   }
-  .wybe-cursor__ring {
-    transform: translate3d(var(--tx), var(--ty), 0);
-  }
-  .wybe-cursor__ring {
-    width: 40px;
-    height: 40px;
-    border: 1.5px solid rgba(255, 102, 0, 0.35);
-    border-radius: 50%;
-    margin: -20px 0 0 -20px;
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.25s ease,
-                background-color 0.25s ease;
-  }
-  /* Generic hover (any interactive element): kettlebell swings + scales up,
-     ring inflates + lime-tints. The .is-hover class lands on the SAME
-     element (kb / ring) so we use compound selectors, not descendant.
-     Every hover state MUST re-declare the translate so it isn't
-     clobbered by the scale/rotate that follows. */
-  .wybe-cursor__kb.is-hover   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.15) rotate(-12deg);
-                                filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.85)); }
-  .wybe-cursor__ring.is-hover { width: 62px; height: 62px; margin: -31px 0 0 -31px;
-                                border-color: rgba(255, 102, 0, 0.9);
-                                background: rgba(255, 102, 0, 0.10); }
-  /* Title-hover (tabs, headings, nav links): even bigger swing, big ring. */
-  .wybe-cursor__kb.is-hover-title   { transform: translate3d(var(--tx), var(--ty), 0) scale(1.35) rotate(-18deg); }
-  .wybe-cursor__ring.is-hover-title { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
-
-  /* Ripple ring — spawned periodically by wybe-cursor.js as the
-     pointer moves. Each ripple is a fresh div, positioned via top/
-     left (set inline by JS), then animated by CSS from small +
-     opaque to large + fully transparent. Self-removes on
-     animationend (JS). */
-  .wybe-cursor__ripple {
-    position: fixed;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 102, 0, 0.75);
-    background: transparent;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.75;
-    animation: wybe-cursor-ripple 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  }
-  @keyframes wybe-cursor-ripple {
-    to {
-      transform: translate(-50%, -50%) scale(4);
-      opacity: 0;
-    }
+  /* Hover: scale + tighter glow. Re-declares the translate so the
+     scale doesn't clobber the pointer position. */
+  .wybe-cursor__kb.is-hover {
+    transform: translate3d(var(--tx), var(--ty), 0) scale(1.6);
+    filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.85));
   }
 }
 /* Fallback: hide the custom cursor DOM entirely on touch / coarse
