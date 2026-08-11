@@ -54,15 +54,29 @@
     .about-prose strong { color: #FFFFFF; font-weight: 700; }
     .about-prose a { color: #FF6600; text-decoration: underline; text-underline-offset: 3px; }
     .about-prose a:hover { color: #E65500; }
-    /* Group heading above each cluster of certificate scans. Orange
-       caps to match the .section-title cadence used elsewhere. */
-    .cert-group { margin-top: 40px; }
-    .cert-group:first-of-type { margin-top: 0; }
+    /* Cluster of one credential's scans — sits as a single cell inside
+       the .cert-grid below. Multiple scans stack vertically inside a
+       cell (rare: only a couple of credentials have 2 scans). */
+    .cert-group { display: flex; flex-direction: column; gap: 12px; }
     .cert-group__title {
       font-family: 'Inter', sans-serif; font-weight: 900;
-      font-size: 15px; letter-spacing: 0.14em;
+      font-size: 14px; letter-spacing: 0.14em;
       text-transform: uppercase; color: #FF6600;
-      margin: 0 0 14px;
+      margin: 0 0 4px;
+      line-height: 1.25;
+    }
+    /* Outer grid — three columns on desktop, two on tablets, one on
+       mobile — so credentials read next to each other, not stacked. */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    @media (min-width: 640px) {
+      .cert-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .cert-grid { grid-template-columns: repeat(3, 1fr); }
     }
     /* Certificate image tile — thumbnail on top, single-line caption
        below. Whole tile is a link to open the image full-size in a
@@ -171,19 +185,9 @@
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Credentials</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-8">Certifications Achieved</h2>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">REPS UAE Member</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <a href="/images/Certificates/reps-uae-e-certificate-2027.webp" target="_blank" rel="noopener" class="cert-tile">
-              <img src="/images/Certificates/reps-uae-e-certificate-2027.webp" alt="REPs UAE E-Certificate 2027" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">REPs UAE E-Certificate (2027)</p>
-            </a>
-          </div>
-        </div>
-
-        <div class="cert-group">
-          <h3 class="cert-group__title">Level 4 Personal Trainer</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="cert-grid">
+          <div class="cert-group">
+            <h3 class="cert-group__title">Level 4 Personal Trainer</h3>
             <a href="/images/Certificates/k11-dpt-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/k11-dpt-certificate.webp" alt="K11 Diploma in Personal Training Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Diploma in Personal Training (K11)</p>
@@ -193,21 +197,25 @@
               <p class="cert-tile__caption">K11 REPs Certificate</p>
             </a>
           </div>
-        </div>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">Human Performance Nutritionist</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="cert-group">
+            <h3 class="cert-group__title">REPS UAE Member</h3>
+            <a href="/images/Certificates/reps-uae-e-certificate-2027.webp" target="_blank" rel="noopener" class="cert-tile">
+              <img src="/images/Certificates/reps-uae-e-certificate-2027.webp" alt="REPs UAE E-Certificate 2027" loading="lazy" decoding="async" class="cert-tile__img">
+              <p class="cert-tile__caption">REPs UAE E-Certificate (2027)</p>
+            </a>
+          </div>
+
+          <div class="cert-group">
+            <h3 class="cert-group__title">Human Performance Nutritionist</h3>
             <a href="/images/Certificates/hpn-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/hpn-certificate.webp" alt="Human Performance Nutrition Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Human Performance Nutrition Certificate</p>
             </a>
           </div>
-        </div>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">Fitness Instructor</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="cert-group">
+            <h3 class="cert-group__title">Fitness Instructor</h3>
             <a href="/images/Certificates/fitness-instructor-ns.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/fitness-instructor-ns.webp" alt="Fitness Instructor Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Fitness Instructor Certificate</p>
@@ -217,11 +225,9 @@
               <p class="cert-tile__caption">NSQF Certificate</p>
             </a>
           </div>
-        </div>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">CPR &middot; AED &middot; First Aid</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="cert-group">
+            <h3 class="cert-group__title">CPR &middot; AED &middot; First Aid</h3>
             <a href="/images/Certificates/cpr-aed-and-first-aid-certification.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/cpr-aed-and-first-aid-certification.webp" alt="CPR AED First Aid Certification" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Certification</p>
@@ -231,21 +237,17 @@
               <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Card</p>
             </a>
           </div>
-        </div>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">Nutrition &amp; Hydration</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="cert-group">
+            <h3 class="cert-group__title">Nutrition &amp; Hydration</h3>
             <a href="/images/Certificates/nutrition-and-hydration.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/nutrition-and-hydration.webp" alt="Nutrition and Hydration Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Nutrition &amp; Hydration Certificate</p>
             </a>
           </div>
-        </div>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">Fitness &amp; Weight Loss</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="cert-group">
+            <h3 class="cert-group__title">Fitness &amp; Weight Loss</h3>
             <a href="/images/Certificates/fitness-and-weight-loss-module-1.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/fitness-and-weight-loss-module-1.webp" alt="Fitness and Weight Loss Module 1" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Module 1</p>
@@ -255,11 +257,9 @@
               <p class="cert-tile__caption">Module 2</p>
             </a>
           </div>
-        </div>
 
-        <div class="cert-group">
-          <h3 class="cert-group__title">Public Speaking</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="cert-group">
+            <h3 class="cert-group__title">Public Speaking</h3>
             <a href="/images/Certificates/public-speaking-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
               <img src="/images/Certificates/public-speaking-certificate.webp" alt="Public Speaking Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Public Speaking Certificate</p>
@@ -268,12 +268,12 @@
         </div>
       </div>
 
-      <div class="mt-16 md:mt-20 flex flex-col sm:flex-row items-center justify-center gap-6">
+      <div class="mt-16 md:mt-20 flex flex-col sm:flex-row items-center justify-between gap-6">
         <a href="/" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
           <span aria-hidden="true">&larr;</span> Back to Home
         </a>
-        <a href="/#services" class="inline-block bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
-          Explore Services &rarr;
+        <a href="/#services" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
+          Explore Services <span aria-hidden="true">&rarr;</span>
         </a>
       </div>
 
