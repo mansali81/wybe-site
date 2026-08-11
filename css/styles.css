@@ -213,9 +213,10 @@ h4, h5, h6, .wybe-subhead {
   pointer-events: none;
 }
 
-/* Brand: single combined SVG (logo + WYBE wordmark + tagline baked in).
-   Vertically centered inside the nav row. Hover mirrors the nav links —
-   an orange tint filter on the mark plus an animated underline sweep. */
+/* Brand: text-only "WYBE" wordmark stacked over the "Wellness You
+   Build Everyday" tagline. Replaces the earlier combined SVG mark.
+   Vertically centred inside the nav row. Hover mirrors the nav links —
+   both lines shift to orange plus an animated underline sweep. */
 .wybe-brand {
   position: relative;
   display: inline-flex;
@@ -225,18 +226,36 @@ h4, h5, h6, .wybe-subhead {
   cursor: pointer;
   padding: 6px 2px;
 }
-.wybe-brand__mark {
-  height: 64px;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  flex-shrink: 0;
-  display: block;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
-  transition: filter 0.3s ease, transform 0.3s ease;
+.wybe-brand__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+  transition: color 0.3s ease;
 }
-.wybe-header.is-scrolled .wybe-brand__mark {
-  filter: none;
+.wybe-brand__word {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: 0.02em;
+  color: #F6F2E8;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.wybe-brand__tag {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 232, 0.72);
+  margin-top: 5px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.wybe-header.is-scrolled .wybe-brand__word,
+.wybe-header.is-scrolled .wybe-brand__tag {
+  text-shadow: none;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
@@ -253,17 +272,10 @@ h4, h5, h6, .wybe-subhead {
   border-radius: 1px;
   pointer-events: none;
 }
-/* Hover: SVG recoloured to orange via filter chain. */
-.wybe-brand:hover .wybe-brand__mark {
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(43%)
-    sepia(80%)
-    saturate(2900%)
-    hue-rotate(0deg)
-    brightness(103%)
-    contrast(103%);
+/* Hover: both text lines shift to brand orange. */
+.wybe-brand:hover .wybe-brand__word,
+.wybe-brand:hover .wybe-brand__tag {
+  color: #FF6600;
 }
 .wybe-brand:hover::after { transform: scaleX(1); }
 .wybe-brand:focus-visible {
