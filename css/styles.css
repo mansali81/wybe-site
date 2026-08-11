@@ -1980,12 +1980,12 @@ footer a:not([class*="bg-burgundy"]):hover::after,
      ripple emissions. Hover scales it up for interactive-element
      affordance. */
   .wybe-cursor__kb {
-    width: 20px;
-    height: 20px;
-    margin: -10px 0 0 -10px;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
     background: #FF6600;
     border-radius: 50%;
-    filter: drop-shadow(0 0 6px rgba(255, 102, 0, 0.55));
+    filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.55));
     transform: translate3d(var(--tx), var(--ty), 0);
     transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
                 filter 0.25s ease;
