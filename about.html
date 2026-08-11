@@ -110,6 +110,58 @@
       color: #FFFFFF;
       line-height: 1.35;
     }
+    /* ── CERTIFICATE MODAL — lightbox for the scan tiles ──
+       Fixed full-viewport overlay, click any .cert-tile to open the
+       linked image here in place instead of a new tab. Close via the
+       orange X in the top-LEFT corner, Escape key, or backdrop click. */
+    .cert-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 5100;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px 24px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      cursor: zoom-out;
+    }
+    .cert-modal.is-open { display: flex; }
+    .cert-modal__card {
+      position: relative;
+      max-width: min(1100px, 100%);
+      max-height: 100%;
+      display: flex;
+      cursor: default;
+    }
+    .cert-modal__img {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100vh - 80px);
+      object-fit: contain;
+      border-top: 3px solid #FF6600;
+      border-radius: 10px;
+      background: #0e0e0e;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+    }
+    .cert-modal__close {
+      position: absolute;
+      top: -14px; left: -14px;    /* top-LEFT corner per ask */
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #FF6600;
+      color: #0e0e0e;
+      border: 2px solid #0e0e0e;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      z-index: 2;
+    }
+    .cert-modal__close:hover { background: #E65500; transform: scale(1.05); }
+    .cert-modal__close:focus-visible { outline: 2px solid #F6F2E8; outline-offset: 3px; }
   </style>
 </head>
 <body class="text-cream">
@@ -188,11 +240,11 @@
         <div class="cert-grid">
           <div class="cert-group">
             <h3 class="cert-group__title">Level 4 Personal Trainer</h3>
-            <a href="/images/Certificates/k11-dpt-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/k11-dpt-certificate.webp"  class="cert-tile">
               <img src="/images/Certificates/k11-dpt-certificate.webp" alt="K11 Diploma in Personal Training Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Diploma in Personal Training (K11)</p>
             </a>
-            <a href="/images/Certificates/k11-reps-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/k11-reps-certificate.webp"  class="cert-tile">
               <img src="/images/Certificates/k11-reps-certificate.webp" alt="K11 REPs Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">K11 REPs Certificate</p>
             </a>
@@ -200,7 +252,7 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">REPS UAE Member</h3>
-            <a href="/images/Certificates/reps-uae-e-certificate-2027.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/reps-uae-e-certificate-2027.webp"  class="cert-tile">
               <img src="/images/Certificates/reps-uae-e-certificate-2027.webp" alt="REPs UAE E-Certificate 2027" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">REPs UAE E-Certificate (2027)</p>
             </a>
@@ -208,7 +260,7 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">Human Performance Nutritionist</h3>
-            <a href="/images/Certificates/hpn-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/hpn-certificate.webp"  class="cert-tile">
               <img src="/images/Certificates/hpn-certificate.webp" alt="Human Performance Nutrition Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Human Performance Nutrition Certificate</p>
             </a>
@@ -216,11 +268,11 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">Fitness Instructor</h3>
-            <a href="/images/Certificates/fitness-instructor-ns.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/fitness-instructor-ns.webp"  class="cert-tile">
               <img src="/images/Certificates/fitness-instructor-ns.webp" alt="Fitness Instructor Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Fitness Instructor Certificate</p>
             </a>
-            <a href="/images/Certificates/nsqf-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/nsqf-certificate.webp"  class="cert-tile">
               <img src="/images/Certificates/nsqf-certificate.webp" alt="NSQF Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">NSQF Certificate</p>
             </a>
@@ -228,11 +280,11 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">CPR &middot; AED &middot; First Aid</h3>
-            <a href="/images/Certificates/cpr-aed-and-first-aid-certification.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/cpr-aed-and-first-aid-certification.webp"  class="cert-tile">
               <img src="/images/Certificates/cpr-aed-and-first-aid-certification.webp" alt="CPR AED First Aid Certification" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Certification</p>
             </a>
-            <a href="/images/Certificates/cpr-aed-and-first-aid-card.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/cpr-aed-and-first-aid-card.webp"  class="cert-tile">
               <img src="/images/Certificates/cpr-aed-and-first-aid-card.webp" alt="CPR AED First Aid Card" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Card</p>
             </a>
@@ -240,7 +292,7 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">Nutrition &amp; Hydration</h3>
-            <a href="/images/Certificates/nutrition-and-hydration.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/nutrition-and-hydration.webp"  class="cert-tile">
               <img src="/images/Certificates/nutrition-and-hydration.webp" alt="Nutrition and Hydration Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Nutrition &amp; Hydration Certificate</p>
             </a>
@@ -248,11 +300,11 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">Fitness &amp; Weight Loss</h3>
-            <a href="/images/Certificates/fitness-and-weight-loss-module-1.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/fitness-and-weight-loss-module-1.webp"  class="cert-tile">
               <img src="/images/Certificates/fitness-and-weight-loss-module-1.webp" alt="Fitness and Weight Loss Module 1" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Module 1</p>
             </a>
-            <a href="/images/Certificates/fitness-and-weight-loss-module-2.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/fitness-and-weight-loss-module-2.webp"  class="cert-tile">
               <img src="/images/Certificates/fitness-and-weight-loss-module-2.webp" alt="Fitness and Weight Loss Module 2" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Module 2</p>
             </a>
@@ -260,7 +312,7 @@
 
           <div class="cert-group">
             <h3 class="cert-group__title">Public Speaking</h3>
-            <a href="/images/Certificates/public-speaking-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <a href="/images/Certificates/public-speaking-certificate.webp"  class="cert-tile">
               <img src="/images/Certificates/public-speaking-certificate.webp" alt="Public Speaking Certificate" loading="lazy" decoding="async" class="cert-tile__img">
               <p class="cert-tile__caption">Public Speaking Certificate</p>
             </a>
@@ -295,6 +347,82 @@
     </div>
   </footer>
 
+  <!-- Certificate lightbox — one shared modal for every .cert-tile
+       click. Kept at body level so it never inherits any transformed
+       ancestor. The wiring script directly below attaches listeners
+       AFTER the modal exists in the DOM. -->
+  <div id="cert-modal" class="cert-modal" role="dialog" aria-modal="true" aria-hidden="true" data-cert-close>
+    <div class="cert-modal__card" role="document">
+      <button type="button" class="cert-modal__close" data-cert-close aria-label="Close certificate">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <img class="cert-modal__img" alt="" data-cert-img>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var modal = document.getElementById('cert-modal');
+      if (!modal) return;
+      var imgEl = modal.querySelector('[data-cert-img]');
+      var card  = modal.querySelector('.cert-modal__card');
+      var lastFocus = null;
+
+      function open(url, alt) {
+        lastFocus = document.activeElement;
+        imgEl.setAttribute('src', url);
+        imgEl.setAttribute('alt', alt || '');
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflow = 'hidden';
+        setTimeout(function () {
+          var btn = modal.querySelector('.cert-modal__close');
+          if (btn) btn.focus();
+        }, 60);
+      }
+      function close() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflow = '';
+        imgEl.setAttribute('src', '');
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      // Intercept every certificate-tile click. preventDefault so the
+      // href fallback (opening the WebP in a new tab) never fires when
+      // JS is available.
+      var tiles = document.querySelectorAll('.cert-tile');
+      for (var i = 0; i < tiles.length; i++) {
+        (function (tile) {
+          tile.addEventListener('click', function (e) {
+            e.preventDefault();
+            var url = tile.getAttribute('href');
+            var img = tile.querySelector('img');
+            var alt = img ? img.getAttribute('alt') : '';
+            open(url, alt);
+          });
+        })(tiles[i]);
+      }
+
+      // Close via the X button, backdrop click (modal itself), or Esc.
+      // The .cert-modal__card is not marked [data-cert-close], so
+      // clicks on the image or its card don't trigger a close.
+      modal.addEventListener('click', function (e) {
+        if (e.target === card || card.contains(e.target)) {
+          // Only close if the close button was hit; card/image stays.
+          if (e.target.closest('[data-cert-close]')) close();
+          return;
+        }
+        // Backdrop area (outside the card) — close.
+        close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+      });
+    })();
+  </script>
   <script src="/js/wybe-cursor.js" defer></script>
   <script src="/js/main.js"></script>
 </body>
