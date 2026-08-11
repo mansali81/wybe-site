@@ -46,7 +46,7 @@
   // via CSS animation and self-removes on animationend. Cheap: only
   // 1 DOM node per ~10 px, and each lives for 550 ms.
   let lastTrailX = -1000, lastTrailY = -1000;
-  const TRAIL_STEP = 10;
+  const TRAIL_STEP = 7;
   function spawnTrail(x, y) {
     const d = document.createElement('div');
     d.className = 'wybe-cursor__trail';

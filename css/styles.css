@@ -395,8 +395,9 @@ h4, h5, h6, .wybe-subhead {
   box-shadow: 0 0 25px rgba(255, 102, 0, 0.15);
   display: flex;
   flex-direction: column;
+  align-items: flex-start;     /* left-align the items inside the panel */
   gap: 2px;
-  text-align: center;
+  text-align: left;
 }
 .wybe-mobile-link {
   font-family: var(--font-subhead);
@@ -1996,26 +1997,33 @@ footer a:not([class*="bg-burgundy"]):hover::after,
     filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.85));
   }
 
-  /* Motion trail — small orange dot spawned every ~10 px of pointer
-     travel by wybe-cursor.js. Each dot fades + shrinks over 550 ms
-     and self-removes on animationend. Positioned via inline
-     left/top (set by JS), centred with translate(-50 %, -50 %). */
+  /* Motion trail — orange glow dot spawned every ~7 px of pointer
+     travel by wybe-cursor.js. Each dot fades + shrinks over 900 ms
+     and self-removes on animationend. The soft box-shadow gives the
+     trail a proper "ray" feel — dots bleed into each other and read
+     as one continuous glowing streak behind the ball. */
   .wybe-cursor__trail {
     position: fixed;
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #FF6600;
     pointer-events: none;
     z-index: 9998;
     transform: translate(-50%, -50%);
-    opacity: 0.55;
-    animation: wybe-cursor-trail 0.55s ease-out forwards;
+    opacity: 0.85;
+    box-shadow:
+      0 0 8px rgba(255, 102, 0, 0.75),
+      0 0 18px rgba(255, 102, 0, 0.45);
+    animation: wybe-cursor-trail 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
   @keyframes wybe-cursor-trail {
     to {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(0.35);
+      transform: translate(-50%, -50%) scale(0.25);
+      box-shadow:
+        0 0 4px rgba(255, 102, 0, 0),
+        0 0 10px rgba(255, 102, 0, 0);
     }
   }
 }
