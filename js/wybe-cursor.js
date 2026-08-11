@@ -41,6 +41,21 @@
     ball.classList.add('is-visible');
   }
 
+  // Trail emitter — every TRAIL_STEP px of pointer travel, spawn a
+  // small orange dot at the current position. Each dot fades + shrinks
+  // via CSS animation and self-removes on animationend. Cheap: only
+  // 1 DOM node per ~10 px, and each lives for 550 ms.
+  let lastTrailX = -1000, lastTrailY = -1000;
+  const TRAIL_STEP = 10;
+  function spawnTrail(x, y) {
+    const d = document.createElement('div');
+    d.className = 'wybe-cursor__trail';
+    d.style.left = x + 'px';
+    d.style.top  = y + 'px';
+    document.body.appendChild(d);
+    d.addEventListener('animationend', () => d.remove(), { once: true });
+  }
+
   window.addEventListener('pointermove', (e) => {
     // Position via CSS custom properties so the CSS transform (which
     // composes translate + scale for the hover state) can read the
@@ -49,6 +64,12 @@
     ball.style.setProperty('--tx', e.clientX + 'px');
     ball.style.setProperty('--ty', e.clientY + 'px');
     showOnce();
+    const dx = e.clientX - lastTrailX, dy = e.clientY - lastTrailY;
+    if (dx * dx + dy * dy >= TRAIL_STEP * TRAIL_STEP) {
+      spawnTrail(e.clientX, e.clientY);
+      lastTrailX = e.clientX;
+      lastTrailY = e.clientY;
+    }
   }, { passive: true });
 
   window.addEventListener('pointerleave', () => {
