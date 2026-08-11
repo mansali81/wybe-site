@@ -808,6 +808,30 @@ h4, h5, h6, .wybe-subhead {
   background: #E65500;                    /* brand deep orange, matches every other CTA hover */
   color: #FFFFFF;
 }
+
+/* ── UNIVERSAL ORANGE-CTA HOVER ──────────────────────────
+   Every filled orange call-to-action (Tailwind .bg-burgundy on a
+   real <a> or <button>) gets the same reaction as .hero-cta:hover
+   above — scale up, brightness bump, deeper orange, orange glow —
+   so the whole site's hover language is consistent. Applies only
+   to anchors/buttons so decorative .bg-burgundy divs (the small
+   underline dividers) don't get transformed. */
+a.bg-burgundy,
+button.bg-burgundy {
+  transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease,
+              color 0.25s ease;
+}
+a.bg-burgundy:hover,
+button.bg-burgundy:hover {
+  transform: scale(1.05);
+  filter: brightness(1.08);
+  background-color: #E65500 !important;   /* wins over Tailwind's hover:bg-burgundy-dark */
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
+}
 .hero-cta:hover .hero-cta__arrow { transform: translateX(4px); }
 .hero-cta:focus-visible {
   outline: 2px solid #F6F2E8;
