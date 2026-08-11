@@ -552,12 +552,13 @@ document.addEventListener('DOMContentLoaded', () => {
       tiers.forEach(t => {
         const now = t.querySelector('.service-tier__now');
         const was = t.querySelector('.service-tier__was');
-        const base = t.dataset.base;
-        const combo = t.dataset.combo;
-        const wasBase = t.dataset.was;
-        const wasCombo = t.dataset.comboWas;
-        if (now) now.textContent = '$' + (on ? combo : base);
-        if (was) was.textContent = '$' + (on ? wasCombo : wasBase);
+        if (now) now.textContent = '$' + (on ? t.dataset.combo : t.dataset.base);
+        if (was) was.textContent = '$' + (on ? t.dataset.comboWas : t.dataset.was);
+        // Also swap the tier's Stripe checkout URL so ticking the
+        // add-on routes to the combo (programme + consultation)
+        // Payment Link instead of the base one.
+        const targetUrl = on ? t.dataset.comboUrl : t.dataset.baseUrl;
+        if (targetUrl) t.href = targetUrl;
       });
     };
     box.addEventListener('change', update);
