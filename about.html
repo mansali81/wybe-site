@@ -83,6 +83,38 @@
       font-size: 12px; letter-spacing: 0.04em;
       color: rgba(246, 242, 232, 0.60); margin: 0;
     }
+    /* Certificate image tile — thumbnail on top, single-line title
+       label below. Whole tile is a link to open the image full-size
+       in a new tab. */
+    .cert-tile {
+      display: block;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    }
+    .cert-tile:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 102, 0, 0.35);
+      transform: translateY(-2px);
+    }
+    .cert-tile__img {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center;
+      background: #0e0e0e;
+    }
+    .cert-tile__caption {
+      padding: 12px 14px 14px;
+      font-family: 'Inter', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.02em;
+      color: #FFFFFF;
+      line-height: 1.35;
+    }
   </style>
 </head>
 <body class="text-cream">
@@ -180,6 +212,59 @@
             <p class="cert-card__title">CPR &middot; AED &middot; First Aid</p>
             <p class="cert-card__meta">Emergency response certified</p>
           </div>
+        </div>
+
+        <!-- Certificate scans — click any tile to open the full-size
+             WebP in a new tab. All sourced from images/Certificates/. -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+          <a href="/images/Certificates/reps-uae-e-certificate-2027.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/reps-uae-e-certificate-2027.webp" alt="REPs UAE E-Certificate 2027" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">REPs UAE E-Certificate (2027)</p>
+          </a>
+          <a href="/images/Certificates/k11-reps-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/k11-reps-certificate.webp" alt="K11 REPs Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">K11 REPs Certificate</p>
+          </a>
+          <a href="/images/Certificates/k11-dpt-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/k11-dpt-certificate.webp" alt="K11 DPT Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">K11 Diploma in Personal Training</p>
+          </a>
+          <a href="/images/Certificates/hpn-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/hpn-certificate.webp" alt="Human Performance Nutrition Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">Human Performance Nutritionist</p>
+          </a>
+          <a href="/images/Certificates/nsqf-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/nsqf-certificate.webp" alt="NSQF Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">NSQF Certificate</p>
+          </a>
+          <a href="/images/Certificates/fitness-instructor-ns.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/fitness-instructor-ns.webp" alt="Fitness Instructor Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">Fitness Instructor (NS)</p>
+          </a>
+          <a href="/images/Certificates/cpr-aed-and-first-aid-certification.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/cpr-aed-and-first-aid-certification.webp" alt="CPR AED First Aid Certification" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Certification</p>
+          </a>
+          <a href="/images/Certificates/cpr-aed-and-first-aid-card.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/cpr-aed-and-first-aid-card.webp" alt="CPR AED First Aid Card" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Card</p>
+          </a>
+          <a href="/images/Certificates/nutrition-and-hydration.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/nutrition-and-hydration.webp" alt="Nutrition and Hydration Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">Nutrition &amp; Hydration</p>
+          </a>
+          <a href="/images/Certificates/fitness-and-weight-loss-module-1.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/fitness-and-weight-loss-module-1.webp" alt="Fitness and Weight Loss Module 1" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">Fitness &amp; Weight Loss &mdash; Module 1</p>
+          </a>
+          <a href="/images/Certificates/fitness-and-weight-loss-module-2.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/fitness-and-weight-loss-module-2.webp" alt="Fitness and Weight Loss Module 2" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">Fitness &amp; Weight Loss &mdash; Module 2</p>
+          </a>
+          <a href="/images/Certificates/public-speaking-certificate.webp" target="_blank" rel="noopener" class="cert-tile">
+            <img src="/images/Certificates/public-speaking-certificate.webp" alt="Public Speaking Certificate" loading="lazy" decoding="async" class="cert-tile__img">
+            <p class="cert-tile__caption">Public Speaking Certificate</p>
+          </a>
         </div>
       </div>
 
