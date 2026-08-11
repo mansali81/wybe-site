@@ -302,6 +302,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ── IN-PAGE HASH-LINK ARRIVAL FIX ───────────────────────
+  // Sections start life with .section-pre-animate (opacity:0;
+  // translateY(80px); scale(0.95)) and only flip to .section-in-view
+  // when the IntersectionObserver below sees them scroll into view.
+  // Anchor clicks like Book Now (href="#contact") scroll to the
+  // section's layout position immediately, but the content is still
+  // invisible for the first frame — reads to the user as "the button
+  // did nothing" until a second click (by which time the IO has
+  // fired). Force the target section to .section-in-view at click
+  // time so the arrival lands on visible content.
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const hash = a.getAttribute('href');
+    if (!hash || hash === '#') return;
+    let target = null;
+    try { target = document.querySelector(hash); } catch { return; }
+    if (!target) return;
+    target.classList.remove('section-pre-animate');
+    target.classList.add('section-in-view');
+  });
+
   // ── SCROLL-IN ANIMATIONS ──────────────────────────────
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
