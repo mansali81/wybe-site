@@ -2544,9 +2544,18 @@ li.service-tier.service-tier--info,
   background: #E65500;
   border-color: #E65500;
 }
+.service-card__faq {
+  /* Baseline transition on the resting state so the hover state animates
+     smoothly. Kept together with the existing declarations so specificity
+     stays as-is. */
+  transition: color 0.25s ease,
+              transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+              text-shadow 0.25s ease;
+}
 .service-card__faq:hover {
   color: #E65500;
-  transform: translateX(2px);
+  transform: scale(1.08);
+  text-shadow: 0 0 12px rgba(255, 102, 0, 0.55);
 }
 
 /* ── STAT BADGE COMPONENT ──────────────────────────
