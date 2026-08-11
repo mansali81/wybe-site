@@ -27,7 +27,23 @@
     }
   </script>
   <link rel="stylesheet" href="/css/styles.css">
-  <style> body { background-color: #1E1E1E; color: #F6F2E8; } </style>
+  <style>
+    body { background-color: #1E1E1E; color: #F6F2E8; }
+    /* Orange service heading above each accordion group. Matches the
+       .section-title cadence from the homepage but tuned for the FAQ
+       master page (no separate rule needed off the page-scoped style). */
+    .faq-service-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(20px, 2.4vw, 28px);
+      color: #FF6600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin: 44px 0 14px;
+    }
+    .faq-service-title:first-of-type { margin-top: 0; }
+  </style>
 </head>
 <body class="text-cream">
   <a href="#main" class="wybe-skip-link">Skip to content</a>
@@ -56,7 +72,7 @@
   <main id="main" tabindex="-1" class="pt-32 md:pt-40 pb-16 md:pb-20">
     <section id="faq" class="wybe-faq relative py-8 md:py-12">
 
-    <div class="max-w-3xl mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-10 md:mb-12">
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">FAQ</p>
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
@@ -66,183 +82,437 @@
         </p>
       </div>
 
+            <h2 class="faq-service-title">Work Out Program</h2>
       <ul class="wybe-faq__list" role="list">
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q1" aria-expanded="false" aria-controls="faq-a1" data-faq-trigger>
-              <span>Do you train in person or online?</span>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q36" aria-expanded="false" aria-controls="faq-a36" data-faq-trigger>
+              <span>How is the workout program delivered?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a1" role="region" aria-labelledby="faq-q1" class="wybe-faq__answer" hidden>
-            <p>Both. Personal training in-person is <strong>UAE-only</strong>. Fitness &amp; nutrition consultations are online. Digital Workout Plans are digital products sent via email.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q2" aria-expanded="false" aria-controls="faq-a2" data-faq-trigger>
-              <span>Where in Dubai do you train clients?</span>
+          <div id="faq-a36" role="region" aria-labelledby="faq-q36" class="wybe-faq__answer" hidden>
+            <p>All workout programs are delivered online via email as a digital PDF file.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q37" aria-expanded="false" aria-controls="faq-a37" data-faq-trigger>
+              <span>What exactly is the workout program?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a2" role="region" aria-labelledby="faq-q2" class="wybe-faq__answer" hidden>
-            <p>Sessions run out of several gyms across the UAE, and residence gyms for clients whose home includes a private facility. Exact venue is agreed once your application is accepted. I don&rsquo;t list a single fixed address because the roster is capped at a maximum of 3 clients only, and location follows the client, not the other way around.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q3" aria-expanded="false" aria-controls="faq-a3" data-faq-trigger>
-              <span>How much do sessions cost?</span>
+          <div id="faq-a37" role="region" aria-labelledby="faq-q37" class="wybe-faq__answer" hidden>
+            <p>These are predefined workout routines tailored for different experience levels. The Beginner program spans 3 months, the Intermediate program lasts 6 months, and the Advanced program runs for 12 months.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q38" aria-expanded="false" aria-controls="faq-a38" data-faq-trigger>
+              <span>Why is the duration for each program different?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a3" role="region" aria-labelledby="faq-q3" class="wybe-faq__answer" hidden>
-            <p>Live pricing is on the Services section, except for 1-on-1 personal training in the UAE. That investment is discussed privately. Yes, I am a premium trainer. I only take a <strong>maximum of 3 clients per month</strong> and will not provide more than 12 sessions per month. Sessions are not capped at 1 hour.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q4" aria-expanded="false" aria-controls="faq-a4" data-faq-trigger>
+          <div id="faq-a38" role="region" aria-labelledby="faq-q38" class="wybe-faq__answer" hidden>
+            <p>Different fitness levels require different timeframes to show results. Following the program consistently alongside the included diet plan typically yields results in 3 months for beginners, up to 6 months for intermediates, and up to 12 months for advanced individuals.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q39" aria-expanded="false" aria-controls="faq-a39" data-faq-trigger>
+              <span>What is included in each program product?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a39" role="region" aria-labelledby="faq-q39" class="wybe-faq__answer" hidden>
+            <p><strong>For Beginner:</strong> A 3-month routine listing exercise names, sets, reps, poundage, and a complimentary diet plan.</p>
+            <p style="margin-top:8px"><strong>For Intermediate:</strong> A 6-month routine featuring an updated exercise schedule after the first 3 months, listing exercise names, sets, reps, poundage, and a complimentary diet plan.</p>
+            <p style="margin-top:8px"><strong>For Advanced:</strong> A 12-month routine featuring updated exercise schedules every 4 months, listing exercise names, sets, reps, poundage, and a complimentary diet plan.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q40" aria-expanded="false" aria-controls="faq-a40" data-faq-trigger>
+              <span>Which program should I purchase to see results?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a40" role="region" aria-labelledby="faq-q40" class="wybe-faq__answer" hidden>
+            <p>Results vary as different bodies react on different timelines depending on your effort, diet, and recovery. Realistically, beginners who remain strictly consistent will start seeing their desired results within 12 weeks.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q41" aria-expanded="false" aria-controls="faq-a41" data-faq-trigger>
+              <span>How much does a workout program cost?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a41" role="region" aria-labelledby="faq-q41" class="wybe-faq__answer" hidden>
+            <p>Live pricing is available in our Services section. Take advantage of our special introductory pricing available for the first 100 clients.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q42" aria-expanded="false" aria-controls="faq-a42" data-faq-trigger>
               <span>What qualifications do you hold?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a4" role="region" aria-labelledby="faq-q4" class="wybe-faq__answer" hidden>
+          <div id="faq-a42" role="region" aria-labelledby="faq-q42" class="wybe-faq__answer" hidden>
             <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q5" aria-expanded="false" aria-controls="faq-a5" data-faq-trigger>
-              <span>How do I get started?</span>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q43" aria-expanded="false" aria-controls="faq-a43" data-faq-trigger>
+              <span>Do I need a fitness consultation when purchasing a workout program?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a5" role="region" aria-labelledby="faq-q5" class="wybe-faq__answer" hidden>
-            <p>Pick a service, choose your plan, pay online, book my calendar, and just show up.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q6" aria-expanded="false" aria-controls="faq-a6" data-faq-trigger>
-              <span>Do you work with beginners?</span>
+          <div id="faq-a43" role="region" aria-labelledby="faq-q43" class="wybe-faq__answer" hidden>
+            <p>It is completely optional. A fitness consultation ensures you perform exercises scientifically using correct biomechanics, kinesiology, and breathing techniques to prevent internal injuries, fix posture, and increase your range of motion.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q44" aria-expanded="false" aria-controls="faq-a44" data-faq-trigger>
+              <span>What is the benefit of adding a consultation to my program purchase?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a6" role="region" aria-labelledby="faq-q6" class="wybe-faq__answer" hidden>
-            <p>Yes. I work with clients at every level, from complete beginners to advanced athletes.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q7" aria-expanded="false" aria-controls="faq-a7" data-faq-trigger>
+          <div id="faq-a44" role="region" aria-labelledby="faq-q44" class="wybe-faq__answer" hidden>
+            <p>Bundling a fitness consultation with a workout program lowers the session price to a discounted rate of $49. Any additional sessions you need later will remain locked at $49 instead of the standard $69. To book more sessions at this rate, notify me during your first session or email us to receive a custom payment and calendar link.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q45" aria-expanded="false" aria-controls="faq-a45" data-faq-trigger>
+              <span>How long does a fitness consultation session last?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a45" role="region" aria-labelledby="faq-q45" class="wybe-faq__answer" hidden>
+            <p>A single session lasts 60 minutes. We recommend focusing on 3 exercises of your choice per session, depending on your learning pace. For multiple session inquiries, please reach out via our Contact Us page.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q46" aria-expanded="false" aria-controls="faq-a46" data-faq-trigger>
               <span>What is your cancellation and refund policy?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a7" role="region" aria-labelledby="faq-q7" class="wybe-faq__answer" hidden>
-            <p>Digital Workout Plans are non-refundable. For Fitness &amp; Nutrition Consultations, less than 24-hour notice or a no-show is not refundable or rescheduled; more than 24-hour notice can be rescheduled but not refunded. Monthly programmes run in whole calendar months and are non-refundable mid-month, but you can pause with two weeks&rsquo; notice, subject to written approval from my team. Any cancellation or reschedule must be done by email or over a call and needs to be approved. Full terms are sent with your booking confirmation.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q8" aria-expanded="false" aria-controls="faq-a8" data-faq-trigger>
-              <span>Who do you train?</span>
+          <div id="faq-a46" role="region" aria-labelledby="faq-q46" class="wybe-faq__answer" hidden>
+            <p>We do not offer refunds on any digital programs or sessions. If you purchased a fitness consultation add-on, you can reschedule your session free of charge up to 24 hours before your appointment. Cancellations or changes made within 24 hours cannot be rescheduled, and the fee is non-refundable.</p>
+          </div></li>
+      </ul>
+
+      <h2 class="faq-service-title">Fitness Consultation</h2>
+      <ul class="wybe-faq__list" role="list">
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q27" aria-expanded="false" aria-controls="faq-a27" data-faq-trigger>
+              <span>Do you consult in person or online?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a8" role="region" aria-labelledby="faq-q8" class="wybe-faq__answer" hidden>
-            <p>Adults, children (age 10 and above), and geriatric clients. All genders welcome.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q9" aria-expanded="false" aria-controls="faq-a9" data-faq-trigger>
-              <span>Do you offer group training?</span>
+          <div id="faq-a27" role="region" aria-labelledby="faq-q27" class="wybe-faq__answer" hidden>
+            <p>Both. Online Fitness Consultation is available globally and Offline Fitness Consultation is available in the UAE only.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q28" aria-expanded="false" aria-controls="faq-a28" data-faq-trigger>
+              <span>What exactly is a fitness consultation?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
-          <div id="faq-a9" role="region" aria-labelledby="faq-q9" class="wybe-faq__answer" hidden>
-            <p>No. I&rsquo;m not in favour of group training because it&rsquo;s difficult to supervise everyone properly. Poor technique or the wrong movement pattern causes injury, and if supervision is compromised I&rsquo;m not doing justice to the clients who pay me.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
-            <button type="button" class="wybe-faq__trigger" id="faq-q10" aria-expanded="false" aria-controls="faq-a10" data-faq-trigger>
+          <div id="faq-a28" role="region" aria-labelledby="faq-q28" class="wybe-faq__answer" hidden>
+            <p>Fitness consultation is to ensure your exercises are performed scientifically, aligning with human biomechanics, kinesiology, and breathing techniques to avoid internal injuries. Focus is given on posture correction, increasing range of motion, strength, and flexibility. Exercises requiring correction are pre-agreed before the session, and you are educated on the right form and technique.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q29" aria-expanded="false" aria-controls="faq-a29" data-faq-trigger>
+              <span>I have a personal trainer or training experience, do I still need a consultation?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a29" role="region" aria-labelledby="faq-q29" class="wybe-faq__answer" hidden>
+            <p>If you are certain your form is perfect, you do not need this service. However, if you want a second opinion from a Level 4 REPs certified trainer with 25 years of practical experience, a consultation is highly recommended. Not all trainers hold Level 4 credentials or practical training experience, which can leave your technique compromised.</p>
+            <p style="margin-top:12px">Our introductory offer is $69 for a single session, which is roughly the cost of a tank of fuel. While a full tank only takes you to a max of 600 kilometers, correcting your exercise technique gives you a lifetime of mileage for your movement, strength, posture, and flexibility. Choose your investment wisely.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q30" aria-expanded="false" aria-controls="faq-a30" data-faq-trigger>
+              <span>What qualifications do you hold?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a30" role="region" aria-labelledby="faq-q30" class="wybe-faq__answer" hidden>
+            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q31" aria-expanded="false" aria-controls="faq-a31" data-faq-trigger>
+              <span>Do you provide consultation to beginners, or just advanced athletes?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a31" role="region" aria-labelledby="faq-q31" class="wybe-faq__answer" hidden>
+            <p>Yes, I work with clients at every level, from complete beginners to advanced athletes.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q32" aria-expanded="false" aria-controls="faq-a32" data-faq-trigger>
+              <span>How much do sessions cost?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a32" role="region" aria-labelledby="faq-q32" class="wybe-faq__answer" hidden>
+            <p>Live pricing is available in our Services section. Take advantage of our special introductory pricing available for the first 100 clients.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q33" aria-expanded="false" aria-controls="faq-a33" data-faq-trigger>
               <span>How long does a session last?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
+          <div id="faq-a33" role="region" aria-labelledby="faq-q33" class="wybe-faq__answer" hidden>
+            <p>A single session lasts 60 minutes, where we ideally recommend learning 3 exercises of your choice depending on your learning pace. If you select the multiple session plan, a two-hour block is generally recommended for all client levels.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q34" aria-expanded="false" aria-controls="faq-a34" data-faq-trigger>
+              <span>What if I wish to extend the consultation after a single session to continue?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a34" role="region" aria-labelledby="faq-q34" class="wybe-faq__answer" hidden>
+            <p>If my calendar is free, we can extend the session immediately after payment is completed. If my calendar is fully booked, you can book another session for a different date or time based on availability.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q35" aria-expanded="false" aria-controls="faq-a35" data-faq-trigger>
+              <span>What is your cancellation and refund policy?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a35" role="region" aria-labelledby="faq-q35" class="wybe-faq__answer" hidden>
+            <p>We do not offer refunds. You can reschedule your session free of charge up to 24 hours before your appointment. Cancellations or changes made within 24 hours cannot be rescheduled, and the fee will not be refunded.</p>
+          </div></li>
+      </ul>
+
+      <h2 class="faq-service-title">Nutrition Consultation</h2>
+      <ul class="wybe-faq__list" role="list">
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q17" aria-expanded="false" aria-controls="faq-a17" data-faq-trigger>
+              <span>Do you consult in person or online?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a17" role="region" aria-labelledby="faq-q17" class="wybe-faq__answer" hidden>
+            <p>All nutrition consultations are provided online. If you choose to combine nutrition with our offline fitness services, we can accommodate offline consultations. For active Personal Training clients, nutrition consultation is included offline and Free of Charge (FOC).</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q18" aria-expanded="false" aria-controls="faq-a18" data-faq-trigger>
+              <span>What exactly is human performance nutrition?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a18" role="region" aria-labelledby="faq-q18" class="wybe-faq__answer" hidden>
+            <p>Performance is applicable to everyone, not just elite athletes. Human performance nutrition is designed for any human at any level or career to help you reach peak health without pathology, attain your highest fitness levels, achieve fat loss, and build strength.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q19" aria-expanded="false" aria-controls="faq-a19" data-faq-trigger>
+              <span>What qualifications do you hold?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a19" role="region" aria-labelledby="faq-q19" class="wybe-faq__answer" hidden>
+            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q20" aria-expanded="false" aria-controls="faq-a20" data-faq-trigger>
+              <span>Do you work with beginners, or just advanced athletes?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a20" role="region" aria-labelledby="faq-q20" class="wybe-faq__answer" hidden>
+            <p>Yes, I work with clients at every level, from complete beginners to advanced athletes.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q21" aria-expanded="false" aria-controls="faq-a21" data-faq-trigger>
+              <span>Can you help me lose weight without losing my muscle mass?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a21" role="region" aria-labelledby="faq-q21" class="wybe-faq__answer" hidden>
+            <p>Yes, our goal is to protect your lean muscle mass during weight correction. Please note that if you do not actively work out, muscle mass gain cannot be guaranteed.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q22" aria-expanded="false" aria-controls="faq-a22" data-faq-trigger>
+              <span>What is the difference between the Single, Multiple, and Monthly plans?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a22" role="region" aria-labelledby="faq-q22" class="wybe-faq__answer" hidden>
+            <p>The Single Plan is a one-hour, one-time consultation session. The Multiple Plan is a bundle containing more than one consultation session. The Monthly Plan includes up to 4 consultations to be used within 30 days from your start date, booked either consecutively or separately.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q23" aria-expanded="false" aria-controls="faq-a23" data-faq-trigger>
+              <span>Do the Multiple and Monthly packages include support between sessions?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a23" role="region" aria-labelledby="faq-q23" class="wybe-faq__answer" hidden>
+            <p>Only the Monthly Package includes ongoing support via email during your 30-day program. All actual consultation sessions across all plans require pre-booking.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q24" aria-expanded="false" aria-controls="faq-a24" data-faq-trigger>
+              <span>Is the Monthly plan a recurring subscription or a one-time program?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a24" role="region" aria-labelledby="faq-q24" class="wybe-faq__answer" hidden>
+            <p>The choice is yours. If you prefer a one-time program, leave the subscription option unchecked on the checkout page during payout.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q25" aria-expanded="false" aria-controls="faq-a25" data-faq-trigger>
+              <span>What is expected during and after a consultation?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a25" role="region" aria-labelledby="faq-q25" class="wybe-faq__answer" hidden>
+            <p>Please come prepared with all of your questions as the session concludes exactly at the scheduled end time. First-time clients are recommended to book the Multiple session plan. No diet plans are given after the session. These consultations educate you on food choices, reading labels, food quantities, weight loss, and performance so you can eat responsibly and scientifically without weighing scales or extreme calorie tracking.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q26" aria-expanded="false" aria-controls="faq-a26" data-faq-trigger>
+              <span>What is your cancellation and refund policy?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a26" role="region" aria-labelledby="faq-q26" class="wybe-faq__answer" hidden>
+            <p>We do not offer refunds. You can reschedule your session free of charge up to 24 hours before your appointment. Cancellations or changes made within 24 hours cannot be rescheduled, and the fee will not be refunded.</p>
+          </div></li>
+      </ul>
+
+      <h2 class="faq-service-title">Personal Training</h2>
+      <ul class="wybe-faq__list" role="list">
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q1" aria-expanded="false" aria-controls="faq-a1" data-faq-trigger>
+              <span>Is Personal Training provided online or offline?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a1" role="region" aria-labelledby="faq-q1" class="wybe-faq__answer" hidden>
+            <p>Personal Training sessions are currently provided offline only within the UAE.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q2" aria-expanded="false" aria-controls="faq-a2" data-faq-trigger>
+              <span>What is personal training?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a2" role="region" aria-labelledby="faq-q2" class="wybe-faq__answer" hidden>
+            <p>Personal training is a premium, one-on-one fitness service where workout routines are tailored entirely to your body, lifestyle, and goals. Unlike a generic workout template, personal training provides real-time guidance, immediate form correction, and dedicated accountability to ensure you achieve maximum results safely and efficiently.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q3" aria-expanded="false" aria-controls="faq-a3" data-faq-trigger>
+              <span>Why train with me?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a3" role="region" aria-labelledby="faq-q3" class="wybe-faq__answer" hidden>
+            <p>You will receive a science-based fitness experience backed by a Level 4 REPs certification and 25 years of practical coaching experience. Application of advanced principles of biomechanics, kinesiology, and breathing techniques to maximize your range of motion, correct posture, and prevent internal injuries. Your programming is customized entirely for your goals and is inclusive of Human Performance Nutrition Consultations.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q4" aria-expanded="false" aria-controls="faq-a4" data-faq-trigger>
+              <span>Who do you train?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a4" role="region" aria-labelledby="faq-q4" class="wybe-faq__answer" hidden>
+            <p>I train adults, children aged 10 and above, and geriatric clients of all genders.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q5" aria-expanded="false" aria-controls="faq-a5" data-faq-trigger>
+              <span>Where in Dubai do you train clients?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a5" role="region" aria-labelledby="faq-q5" class="wybe-faq__answer" hidden>
+            <p>Sessions run out of several gyms across the UAE where I hold memberships, as well as private residential gyms for clients who have facilities at home. The exact venue is agreed upon once your application is accepted.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q6" aria-expanded="false" aria-controls="faq-a6" data-faq-trigger>
+              <span>Do you offer group training?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a6" role="region" aria-labelledby="faq-q6" class="wybe-faq__answer" hidden>
+            <p>No. I do not offer group training because it is difficult to supervise everyone properly. Compromised supervision leads to poor technique and injury, which does not do justice to paying clients. However, I do offer private training services for couples.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q7" aria-expanded="false" aria-controls="faq-a7" data-faq-trigger>
+              <span>What qualifications do you hold?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a7" role="region" aria-labelledby="faq-q7" class="wybe-faq__answer" hidden>
+            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q8" aria-expanded="false" aria-controls="faq-a8" data-faq-trigger>
+              <span>Do you work with beginners, or just advanced athletes?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a8" role="region" aria-labelledby="faq-q8" class="wybe-faq__answer" hidden>
+            <p>Yes, I work with clients at every single level, from complete beginners to advanced athletes.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q9" aria-expanded="false" aria-controls="faq-a9" data-faq-trigger>
+              <span>How many clients do you take?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div id="faq-a9" role="region" aria-labelledby="faq-q9" class="wybe-faq__answer" hidden>
+            <p>My roster is strictly capped at a maximum of 3 clients only.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
+            <button type="button" class="wybe-faq__trigger" id="faq-q10" aria-expanded="false" aria-controls="faq-a10" data-faq-trigger>
+              <span>How much do sessions cost?</span>
+              <span class="wybe-faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
           <div id="faq-a10" role="region" aria-labelledby="faq-q10" class="wybe-faq__answer" hidden>
-            <p>My sessions are not 1 hour. The length is the time you need to complete the schedule of exercises assigned that day. Each session includes mobility drills, workout, cool-down, and stretches, with education and motivation consistently woven in.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
+            <p>Your investment is discussed privately. As a premium trainer, I limit my roster to a maximum of 3 clients per month and provide no more than 12 sessions total per month (4 sessions per week).</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
             <button type="button" class="wybe-faq__trigger" id="faq-q11" aria-expanded="false" aria-controls="faq-a11" data-faq-trigger>
-              <span>What should I wear?</span>
+              <span>How long does a session last?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div id="faq-a11" role="region" aria-labelledby="faq-q11" class="wybe-faq__answer" hidden>
-            <p>A comfortable gym outfit and shoes. Lifting shoes are mandatory on leg days.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
+            <p>Sessions are not capped to a rigid 60 minutes. The duration is based entirely on the time it takes to properly complete your assigned exercises for that day. Each session includes mobility drills, a warm-up, the core workout, a cool-down, and stretches, with education and motivation woven throughout.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
             <button type="button" class="wybe-faq__trigger" id="faq-q12" aria-expanded="false" aria-controls="faq-a12" data-faq-trigger>
-              <span>What should I bring?</span>
+              <span>After how many sessions will I see improvements?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div id="faq-a12" role="region" aria-labelledby="faq-q12" class="wybe-faq__answer" hidden>
-            <p>A water bottle (or lime-salt water), a gym mat, and a towel.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
+            <p>Different bodies react on different timelines depending on your effort, diet, and recovery. Realistically, you should expect to see good results within 12 weeks if you are consistent, follow the nutrition plan, and allow for proper recovery.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
             <button type="button" class="wybe-faq__trigger" id="faq-q13" aria-expanded="false" aria-controls="faq-a13" data-faq-trigger>
               <span>If I train at home, do I need equipment?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div id="faq-a13" role="region" aria-labelledby="faq-q13" class="wybe-faq__answer" hidden>
-            <p>I&rsquo;ll bring small equipment when necessary. Eventually, depending on your goals and training type, you may need a pair of dumbbells and a fitness ball.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
+            <p>I will bring small training equipment when necessary. Eventually, depending on your specific goals and training type, you may need to purchase a pair of dumbbells and a fitness ball.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
             <button type="button" class="wybe-faq__trigger" id="faq-q14" aria-expanded="false" aria-controls="faq-a14" data-faq-trigger>
-              <span>After how many sessions will I see improvements?</span>
+              <span>What should I wear?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div id="faq-a14" role="region" aria-labelledby="faq-q14" class="wybe-faq__answer" hidden>
-            <p>It would be a lie to give a definite timeline. Different bodies react on different timelines depending on effort, diet, and recovery. Realistically, <strong>12 weeks</strong> should give good results if you&rsquo;re consistent, follow the diet plan, and allow enough recovery.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
+            <p>Please wear a comfortable gym outfit and athletic shoes. Proper lifting shoes are mandatory on leg days.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
             <button type="button" class="wybe-faq__trigger" id="faq-q15" aria-expanded="false" aria-controls="faq-a15" data-faq-trigger>
               <span>When can I start training again after delivery?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div id="faq-a15" role="region" aria-labelledby="faq-q15" class="wybe-faq__answer" hidden>
-            <p>Usually it&rsquo;s recommended to wait 6 weeks before training after a natural birth, and 12 weeks after a C-section. Medical clearance from your doctor is required in either case.</p>
-          </div>
-        </li>
-        <li class="wybe-faq__item">
-          <h3 class="wybe-faq__q">
+            <p>It is recommended to wait 6 weeks after a natural birth and 12 weeks after a C-section. Written medical clearance from your doctor is strictly required in either case.</p>
+          </div></li>
+        <li class="wybe-faq__item"><h3 class="wybe-faq__q">
             <button type="button" class="wybe-faq__trigger" id="faq-q16" aria-expanded="false" aria-controls="faq-a16" data-faq-trigger>
-              <span>How are the workout programs designed?</span>
+              <span>What is your cancellation and refund policy?</span>
               <span class="wybe-faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div id="faq-a16" role="region" aria-labelledby="faq-q16" class="wybe-faq__answer" hidden>
-            <p>The workout programs are tailored to your individual needs, goals, and fitness level.</p>
-          </div>
-        </li>
+            <p>We do not offer refunds on any personal training services. Payments are made in advance on a monthly basis to cover 12 sessions per month at a rate of 4 sessions per week. If a session is missed, there is no option for a refund or rescheduling. Your subscription must be renewed by paying the fees again upon completion of 30 days from your initial payment date.</p>
+          </div></li>
       </ul>
     </div>
   
