@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="/css/styles.css">
   <style>
     body { background-color: #1E1E1E; color: #F6F2E8; }
-    .about-prose { max-width: 44rem; }
+    .about-prose { max-width: 100%; }
     .about-prose h2 {
       font-family: 'Inter', sans-serif; font-weight: 900;
       font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.01em;
@@ -96,13 +96,18 @@
         <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
           <span class="wybe-brand__word">WYBE</span>
         </a>
-        <div class="hidden md:flex items-center gap-7">
-          <a href="/#services"     class="wybe-nav-link">Services</a>
-          <a href="/#calculators"  class="wybe-nav-link">Calculator</a>
-          <a href="/publication.html" class="wybe-nav-link">My Publication</a>
-          <a href="/#contact" class="wybe-cta">Book Now</a>
-        </div>
+        <button id="menu-btn" type="button" class="wybe-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+    </div>
+    <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
+      <a href="/"                   class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="/about.html"         class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="/#services"          class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="/#calculators"       class="wybe-mobile-link" role="menuitem">Calculator</a>
+      <a href="/publication.html"   class="wybe-mobile-link" role="menuitem">My Publication</a>
+      <a href="/faq.html"           class="wybe-mobile-link" role="menuitem">FAQ</a>
     </div>
   </nav>
   </header>
@@ -110,9 +115,13 @@
   <main id="main" tabindex="-1" class="pt-32 md:pt-40 pb-16 md:pb-20">
     <div class="max-w-6xl mx-auto px-6">
 
+      <a href="/" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors mb-8">
+        <span aria-hidden="true">&larr;</span> Back to Home
+      </a>
+
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center mb-16">
         <figure class="md:col-span-5 m-0">
-          <img src="/images/Profile Pic.webp"
+          <img src="/images/Face.webp"
                alt="Portrait of Mansoor Ahamad Ali, WYBE founder and practitioner"
                class="w-full h-auto rounded-md">
         </figure>
@@ -148,7 +157,7 @@
       <div class="mt-16">
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Credentials</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-2">Certifications Achieved</h2>
-        <p class="font-sans text-sm text-cream/60 mb-8">Twelve accredited certifications across training, nutrition, safety, and specialisation.</p>
+        <p class="font-sans text-sm text-cream/60 mb-8">Five accredited certifications across training, nutrition, safety, and specialisation.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div class="cert-card">
@@ -171,38 +180,13 @@
             <p class="cert-card__title">CPR &middot; AED &middot; First Aid</p>
             <p class="cert-card__meta">Emergency response certified</p>
           </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Functional Movement Screen (FMS)</p>
-            <p class="cert-card__meta">Level 1 &middot; movement-quality assessment</p>
-          </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Kettlebell Instructor</p>
-            <p class="cert-card__meta">Specialisation &middot; strength &amp; conditioning</p>
-          </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Suspension Training (TRX)</p>
-            <p class="cert-card__meta">Group and 1-on-1 delivery</p>
-          </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Boxing Fundamentals Coach</p>
-            <p class="cert-card__meta">Technique &middot; conditioning</p>
-          </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Mobility &amp; Breathing Coach</p>
-            <p class="cert-card__meta">Respiratory pattern retraining</p>
-          </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Mind Coaching</p>
-            <p class="cert-card__meta">Habit design &middot; focus &amp; goal setting</p>
-          </div>
-          <div class="cert-card">
-            <p class="cert-card__title">Nutrition for Body Composition</p>
-            <p class="cert-card__meta">Fat loss, muscle gain, recomposition</p>
-          </div>
         </div>
       </div>
 
-      <div class="mt-16 md:mt-20 text-center">
+      <div class="mt-16 md:mt-20 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/" class="inline-flex items-center gap-2 border border-cream/40 text-cream font-sans text-xs tracking-widest uppercase px-8 py-4 rounded-full hover:bg-cream/10 transition-colors">
+          <span aria-hidden="true">&larr;</span> Back to Home
+        </a>
         <a href="/#services" class="inline-block bg-burgundy text-charcoal font-sans text-xs tracking-widest uppercase px-8 py-4 rounded-full hover:bg-burgundy-dark transition-colors">
           Explore Services &rarr;
         </a>
@@ -226,6 +210,7 @@
     </div>
   </footer>
 
+  <script src="/js/wybe-cursor.js" defer></script>
   <script src="/js/main.js"></script>
 </body>
 </html>
