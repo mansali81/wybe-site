@@ -2137,21 +2137,21 @@ footer a:not([class*="bg-burgundy"]):hover::after,
    classes (specificity ties otherwise, and the CDN injects late).
    text-2xl 24 → 22, text-3xl 30 → 28, text-4xl 36 → 34,
    text-5xl 48 → 46. Both base and md: variants covered. */
-.text-2xl { font-size: 22px !important; }
-.text-3xl { font-size: 28px !important; }
-.text-4xl { font-size: 34px !important; }
-.text-5xl { font-size: 46px !important; }
+.text-2xl { font-size: 18px !important; }
+.text-3xl { font-size: 24px !important; }
+.text-4xl { font-size: 30px !important; }
+.text-5xl { font-size: 42px !important; }
 @media (min-width: 768px) {
-  .md\:text-2xl { font-size: 22px !important; }
-  .md\:text-3xl { font-size: 28px !important; }
-  .md\:text-4xl { font-size: 34px !important; }
-  .md\:text-5xl { font-size: 46px !important; }
+  .md\:text-2xl { font-size: 18px !important; }
+  .md\:text-3xl { font-size: 24px !important; }
+  .md\:text-4xl { font-size: 30px !important; }
+  .md\:text-5xl { font-size: 42px !important; }
 }
 
 .section-title {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(16px, 2.4vw, 28px);   /* fourth -2 pt trim across the clamp */
+  font-size: clamp(12px, 1.9vw, 24px);   /* -4 pt trim across the clamp */
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.15;
