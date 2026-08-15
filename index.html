@@ -265,6 +265,9 @@
        card without inner scrolling. Reduced padding + smaller value
        font vs the previous LCD variant. */
     #unified-calc-form { display: grid; gap: 8px; }
+    /* Beats the id rule above so class-based .hidden actually hides
+       the form when Get Result swaps to the results view on mobile. */
+    #unified-calc-form.hidden { display: none !important; }
     .wybe-input-row {
       display: grid; grid-template-columns: 1fr auto; align-items: end;
       padding: 6px 12px; gap: 2px;
@@ -358,15 +361,11 @@
        height — set generous mins so the contained images read as
        full-size features. */
     #calculators .parallax-wrapper { min-height: 420px; }
-    @media (min-width: 768px) {
-      /* Fixed 640 px on both the form card and the image wrapper so
-         they are guaranteed to be the exact same height on desktop.
-         No more grid-stretch guesswork. */
-      #calculators .parallax-wrapper { height: 640px; min-height: 640px; }
-      /* Overflow removed — compact rows above now fit the 640 px
-         cap without a scrollbar. */
-      #unified-calc-form, #ucalc-view-results { height: 640px; min-height: 640px; }
-    }
+    /* The 640 px fixed-height rule that used to live here was removed —
+       the form + results panels now size to their own content so the
+       cards / disclaimer / email row never bleed past a hard-capped
+       container. Photo is applied as a section background instead of
+       an image column, so no equal-height guardrail is needed. */
     /* Contact image — bigger frame per the "enlarge contact image"
        ask. No max-width; the container's column width governs. */
     #contact .contact-image { min-height: 420px; }
@@ -853,17 +852,14 @@
         <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
       </div>
 
-      <!-- Two-column: treadmill portrait on the left, form on the right.
-           Stacks to a single column on mobile with the image above the
-           form. Form is shown on load; on Get Result it hides and the
-           results view replaces it in the same space. Edit-inputs link
-           at the top of the results toggles back. -->
+      <!-- Photo becomes a CSS background on the outer grid (see
+           #body-composition-section CSS). Calculator form + results
+           panel live side by side inside .calc-panels-grid on desktop;
+           stack on mobile. Both panels visible at all times on desktop
+           once results exist — no swap. -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
-        <!-- Calculator form — LEFT column now (was right). Image
-             stacks BELOW form on mobile via order-last. md:h-full
-             so this column fills the grid row (matches image
-             column's stretched height). -->
-        <div class="calculator-form-wrapper md:col-span-7 order-first md:order-1 max-w-2xl w-full mx-auto md:mx-0 md:h-full">
+        <div class="calculator-form-wrapper w-full">
+        <div class="calc-panels-grid">
         <form id="unified-calc-form" data-view="form">
           <div class="wybe-input-row">
             <label for="ucalc-gender">Gender</label>
@@ -935,10 +931,11 @@
               <p class="ucalc-tile-note" data-note>&mdash;</p>
               <p class="ucalc-tile-hint hidden" data-hint>Enter height + weight to unlock.</p>
             </div>
-            <!-- IBW tile -->
+            <!-- IBW tile — value is the midpoint only ("75 kg"); the
+                 low/high band goes into the tag ("IBW Range (70kg - 80kg)"). -->
             <div class="ucalc-tile" data-metric="ibw">
               <p class="ucalc-tile-eyebrow">Ideal Body Weight</p>
-              <p class="ucalc-tile-value"><span data-value>&mdash;</span> <span class="ucalc-tile-unit">kg</span></p>
+              <p class="ucalc-tile-value"><span data-value>&mdash;</span></p>
               <p class="ucalc-tile-cat" data-cat>&mdash;</p>
               <p class="ucalc-tile-note" data-note>&mdash;</p>
               <p class="ucalc-tile-hint hidden" data-hint>Enter gender + height to unlock.</p>
@@ -951,59 +948,54 @@
               <p class="ucalc-tile-note" data-note>&mdash;</p>
               <p class="ucalc-tile-hint hidden" data-hint>Enter gender + height + neck + waist (+ hip for female) to unlock.</p>
             </div>
-            <!-- TDEE tile -->
+            <!-- TDEE tile — the Cut / Maintain / Lean breakdown was
+                 removed per ask (moves into the emailed PDF instead).
+                 Default note text is populated by JS on submit; the
+                 &mdash; here is only visible before Calculate runs. -->
             <div class="ucalc-tile" data-metric="tdee">
               <p class="ucalc-tile-eyebrow">Daily Calorie Needs</p>
               <p class="ucalc-tile-value"><span data-value>&mdash;</span> <span class="ucalc-tile-unit">kcal</span></p>
               <p class="ucalc-tile-cat" data-cat>&mdash;</p>
               <p class="ucalc-tile-note" data-note>&mdash;</p>
               <p class="ucalc-tile-hint hidden" data-hint>Enter gender + age + height + weight + activity to unlock.</p>
-              <div class="ucalc-tile-targets hidden" data-targets>
-                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Cut (fat loss)</span><span class="font-bold text-white"><span data-cut>&mdash;</span> kcal</span></p>
-                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Maintain</span><span class="font-bold text-white"><span data-maintain>&mdash;</span> kcal</span></p>
-                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Lean bulk</span><span class="font-bold text-white"><span data-bulk>&mdash;</span> kcal</span></p>
-              </div>
             </div>
           </div>
 
-          <!-- Email / PDF lead magnet — always shown inside the results view.
-               Enhanced: value-prop above the fields, inline validation, spinner,
-               explicit success + error panels, retry, local PDF download backup. -->
-          <div id="ucalc-email-block" class="mt-8 pt-6 border-t border-white/15">
-            <p class="font-sans text-sm text-cream leading-relaxed mb-1"><strong class="text-cream">Get your full report as a PDF.</strong></p>
-            <p class="font-sans text-[13px] text-cream/70 leading-snug mb-4">
-              Your full report, delivered to your inbox as a PDF. No spam.
-            </p>
+          <!-- Combined disclaimer directly under the stat grid, before
+               the email inputs. Not per-card — one paragraph total. -->
+          <p class="ucalc-disclaimer">
+            * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
+          </p>
 
-            <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data" novalidate>
+          <!-- Report request — no border/heading/divider. Name + email
+               stacked; single-line "Email me detailed report. Want
+               better results? Book a consultation." action row below. -->
+          <div id="ucalc-email-block">
+            <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" novalidate>
               <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <!-- Honeypot: display:none + tabindex="-1" so keyboards and screen readers
-                   ignore it, but scraper-bots that autofill every input still trip it. -->
               <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="subject" value="WYBE, Unified Report PDF Request">
               <input type="hidden" name="report_summary" id="ucalc-email-summary">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="grid">
                 <label class="sr-only" for="ucalc-email-name">Full name</label>
-                <input id="ucalc-email-name" type="text" name="name" required autocomplete="name" placeholder="Full name"
-                       class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30"
-                       aria-invalid="false" data-input="name">
+                <input id="ucalc-email-name" type="text" name="name" required autocomplete="name" placeholder="Full name" aria-invalid="false" data-input="name">
                 <label class="sr-only" for="ucalc-email-input">Email address</label>
-                <input id="ucalc-email-input" type="email" name="email" required autocomplete="email" placeholder="your@email.com"
-                       class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30"
-                       aria-describedby="ucalc-email-hint" aria-invalid="false" data-input="email">
+                <input id="ucalc-email-input" type="email" name="email" required autocomplete="email" placeholder="your@email.com" aria-describedby="ucalc-email-hint" aria-invalid="false" data-input="email">
               </div>
               <p id="ucalc-email-hint" class="sr-only">Enter a valid email address, for example name@example.com.</p>
-
-              <!-- Inline validation error slot. aria-live so AT announces it. -->
               <p id="ucalc-email-error" class="hidden font-sans text-xs text-red-300 -mt-1" role="alert" aria-live="polite"></p>
-
+              <!-- Hidden pill kept in DOM so the existing PDF handler
+                   still fires via a synthetic click from .ucalc-send-row. -->
               <button type="submit" class="wybe-calc-cta inline-flex items-center justify-center gap-2" data-submit>
                 <span data-btn-label>Email My Report &rarr;</span>
                 <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
               </button>
             </form>
 
-            <!-- Success panel: replaces the form on a 200 response. -->
+            <p class="ucalc-send-row">
+              <a href="#" data-send-report>Email me</a> detailed report. Want better results? <a href="/#services">Book a consultation</a>.
+            </p>
+
             <div id="ucalc-email-success" class="hidden mt-3 flex items-start gap-2 text-sm text-cream/90" role="status" aria-live="polite">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 text-burgundy flex-shrink-0" aria-hidden="true">
                 <path d="M20 6L9 17l-5-5"/>
@@ -1011,7 +1003,6 @@
               <span><strong class="text-cream">Sent.</strong> Your report is on the way. Check spam if you don&rsquo;t see it in the next few minutes &mdash; the PDF also downloaded to your device as a backup.</span>
             </div>
 
-            <!-- Error panel: shown when the Web3Forms request fails. -->
             <div id="ucalc-email-fail" class="hidden mt-3 border border-red-300/40 bg-red-500/10 px-3 py-2 rounded-md flex items-start justify-between gap-3" role="alert" aria-live="assertive">
               <p class="font-sans text-xs text-cream/90 leading-snug">
                 Send failed &mdash; check your connection and try again. Your PDF also downloaded locally as a backup.
@@ -1021,30 +1012,9 @@
               </button>
             </div>
           </div>
-
-          <!-- Secondary text link — book path remains reachable without
-               overloading the primary CTA. -->
-          <p class="mt-6 text-center font-sans text-sm text-cream/70">
-            Prefer to talk it through? <a href="#services" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">Book a consultation</a>.
-          </p>
-
-          <!-- Fine-print disclaimer — sits at the very bottom of the results. -->
-          <p class="mt-8 font-sans text-[11px] text-white/45 leading-snug text-center max-w-lg mx-auto">
-            * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
-          </p>
         </div>
-        </div><!-- /form column -->
-        <!-- Treadmill image, RIGHT column. Static (parallax disabled
-             so its height stays flush with the calculator card).
-             Order-last on mobile so the image stacks BELOW the form
-             (mobile CSS then hides the whole figure). -->
-        <figure class="md:col-span-5 order-last md:order-2 flex justify-center md:justify-end m-0 md:h-full">
-          <div class="parallax-wrapper w-full md:h-full">
-            <img src="images/Treadmill.webp"
-                 alt="Treadmill session — coached run on a WYBE workout program"
-                 class="parallax-img">
-          </div>
-        </figure>
+        </div><!-- /.calc-panels-grid -->
+        </div><!-- /.calculator-form-wrapper -->
       </div><!-- /calculator grid -->
     </div>
   </section>
@@ -2273,7 +2243,7 @@
       };
       const roundKcal = (n) => Math.round(n / 5) * 5;
 
-      const renderTile = (metric, valueHtml, category, note, extras) => {
+      const renderTile = (metric, valueHtml, category, note) => {
         const t = tiles[metric];
         if (!t) return;
         t.classList.add('is-unlocked');
@@ -2282,15 +2252,10 @@
         t.querySelector('[data-cat]').textContent = category || '';
         t.querySelector('[data-note]').textContent = note || '';
         t.querySelector('[data-hint]').classList.add('hidden');
-        if (metric === 'tdee' && extras) {
-          const wrap = t.querySelector('[data-targets]');
-          if (wrap) {
-            wrap.querySelector('[data-cut]').textContent      = extras.cut.toLocaleString();
-            wrap.querySelector('[data-maintain]').textContent = extras.maintain.toLocaleString();
-            wrap.querySelector('[data-bulk]').textContent     = extras.bulk.toLocaleString();
-            wrap.classList.remove('hidden');
-          }
-        }
+        // The Cut / Maintain / Lean [data-targets] block was removed
+        // from the TDEE tile markup — the breakdown lives in the
+        // emailed PDF instead. store.tdee still carries cut/maintain/
+        // bulk for the PDF builder to pick up.
       };
       const lockTile = (metric) => {
         const t = tiles[metric];
@@ -2301,9 +2266,17 @@
         t.querySelector('[data-cat]').textContent = '';
         t.querySelector('[data-note]').textContent = '';
         t.querySelector('[data-hint]').classList.remove('hidden');
-        const targets = t.querySelector('[data-targets]');
-        if (targets) targets.classList.add('hidden');
       };
+
+      // "Email me" text link fires the (now-hidden) Email My Report
+      // submit button, so the existing PDF handler runs unchanged.
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest('[data-send-report]');
+        if (!link) return;
+        e.preventDefault();
+        var btn = document.querySelector('#ucalc-email-form button[type="submit"]');
+        if (btn) btn.click();
+      });
 
       const showErr = (msg) => { els.error.textContent = msg; els.error.classList.remove('hidden'); };
       const clearErr = () => els.error.classList.add('hidden');
@@ -2358,9 +2331,11 @@
             const point = Math.round(target);
             const low = Math.round(target - 5);
             const high = Math.round(target + 5);
-            const html = point + ' <span class="text-white/45 text-2xl">(' + low + '–' + high + ')</span>';
+            // Value: midpoint only. Tag: "IBW Range (Xkg - Ykg)".
+            const html = point + ' kg';
+            const cat = 'IBW Range (' + low + 'kg - ' + high + 'kg)';
             const note = 'Healthy target band, ±5 kg around ' + point + ' kg. Broca’s Index; exercising men should track body-fat % instead.';
-            renderTile('ibw', html, 'IBW ' + point + ' kg', note);
+            renderTile('ibw', html, cat, note);
             store.ibw = { point, low, high, note };
           } else {
             lockTile('ibw');
@@ -2414,7 +2389,12 @@
             const cut = roundKcal(tdee - 500);
             const maintain = roundKcal(tdee);
             const bulk = roundKcal(tdee + 250);
-            renderTile('tdee', maintain.toLocaleString(), cat, '', { cut, maintain, bulk });
+            // Cut / Maintain / Lean bulk breakdown is intentionally NOT
+            // shown in the tile; it goes into the emailed PDF instead.
+            // Note stays populated so the tile height matches its
+            // row-mate (IBW) — never leave this empty.
+            const note = 'Maintenance target, kcal/day. Cut and lean-bulk breakdowns are included in the emailed PDF report.';
+            renderTile('tdee', maintain.toLocaleString(), cat, note);
             store.tdee = { value: maintain, category: cat, cut, maintain, bulk };
           } else {
             lockTile('tdee');
