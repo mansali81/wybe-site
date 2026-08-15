@@ -2752,15 +2752,9 @@ li.service-tier.service-tier--info,
   padding: 32px;
 }
 
-/* Inner panel grid: on mobile, one column (form + results stacked).
-   On desktop the layout is data-driven — with results still .hidden
-   (initial + edit-inputs state) the grid is ONE centred column so
-   the form doesn't sit squished with an empty right lane. Once the
-   Get Result handler strips .hidden from #ucalc-view-results, the
-   grid flips to 2-col (form 5fr / results 7fr) via the :has() rule
-   below. All modern browsers support :has() (Chrome 105+, Safari
-   15.4+, Firefox 121+); older engines see the single-column layout,
-   which still works — results will just appear below the form. */
+/* Inner 2-panel grid: form left, results right on desktop; stacked
+   on mobile. Auto rows so the two panels don't get forced to equal
+   heights (the results panel is usually taller than the input form). */
 #body-composition-section .calc-panels-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -2770,24 +2764,16 @@ li.service-tier.service-tier--info,
 }
 @media (min-width: 768px) {
   #body-composition-section .calc-panels-grid {
-    grid-template-columns: minmax(0, 640px);
-    justify-content: center;
-    gap: 32px;
-  }
-  #body-composition-section .calc-panels-grid:has(> #ucalc-view-results:not(.hidden)) {
     grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr);
-    justify-content: stretch;
+    gap: 32px;
   }
 }
 
-/* Form panel keeps its dark glass + orange border chrome so the input
-   fields stay readable over the photo. Results panel is TRANSPARENT —
-   the section background photo shows through the stat grid, disclaimer
-   and email row. This is deliberate: the previous rgba(0,0,0,0.55) on
-   the results panel read as a second dark image beside the form, which
-   the client called out ("currently there are two images"). Only the
-   form gets the solid glass box now. */
-#body-composition-section .calc-panels-grid #unified-calc-form {
+/* Both panels get the same glass chrome so they read as siblings
+   of one card, and the desktop background photo sits between /
+   around them. */
+#body-composition-section .calc-panels-grid #unified-calc-form,
+#body-composition-section .calc-panels-grid #ucalc-view-results {
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -2797,22 +2783,18 @@ li.service-tier.service-tier--info,
   padding: 22px;
   min-height: 0;
 }
-#body-composition-section .calc-panels-grid #ucalc-view-results {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  padding: 0;
-  min-height: 0;
-}
 @media (min-width: 768px) {
-  #body-composition-section .calc-panels-grid #unified-calc-form {
+  #body-composition-section .calc-panels-grid #unified-calc-form,
+  #body-composition-section .calc-panels-grid #ucalc-view-results {
     padding: 28px;
   }
+  /* Desktop: results panel is always visible next to the form once
+     computed. .hidden is a mobile-only affordance. */
+  #body-composition-section .calc-panels-grid #ucalc-view-results.hidden {
+    display: block !important;
+  }
   /* Desktop: the input form never toggles hidden — it stays live so
-     the user can tweak an input without hunting for an Edit button.
-     Results panel is *not* forced visible on desktop — the initial
-     .hidden state must genuinely hide it so before-submit shows just
-     the form, per the "results only appear after submit" rule. */
+     the user can tweak an input without hunting for an Edit button. */
   #body-composition-section .calc-panels-grid #unified-calc-form.hidden {
     display: grid !important;
   }
