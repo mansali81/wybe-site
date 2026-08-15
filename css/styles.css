@@ -2717,110 +2717,114 @@ li.service-tier.service-tier--info,
   visibility: visible;
 }
 
-/* ── BODY COMPOSITION SECTION — two-state layout ────────────────────
-   Scoped exclusively to #body-composition-section.
-   STATE 1 (before submit — #ucalc-view-results has .hidden):
-     Calculator LEFT (md:col-span-7). Treadmill photo RIGHT
-     (md:col-span-5) via the <figure>. Calculator has a -60 px right
-     margin + z-index:2, so its right edge visually overlaps the
-     photo's left edge.
-   STATE 2 (after Get Result — .hidden stripped):
-     Calculator stays on the left; :has() detects the state change
-     and hides the standalone <figure>. Results panel takes the
-     right column and receives the treadmill photo as its OWN
-     background image. Calculator drops the -60 px overlap.
-   No other layout changes. Mobile stacks throughout. */
+/* ── BODY COMPOSITION SECTION — photo bg + side-by-side calc/results ──
+   Scoped exclusively to #body-composition-section. Treadmill photo
+   is applied as a full-bleed CSS background on the outer grid; the
+   <figure> in the DOM is display:none. .calculator-form-wrapper
+   spans the full row and contains a nested 2-column grid: input form
+   on the LEFT, results panel on the RIGHT, both visible at once. */
 #body-composition-section .grid.grid-cols-1 {
   position: relative;
+  gap: 0;
+  border-radius: 16px;
+  overflow: hidden;
   min-height: 0;
-  overflow: visible;              /* let the calc's -60 px overflow paint */
-  background: none;
-  border-radius: 0;
+  grid-template-rows: auto;
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,0.55), rgba(8,8,8,0.82)),
+    url('/images/Treadmill.webp');
+  background-size: cover;
+  background-position: center 15%;   /* keeps head fully in frame */
 }
 
-/* Calculator column (STATE 1 + STATE 2 shared). Dark glass + orange
-   border — same chrome the form has always had. */
+/* Figure removed from the flow — the image lives as a background above. */
+#body-composition-section figure {
+  display: none;
+}
+
+/* .calculator-form-wrapper spans the full grid row so form + results
+   sit inside one wrapper together and share the photo background. */
 #body-composition-section .calculator-form-wrapper {
   position: relative;
   z-index: 2;
-  padding: 22px;
+  grid-column: 1 / -1;
   max-width: none;
+  padding: 32px;
+}
+
+/* Inner panel grid: on mobile, one column (form + results stacked).
+   On desktop the layout is data-driven — with results still .hidden
+   (initial + edit-inputs state) the grid is ONE centred column so
+   the form doesn't sit squished with an empty right lane. Once the
+   Get Result handler strips .hidden from #ucalc-view-results, the
+   grid flips to 2-col (form 5fr / results 7fr) via the :has() rule
+   below. All modern browsers support :has() (Chrome 105+, Safari
+   15.4+, Firefox 121+); older engines see the single-column layout,
+   which still works — results will just appear below the form. */
+#body-composition-section .calc-panels-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 24px;
+  align-items: start;
 }
 @media (min-width: 768px) {
-  #body-composition-section .calculator-form-wrapper {
-    padding: 28px;
-    margin-right: -60px;           /* pulls right edge over the photo */
+  #body-composition-section .calc-panels-grid {
+    grid-template-columns: minmax(0, 640px);
+    justify-content: center;
+    gap: 32px;
   }
-  /* STATE 2: results are showing; drop the overlap so the calc
-     sits cleanly in its 7-col slot. */
-  #body-composition-section .grid.grid-cols-1:has(> #ucalc-view-results:not(.hidden))
-    .calculator-form-wrapper {
-    margin-right: 0;
+  #body-composition-section .calc-panels-grid:has(> #ucalc-view-results:not(.hidden)) {
+    grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr);
+    justify-content: stretch;
   }
 }
-#body-composition-section .calculator-form-wrapper #unified-calc-form {
+
+/* Form panel keeps its dark glass + orange border chrome so the input
+   fields stay readable over the photo. Results panel is TRANSPARENT —
+   the section background photo shows through the stat grid, disclaimer
+   and email row. This is deliberate: the previous rgba(0,0,0,0.55) on
+   the results panel read as a second dark image beside the form, which
+   the client called out ("currently there are two images"). Only the
+   form gets the solid glass box now. */
+#body-composition-section .calc-panels-grid #unified-calc-form {
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 2px solid #ff6600;
   border-radius: 16px;
   box-shadow: 0 0 25px rgba(255,102,0,0.15);
-  padding: 0;
+  padding: 22px;
   min-height: 0;
 }
-
-/* Photo figure — STATE 1 only. z-index:1 so the calc's -60 px
-   overflow paints over its left edge. Hidden in STATE 2 by the
-   :has() rule below. */
-#body-composition-section figure {
-  display: flex;
-  position: relative;
-  z-index: 1;
-  margin: 0;
-}
-#body-composition-section .grid.grid-cols-1:has(> #ucalc-view-results:not(.hidden))
-  > figure {
-  display: none;
-}
-
-/* Results panel — STATE 2 only. Takes the right col and carries the
-   treadmill photo as its own background. Calc's overlap is dropped
-   so there's no seam between the two states beyond figure->results
-   swap. */
-#body-composition-section #ucalc-view-results {
+#body-composition-section .calc-panels-grid #ucalc-view-results {
   background: transparent;
   border: 0;
   box-shadow: none;
   padding: 0;
   min-height: 0;
 }
-#body-composition-section #ucalc-view-results:not(.hidden) {
-  background-image:
-    linear-gradient(180deg, rgba(10,10,10,0.55), rgba(8,8,8,0.82)),
-    url('/images/Treadmill.webp');
-  background-size: cover;
-  background-position: center 15%;
-  border-radius: 16px;
-  padding: 22px;
-}
 @media (min-width: 768px) {
-  #body-composition-section #ucalc-view-results:not(.hidden) {
+  #body-composition-section .calc-panels-grid #unified-calc-form {
     padding: 28px;
   }
   /* Desktop: the input form never toggles hidden — it stays live so
-     the user can tweak an input without hunting for an Edit button. */
-  #body-composition-section #unified-calc-form.hidden {
+     the user can tweak an input without hunting for an Edit button.
+     Results panel is *not* forced visible on desktop — the initial
+     .hidden state must genuinely hide it so before-submit shows just
+     the form, per the "results only appear after submit" rule. */
+  #body-composition-section .calc-panels-grid #unified-calc-form.hidden {
     display: grid !important;
   }
   /* Desktop: Edit-inputs header + "Your Results" label collapse to
      zero (Edit is only needed when the form is hidden — mobile case). */
-  #body-composition-section #ucalc-view-results
+  #body-composition-section .calc-panels-grid #ucalc-view-results
     > .flex.items-center.justify-between {
     display: none;
   }
 }
 /* "Your Results" label always suppressed, both breakpoints. */
-#body-composition-section #ucalc-view-results
+#body-composition-section .calc-panels-grid #ucalc-view-results
   > .flex.items-center.justify-between > p:last-child {
   display: none;
 }
@@ -3074,18 +3078,21 @@ li.service-tier.service-tier--info,
     margin-top: 3px;
   }
 
-  /* 2) BODY COMPOSITION — no photo background on mobile. Calc, photo
-        <figure>, and results panel stack in normal flow (single grid
-        column). Get Result still swaps figure -> results panel via
-        :has() but there's no side-by-side overlap on phones. */
+  /* 2) BODY COMPOSITION — no background photo on mobile; results panel
+        stacks BELOW the input form (Edit Inputs button lets user get
+        back). Desktop's side-by-side + photo layout is untouched. */
+  #body-composition-section .grid.grid-cols-1 {
+    background: none !important;
+    min-height: auto;
+    border-radius: 0;
+    overflow: visible;
+  }
   #body-composition-section .calculator-form-wrapper {
     padding: 0;
-    margin-right: 0 !important;    /* kill the desktop overlap on phones */
   }
-  #body-composition-section #ucalc-view-results:not(.hidden) {
-    background-image: none;         /* no photo bg on mobile */
-    padding: 0;
-    border-radius: 0;
+  #body-composition-section .calc-panels-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   /* Mobile: send row stays right-aligned but with a small right
      padding so it doesn't kiss the panel edge. */

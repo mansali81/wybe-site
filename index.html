@@ -852,19 +852,14 @@
         <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
       </div>
 
-      <!-- Two-state layout:
-           STATE 1 (before submit): calculator on the LEFT (md:col-span-7),
-           treadmill photo on the RIGHT (md:col-span-5). Calc has a
-           -60 px right margin + z-index:2 so its right edge visually
-           overlaps the photo's left edge.
-           STATE 2 (after Get Result): the figure element is hidden via a
-           :has() rule that detects #ucalc-view-results no longer has
-           .hidden. Results panel takes the right column and inherits
-           the treadmill photo as its own background image. Calc loses
-           the -60 px overlap and settles into its 7-col slot cleanly.
-           Mobile: single-column stack throughout. -->
+      <!-- Photo becomes a CSS background on the outer grid (see
+           #body-composition-section CSS). Calculator form + results
+           panel live side by side inside .calc-panels-grid on desktop;
+           stack on mobile. Both panels visible at all times on desktop
+           once results exist — no swap. -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
-        <div class="calculator-form-wrapper md:col-span-7 order-first md:order-1 w-full">
+        <div class="calculator-form-wrapper w-full">
+        <div class="calc-panels-grid">
         <form id="unified-calc-form" data-view="form">
           <div class="wybe-input-row">
             <label for="ucalc-gender">Gender</label>
@@ -914,24 +909,10 @@
           <button type="submit" class="wybe-calc-cta">Get Result &rarr;</button>
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
-        </div><!-- /.calculator-form-wrapper -->
 
-        <!-- Treadmill photo — RIGHT column BEFORE submit. Auto-hidden
-             (via CSS :has()) once the results panel un-hides so the
-             photo can move to being the results panel's own bg. -->
-        <figure class="md:col-span-5 order-last md:order-2 flex justify-center md:justify-end m-0 md:h-full">
-          <div class="parallax-wrapper w-full md:h-full">
-            <img src="images/Treadmill.webp"
-                 alt="Treadmill session — coached run on a WYBE workout program"
-                 class="parallax-img">
-          </div>
-        </figure>
-
-        <!-- Results view — hidden until "Get Result" is clicked. Takes
-             the right column post-submit; picks up the treadmill photo
-             as its own background image. Edit inputs at the top
-             toggles back on mobile. -->
-        <div id="ucalc-view-results" class="hidden md:col-span-5 order-last md:order-3" data-view="results">
+        <!-- Results view — hidden until "Get Result" is clicked. Replaces
+             the form in the same space; Edit inputs at the top toggles back. -->
+        <div id="ucalc-view-results" class="hidden" data-view="results">
           <div class="flex items-center justify-between mb-6">
             <button type="button" id="ucalc-edit-inputs"
                     class="inline-flex items-center gap-1.5 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
@@ -1031,7 +1012,9 @@
               </button>
             </div>
           </div>
-        </div><!-- /#ucalc-view-results -->
+        </div>
+        </div><!-- /.calc-panels-grid -->
+        </div><!-- /.calculator-form-wrapper -->
       </div><!-- /calculator grid -->
     </div>
   </section>
