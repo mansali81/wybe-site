@@ -2414,7 +2414,7 @@
             // shown in the tile; it goes into the emailed PDF instead.
             // Note stays populated so the tile height matches its
             // row-mate (IBW) — never leave this empty.
-            const note = 'Maintenance target, kcal/day. Cut and lean-bulk breakdowns are included in the emailed PDF report.';
+            const note = 'Maintenance target, kcal/day.';
             renderTile('tdee', maintain.toLocaleString(), cat, note);
             store.tdee = { value: maintain, category: cat, cut, maintain, bulk };
           } else {
@@ -2449,7 +2449,68 @@
         });
 
         CalcStore.unified = store;
+        // Wait for the newly-rendered notes to lay out, then level the
+        // stat cards and the two panels. Two rAFs is enough — first
+        // frame commits the DOM writes, second frame gives layout /
+        // fonts a chance to settle.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(equaliseCalcHeights);
+        });
       });
+
+      // ── EQUALISE CARD + PANEL HEIGHTS ─────────────────
+      // Fix 3: all 4 .ucalc-tile cards share one uniform height
+      // (tallest of the four's natural content).
+      // Fix 4: #unified-calc-form and #ucalc-view-results share one
+      // uniform height (tallest of the two's natural content) so the
+      // calc column and results column line up visually.
+      // Both are only applied on md+ side-by-side; mobile stacks and
+      // uses its own intrinsic heights.
+      const mqDesktop = window.matchMedia('(min-width: 768px)');
+      const tilesAll  = Array.prototype.slice.call(
+                          document.querySelectorAll('#body-composition-section .ucalc-tile'));
+      function resetHeights() {
+        tilesAll.forEach(function (t) { t.style.minHeight = ''; });
+        if (form)             form.style.height = '';
+        if (els.viewResults)  els.viewResults.style.height = '';
+      }
+      function equaliseCalcHeights() {
+        resetHeights();
+        if (!mqDesktop.matches) return;                  // mobile: stack, no equalise
+        if (els.viewResults.classList.contains('hidden')) return;  // pre-submit
+        // Cards first — measure natural heights, apply the max as min-height.
+        if (tilesAll.length) {
+          var maxTile = 0;
+          for (var i = 0; i < tilesAll.length; i++) {
+            var h = tilesAll[i].getBoundingClientRect().height;
+            if (h > maxTile) maxTile = h;
+          }
+          if (maxTile > 0) {
+            for (var j = 0; j < tilesAll.length; j++) {
+              tilesAll[j].style.minHeight = Math.ceil(maxTile) + 'px';
+            }
+          }
+        }
+        // Panels next — measure AFTER cards have settled.
+        var ch = form.getBoundingClientRect().height;
+        var rh = els.viewResults.getBoundingClientRect().height;
+        var target = Math.ceil(Math.max(ch, rh));
+        if (target > 0) {
+          form.style.height = target + 'px';
+          els.viewResults.style.height = target + 'px';
+          form.style.boxSizing = 'border-box';
+          els.viewResults.style.boxSizing = 'border-box';
+        }
+      }
+      // Recompute on viewport resize + on media-query flip (mobile <-> desktop).
+      let __resizeT;
+      window.addEventListener('resize', function () {
+        clearTimeout(__resizeT);
+        __resizeT = setTimeout(equaliseCalcHeights, 120);
+      }, { passive: true });
+      if (mqDesktop.addEventListener) {
+        mqDesktop.addEventListener('change', equaliseCalcHeights);
+      }
 
       // Edit inputs → back to the form. Keeps entered values so the user
       // can tweak one field without re-typing everything.
@@ -2457,6 +2518,7 @@
         els.editBtn.addEventListener('click', () => {
           els.viewResults.classList.add('hidden');
           form.classList.remove('hidden');
+          resetHeights();                     // clear equalised card + panel heights
           form.scrollIntoView({
             behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
             block: 'start'

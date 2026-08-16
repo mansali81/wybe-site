@@ -2787,18 +2787,22 @@ li.service-tier.service-tier--info,
   padding: 22px;
   min-height: 0;
 }
-/* Results panel — no border/bg/radius/shadow of its own. Sits directly
-   over the section background (which is now nothing) as one continuous
-   panel containing stat grid + disclaimer + email row. */
+/* Results panel — same 2 px orange border / 16 px radius / 28 px
+   padding chrome as the calculator form so the two panels read as
+   siblings of one card family. Still transparent inside; the grid,
+   disclaimer and email row live directly on the section background. */
 #body-composition-section .calc-panels-grid #ucalc-view-results {
   background: none;
-  border: 0;
-  box-shadow: none;
-  padding: 0;
+  border: 2px solid #FF6600;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(255, 102, 0, 0.15);
+  padding: 22px;
   min-height: 0;
+  box-sizing: border-box;
 }
 @media (min-width: 768px) {
-  #body-composition-section .calc-panels-grid #unified-calc-form {
+  #body-composition-section .calc-panels-grid #unified-calc-form,
+  #body-composition-section .calc-panels-grid #ucalc-view-results {
     padding: 28px;
   }
   /* Desktop: the input form never toggles hidden — it stays live so
