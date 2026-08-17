@@ -1733,6 +1733,47 @@ html:not(.gsap-ready) .wybe-reveal {
   margin: 6px 0 0;
 }
 
+/* ── CALCULATOR CTA BUTTON (global) ──────────────────────
+   Orange pill button used on calculators.html. The same class
+   is also defined in index.html's inline block scoped to
+   #body-composition-section; this global rule makes it work on
+   standalone calculator pages without that wrapper. */
+.wybe-calc-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #FF6600;
+  color: #000000;
+  font-family: var(--font-subhead);
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 102, 0, 0.20);
+  transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease,
+              color 0.25s ease;
+  margin-top: 16px;
+}
+.wybe-calc-cta:hover {
+  background: #E65500;
+  color: #FFFFFF;
+  transform: scale(1.03);
+  filter: brightness(1.08);
+  box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
+}
+.wybe-calc-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+/* Override: index.html's #body-composition-section scopes it smaller;
+   leave that scoped rule intact so the homepage version stays compact. */
+
 /* ── SERVICE CARDS — dark theme ─────────────────────────
    The four .service-panel cards (Digital Plan / Fitness / Nutrition /
    Personal Training) originally shipped as cream cards on the dark

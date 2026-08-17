@@ -161,7 +161,7 @@
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
 
-        <div id="ucalc-view-results" class="hidden" data-view="results">
+        <div id="ucalc-view-results" class="hidden" data-view="results" style="background:#1A2E22;">
           <div class="flex items-center justify-between mb-6">
             <button type="button" id="ucalc-edit-inputs"
                     class="inline-flex items-center gap-1.5 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
@@ -206,12 +206,16 @@
             </div>
           </div>
 
-          <div id="ucalc-email-block" class="mt-8 pt-6 border-t border-white/15">
-            <p class="font-sans text-sm text-cream leading-relaxed mb-1"><strong class="text-cream">Get your full report as a PDF.</strong></p>
-            <p class="font-sans text-[13px] text-cream/70 leading-snug mb-4">
-              Your full report, delivered to your inbox as a PDF. No spam.
-            </p>
+          <!-- Disclaimer sits directly below the result tiles -->
+          <p class="mt-6 font-sans text-[11px] text-white/45 leading-snug">
+            * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
+          </p>
 
+          <!-- Thin orange line separating the report from the email form -->
+          <div style="height:1px; background:#FF6600; margin: 24px 0;"></div>
+
+          <!-- Email form — name, email, then the orange Email Results button -->
+          <div id="ucalc-email-block">
             <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data" novalidate>
               <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
               <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -229,8 +233,8 @@
               </div>
               <p id="ucalc-email-hint" class="sr-only">Enter a valid email address, for example name@example.com.</p>
               <p id="ucalc-email-error" class="hidden font-sans text-xs text-red-300 -mt-1" role="alert" aria-live="polite"></p>
-              <button type="submit" class="wybe-calc-cta inline-flex items-center justify-center gap-2" data-submit>
-                <span data-btn-label>Email My Report &rarr;</span>
+              <button type="submit" class="wybe-calc-cta" data-submit>
+                <span data-btn-label>Email Results</span>
                 <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
               </button>
             </form>
@@ -252,12 +256,9 @@
             </div>
           </div>
 
-          <p class="mt-6 text-center font-sans text-sm text-cream/70">
-            Prefer to talk it through? <a href="index.html#services" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">Book a consultation</a>.
-          </p>
-
-          <p class="mt-8 font-sans text-[11px] text-white/45 leading-snug text-center max-w-lg mx-auto">
-            * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
+          <!-- Footer CTA -->
+          <p class="mt-8 text-center font-sans text-sm text-cream/70">
+            For Better Results, <a href="services-fitness.html" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">Book a Consultation</a>.
           </p>
         </div>
       </div>
