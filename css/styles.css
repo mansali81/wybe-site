@@ -2828,12 +2828,11 @@ li.service-tier.service-tier--info,
   padding: 22px;
   min-height: 0;
 }
-/* Results panel — same 2 px orange border / 16 px radius / 28 px
-   padding chrome as the calculator form so the two panels read as
-   siblings of one card family. Still transparent inside; the grid,
-   disclaimer and email row live directly on the section background. */
+/* Results panel — same glass card chrome as the calculator form.
+   Background matches rgba(0,0,0,0.55) so tiles and form sit on the
+   same dark surface as the input side. */
 #body-composition-section .calc-panels-grid #ucalc-view-results {
-  background: none;
+  background: rgba(0,0,0,0.55);
   border: 2px solid #FF6600;
   border-radius: 16px;
   box-shadow: 0 0 25px rgba(255, 102, 0, 0.15);
@@ -2991,35 +2990,15 @@ li.service-tier.service-tier--info,
   border-color: #FF6600;
   outline: none;
 }
-/* The pill send-button is replaced with a text link + prompt combo
-   below the form (see .ucalc-send-row); hide the original button. */
+/* Show the orange Email Results pill button. */
 #body-composition-section #ucalc-email-form button[type="submit"] {
-  display: none;
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
 }
+/* Legacy text send-row is replaced by the orange button; hide it. */
 #body-composition-section .ucalc-send-row {
-  margin-top: 6px;
-  text-align: left;                    /* left-aligned under "Full name" */
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: rgba(246, 242, 232, 0.85);
-  line-height: 1.5;
-}
-#body-composition-section .ucalc-send-row a {
-  color: rgba(246, 242, 232, 0.85);
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 102, 0, 0.6);
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
-#body-composition-section .ucalc-send-row a:hover {
-  color: #FF6600;
-}
-
-/* "Prefer to talk it through?" / secondary book link — folded into
-   the send row above; hide the standalone paragraph. */
-#body-composition-section #ucalc-view-results > .mt-6.text-center,
-#body-composition-section #ucalc-view-results > .mt-8.font-sans {
-  display: none;
+  display: none !important;
 }
 
 /* ── CONTACT US SECTION — centred glass card, no image ─────────────
