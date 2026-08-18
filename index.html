@@ -2558,47 +2558,6 @@
       const form = document.getElementById(‘ucalc-email-form’);
       if (!form) return;
 
-      const buildResultsMessage = (name) => {
-        const s = CalcStore.unified;
-        if (!s) return null;
-        const lines = [
-          ‘Hi ‘ + name + ‘,’,
-          ‘’,
-          ‘Here are your WYBE body composition results:’,
-          ‘’,
-        ];
-        if (s.bmi) {
-          lines.push(‘BODY MASS INDEX (BMI)’);
-          lines.push(‘Value: ‘ + s.bmi.value);
-          lines.push(‘Category: ‘ + s.bmi.category);
-          if (s.bmi.note) lines.push(‘Note: ‘ + s.bmi.note);
-          lines.push(‘’);
-        }
-        if (s.bfp) {
-          lines.push(‘BODY FAT PERCENTAGE (BFP)’);
-          lines.push(‘Value: ‘ + s.bfp.value + ‘%’);
-          lines.push(‘Category: ‘ + s.bfp.category);
-          if (s.bfp.note) lines.push(‘Note: ‘ + s.bfp.note);
-          lines.push(‘’);
-        }
-        if (s.tdee) {
-          lines.push(‘DAILY CALORIE NEEDS (TDEE)’);
-          lines.push(‘Maintenance: ‘ + s.tdee.maintain.toLocaleString() + ‘ kcal/day’);
-          lines.push(‘Fat loss (cut): ‘ + s.tdee.cut.toLocaleString() + ‘ kcal/day’);
-          lines.push(‘Lean bulk: ‘ + s.tdee.bulk.toLocaleString() + ‘ kcal/day’);
-          lines.push(‘’);
-        }
-        if (s.ibw) {
-          lines.push(‘IDEAL BODY WEIGHT (IBW)’);
-          lines.push(‘Target: ‘ + s.ibw.point + ‘ kg  (range ‘ + s.ibw.low + ‘–‘ + s.ibw.high + ‘ kg)’);
-          if (s.ibw.note) lines.push(‘Note: ‘ + s.ibw.note);
-          lines.push(‘’);
-        }
-        lines.push(‘—‘);
-        lines.push(‘These are estimates. For a personalised plan, book a consultation with Mansoor.’);
-        lines.push(‘https://mansoorahamadali.com’);
-        return lines.join(‘\n’);
-      };
 
       const btn         = form.querySelector(‘[data-submit]’);
       const btnLabel    = form.querySelector(‘[data-btn-label]’);
@@ -2650,7 +2609,9 @@
           return;
         }
 
-        const msg = buildResultsMessage(name);
+        const msg = (typeof buildResultsHtml === ‘function’)
+          ? buildResultsHtml(name, email, CalcStore.unified)
+          : null;
         if (!msg) {
           showError(‘Calculate your numbers first, then send the report.’);
           return;

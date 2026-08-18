@@ -15,6 +15,171 @@ function logLeadToSheet(source, fields) {
   }
 }
 
+// ── CALCULATOR REPORT HTML EMAIL BUILDER ────────────
+// Returns a full HTML email string styled to match the
+// WYBE Body Composition Report design. Used by both
+// index.html and calculators.html send() handlers.
+function buildResultsHtml(name, email, s) {
+  if (!s) return null;
+
+  const M_BMI  = 'Weight (kg) &divide; height&sup2; (m&sup2;). BMI screens for weight class, not body composition.';
+  const M_IBW  = 'Broca\'s Index (height in cm &minus; 100), &plusmn;5&thinsp;kg band.';
+  const M_BFP  = 'U.S. Navy circumference method (neck, waist, height), ~&plusmn;4&ndash;5% of DEXA/BIA. This method is not fully accurate but gives a rough idea &mdash; DEXA or BIA remain the gold standard for body fat testing.';
+  const M_TDEE = 'Mifflin-St&thinsp;Jeor equation, adjusted for activity level.';
+
+  const WHAT = {
+    bmi: {
+      'Underweight':   'Increasing lean muscle mass through structured resistance training and a modest calorie surplus can help.',
+      'Normal weight': 'Maintain your healthy weight through consistent training and balanced nutrition.',
+      'Overweight':    'A structured plan with progressive training and a small calorie deficit can help bring this into the healthy range.',
+      'Obese':         'A structured plan combining progressive training and a supervised calorie deficit is strongly recommended.',
+    },
+    bfp: {
+      'Essential fat':          'Maintain your fat levels — they are at the essential minimum for bodily function.',
+      'Athletic':               'A strong, athletic range — maintain it with consistent training and balanced nutrition.',
+      'Fitness':                'A healthy fitness range — keep up consistent training and balanced nutrition.',
+      'Acceptable / Average':   'Focus on resistance training and a balanced diet to move toward the fitness range.',
+      'Obese':                  'A combination of regular training and a supervised calorie deficit is strongly recommended.',
+      'Outside plausible range':'Please double-check your measurements and recalculate.',
+    },
+    tdee: {
+      'Low energy needs, careful with cuts':  'Be careful with further calorie cuts — eating too little can impair recovery and hormonal health.',
+      'Moderate metabolic range':             'Your intake is in a healthy range. Adjust slightly depending on your goal.',
+      'High energy needs':                    'A calorie deficit diet refers to replacing certain nutrients that are effective for body functions. Strongly recommend for nutrition consultation.',
+      'Very high energy needs, athlete tier': 'Your calorie needs are at an athletic level. Work with a nutritionist to fuel training and recovery optimally.',
+    },
+  };
+
+  const infoCell = (label, value) => value
+    ? '<td style="padding:4px 16px 14px 0;vertical-align:top;">'
+      + '<p style="margin:0 0 2px;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#FF6600;">' + label + '</p>'
+      + '<p style="margin:0;font-size:13px;font-weight:700;color:#FFFFFF;line-height:1.3;">' + value + '</p>'
+      + '</td>'
+    : '';
+
+  const metricCard = (label, valueLarge, valueSuffix, category, noteText, method, whatTodo) =>
+    '<td width="50%" style="padding:6px;" valign="top">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#1c1c1c;border:1px solid #2e2e2e;border-radius:6px;">'
+    + '<tr><td style="padding:18px;">'
+    + '<p style="margin:0 0 8px;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6600;">' + label + '</p>'
+    + '<p style="margin:0 0 4px;line-height:1;"><span style="font-size:40px;font-weight:900;color:#FFFFFF;">' + valueLarge + '</span>'
+      + (valueSuffix ? '<span style="font-size:15px;font-weight:400;color:#AAAAAA;"> ' + valueSuffix + '</span>' : '') + '</p>'
+    + '<p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#FF6600;">' + category + '</p>'
+    + (noteText ? '<p style="margin:0 0 12px;font-size:12px;color:#BBBBBB;line-height:1.5;">' + noteText + '</p>' : '')
+    + '<div style="height:1px;background:#2e2e2e;margin:10px 0;"></div>'
+    + '<p style="margin:0 0 8px;font-size:11px;color:#888888;line-height:1.5;"><strong style="color:#AAAAAA;">Method:</strong> ' + method + '</p>'
+    + (whatTodo ? '<p style="margin:0;font-size:12px;color:#CCCCCC;line-height:1.5;"><strong style="color:#FFFFFF;">What to do:</strong> ' + whatTodo + '</p>' : '')
+    + '</td></tr></table>'
+    + '</td>';
+
+  const genderLabel = s.gender === 'male' ? 'Male' : s.gender === 'female' ? 'Female' : '';
+
+  const bmiCard  = s.bmi
+    ? metricCard('Body Mass Index', s.bmi.value, '', s.bmi.category, s.bmi.note, M_BMI, WHAT.bmi[s.bmi.category] || '')
+    : '<td width="50%"></td>';
+  const ibwCard  = s.ibw
+    ? metricCard('Ideal Body Weight', s.ibw.point, 'kg', 'Healthy target', s.ibw.note, M_IBW,
+        'Stay within this band through consistent training and a balanced diet.')
+    : '<td width="50%"></td>';
+  const bfpCard  = s.bfp
+    ? metricCard('Body Fat %', s.bfp.value, '%', s.bfp.category, s.bfp.note, M_BFP, WHAT.bfp[s.bfp.category] || '')
+    : '<td width="50%"></td>';
+  const tdeeCard = s.tdee
+    ? metricCard('Daily Calorie Needs', s.tdee.value.toLocaleString(), 'kcal/day', s.tdee.category,
+        'Maintenance target, kcal/day.', M_TDEE, WHAT.tdee[s.tdee.category] || '')
+    : '<td width="50%"></td>';
+
+  const calTargets = s.tdee
+    ? '<tr><td style="background:#0f0f0f;border-left:1px solid #222;border-right:1px solid #222;padding:4px 24px 20px;">'
+      + '<p style="margin:0 0 10px;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888888;">CALORIE TARGETS</p>'
+      + '<div style="height:1px;background:#2e2e2e;margin-bottom:14px;"></div>'
+      + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#1c1c1c;border:1px solid #2e2e2e;border-radius:6px;">'
+      + '<tr>'
+      + '<td width="33%" style="padding:14px 10px;text-align:center;border-right:1px solid #2e2e2e;" valign="top">'
+        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888888;">CUT (FAT LOSS)</p>'
+        + '<p style="margin:0;font-size:20px;font-weight:900;color:#FFFFFF;">' + s.tdee.cut.toLocaleString() + ' kcal</p>'
+      + '</td>'
+      + '<td width="34%" style="padding:14px 10px;text-align:center;border-right:1px solid #2e2e2e;" valign="top">'
+        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888888;">MAINTAIN</p>'
+        + '<p style="margin:0;font-size:20px;font-weight:900;color:#FF6600;">' + s.tdee.maintain.toLocaleString() + ' kcal</p>'
+      + '</td>'
+      + '<td width="33%" style="padding:14px 10px;text-align:center;" valign="top">'
+        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888888;">LEAN BULK</p>'
+        + '<p style="margin:0;font-size:20px;font-weight:900;color:#FFFFFF;">' + s.tdee.bulk.toLocaleString() + ' kcal</p>'
+      + '</td>'
+      + '</tr>'
+      + '</table>'
+      + '</td></tr>'
+    : '';
+
+  return '<!DOCTYPE html>'
+    + '<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WYBE Body Composition Report</title></head>'
+    + '<body style="margin:0;padding:0;background:#0a0a0a;font-family:Helvetica,Arial,sans-serif;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;"><tr><td align="center" style="padding:20px 10px;">'
+    + '<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">'
+
+    // Header
+    + '<tr><td style="background:#1A2E22;padding:18px 24px;border-radius:6px 6px 0 0;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+    + '<td style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#F6F2E8;">BODY COMPOSITION REPORT</td>'
+    + '<td align="right" style="font-size:26px;font-weight:900;letter-spacing:0.05em;color:#FF6600;">WYBE</td>'
+    + '</tr></table></td></tr>'
+
+    // User info
+    + '<tr><td style="background:#111111;padding:16px 24px 4px;border:1px solid #222222;border-top:none;">'
+    + '<table cellpadding="0" cellspacing="0"><tr>'
+    + infoCell('Name', name)
+    + infoCell('Age', s.age ? String(s.age) : '')
+    + infoCell('Gender', genderLabel)
+    + infoCell('Activity Level', s.activityLabel || '')
+    + '</tr><tr>'
+    + infoCell('Height', s.height ? s.height + ' cm' : '')
+    + infoCell('Weight', s.weight ? s.weight + ' kg' : '')
+    + infoCell('Neck', s.neck ? s.neck + ' cm' : '')
+    + infoCell('Waist', s.waist ? s.waist + ' cm' : '')
+    + '</tr><tr>'
+    + infoCell('Email', email)
+    + '</tr></table></td></tr>'
+
+    // YOUR RESULTS heading
+    + '<tr><td style="background:#0f0f0f;padding:20px 24px 10px;border-left:1px solid #222;border-right:1px solid #222;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+    + '<td style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888888;padding-right:14px;white-space:nowrap;">YOUR RESULTS</td>'
+    + '<td style="border-top:1px solid #2e2e2e;"></td>'
+    + '</tr></table></td></tr>'
+
+    // Row 1: BMI + IBW
+    + '<tr><td style="background:#0f0f0f;padding:0 18px;border-left:1px solid #222;border-right:1px solid #222;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>' + bmiCard + ibwCard + '</tr></table></td></tr>'
+
+    // Row 2: BFP + TDEE
+    + '<tr><td style="background:#0f0f0f;padding:0 18px 16px;border-left:1px solid #222;border-right:1px solid #222;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>' + bfpCard + tdeeCard + '</tr></table></td></tr>'
+
+    // Calorie targets
+    + calTargets
+
+    // Next step CTA
+    + '<tr><td style="background:#151515;border:1px solid #222;border-top:none;padding:20px 24px;border-radius:0 0 6px 6px;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+    + '<td valign="middle" style="font-size:13px;color:#CCCCCC;line-height:1.5;padding-right:16px;">'
+    + '<strong style="color:#FFFFFF;">Next step:</strong> book a session with Mansoor to translate these numbers into a concrete training and nutrition plan.'
+    + '</td>'
+    + '<td valign="middle" align="right" style="white-space:nowrap;">'
+    + '<a href="https://mansoorahamadali.com/#services" style="display:inline-block;border:1.5px solid #FF6600;color:#FF6600;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:10px 16px;border-radius:4px;text-decoration:none;">Book a Consultation</a>'
+    + '</td></tr></table></td></tr>'
+
+    // Footer
+    + '<tr><td style="padding:16px 0;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+    + '<td style="font-size:10px;color:#555555;">Generated at wybe.fit &mdash; for educational reference only. All figures are estimates.</td>'
+    + '<td align="right" style="font-size:10px;color:#555555;white-space:nowrap;">WYBE &copy; 2026</td>'
+    + '</tr></table></td></tr>'
+
+    + '</table></td></tr></table>'
+    + '</body></html>';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── FIXED NAV HEIGHT SYNC ────────────────────────────
