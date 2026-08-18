@@ -623,7 +623,7 @@
         "name": "Where in Dubai do you train clients?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sessions run out of partner studios across Dubai and select building gyms for clients whose residence includes a private facility. Exact venue is agreed once your application is accepted; I don’t list a single fixed address because the roster is capped and location follows the client, not the other way around."
+          "text": "Sessions run out of partner studios across Dubai and select building gyms for clients whose residence includes a private facility. Exact venue is agreed once your application is accepted; I don't list a single fixed address because the roster is capped and location follows the client, not the other way around."
         }
       },
       {
@@ -639,7 +639,7 @@
         "name": "Do you offer nutrition plans separately from training?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. The Nutrition Consultation is a standalone service — you don’t need to train with me to work on your food. Book it on its own, and I’ll build the plan around your current activity and lifestyle rather than a specific programme."
+          "text": "Yes. The Nutrition Consultation is a standalone service — you don't need to train with me to work on your food. Book it on its own, and I'll build the plan around your current activity and lifestyle rather than a specific programme."
         }
       },
       {
@@ -655,7 +655,7 @@
         "name": "How do I get started?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Pick a service in the Services section, submit the short form, and I’ll reply within 48 hours with confirmation and a payment link. Digital plans start with the questionnaire; personal training starts with an application review. There’s no charge until your booking is confirmed by email."
+          "text": "Pick a service in the Services section, submit the short form, and I'll reply within 48 hours with confirmation and a payment link. Digital plans start with the questionnaire; personal training starts with an application review. There's no charge until your booking is confirmed by email."
         }
       },
       {
@@ -671,7 +671,7 @@
         "name": "What is your cancellation and refund policy?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Single sessions can be rescheduled with 24-hour notice at no cost; less than 24 hours forfeits the session. Digital plans are refundable within 7 days of delivery if you have not accessed the material. Monthly programmes run in whole calendar months and are non-refundable mid-month, but you can pause with two weeks’ notice. Full terms are sent with your booking confirmation."
+          "text": "Single sessions can be rescheduled with 24-hour notice at no cost; less than 24 hours forfeits the session. Digital plans are refundable within 7 days of delivery if you have not accessed the material. Monthly programmes run in whole calendar months and are non-refundable mid-month, but you can pause with two weeks' notice. Full terms are sent with your booking confirmation."
         }
       }
     ]
@@ -1701,10 +1701,10 @@
         const goals = (goalsInput.value || '').trim();
 
         if (name.length < 2) return showError('Enter your full name.', nameInput);
-        if (!EMAIL_RE.test(email)) return showError('That email doesn’t look right — try name@example.com.', emailInput);
+        if (!EMAIL_RE.test(email)) return showError("That email doesn't look right — try name@example.com.", emailInput);
         if (!PHONE_RE.test(phone)) return showError('Enter a phone number in international format, e.g. +971 50 000 0000.', phoneInput);
         if (loc.length < 2) return showError('Where are you based? Add your city and country.', locInput);
-        if (goals.length < 10) return showError('A sentence or two on your goals helps me decide if it’s a fit.', goalsInput);
+        if (goals.length < 10) return showError("A sentence or two on your goals helps me decide if it's a fit.", goalsInput);
 
         setSending(true);
         const data = Object.fromEntries(new FormData(form));
@@ -2555,65 +2555,65 @@
     // Formats results as plain text and emails them directly to the
     // address the user enters — no PDF download, no local file.
     (function () {
-      const form = document.getElementById(‘ucalc-email-form’);
+      const form = document.getElementById('ucalc-email-form');
       if (!form) return;
 
 
-      const btn         = form.querySelector(‘[data-submit]’);
-      const btnLabel    = form.querySelector(‘[data-btn-label]’);
-      const btnSpinner  = form.querySelector(‘[data-btn-spinner]’);
-      const nameInput   = form.querySelector(‘[data-input="name"]’);
-      const emailInput  = form.querySelector(‘[data-input="email"]’);
-      const errorSlot   = document.getElementById(‘ucalc-email-error’);
-      const successPanel = document.getElementById(‘ucalc-email-success’);
-      const failPanel    = document.getElementById(‘ucalc-email-fail’);
-      const retryBtn     = failPanel && failPanel.querySelector(‘[data-retry]’);
+      const btn         = form.querySelector('[data-submit]');
+      const btnLabel    = form.querySelector('[data-btn-label]');
+      const btnSpinner  = form.querySelector('[data-btn-spinner]');
+      const nameInput   = form.querySelector('[data-input="name"]');
+      const emailInput  = form.querySelector('[data-input="email"]');
+      const errorSlot   = document.getElementById('ucalc-email-error');
+      const successPanel = document.getElementById('ucalc-email-success');
+      const failPanel    = document.getElementById('ucalc-email-fail');
+      const retryBtn     = failPanel && failPanel.querySelector('[data-retry]');
 
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
       const showError = (msg, target) => {
         errorSlot.textContent = msg;
-        errorSlot.classList.remove(‘hidden’);
+        errorSlot.classList.remove('hidden');
         if (target) {
-          target.setAttribute(‘aria-invalid’, ‘true’);
+          target.setAttribute('aria-invalid', 'true');
           try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
         }
       };
       const clearError = () => {
-        errorSlot.textContent = ‘’;
-        errorSlot.classList.add(‘hidden’);
-        nameInput  && nameInput.setAttribute(‘aria-invalid’,  ‘false’);
-        emailInput && emailInput.setAttribute(‘aria-invalid’, ‘false’);
+        errorSlot.textContent = '';
+        errorSlot.classList.add('hidden');
+        nameInput  && nameInput.setAttribute('aria-invalid',  'false');
+        emailInput && emailInput.setAttribute('aria-invalid', 'false');
       };
       const setSending = (on) => {
         if (!btn) return;
         btn.disabled = on;
-        if (btnSpinner) btnSpinner.classList.toggle(‘hidden’, !on);
-        if (btnLabel)   btnLabel.textContent = on ? ‘Sending…’ : ‘Email Results’;
+        if (btnSpinner) btnSpinner.classList.toggle('hidden', !on);
+        if (btnLabel)   btnLabel.textContent = on ? 'Sending…' : 'Email Results';
       };
 
       const send = async () => {
         clearError();
-        failPanel.classList.add(‘hidden’);
-        successPanel.classList.add(‘hidden’);
+        failPanel.classList.add('hidden');
+        successPanel.classList.add('hidden');
 
-        const name  = (nameInput.value  || ‘’).trim();
-        const email = (emailInput.value || ‘’).trim();
+        const name  = (nameInput.value  || '').trim();
+        const email = (emailInput.value || '').trim();
 
         if (name.length < 2) {
-          showError(‘Enter your full name so I know how to address the email.’, nameInput);
+          showError('Enter your full name so I know how to address the email.', nameInput);
           return;
         }
         if (!EMAIL_RE.test(email)) {
-          showError(‘That email doesn’t look right — try name@example.com.’, emailInput);
+          showError("That email doesn't look right — try name@example.com.", emailInput);
           return;
         }
 
-        const msg = (typeof buildResultsHtml === ‘function’)
+        const msg = (typeof buildResultsHtml === 'function')
           ? buildResultsHtml(name, email, CalcStore.unified)
           : null;
         if (!msg) {
-          showError(‘Calculate your numbers first, then send the report.’);
+          showError('Calculate your numbers first, then send the report.');
           return;
         }
 
@@ -2621,50 +2621,50 @@
 
         // Log to Google Sheet in parallel — fire-and-forget.
         const _s = CalcStore.unified;
-        if (typeof logLeadToSheet === ‘function’ && _s) {
-          logLeadToSheet(‘calculator’, {
+        if (typeof logLeadToSheet === 'function' && _s) {
+          logLeadToSheet('calculator', {
             name: name,
             email: email,
-            bmi:  _s.bmi  ? String(_s.bmi.value)   : ‘’,
-            bfp:  _s.bfp  ? String(_s.bfp.value)   : ‘’,
-            ibw:  _s.ibw  ? String(_s.ibw.point)   : ‘’,
-            tdee: _s.tdee ? String(_s.tdee.value)  : ‘’,
+            bmi:  _s.bmi  ? String(_s.bmi.value)   : '',
+            bfp:  _s.bfp  ? String(_s.bfp.value)   : '',
+            ibw:  _s.ibw  ? String(_s.ibw.point)   : '',
+            tdee: _s.tdee ? String(_s.tdee.value)  : '',
           });
         }
 
         try {
-          const res = await fetch(‘https://api.web3forms.com/submit’, {
-            method: ‘POST’,
-            headers: { ‘Content-Type’: ‘application/json’, ‘Accept’: ‘application/json’ },
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
-              access_key: ‘9dd51d8a-998b-4b71-bda2-fd22eb6a752a’,
+              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
               name: name,
               email: email,
               to_email: email,
-              subject: ‘Your WYBE Calculator Results’,
+              subject: 'Your WYBE Calculator Results',
               message: msg,
             }),
           });
-          if (!res.ok) throw new Error(‘bad-status:’ + res.status);
+          if (!res.ok) throw new Error('bad-status:' + res.status);
           setSending(false);
-          form.classList.add(‘hidden’);
-          successPanel.classList.remove(‘hidden’);
-          if (typeof window.wybeTrack === ‘function’) {
-            window.wybeTrack(‘Calculator Email Report’);
+          form.classList.add('hidden');
+          successPanel.classList.remove('hidden');
+          if (typeof window.wybeTrack === 'function') {
+            window.wybeTrack('Calculator Email Report');
           }
         } catch (_) {
           setSending(false);
-          failPanel.classList.remove(‘hidden’);
+          failPanel.classList.remove('hidden');
         }
       };
 
-      form.addEventListener(‘submit’, (e) => {
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
         send();
       });
       if (retryBtn) {
-        retryBtn.addEventListener(‘click’, () => {
-          failPanel.classList.add(‘hidden’);
+        retryBtn.addEventListener('click', () => {
+          failPanel.classList.add('hidden');
           send();
         });
       }

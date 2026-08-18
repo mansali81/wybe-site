@@ -486,7 +486,7 @@
             const low = Math.round(target - 5);
             const high = Math.round(target + 5);
             const html = point + ' <span class="text-white/45 text-2xl">(' + low + '–' + high + ')</span>';
-            const note = 'Healthy target band, ±5 kg around ' + point + ' kg. Broca’s Index; exercising men should track body-fat % instead.';
+            const note = 'Healthy target band, \xb15 kg around ' + point + " kg. Broca's Index; exercising men should track body-fat % instead.";
             renderTile('ibw', html, 'IBW ' + point + ' kg', note);
             store.ibw = { point, low, high, note };
           } else { lockTile('ibw'); }
@@ -574,65 +574,65 @@
     // Formats results as plain text and emails them directly to the
     // address the user enters — no PDF download, no local file.
     (function () {
-      const form = document.getElementById(‘ucalc-email-form’);
+      const form = document.getElementById('ucalc-email-form');
       if (!form) return;
 
 
-      const btn         = form.querySelector(‘[data-submit]’);
-      const btnLabel    = form.querySelector(‘[data-btn-label]’);
-      const btnSpinner  = form.querySelector(‘[data-btn-spinner]’);
-      const nameInput   = form.querySelector(‘[data-input="name"]’);
-      const emailInput  = form.querySelector(‘[data-input="email"]’);
-      const errorSlot   = document.getElementById(‘ucalc-email-error’);
-      const successPanel = document.getElementById(‘ucalc-email-success’);
-      const failPanel    = document.getElementById(‘ucalc-email-fail’);
-      const retryBtn     = failPanel && failPanel.querySelector(‘[data-retry]’);
+      const btn         = form.querySelector('[data-submit]');
+      const btnLabel    = form.querySelector('[data-btn-label]');
+      const btnSpinner  = form.querySelector('[data-btn-spinner]');
+      const nameInput   = form.querySelector('[data-input="name"]');
+      const emailInput  = form.querySelector('[data-input="email"]');
+      const errorSlot   = document.getElementById('ucalc-email-error');
+      const successPanel = document.getElementById('ucalc-email-success');
+      const failPanel    = document.getElementById('ucalc-email-fail');
+      const retryBtn     = failPanel && failPanel.querySelector('[data-retry]');
 
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
       const showError = (msg, target) => {
         errorSlot.textContent = msg;
-        errorSlot.classList.remove(‘hidden’);
+        errorSlot.classList.remove('hidden');
         if (target) {
-          target.setAttribute(‘aria-invalid’, ‘true’);
+          target.setAttribute('aria-invalid', 'true');
           try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
         }
       };
       const clearError = () => {
-        errorSlot.textContent = ‘’;
-        errorSlot.classList.add(‘hidden’);
-        nameInput  && nameInput.setAttribute(‘aria-invalid’,  ‘false’);
-        emailInput && emailInput.setAttribute(‘aria-invalid’, ‘false’);
+        errorSlot.textContent = '';
+        errorSlot.classList.add('hidden');
+        nameInput  && nameInput.setAttribute('aria-invalid',  'false');
+        emailInput && emailInput.setAttribute('aria-invalid', 'false');
       };
       const setSending = (on) => {
         if (!btn) return;
         btn.disabled = on;
-        if (btnSpinner) btnSpinner.classList.toggle(‘hidden’, !on);
-        if (btnLabel)   btnLabel.textContent = on ? ‘Sending…’ : ‘Email Results’;
+        if (btnSpinner) btnSpinner.classList.toggle('hidden', !on);
+        if (btnLabel)   btnLabel.textContent = on ? 'Sending…' : 'Email Results';
       };
 
       const send = async () => {
         clearError();
-        failPanel.classList.add(‘hidden’);
-        successPanel.classList.add(‘hidden’);
+        failPanel.classList.add('hidden');
+        successPanel.classList.add('hidden');
 
-        const name  = (nameInput.value  || ‘’).trim();
-        const email = (emailInput.value || ‘’).trim();
+        const name  = (nameInput.value  || '').trim();
+        const email = (emailInput.value || '').trim();
 
         if (name.length < 2) {
-          showError(‘Enter your full name so I know how to address the email.’, nameInput);
+          showError('Enter your full name so I know how to address the email.', nameInput);
           return;
         }
         if (!EMAIL_RE.test(email)) {
-          showError(‘That email doesn’t look right — try name@example.com.’, emailInput);
+          showError("That email doesn't look right — try name@example.com.", emailInput);
           return;
         }
 
-        const msg = (typeof buildResultsHtml === ‘function’)
+        const msg = (typeof buildResultsHtml === 'function')
           ? buildResultsHtml(name, email, CalcStore.unified)
           : null;
         if (!msg) {
-          showError(‘Calculate your numbers first, then send the report.’);
+          showError('Calculate your numbers first, then send the report.');
           return;
         }
 
@@ -640,50 +640,50 @@
 
         // Log to Google Sheet in parallel — fire-and-forget.
         const _s = CalcStore.unified;
-        if (typeof logLeadToSheet === ‘function’ && _s) {
-          logLeadToSheet(‘calculator’, {
+        if (typeof logLeadToSheet === 'function' && _s) {
+          logLeadToSheet('calculator', {
             name: name,
             email: email,
-            bmi:  _s.bmi  ? String(_s.bmi.value)   : ‘’,
-            bfp:  _s.bfp  ? String(_s.bfp.value)   : ‘’,
-            ibw:  _s.ibw  ? String(_s.ibw.point)   : ‘’,
-            tdee: _s.tdee ? String(_s.tdee.value)  : ‘’,
+            bmi:  _s.bmi  ? String(_s.bmi.value)   : '',
+            bfp:  _s.bfp  ? String(_s.bfp.value)   : '',
+            ibw:  _s.ibw  ? String(_s.ibw.point)   : '',
+            tdee: _s.tdee ? String(_s.tdee.value)  : '',
           });
         }
 
         try {
-          const res = await fetch(‘https://api.web3forms.com/submit’, {
-            method: ‘POST’,
-            headers: { ‘Content-Type’: ‘application/json’, ‘Accept’: ‘application/json’ },
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
-              access_key: ‘9dd51d8a-998b-4b71-bda2-fd22eb6a752a’,
+              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
               name: name,
               email: email,
               to_email: email,
-              subject: ‘Your WYBE Calculator Results’,
+              subject: 'Your WYBE Calculator Results',
               message: msg,
             }),
           });
-          if (!res.ok) throw new Error(‘bad-status:’ + res.status);
+          if (!res.ok) throw new Error('bad-status:' + res.status);
           setSending(false);
-          form.classList.add(‘hidden’);
-          successPanel.classList.remove(‘hidden’);
-          if (typeof window.wybeTrack === ‘function’) {
-            window.wybeTrack(‘Calculator Email Report’);
+          form.classList.add('hidden');
+          successPanel.classList.remove('hidden');
+          if (typeof window.wybeTrack === 'function') {
+            window.wybeTrack('Calculator Email Report');
           }
         } catch (_) {
           setSending(false);
-          failPanel.classList.remove(‘hidden’);
+          failPanel.classList.remove('hidden');
         }
       };
 
-      form.addEventListener(‘submit’, (e) => {
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
         send();
       });
       if (retryBtn) {
-        retryBtn.addEventListener(‘click’, () => {
-          failPanel.classList.add(‘hidden’);
+        retryBtn.addEventListener('click', () => {
+          failPanel.classList.add('hidden');
           send();
         });
       }
