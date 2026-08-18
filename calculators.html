@@ -677,6 +677,19 @@
 
         setSending(true);
 
+        // Log to Google Sheet in parallel — fire-and-forget.
+        const _s = CalcStore.unified;
+        if (typeof logLeadToSheet === ‘function’ && _s) {
+          logLeadToSheet(‘calculator’, {
+            name: name,
+            email: email,
+            bmi:  _s.bmi  ? String(_s.bmi.value)   : ‘’,
+            bfp:  _s.bfp  ? String(_s.bfp.value)   : ‘’,
+            ibw:  _s.ibw  ? String(_s.ibw.point)   : ‘’,
+            tdee: _s.tdee ? String(_s.tdee.value)  : ‘’,
+          });
+        }
+
         try {
           const res = await fetch(‘https://api.web3forms.com/submit’, {
             method: ‘POST’,

@@ -1,3 +1,20 @@
+// ── LEAD LOGGER ──────────────────────────────────────
+// Fire-and-forget: posts lead data to the Google Sheet.
+// mode:'no-cors' so CORS errors are silenced; .catch()
+// so network failures never reach the caller.
+function logLeadToSheet(source, fields) {
+  try {
+    const body = new URLSearchParams({ source, ...fields });
+    fetch('https://script.google.com/a/macros/wybe.fit/s/AKfycbyw-BfO3d8xdP7RoFOQyOD5TaCKmnQSy7Uv06NL7tpc1oy3NoxmoDnJOO54EX4j_p9F7w/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      body,
+    }).catch(() => {});
+  } catch (e) {
+    // never let logging break the real form submission
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── FIXED NAV HEIGHT SYNC ────────────────────────────
@@ -285,6 +302,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = Object.fromEntries(new FormData(form));
       data.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
       data.subject = form.dataset.subject || 'WYBE Enquiry';
+
+      // Log to Google Sheet in parallel — fire-and-forget.
+      const subj = form.dataset.subject || '';
+      if (subj === '1825 Days, Waitlist') {
+        logLeadToSheet('waitlist', { name: data.name || '', email: data.email || '' });
+      } else if (subj === 'WYBE, Quick Contact') {
+        logLeadToSheet('contact', { name: data.name || '', email: data.email || '', message: data.message || '' });
+      }
 
       try {
         const res = await fetch('https://api.web3forms.com/submit', {
