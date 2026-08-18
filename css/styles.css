@@ -2191,8 +2191,8 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 
 .section-title {
   font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(12px, 1.9vw, 24px);   /* -4 pt trim across the clamp */
+  font-weight: 600;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.15;
@@ -2869,14 +2869,18 @@ li.service-tier.service-tier--info,
 
 /* ── CALCULATOR INTRO PANEL (#ucalc-intro) ───────────────
    Visible only in STATE 1 (no results yet). Left column on desktop,
-   stacks above the form on mobile. Lists the four metrics with the
-   full name large and the abbreviation in orange below each. */
+   stacks above the form on mobile. Centered in its column.
+   Layout per item: full name (small, cream) on top, abbreviation
+   (BMI / IBW / BFP / TDEE) bold orange below. */
 #ucalc-intro {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   color: #F6F2E8;
-  padding: 8px 0;
+  padding: 22px 16px;
+  height: 100%;
 }
 .ucalc-intro-eyebrow {
   font-family: var(--font-subhead);
@@ -2893,30 +2897,32 @@ li.service-tier.service-tier--info,
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
 }
 .ucalc-intro-list li {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding-left: 16px;
-  border-left: 2px solid rgba(255, 102, 0, 0.40);
+  align-items: center;
+  gap: 3px;
+  padding-left: 0;
+  border-left: none;
 }
+/* Full name — small, cream, sits above the abbreviation */
 .ucalc-intro-name {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(12px, 1.1vw, 14px);
+  line-height: 1.3;
+  color: rgba(246, 242, 232, 0.65);
+}
+/* Abbreviation — big bold orange, the main visual anchor */
+.ucalc-intro-abbr {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: clamp(18px, 2vw, 26px);
-  line-height: 1.15;
+  font-size: clamp(26px, 3.2vw, 40px);
   letter-spacing: -0.01em;
-  color: #F6F2E8;
-}
-.ucalc-intro-abbr {
-  font-family: var(--font-subhead);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
   color: #FF6600;
+  line-height: 1;
 }
 
 #body-composition-section .wybe-calc-cta {
