@@ -860,6 +860,32 @@
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
         <div class="calculator-form-wrapper w-full">
         <div class="calc-panels-grid">
+
+        <!-- STATE 1 only — intro panel on the LEFT showing the four metrics
+             the calculator computes. Hidden automatically in STATE 2
+             (when results appear) via the CSS :has() rule. -->
+        <div id="ucalc-intro">
+          <p class="ucalc-intro-eyebrow">What you&rsquo;ll discover</p>
+          <ul class="ucalc-intro-list">
+            <li>
+              <span class="ucalc-intro-name">Body Mass Index</span>
+              <span class="ucalc-intro-abbr">BMI</span>
+            </li>
+            <li>
+              <span class="ucalc-intro-name">Ideal Body Weight</span>
+              <span class="ucalc-intro-abbr">IBW</span>
+            </li>
+            <li>
+              <span class="ucalc-intro-name">Body Fat Percentage</span>
+              <span class="ucalc-intro-abbr">BFP</span>
+            </li>
+            <li>
+              <span class="ucalc-intro-name">Total Daily Energy Expenditure</span>
+              <span class="ucalc-intro-abbr">TDEE</span>
+            </li>
+          </ul>
+        </div>
+
         <form id="unified-calc-form" data-view="form">
           <div class="wybe-input-row">
             <label for="ucalc-gender">Gender</label>
@@ -967,7 +993,7 @@
           </p>
 
           <!-- Thin orange line separating the report from the email form -->
-          <div style="height:1px; background:#FF6600; margin: 20px 0;"></div>
+          <div style="height:1px; background:rgba(255,102,0,0.30); margin: 20px 0;"></div>
 
           <!-- Email form: name, email, then the orange Email Results button -->
           <div id="ucalc-email-block">

@@ -2803,17 +2803,21 @@ li.service-tier.service-tier--info,
   background: none;
 }
 @media (min-width: 768px) {
-  /* STATE 1: one centred column at the calculator's natural width. */
+  /* STATE 1: intro panel LEFT | calculator form RIGHT */
   #body-composition-section .calc-panels-grid {
-    grid-template-columns: minmax(0, 520px);
-    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+    justify-content: stretch;
     gap: 32px;
   }
-  /* STATE 2: calc left, results right, both stretched. */
+  /* STATE 2: calc left, results right (intro is hidden below) */
   #body-composition-section .calc-panels-grid:has(> #ucalc-view-results:not(.hidden)) {
     grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr);
     justify-content: stretch;
   }
+}
+/* STATE 2: hide the intro panel when results are visible */
+#body-composition-section .calc-panels-grid:has(> #ucalc-view-results:not(.hidden)) #ucalc-intro {
+  display: none;
 }
 
 /* Form panel keeps its dark glass + orange border chrome so the input
@@ -2861,6 +2865,58 @@ li.service-tier.service-tier--info,
 #body-composition-section .calc-panels-grid #ucalc-view-results
   > .flex.items-center.justify-between > p:last-child {
   display: none;
+}
+
+/* ── CALCULATOR INTRO PANEL (#ucalc-intro) ───────────────
+   Visible only in STATE 1 (no results yet). Left column on desktop,
+   stacks above the form on mobile. Lists the four metrics with the
+   full name large and the abbreviation in orange below each. */
+#ucalc-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #F6F2E8;
+  padding: 8px 0;
+}
+.ucalc-intro-eyebrow {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #FF6600;
+  margin: 0 0 32px;
+}
+.ucalc-intro-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.ucalc-intro-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(255, 102, 0, 0.40);
+}
+.ucalc-intro-name {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: clamp(18px, 2vw, 26px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #F6F2E8;
+}
+.ucalc-intro-abbr {
+  font-family: var(--font-subhead);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FF6600;
 }
 
 #body-composition-section .wybe-calc-cta {
