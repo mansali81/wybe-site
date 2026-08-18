@@ -417,7 +417,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 
   <!-- jsPDF for client-side PDF generation (calculator results) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
   <!-- Person schema: Mansoor -->
   <script type="application/ld+json">
@@ -1020,12 +1019,12 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 text-burgundy flex-shrink-0" aria-hidden="true">
                 <path d="M20 6L9 17l-5-5"/>
               </svg>
-              <span><strong class="text-cream">Sent.</strong> Your report is on the way. Check spam if you don&rsquo;t see it in the next few minutes &mdash; the PDF also downloaded to your device as a backup.</span>
+              <span><strong class="text-cream">Sent.</strong> Your results are on the way to your inbox. Check spam if you don&rsquo;t see it within a few minutes.</span>
             </div>
 
             <div id="ucalc-email-fail" class="hidden mt-3 border border-red-300/40 bg-red-500/10 px-3 py-2 rounded-md flex items-start justify-between gap-3" role="alert" aria-live="assertive">
               <p class="font-sans text-xs text-cream/90 leading-snug">
-                Send failed &mdash; check your connection and try again. Your PDF also downloaded locally as a backup.
+                Send failed &mdash; check your connection and try again.
               </p>
               <button type="button" data-retry class="font-sans text-xs font-bold uppercase tracking-widest text-burgundy underline underline-offset-2 flex-shrink-0">
                 Retry
@@ -2552,236 +2551,146 @@
       }
     })();
 
-    // ── UNIFIED CALCULATOR PDF EMAIL HANDLER ──────────
-    // Builds a single multi-section PDF (BMI + BFP + TDEE + IBW) from the
-    // stored unified result, downloads it locally, and posts to Web3Forms
-    // with the PDF attached.
+    // ── UNIFIED CALCULATOR EMAIL HANDLER ──────────
+    // Formats results as plain text and emails them directly to the
+    // address the user enters — no PDF download, no local file.
     (function () {
-      const form = document.getElementById('ucalc-email-form');
+      const form = document.getElementById(‘ucalc-email-form’);
       if (!form) return;
 
-      const drawHeader = (doc, title) => {
-        doc.setFillColor(0, 0, 0); // charcoal navy
-        doc.rect(0, 0, 210, 28, 'F');
-        doc.setTextColor(255, 102, 0); // lime for brand
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(20);
-        doc.text('WYBE', 18, 16);
-        doc.setTextColor(246, 242, 232); // cream
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.text('Wellness You Build Everyday', 18, 22);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(11);
-        doc.text(title, 192, 16, { align: 'right' });
-      };
-      const drawFooter = (doc) => {
-        doc.setTextColor(120, 120, 120);
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(8);
-        doc.text('Generated at mansoorahamadali.com — for educational reference only. DEXA / BIA are gold standards.', 105, 285, { align: 'center' });
-      };
-
-      const buildUnifiedPdf = (name, email) => {
+      const buildResultsMessage = (name) => {
         const s = CalcStore.unified;
         if (!s) return null;
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-        drawHeader(doc, 'YOUR NUMBERS');
-
-        doc.setTextColor(0, 0, 0);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10);
-        let y = 42;
-        doc.text('Name:  ' + name, 18, y); y += 6;
-        doc.text('Email: ' + email, 18, y); y += 6;
-        if (s.age)    { doc.text('Age:    ' + s.age, 18, y); y += 6; }
-        if (s.gender) { doc.text('Gender: ' + (s.gender === 'male' ? 'Male' : 'Female'), 18, y); y += 6; }
-        y += 4;
-
-        const section = (label, value, category, note) => {
-          doc.setDrawColor(255, 102, 0);
-          doc.setLineWidth(0.6);
-          doc.line(18, y, 192, y); y += 6;
-
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(11);
-          doc.setTextColor(0, 0, 0);
-          doc.text(label, 18, y); y += 7;
-
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(24);
-          doc.setTextColor(0, 0, 0);
-          doc.text(value, 18, y); y += 8;
-
-          if (category) {
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(10);
-            doc.setTextColor(90, 100, 120);
-            doc.text(category, 18, y); y += 6;
-          }
-          if (note) {
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
-            doc.setTextColor(60, 70, 80);
-            const noteLines = doc.splitTextToSize(note, 174);
-            doc.text(noteLines, 18, y);
-            y += noteLines.length * 4.5;
-          }
-          y += 6;
-        };
-
-        if (s.bmi)  section('Body Mass Index',    s.bmi.value,                  s.bmi.category, s.bmi.note);
-        if (s.bfp)  section('Body Fat %',         s.bfp.value + ' %',           s.bfp.category, s.bfp.note);
-        if (s.tdee) section('Daily Calorie Needs', s.tdee.value.toLocaleString() + ' kcal / day',
-                             s.tdee.category, 'Goal targets — cut: ' + s.tdee.cut.toLocaleString() + ' kcal, maintain: ' + s.tdee.maintain.toLocaleString() + ' kcal, lean bulk: ' + s.tdee.bulk.toLocaleString() + ' kcal.');
-        if (s.ibw)  section('Ideal Body Weight',  s.ibw.point + ' kg',          'Range ' + s.ibw.low + '–' + s.ibw.high + ' kg', s.ibw.note);
-
-        y += 2;
-        doc.setDrawColor(255, 102, 0);
-        doc.line(18, y, 192, y); y += 6;
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(11);
-        doc.setTextColor(0, 0, 0);
-        doc.text('Inputs used', 18, y); y += 6;
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.setTextColor(60, 70, 80);
-        if (s.height)        { doc.text('Height:   ' + s.height + ' cm', 18, y); y += 5; }
-        if (s.weight)        { doc.text('Weight:   ' + s.weight + ' kg', 18, y); y += 5; }
-        if (s.neck)          { doc.text('Neck:     ' + s.neck + ' cm', 18, y); y += 5; }
-        if (s.waist)         { doc.text('Waist:    ' + s.waist + ' cm', 18, y); y += 5; }
-        if (s.hip)           { doc.text('Hip:      ' + s.hip + ' cm', 18, y); y += 5; }
-        if (s.activityLabel) { doc.text('Activity: ' + s.activityLabel, 18, y); y += 5; }
-
-        y += 6;
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(9);
-        doc.setTextColor(60, 70, 80);
-        const next = 'Next step: book a session with Mansoor to translate these numbers into a concrete training and nutrition plan. Reply to this email or visit the contact section on the website.';
-        doc.text(doc.splitTextToSize(next, 174), 18, y);
-
-        drawFooter(doc);
-        return doc;
+        const lines = [
+          ‘Hi ‘ + name + ‘,’,
+          ‘’,
+          ‘Here are your WYBE body composition results:’,
+          ‘’,
+        ];
+        if (s.bmi) {
+          lines.push(‘BODY MASS INDEX (BMI)’);
+          lines.push(‘Value: ‘ + s.bmi.value);
+          lines.push(‘Category: ‘ + s.bmi.category);
+          if (s.bmi.note) lines.push(‘Note: ‘ + s.bmi.note);
+          lines.push(‘’);
+        }
+        if (s.bfp) {
+          lines.push(‘BODY FAT PERCENTAGE (BFP)’);
+          lines.push(‘Value: ‘ + s.bfp.value + ‘%’);
+          lines.push(‘Category: ‘ + s.bfp.category);
+          if (s.bfp.note) lines.push(‘Note: ‘ + s.bfp.note);
+          lines.push(‘’);
+        }
+        if (s.tdee) {
+          lines.push(‘DAILY CALORIE NEEDS (TDEE)’);
+          lines.push(‘Maintenance: ‘ + s.tdee.maintain.toLocaleString() + ‘ kcal/day’);
+          lines.push(‘Fat loss (cut): ‘ + s.tdee.cut.toLocaleString() + ‘ kcal/day’);
+          lines.push(‘Lean bulk: ‘ + s.tdee.bulk.toLocaleString() + ‘ kcal/day’);
+          lines.push(‘’);
+        }
+        if (s.ibw) {
+          lines.push(‘IDEAL BODY WEIGHT (IBW)’);
+          lines.push(‘Target: ‘ + s.ibw.point + ‘ kg  (range ‘ + s.ibw.low + ‘–‘ + s.ibw.high + ‘ kg)’);
+          if (s.ibw.note) lines.push(‘Note: ‘ + s.ibw.note);
+          lines.push(‘’);
+        }
+        lines.push(‘—‘);
+        lines.push(‘These are estimates. For a personalised plan, book a consultation with Mansoor.’);
+        lines.push(‘https://mansoorahamadali.com’);
+        return lines.join(‘\n’);
       };
 
-      // ── Enhanced lead-magnet submit ──
-      // Steps:
-      //   1. Client-side validate name + email (block obviously-bad input).
-      //   2. Show spinner in the submit button.
-      //   3. Build the PDF; always download locally so the user has it even
-      //      if the network hop fails.
-      //   4. POST to Web3Forms; on success hide the form and show the
-      //      success panel + fire wybeTrack('Calculator Email Report').
-      //      On failure, restore the button and show the retry panel.
-      //   5. Retry button re-submits without re-validating (fields are
-      //      already known-good).
-      const btn         = form.querySelector('[data-submit]');
-      const btnLabel    = form.querySelector('[data-btn-label]');
-      const btnSpinner  = form.querySelector('[data-btn-spinner]');
-      const nameInput   = form.querySelector('[data-input="name"]');
-      const emailInput  = form.querySelector('[data-input="email"]');
-      const errorSlot   = document.getElementById('ucalc-email-error');
-      const successPanel = document.getElementById('ucalc-email-success');
-      const failPanel    = document.getElementById('ucalc-email-fail');
-      const retryBtn     = failPanel && failPanel.querySelector('[data-retry]');
+      const btn         = form.querySelector(‘[data-submit]’);
+      const btnLabel    = form.querySelector(‘[data-btn-label]’);
+      const btnSpinner  = form.querySelector(‘[data-btn-spinner]’);
+      const nameInput   = form.querySelector(‘[data-input="name"]’);
+      const emailInput  = form.querySelector(‘[data-input="email"]’);
+      const errorSlot   = document.getElementById(‘ucalc-email-error’);
+      const successPanel = document.getElementById(‘ucalc-email-success’);
+      const failPanel    = document.getElementById(‘ucalc-email-fail’);
+      const retryBtn     = failPanel && failPanel.querySelector(‘[data-retry]’);
 
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
       const showError = (msg, target) => {
         errorSlot.textContent = msg;
-        errorSlot.classList.remove('hidden');
+        errorSlot.classList.remove(‘hidden’);
         if (target) {
-          target.setAttribute('aria-invalid', 'true');
+          target.setAttribute(‘aria-invalid’, ‘true’);
           try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
         }
       };
       const clearError = () => {
-        errorSlot.textContent = '';
-        errorSlot.classList.add('hidden');
-        nameInput  && nameInput.setAttribute('aria-invalid',  'false');
-        emailInput && emailInput.setAttribute('aria-invalid', 'false');
+        errorSlot.textContent = ‘’;
+        errorSlot.classList.add(‘hidden’);
+        nameInput  && nameInput.setAttribute(‘aria-invalid’,  ‘false’);
+        emailInput && emailInput.setAttribute(‘aria-invalid’, ‘false’);
       };
       const setSending = (on) => {
         if (!btn) return;
         btn.disabled = on;
-        if (btnSpinner) btnSpinner.classList.toggle('hidden', !on);
-        if (btnLabel)   btnLabel.textContent = on ? 'Sending…' : 'Email my report →';
+        if (btnSpinner) btnSpinner.classList.toggle(‘hidden’, !on);
+        if (btnLabel)   btnLabel.textContent = on ? ‘Sending…’ : ‘Email Results’;
       };
 
       const send = async () => {
         clearError();
-        failPanel.classList.add('hidden');
-        successPanel.classList.add('hidden');
+        failPanel.classList.add(‘hidden’);
+        successPanel.classList.add(‘hidden’);
 
-        if (!window.jspdf) {
-          showError('PDF library still loading — please try again in a moment.');
-          return;
-        }
-
-        const name  = (nameInput.value  || '').trim();
-        const email = (emailInput.value || '').trim();
+        const name  = (nameInput.value  || ‘’).trim();
+        const email = (emailInput.value || ‘’).trim();
 
         if (name.length < 2) {
-          showError('Enter your full name so I know how to address the email.', nameInput);
+          showError(‘Enter your full name so I know how to address the email.’, nameInput);
           return;
         }
         if (!EMAIL_RE.test(email)) {
-          showError('That email doesn’t look right — try name@example.com.', emailInput);
+          showError(‘That email doesn’t look right — try name@example.com.’, emailInput);
           return;
         }
 
-        const doc = buildUnifiedPdf(name, email);
-        if (!doc) {
-          showError('Calculate your numbers first, then send the report.');
+        const msg = buildResultsMessage(name);
+        if (!msg) {
+          showError(‘Calculate your numbers first, then send the report.’);
           return;
         }
 
         setSending(true);
 
-        const slug = (name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'result');
-        const filename = 'wybe-numbers-' + slug + '.pdf';
-        const blob = doc.output('blob');
-
-        // Always download locally first, so a network failure still leaves
-        // the user with their PDF.
         try {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url; a.download = filename;
-          document.body.appendChild(a); a.click(); a.remove();
-          URL.revokeObjectURL(url);
-        } catch (_) { /* ignore download errors */ }
-
-        // Fresh FormData each attempt so a retry doesn't accumulate
-        // duplicate attachment blobs.
-        const fd = new FormData(form);
-        fd.append('attachment', blob, filename);
-        fd.append('message', 'WYBE unified report for ' + name + ', attached as PDF.');
-
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
-          if (!res.ok) throw new Error('bad-status:' + res.status);
-          // Success — hide form, show success panel, fire tracking event.
+          const res = await fetch(‘https://api.web3forms.com/submit’, {
+            method: ‘POST’,
+            headers: { ‘Content-Type’: ‘application/json’, ‘Accept’: ‘application/json’ },
+            body: JSON.stringify({
+              access_key: ‘9dd51d8a-998b-4b71-bda2-fd22eb6a752a’,
+              name: name,
+              email: email,
+              to_email: email,
+              subject: ‘Your WYBE Calculator Results’,
+              message: msg,
+            }),
+          });
+          if (!res.ok) throw new Error(‘bad-status:’ + res.status);
           setSending(false);
-          form.classList.add('hidden');
-          successPanel.classList.remove('hidden');
-          if (typeof window.wybeTrack === 'function') {
-            window.wybeTrack('Calculator Email Report');
+          form.classList.add(‘hidden’);
+          successPanel.classList.remove(‘hidden’);
+          if (typeof window.wybeTrack === ‘function’) {
+            window.wybeTrack(‘Calculator Email Report’);
           }
         } catch (_) {
           setSending(false);
-          failPanel.classList.remove('hidden');
+          failPanel.classList.remove(‘hidden’);
         }
       };
 
-      form.addEventListener('submit', (e) => {
+      form.addEventListener(‘submit’, (e) => {
         e.preventDefault();
         send();
       });
       if (retryBtn) {
-        retryBtn.addEventListener('click', () => {
-          failPanel.classList.add('hidden');
+        retryBtn.addEventListener(‘click’, () => {
+          failPanel.classList.add(‘hidden’);
           send();
         });
       }
