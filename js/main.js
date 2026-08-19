@@ -1,24 +1,9 @@
-// ── LEAD LOGGER ──────────────────────────────────────
-// Fire-and-forget: posts lead data to the Google Sheet.
-// mode:'no-cors' so CORS errors are silenced; .catch()
-// so network failures never reach the caller.
-function logLeadToSheet(source, fields) {
-  try {
-    const body = new URLSearchParams({ source, ...fields });
-    fetch('https://script.google.com/a/macros/wybe.fit/s/AKfycbyw-BfO3d8xdP7RoFOQyOD5TaCKmnQSy7Uv06NL7tpc1oy3NoxmoDnJOO54EX4j_p9F7w/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      body,
-    }).catch(() => {});
-  } catch (e) {
-    // never let logging break the real form submission
-  }
-}
+// ── API BASE URL ─────────────────────────────────────
+// Update this after deploying the wybe-api project to Vercel.
+var WYBE_API_BASE = 'https://wybe-api.vercel.app';
 
-// ── CALCULATOR REPORT HTML EMAIL BUILDER ────────────
-// Returns a full HTML email string styled to match the
-// WYBE Body Composition Report design. Used by both
-// index.html and calculators.html send() handlers.
+// LEGACY STUB — kept so any cached page referencing buildResultsHtml
+// does not throw a ReferenceError. Real PDF generation is now server-side.
 function buildResultsHtml(name, email, s) {
   if (!s) return null;
 
@@ -452,41 +437,59 @@ document.addEventListener('DOMContentLoaded', () => {
     setReady();
   })();
 
-  // ── WEB3FORMS HANDLER ────────────────────────────────
-  // Every form with `data-form` submits to web3forms, swaps in the success
-  // panel that follows it (the next sibling element).
-  document.querySelectorAll('form[data-form]').forEach(form => {
-    form.addEventListener('submit', async (e) => {
+  // ── FORM HANDLER ─────────────────────────────────────
+  // Waitlist and contact forms POST to the WYBE API.
+  // Any other data-form falls back to Web3Forms.
+  document.querySelectorAll('form[data-form]').forEach(function(form) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const btn = form.querySelector('button[type="submit"]');
-      const originalText = btn ? btn.textContent : '';
-      const successEl = form.nextElementSibling;
+      var btn = form.querySelector('button[type="submit"]');
+      var originalText = btn ? btn.textContent : '';
+      var successEl = form.nextElementSibling;
+      var subj = form.dataset.subject || '';
+      var raw = Object.fromEntries(new FormData(form));
 
       if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
 
-      const data = Object.fromEntries(new FormData(form));
-      data.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
-      data.subject = form.dataset.subject || 'WYBE Enquiry';
-
-      // Log to Google Sheet in parallel — fire-and-forget.
-      const subj = form.dataset.subject || '';
-      if (subj === '1825 Days, Waitlist') {
-        logLeadToSheet('waitlist', { name: data.name || '', email: data.email || '' });
-      } else if (subj === 'WYBE, Quick Contact') {
-        logLeadToSheet('contact', { name: data.name || '', email: data.email || '', message: data.message || '' });
-      }
-
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        if (res.ok) {
-          form.classList.add('hidden');
-          if (successEl) successEl.classList.remove('hidden');
-        } else { throw new Error(); }
-      } catch {
+        var endpoint = null;
+        var payload = null;
+        var fallback = false;
+
+        if (subj === '1825 Days, Waitlist') {
+          endpoint = WYBE_API_BASE + '/api/waitlist';
+          payload = { name: raw.name || '', email: raw.email || '', mobile: raw.mobile || '', country: raw.country || '' };
+        } else if (subj === 'WYBE, Quick Contact') {
+          endpoint = WYBE_API_BASE + '/api/contact';
+          payload = { name: raw.name || '', email: raw.email || '', message: raw.message || '' };
+        } else {
+          fallback = true;
+          raw.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
+          raw.subject = subj || 'WYBE Enquiry';
+        }
+
+        var res;
+        if (fallback) {
+          res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(raw),
+          });
+          if (!res.ok) throw new Error('Request failed');
+        } else {
+          res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          var json = await res.json().catch(function() { return {}; });
+          if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');
+        }
+
+        if (btn) { btn.textContent = originalText; btn.disabled = false; }
+        form.classList.add('hidden');
+        if (successEl) successEl.classList.remove('hidden');
+      } catch (err) {
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
       }
     });

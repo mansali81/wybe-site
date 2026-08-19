@@ -628,43 +628,48 @@
           return;
         }
 
-        const msg = (typeof buildResultsHtml === 'function')
-          ? buildResultsHtml(name, email, CalcStore.unified)
-          : null;
-        if (!msg) {
+        const _s = CalcStore.unified;
+        if (!_s) {
           showError('Calculate your numbers first, then send the report.');
           return;
         }
 
         setSending(true);
 
-        // Log to Google Sheet in parallel — fire-and-forget.
-        const _s = CalcStore.unified;
-        if (typeof logLeadToSheet === 'function' && _s) {
-          logLeadToSheet('calculator', {
-            name: name,
-            email: email,
-            bmi:  _s.bmi  ? String(_s.bmi.value)   : '',
-            bfp:  _s.bfp  ? String(_s.bfp.value)   : '',
-            ibw:  _s.ibw  ? String(_s.ibw.point)   : '',
-            tdee: _s.tdee ? String(_s.tdee.value)  : '',
-          });
-        }
-
         try {
-          const res = await fetch('https://api.web3forms.com/submit', {
+          const payload = {
+            name:   name,
+            email:  email,
+            age:    _s.age,
+            gender: _s.gender,
+            activityLevel: _s.activityLabel || '',
+            height: _s.height,
+            weight: _s.weight,
+            neck:   _s.neck,
+            waist:  _s.waist,
+            bmi:          _s.bmi  ? _s.bmi.value    : '',
+            bmiCategory:  _s.bmi  ? _s.bmi.category : '',
+            bmiNote:      _s.bmi  ? _s.bmi.note     : '',
+            ibw:          _s.ibw  ? _s.ibw.point     : '',
+            ibwLow:       _s.ibw  ? _s.ibw.low       : '',
+            ibwHigh:      _s.ibw  ? _s.ibw.high      : '',
+            bfp:          _s.bfp  ? _s.bfp.value    : '',
+            bfpCategory:  _s.bfp  ? _s.bfp.category : '',
+            bfpNote:      _s.bfp  ? _s.bfp.note     : '',
+            tdee:             _s.tdee ? _s.tdee.value    : '',
+            tdeeCategory:     _s.tdee ? _s.tdee.category : '',
+            cutCalories:      _s.tdee ? _s.tdee.cut      : '',
+            maintainCalories: _s.tdee ? _s.tdee.maintain : '',
+            leanBulkCalories: _s.tdee ? _s.tdee.bulk     : '',
+          };
+          const apiBase = (typeof WYBE_API_BASE !== 'undefined') ? WYBE_API_BASE : '';
+          const res = await fetch(apiBase + '/api/calculator-report', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
-              name: name,
-              email: email,
-              to_email: email,
-              subject: 'Your WYBE Calculator Results',
-              message: msg,
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
           });
-          if (!res.ok) throw new Error('bad-status:' + res.status);
+          const json = await res.json().catch(function() { return {}; });
+          if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');
           setSending(false);
           form.classList.add('hidden');
           successPanel.classList.remove('hidden');
