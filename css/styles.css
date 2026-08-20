@@ -2877,7 +2877,7 @@ li.service-tier.service-tier--info,
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-end;
   color: #F6F2E8;
   padding: 22px 16px;
   height: 100%;
@@ -2899,13 +2899,16 @@ li.service-tier.service-tier--info,
 .ucalc-intro-list li {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 0 16px;
+  justify-content: center;
+  height: 119px;
+  width: 180px;
+  padding: 0;
   background-image: url('../images/brush-stroke-orange.png');
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 180px auto;
+  background-size: 180px;
   transform: scaleX(-1);
 }
 /* Counter-flip children so text reads normally despite the parent mirror */
@@ -2921,7 +2924,6 @@ li.service-tier.service-tier--info,
   line-height: 1;
   color: #ffffff;
   display: block;
-  white-space: nowrap;
 }
 /* Full name — lighter white, secondary label */
 .ucalc-intro-name {
@@ -2935,21 +2937,21 @@ li.service-tier.service-tier--info,
 }
 
 /* ── VERTICAL "DISCOVER" LABEL ────────────────────────────
-   Absolutely positioned relative to .ucalc-intro-list (which has
-   position:relative). font-size/letter-spacing tuned so the rendered
-   text block (~415px) lands "D" at the top of the TDEE row.
-   If list content or font changes, re-tune letter-spacing accordingly. */
+   Absolutely positioned relative to .ucalc-intro-list (position:relative).
+   letter-spacing/top tuned so R sits just below the top of BMI and D lands
+   near the "Total Daily Energy Expenditure" line. Re-tune both if list
+   height or content changes. */
 .wybe-vertical-discover {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   color: #ffffff;
   font-weight: 800;
   font-size: 62px;
-  letter-spacing: 13.775px;
+  letter-spacing: 16.1px;
   line-height: 1;
   position: absolute;
-  left: -85px;
-  top: 0;
+  left: -70px;
+  top: 25px;
   width: 70px;
   margin: 0;
   padding: 0;
