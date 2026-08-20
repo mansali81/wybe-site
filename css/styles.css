@@ -2877,7 +2877,7 @@ li.service-tier.service-tier--info,
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
   color: #F6F2E8;
   padding: 22px 16px;
   height: 100%;
