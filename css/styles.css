@@ -2877,7 +2877,7 @@ li.service-tier.service-tier--info,
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-end;
   color: #F6F2E8;
   padding: 22px 16px;
   height: 100%;
@@ -2909,11 +2909,6 @@ li.service-tier.service-tier--info,
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 180px;
-  transform: scaleX(-1);
-}
-/* Counter-flip children so text reads normally despite the parent mirror */
-.ucalc-intro-list li > * {
-  transform: scaleX(-1);
 }
 /* Abbreviation — bold white, primary visual anchor on the stroke */
 .ucalc-intro-abbr {
