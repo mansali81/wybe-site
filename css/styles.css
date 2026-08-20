@@ -2868,61 +2868,97 @@ li.service-tier.service-tier--info,
 }
 
 /* ── CALCULATOR INTRO PANEL (#ucalc-intro) ───────────────
-   Visible only in STATE 1 (no results yet). Left column on desktop,
-   stacks above the form on mobile. Centered in its column.
-   Layout per item: full name (small, cream) on top, abbreviation
-   (BMI / IBW / BFP / TDEE) bold orange below. */
+   Visible only in STATE 1. Left column on desktop, stacks above the
+   form on mobile. Each metric rendered as text on an orange brush stroke,
+   with a vertical "DISCOVER" label positioned to the left of the list.
+   The 477px list height is calibrated to match the calculator form's
+   rendered height on desktop — adjust if the form gains/loses fields. */
 #ucalc-intro {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
   color: #F6F2E8;
   padding: 22px 16px;
   height: 100%;
+  overflow: visible;
 }
 .ucalc-intro-eyebrow {
-  font-family: var(--font-subhead);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #FF6600;
-  margin: 0 0 32px;
+  display: none;
 }
 .ucalc-intro-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  justify-content: space-between;
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 0 70px;
+  height: 477px;
+  position: relative;
 }
 .ucalc-intro-list li {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding-left: 0;
-  border-left: none;
+  gap: 12px;
+  padding: 0 16px;
+  background-image: url('../images/brush-stroke-orange.svg');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 180px auto;
+  transform: scaleX(-1);
 }
-/* Full name — small, cream, sits above the abbreviation */
+/* Counter-flip children so text reads normally despite the parent mirror */
+.ucalc-intro-list li > * {
+  transform: scaleX(-1);
+}
+/* Abbreviation — bold white, primary visual anchor on the stroke */
+.ucalc-intro-abbr {
+  font-family: var(--font-header);
+  font-weight: 700;
+  font-size: clamp(26px, 3.2vw, 40px);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: #ffffff;
+  display: block;
+  white-space: nowrap;
+}
+/* Full name — lighter white, secondary label */
 .ucalc-intro-name {
   font-family: var(--font-body);
   font-weight: 400;
   font-size: clamp(12px, 1.1vw, 14px);
   line-height: 1.3;
-  color: rgba(246, 242, 232, 0.65);
+  color: #ffffff;
+  opacity: 0.85;
+  display: block;
 }
-/* Abbreviation — big bold orange, the main visual anchor */
-.ucalc-intro-abbr {
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: clamp(26px, 3.2vw, 40px);
-  letter-spacing: -0.01em;
-  color: #FF6600;
+
+/* ── VERTICAL "DISCOVER" LABEL ────────────────────────────
+   Absolutely positioned relative to .ucalc-intro-list (which has
+   position:relative). font-size/letter-spacing tuned so the rendered
+   text block (~415px) lands "D" at the top of the TDEE row.
+   If list content or font changes, re-tune letter-spacing accordingly. */
+.wybe-vertical-discover {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 62px;
+  letter-spacing: 13.775px;
   line-height: 1;
+  position: absolute;
+  left: -85px;
+  top: 0;
+  width: 70px;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+.wybe-vertical-discover span {
+  display: block;
 }
 
 #body-composition-section .wybe-calc-cta {
@@ -3184,6 +3220,21 @@ li.service-tier.service-tier--info,
      padding so it doesn't kiss the panel edge. */
   #body-composition-section .ucalc-send-row {
     padding-right: 4px;
+  }
+
+  /* Mobile: intro panel — collapse the vertical DISCOVER label and
+     reset the list to stack naturally (no fixed height or left offset). */
+  .wybe-vertical-discover {
+    display: none;
+  }
+  #ucalc-intro {
+    align-items: center;
+    padding: 16px 16px 8px;
+  }
+  .ucalc-intro-list {
+    height: auto;
+    margin-left: 0;
+    gap: 16px;
   }
 
   /* 3) FAQ MODAL — collapse the nested paddings so the questions
