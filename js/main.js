@@ -438,8 +438,10 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // ── FORM HANDLER ─────────────────────────────────────
-  // Waitlist and contact forms POST to the WYBE API.
+  // Waitlist and contact forms POST to Google Apps Script.
   // Any other data-form falls back to Web3Forms.
+  var GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
+
   document.querySelectorAll('form[data-form]').forEach(function(form) {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -452,39 +454,33 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
 
       try {
-        var endpoint = null;
-        var payload = null;
-        var fallback = false;
+        var params = null;
 
         if (subj === '1825 Days, Waitlist') {
-          endpoint = WYBE_API_BASE + '/api/waitlist';
-          payload = { name: raw.name || '', email: raw.email || '', mobile: raw.mobile || '', country: raw.country || '' };
+          params = new URLSearchParams({ source: 'waitlist', name: raw.name || '', email: raw.email || '', mobile: raw.mobile || '', country: raw.country || '' });
         } else if (subj === 'WYBE, Quick Contact') {
-          endpoint = WYBE_API_BASE + '/api/contact';
-          payload = { name: raw.name || '', email: raw.email || '', message: raw.message || '' };
+          params = new URLSearchParams({ source: 'contact', name: raw.name || '', email: raw.email || '', message: raw.message || '' });
         } else {
-          fallback = true;
           raw.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
           raw.subject = subj || 'WYBE Enquiry';
-        }
-
-        var res;
-        if (fallback) {
-          res = await fetch('https://api.web3forms.com/submit', {
+          var res = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(raw),
           });
           if (!res.ok) throw new Error('Request failed');
-        } else {
-          res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-          var json = await res.json().catch(function() { return {}; });
-          if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          form.classList.add('hidden');
+          if (successEl) successEl.classList.remove('hidden');
+          return;
         }
+
+        await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString(),
+        });
 
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
         form.classList.add('hidden');
