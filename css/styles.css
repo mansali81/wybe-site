@@ -200,17 +200,13 @@ h4, h5, h6, .wybe-subhead {
 /* Header stays FULLY TRANSPARENT at every scroll position. */
 .wybe-header.is-scrolled { /* bg stays transparent */ }
 
-/* Hide-on-scroll: main.js adds .is-hiding while the user is
-   actively scrolling (any scrollY > 50) and removes it after
-   ~180 ms of idle. The header slides UP out of view and fades so
-   nothing sits over the content while the reader is moving. */
 .wybe-header {
-  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, backdrop-filter 0.25s ease;
+  transition: background-color 0.25s ease, backdrop-filter 0.25s ease;
 }
 .wybe-header.is-hiding {
-  transform: translateY(-110%);
-  opacity: 0;
-  pointer-events: none;
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Brand: text-only "WYBE" wordmark. Replaces the earlier combined
@@ -387,7 +383,7 @@ h4, h5, h6, .wybe-subhead {
                                   the hamburger button */
   min-width: 220px;
   padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(40, 40, 40, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 2px solid #FF6600;
@@ -404,7 +400,7 @@ h4, h5, h6, .wybe-subhead {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.11em;
-  text-transform: uppercase;
+  text-transform: none;
   color: #F6F2E8;
   text-decoration: none;
   padding: 8px 4px;

@@ -227,17 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!nav) return;
     const header = nav.closest('.wybe-header') || document.querySelector('.wybe-header');
     let ticking = false;
-    let idleTimer;
     const update = () => {
       const on = window.scrollY > 50;
       nav.classList.toggle('is-scrolled', on);
       if (header) {
         header.classList.toggle('is-scrolled', on);
-        // Hide while actively scrolling (any scroll ≥ 50 px).
-        header.classList.add('is-hiding');
-        clearTimeout(idleTimer);
-        // Show again once scroll has been idle for a moment.
-        idleTimer = setTimeout(() => header.classList.remove('is-hiding'), 180);
       }
       ticking = false;
     };
