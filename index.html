@@ -1434,6 +1434,7 @@
           <p class="font-sans text-lg font-semibold text-cream mb-1">You&rsquo;re on the list.</p>
           <p class="font-sans text-sm text-cream/60">I&rsquo;ll be in touch as soon as the book is ready.</p>
         </div>
+        <p id="waitlist-send-error" class="hidden font-sans text-xs text-red-300 mt-2" role="alert">Connection error — check your network and try again.</p>
       </div>
       </div><!-- /.grid -->
     </div>
@@ -1489,6 +1490,7 @@
                 <span id="contact-tick" class="hidden" aria-live="polite" aria-label="Message sent">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 15.5 9.5"/></svg>
                 </span>
+                <span id="contact-send-error" class="hidden font-sans text-xs text-red-300" role="alert">Connection error — check your network and try again.</span>
               </div>
             </form>
           </div>
@@ -2630,13 +2632,21 @@
         try {
           const GAS_URL = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
           const params = new URLSearchParams({
-            source: 'calculator',
-            name:   name,
-            email:  email,
-            bmi:    _s.bmi  ? _s.bmi.value    : '',
-            bfp:    _s.bfp  ? _s.bfp.value    : '',
-            ibw:    _s.ibw  ? _s.ibw.point     : '',
-            tdee:   _s.tdee ? _s.tdee.value    : '',
+            source:   'calculator',
+            name:     name,
+            email:    email,
+            age:      _s.age      != null ? String(_s.age)    : '',
+            gender:   _s.gender   != null ? _s.gender         : '',
+            activity: _s.activityLabel != null ? _s.activityLabel : '',
+            height:   _s.height   != null ? String(_s.height) : '',
+            weight:   _s.weight   != null ? String(_s.weight) : '',
+            neck:     _s.neck     != null ? String(_s.neck)   : '',
+            waist:    _s.waist    != null ? String(_s.waist)  : '',
+            hip:      _s.hip      != null ? String(_s.hip)    : '',
+            bmi:      _s.bmi  ? _s.bmi.value   : '',
+            bfp:      _s.bfp  ? _s.bfp.value   : '',
+            ibw:      _s.ibw  ? _s.ibw.point    : '',
+            tdee:     _s.tdee ? _s.tdee.value   : '',
           });
           await fetch(GAS_URL, {
             method: 'POST',

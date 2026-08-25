@@ -447,6 +447,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
 
+      // Hide any previous error for this form
+      var errElId = subj === 'WYBE, Quick Contact' ? 'contact-send-error' : subj === '1825 Days, Waitlist' ? 'waitlist-send-error' : null;
+      if (errElId) { var prevErr = document.getElementById(errElId); if (prevErr) prevErr.classList.add('hidden'); }
+
       try {
         var params = null;
 
@@ -501,6 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err) {
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
+        if (errElId) { var errEl = document.getElementById(errElId); if (errEl) errEl.classList.remove('hidden'); }
       }
     });
   });
