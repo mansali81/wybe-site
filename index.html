@@ -1404,16 +1404,30 @@
           The book is in progress. Register your interest now and you&rsquo;ll be among the first to hear when it&rsquo;s ready, with early access and any pre-launch offers.
         </p>
 
-        <form data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="max-w-md space-y-3">
+        <form id="waitlist-form" data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="max-w-md space-y-3">
           <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
           <input type="hidden" name="subject" value="1825 Days, Waitlist">
           <input type="hidden" name="redirect" value="false">
 
-          <input type="text"  name="name"    required placeholder="Full name"              class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
-          <input type="email" name="email"   required placeholder="Email"                   class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
-          <input type="tel"   name="mobile"  required placeholder="Mobile / WhatsApp"        class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
-          <input type="text"  name="country" required placeholder="Country"                  class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+          <input type="text"  name="name"  required placeholder="Full name" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+          <input type="email" name="email" required placeholder="Email"     class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+
+          <!-- Mobile: dial-code select + number input -->
+          <div class="wl-mobile-wrap flex border border-cream/25 focus-within:border-burgundy transition-colors">
+            <select id="wl-dialcode" aria-label="Country calling code" class="wl-dialcode-sel bg-transparent text-cream font-sans text-sm px-2 py-3 focus:outline-none border-r border-cream/25 cursor-pointer flex-shrink-0"></select>
+            <input id="wl-mobile-num" type="tel" required placeholder="Mobile / WhatsApp" autocomplete="tel-national"
+                   class="bg-transparent px-3 py-3 font-sans text-sm text-cream flex-1 focus:outline-none placeholder:text-cream/40 min-w-0">
+          </div>
+          <input type="hidden" name="mobile" id="wl-mobile-hidden">
+
+          <!-- Country: searchable dropdown -->
+          <div class="relative" id="wl-country-wrap">
+            <input id="wl-country-search" type="text" required placeholder="Country" autocomplete="off"
+                   class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+            <input type="hidden" name="country" id="wl-country-hidden">
+            <ul id="wl-country-list" class="hidden absolute left-0 right-0 z-50 mt-0.5 max-h-48 overflow-y-auto border border-cream/20 shadow-xl" role="listbox"></ul>
+          </div>
 
           <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
         </form>
@@ -2653,6 +2667,137 @@
           send();
         });
       }
+    })();
+
+    // ── WAITLIST: dial-code select + searchable country ───
+    (function () {
+      var WL_DATA = [
+        ['Afghanistan','+93','AF'],['Albania','+355','AL'],['Algeria','+213','DZ'],
+        ['Andorra','+376','AD'],['Angola','+244','AO'],['Antigua and Barbuda','+1268','AG'],
+        ['Argentina','+54','AR'],['Armenia','+374','AM'],['Australia','+61','AU'],
+        ['Austria','+43','AT'],['Azerbaijan','+994','AZ'],['Bahamas','+1242','BS'],
+        ['Bahrain','+973','BH'],['Bangladesh','+880','BD'],['Barbados','+1246','BB'],
+        ['Belarus','+375','BY'],['Belgium','+32','BE'],['Belize','+501','BZ'],
+        ['Benin','+229','BJ'],['Bhutan','+975','BT'],['Bolivia','+591','BO'],
+        ['Bosnia and Herzegovina','+387','BA'],['Botswana','+267','BW'],['Brazil','+55','BR'],
+        ['Brunei','+673','BN'],['Bulgaria','+359','BG'],['Burkina Faso','+226','BF'],
+        ['Burundi','+257','BI'],['Cambodia','+855','KH'],['Cameroon','+237','CM'],
+        ['Canada','+1','CA'],['Cape Verde','+238','CV'],['Central African Republic','+236','CF'],
+        ['Chad','+235','TD'],['Chile','+56','CL'],['China','+86','CN'],
+        ['Colombia','+57','CO'],['Comoros','+269','KM'],['Congo','+242','CG'],
+        ['Costa Rica','+506','CR'],['Croatia','+385','HR'],['Cuba','+53','CU'],
+        ['Cyprus','+357','CY'],['Czech Republic','+420','CZ'],['Denmark','+45','DK'],
+        ['Djibouti','+253','DJ'],['Dominica','+1767','DM'],['Dominican Republic','+1809','DO'],
+        ['DR Congo','+243','CD'],['Ecuador','+593','EC'],['Egypt','+20','EG'],
+        ['El Salvador','+503','SV'],['Equatorial Guinea','+240','GQ'],['Eritrea','+291','ER'],
+        ['Estonia','+372','EE'],['Eswatini','+268','SZ'],['Ethiopia','+251','ET'],
+        ['Fiji','+679','FJ'],['Finland','+358','FI'],['France','+33','FR'],
+        ['Gabon','+241','GA'],['Gambia','+220','GM'],['Georgia','+995','GE'],
+        ['Germany','+49','DE'],['Ghana','+233','GH'],['Greece','+30','GR'],
+        ['Grenada','+1473','GD'],['Guatemala','+502','GT'],['Guinea','+224','GN'],
+        ['Guinea-Bissau','+245','GW'],['Guyana','+592','GY'],['Haiti','+509','HT'],
+        ['Honduras','+504','HN'],['Hong Kong','+852','HK'],['Hungary','+36','HU'],
+        ['Iceland','+354','IS'],['India','+91','IN'],['Indonesia','+62','ID'],
+        ['Iran','+98','IR'],['Iraq','+964','IQ'],['Ireland','+353','IE'],
+        ['Israel','+972','IL'],['Italy','+39','IT'],['Ivory Coast','+225','CI'],
+        ['Jamaica','+1876','JM'],['Japan','+81','JP'],['Jordan','+962','JO'],
+        ['Kazakhstan','+7','KZ'],['Kenya','+254','KE'],['Kiribati','+686','KI'],
+        ['Kuwait','+965','KW'],['Kyrgyzstan','+996','KG'],['Laos','+856','LA'],
+        ['Latvia','+371','LV'],['Lebanon','+961','LB'],['Lesotho','+266','LS'],
+        ['Liberia','+231','LR'],['Libya','+218','LY'],['Liechtenstein','+423','LI'],
+        ['Lithuania','+370','LT'],['Luxembourg','+352','LU'],['Macau','+853','MO'],
+        ['Madagascar','+261','MG'],['Malawi','+265','MW'],['Malaysia','+60','MY'],
+        ['Maldives','+960','MV'],['Mali','+223','ML'],['Malta','+356','MT'],
+        ['Mauritania','+222','MR'],['Mauritius','+230','MU'],['Mexico','+52','MX'],
+        ['Moldova','+373','MD'],['Monaco','+377','MC'],['Mongolia','+976','MN'],
+        ['Montenegro','+382','ME'],['Morocco','+212','MA'],['Mozambique','+258','MZ'],
+        ['Myanmar','+95','MM'],['Namibia','+264','NA'],['Nepal','+977','NP'],
+        ['Netherlands','+31','NL'],['New Zealand','+64','NZ'],['Nicaragua','+505','NI'],
+        ['Niger','+227','NE'],['Nigeria','+234','NG'],['North Korea','+850','KP'],
+        ['North Macedonia','+389','MK'],['Norway','+47','NO'],['Oman','+968','OM'],
+        ['Pakistan','+92','PK'],['Palestine','+970','PS'],['Panama','+507','PA'],
+        ['Papua New Guinea','+675','PG'],['Paraguay','+595','PY'],['Peru','+51','PE'],
+        ['Philippines','+63','PH'],['Poland','+48','PL'],['Portugal','+351','PT'],
+        ['Qatar','+974','QA'],['Romania','+40','RO'],['Russia','+7','RU'],
+        ['Rwanda','+250','RW'],['Saint Kitts and Nevis','+1869','KN'],['Saint Lucia','+1758','LC'],
+        ['Saint Vincent','+1784','VC'],['Samoa','+685','WS'],['San Marino','+378','SM'],
+        ['Saudi Arabia','+966','SA'],['Senegal','+221','SN'],['Serbia','+381','RS'],
+        ['Seychelles','+248','SC'],['Sierra Leone','+232','SL'],['Singapore','+65','SG'],
+        ['Slovakia','+421','SK'],['Slovenia','+386','SI'],['Solomon Islands','+677','SB'],
+        ['Somalia','+252','SO'],['South Africa','+27','ZA'],['South Korea','+82','KR'],
+        ['South Sudan','+211','SS'],['Spain','+34','ES'],['Sri Lanka','+94','LK'],
+        ['Sudan','+249','SD'],['Suriname','+597','SR'],['Sweden','+46','SE'],
+        ['Switzerland','+41','CH'],['Syria','+963','SY'],['Taiwan','+886','TW'],
+        ['Tajikistan','+992','TJ'],['Tanzania','+255','TZ'],['Thailand','+66','TH'],
+        ['Togo','+228','TG'],['Tonga','+676','TO'],['Trinidad and Tobago','+1868','TT'],
+        ['Tunisia','+216','TN'],['Turkey','+90','TR'],['Turkmenistan','+993','TM'],
+        ['Tuvalu','+688','TV'],['Uganda','+256','UG'],['Ukraine','+380','UA'],
+        ['United Arab Emirates','+971','AE'],['United Kingdom','+44','GB'],
+        ['United States','+1','US'],['Uruguay','+598','UY'],['Uzbekistan','+998','UZ'],
+        ['Vanuatu','+678','VU'],['Vatican City','+39','VA'],['Venezuela','+58','VE'],
+        ['Vietnam','+84','VN'],['Yemen','+967','YE'],['Zambia','+260','ZM'],
+        ['Zimbabwe','+263','ZW']
+      ];
+
+      var dialSel      = document.getElementById('wl-dialcode');
+      var mobileNumInp = document.getElementById('wl-mobile-num');
+      var countrySearch= document.getElementById('wl-country-search');
+      var countryHidden= document.getElementById('wl-country-hidden');
+      var countryList  = document.getElementById('wl-country-list');
+      if (!dialSel || !countrySearch) return;
+
+      function flag(iso) {
+        return Array.from(iso).map(function(c){ return String.fromCodePoint(c.codePointAt(0)+0x1F1A5); }).join('');
+      }
+
+      // Populate dial-code select (UAE, SA, UK, US, IN first; rest alpha)
+      var PRIORITY = ['AE','SA','GB','US','IN','PK','EG','AU','CA','OM','KW','QA','BH'];
+      WL_DATA.slice().sort(function(a,b){
+        var ai=PRIORITY.indexOf(a[2]), bi=PRIORITY.indexOf(b[2]);
+        if(ai>=0&&bi>=0) return ai-bi;
+        if(ai>=0) return -1; if(bi>=0) return 1;
+        return a[0].localeCompare(b[0]);
+      }).forEach(function(c){
+        var opt=document.createElement('option');
+        opt.value=c[1]; opt.dataset.iso=c[2];
+        opt.textContent=flag(c[2])+' '+c[1];
+        dialSel.appendChild(opt);
+      });
+
+      // Country searchable list
+      function renderList(q) {
+        var frag=document.createDocumentFragment();
+        var lo=q?q.toLowerCase():'';
+        WL_DATA.forEach(function(c){
+          if(lo&&c[0].toLowerCase().indexOf(lo)===-1) return;
+          var li=document.createElement('li');
+          li.textContent=flag(c[2])+' '+c[0]; li.dataset.name=c[0];
+          li.setAttribute('role','option');
+          li.addEventListener('mousedown',function(e){
+            e.preventDefault();
+            countrySearch.value=c[0]; countryHidden.value=c[0];
+            countryList.classList.add('hidden');
+          });
+          frag.appendChild(li);
+        });
+        countryList.innerHTML=''; countryList.appendChild(frag);
+      }
+      countrySearch.addEventListener('focus',function(){ renderList(this.value); countryList.classList.remove('hidden'); });
+      countrySearch.addEventListener('input',function(){ countryHidden.value=''; renderList(this.value); countryList.classList.remove('hidden'); });
+      countrySearch.addEventListener('blur',function(){ setTimeout(function(){ countryList.classList.add('hidden'); },200); });
+
+      // Auto-detect from IP
+      fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
+        if(!d.country_code) return;
+        var iso=d.country_code;
+        for(var i=0;i<dialSel.options.length;i++){
+          if(dialSel.options[i].dataset.iso===iso){ dialSel.selectedIndex=i; break; }
+        }
+        if(!countryHidden.value){
+          var match=WL_DATA.find(function(c){return c[2]===iso;});
+          if(match){ countrySearch.value=match[0]; countryHidden.value=match[0]; }
+        }
+      }).catch(function(){});
     })();
   </script>
 
