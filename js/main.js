@@ -745,6 +745,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { once: true });
 
+  // ── HASH ANCHOR SCROLL ON FRESH PAGE LOAD ────────────
+  // The browser fires its native anchor jump before JS has run or images
+  // have loaded, so layout shifts from content/fonts push the final scroll
+  // position off. This re-scrolls after everything has settled, honouring
+  // the fixed header height so the section title isn't hidden behind it.
+  (function () {
+    if (!window.location.hash) return;
+    function scrollToHash() {
+      const hash = window.location.hash;
+      if (!hash) return;
+      let target;
+      try { target = document.querySelector(hash); } catch (e) { return; }
+      if (!target) return;
+      const navH = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10
+      ) || 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - navH;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+    }
+    // Wait for full load (images, fonts) then scroll, with a small extra
+    // delay to absorb any remaining layout paint from lazy-loaded content.
+    function scheduleScroll() {
+      const done = () => setTimeout(scrollToHash, 120);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(done);
+      } else {
+        done();
+      }
+    }
+    if (document.readyState === 'complete') {
+      scheduleScroll();
+    } else {
+      window.addEventListener('load', scheduleScroll, { once: true });
+    }
+  })();
+
   // ── WORK OUT PROGRAM ADD-ON TOGGLE ───────────────────
   // Ticking the [data-service-addon="wop-consult"] checkbox flips
   // every [data-wop-tier] row's visible "was"/"now" prices from
