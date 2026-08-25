@@ -455,12 +455,11 @@ document.addEventListener('DOMContentLoaded', () => {
         var params = null;
 
         if (subj === '1825 Days, Waitlist') {
-          var dialEl = document.getElementById('wl-dialcode');
+          var dialEl = document.getElementById('wl-dialcode-value');
           var numEl  = document.getElementById('wl-mobile-num');
           var cHidEl = document.getElementById('wl-country-hidden');
-          var cSrchEl= document.getElementById('wl-country-search');
           var mobileVal  = (dialEl ? dialEl.value : '') + (numEl ? numEl.value.trim() : (raw.mobile || ''));
-          var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : ((cSrchEl ? cSrchEl.value.trim() : '') || raw.country || '');
+          var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : (raw.country || '');
           params = new URLSearchParams({ source: 'waitlist', name: raw.name || '', email: raw.email || '', mobile: mobileVal, country: countryVal });
         } else if (subj === 'WYBE, Quick Contact') {
           params = new URLSearchParams({ source: 'contact', name: raw.name || '', email: raw.email || '', message: raw.message || '' });

@@ -1410,22 +1410,52 @@
           <input type="hidden" name="redirect" value="false">
 
           <input type="text"  name="name"  required placeholder="Full name" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
-          <input type="email" name="email" required placeholder="Email"     class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
-
-          <!-- Mobile: dial-code select + number input -->
-          <div class="wl-mobile-wrap flex border border-cream/25 focus-within:border-burgundy transition-colors">
-            <select id="wl-dialcode" aria-label="Country calling code" class="wl-dialcode-sel bg-transparent text-cream font-sans text-sm px-2 py-3 focus:outline-none border-r border-cream/25 cursor-pointer flex-shrink-0"></select>
-            <input id="wl-mobile-num" type="tel" required placeholder="Mobile / WhatsApp" autocomplete="tel-national"
-                   class="bg-transparent px-3 py-3 font-sans text-sm text-cream flex-1 focus:outline-none placeholder:text-cream/40 min-w-0">
-          </div>
-          <input type="hidden" name="mobile" id="wl-mobile-hidden">
-
-          <!-- Country: searchable dropdown -->
-          <div class="relative" id="wl-country-wrap">
-            <input id="wl-country-search" type="text" required placeholder="Country" autocomplete="off"
+          <!-- Email with real-time format validation -->
+          <div>
+            <input id="wl-email-input" type="email" name="email" required placeholder="Email" autocomplete="email"
                    class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-cream/40">
+            <p id="wl-email-error" class="hidden font-sans text-xs text-red-300 mt-1" role="alert">Please enter a valid email address (e.g. name@example.com).</p>
+          </div>
+
+          <!-- Mobile: searchable dial-code dropdown + number input -->
+          <div>
+            <div class="wl-mobile-wrap flex border border-cream/25 focus-within:border-burgundy transition-colors">
+              <div id="wl-dialcode-wrap" class="relative flex-shrink-0" style="border-right:1px solid rgba(246,242,232,0.25);">
+                <button type="button" id="wl-dialcode-btn" aria-haspopup="listbox" aria-expanded="false"
+                        class="flex items-center gap-1 px-3 py-3 text-cream font-sans text-sm focus:outline-none cursor-pointer whitespace-nowrap h-full">
+                  <span id="wl-dialcode-label" class="text-cream/50">+?</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="wl-dialcode-dropdown" class="hidden absolute left-0 top-full z-50 shadow-xl" style="background:#1a1a1a;border:1px solid rgba(246,242,232,0.2);min-width:220px;">
+                  <div style="padding:7px;border-bottom:1px solid rgba(246,242,232,0.1);">
+                    <input id="wl-dialcode-search" type="text" placeholder="Search country or code…" autocomplete="off" aria-label="Search dial code"
+                           style="width:100%;box-sizing:border-box;background:transparent;color:#F6F2E8;font-size:12px;border:1px solid rgba(246,242,232,0.2);padding:5px 8px;outline:none;font-family:inherit;">
+                  </div>
+                  <ul id="wl-dialcode-list" role="listbox" style="max-height:160px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
+                </div>
+              </div>
+              <input id="wl-mobile-num" type="tel" required placeholder="Mobile / WhatsApp" autocomplete="tel-national"
+                     class="bg-transparent px-3 py-3 font-sans text-sm text-cream flex-1 focus:outline-none placeholder:text-cream/40 min-w-0">
+            </div>
+            <input type="hidden" name="mobile" id="wl-mobile-hidden">
+            <input type="hidden" id="wl-dialcode-value">
+          </div>
+
+          <!-- Country: button-triggered dropdown with search bar at top -->
+          <div id="wl-country-wrap" class="relative">
+            <button type="button" id="wl-country-btn" aria-haspopup="listbox" aria-expanded="false"
+                    class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none flex justify-between items-center text-left">
+              <span id="wl-country-label" class="text-cream/40">Select Country</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
             <input type="hidden" name="country" id="wl-country-hidden">
-            <ul id="wl-country-list" class="hidden absolute left-0 right-0 z-50 mt-0.5 max-h-48 overflow-y-auto border border-cream/20 shadow-xl" role="listbox"></ul>
+            <div id="wl-country-dropdown" class="hidden absolute left-0 right-0 z-50 shadow-xl" style="background:#1a1a1a;border:1px solid rgba(246,242,232,0.2);top:100%;margin-top:2px;">
+              <div style="padding:8px;border-bottom:1px solid rgba(246,242,232,0.1);">
+                <input id="wl-country-search" type="text" placeholder="Search country…" autocomplete="off" aria-label="Search country"
+                       style="width:100%;box-sizing:border-box;background:transparent;color:#F6F2E8;font-size:13px;border:1px solid rgba(246,242,232,0.2);padding:6px 10px;outline:none;font-family:inherit;">
+              </div>
+              <ul id="wl-country-list" role="listbox" style="max-height:190px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
+            </div>
           </div>
 
           <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
@@ -2678,7 +2708,7 @@
       }
     })();
 
-    // ── WAITLIST: dial-code select + searchable country ───
+    // ── WAITLIST: custom searchable dial-code + country dropdowns + email validation ───
     (function () {
       var WL_DATA = [
         ['Afghanistan','+93','AF'],['Albania','+355','AL'],['Algeria','+213','DZ'],
@@ -2748,64 +2778,182 @@
         ['Zimbabwe','+263','ZW']
       ];
 
-      var dialSel      = document.getElementById('wl-dialcode');
-      var mobileNumInp = document.getElementById('wl-mobile-num');
-      var countrySearch= document.getElementById('wl-country-search');
-      var countryHidden= document.getElementById('wl-country-hidden');
-      var countryList  = document.getElementById('wl-country-list');
-      if (!dialSel || !countrySearch) return;
+      var PRIORITY = ['AE','SA','GB','US','IN','PK','EG','AU','CA','OM','KW','QA','BH'];
 
       function flag(iso) {
         return Array.from(iso).map(function(c){ return String.fromCodePoint(c.codePointAt(0)+0x1F1A5); }).join('');
       }
 
-      // Populate dial-code select (UAE, SA, UK, US, IN first; rest alpha)
-      var PRIORITY = ['AE','SA','GB','US','IN','PK','EG','AU','CA','OM','KW','QA','BH'];
-      WL_DATA.slice().sort(function(a,b){
+      var SORTED = WL_DATA.slice().sort(function(a,b){
         var ai=PRIORITY.indexOf(a[2]), bi=PRIORITY.indexOf(b[2]);
         if(ai>=0&&bi>=0) return ai-bi;
         if(ai>=0) return -1; if(bi>=0) return 1;
         return a[0].localeCompare(b[0]);
-      }).forEach(function(c){
-        var opt=document.createElement('option');
-        opt.value=c[1]; opt.dataset.iso=c[2];
-        opt.textContent=flag(c[2])+' '+c[1];
-        dialSel.appendChild(opt);
       });
 
-      // Country searchable list
-      function renderList(q) {
-        var frag=document.createDocumentFragment();
-        var lo=q?q.toLowerCase():'';
-        WL_DATA.forEach(function(c){
-          if(lo&&c[0].toLowerCase().indexOf(lo)===-1) return;
-          var li=document.createElement('li');
-          li.textContent=flag(c[2])+' '+c[0]; li.dataset.name=c[0];
+      // ── DIAL CODE DROPDOWN ──────────────────────────────────────────
+      var dialBtn      = document.getElementById('wl-dialcode-btn');
+      var dialLabel    = document.getElementById('wl-dialcode-label');
+      var dialDropdown = document.getElementById('wl-dialcode-dropdown');
+      var dialSearch   = document.getElementById('wl-dialcode-search');
+      var dialList     = document.getElementById('wl-dialcode-list');
+      var dialValue    = document.getElementById('wl-dialcode-value');
+
+      function renderDialList(q) {
+        var frag = document.createDocumentFragment();
+        var lo = q ? q.toLowerCase() : '';
+        SORTED.forEach(function(c) {
+          if (lo && c[0].toLowerCase().indexOf(lo) === -1 && c[1].indexOf(q) === -1) return;
+          var li = document.createElement('li');
           li.setAttribute('role','option');
-          li.addEventListener('mousedown',function(e){
+          li.style.cssText = 'padding:7px 12px;cursor:pointer;font-size:13px;font-family:inherit;color:#F6F2E8;display:flex;justify-content:space-between;align-items:center;';
+          li.innerHTML = '<span>' + flag(c[2]) + ' ' + c[0] + '</span><span style="color:rgba(246,242,232,0.5);font-size:12px;">' + c[1] + '</span>';
+          li.addEventListener('mousedown', function(e) {
             e.preventDefault();
-            countrySearch.value=c[0]; countryHidden.value=c[0];
-            countryList.classList.add('hidden');
+            dialValue.value = c[1];
+            dialLabel.textContent = flag(c[2]) + ' ' + c[1];
+            dialLabel.style.color = '#F6F2E8';
+            dialDropdown.classList.add('hidden');
+            dialBtn.setAttribute('aria-expanded','false');
+            dialSearch.value = '';
           });
+          li.addEventListener('mouseover', function(){ this.style.background='rgba(140,30,60,0.35)'; });
+          li.addEventListener('mouseout',  function(){ this.style.background=''; });
           frag.appendChild(li);
         });
-        countryList.innerHTML=''; countryList.appendChild(frag);
+        dialList.innerHTML = '';
+        dialList.appendChild(frag);
       }
-      countrySearch.addEventListener('focus',function(){ renderList(this.value); countryList.classList.remove('hidden'); });
-      countrySearch.addEventListener('input',function(){ countryHidden.value=''; renderList(this.value); countryList.classList.remove('hidden'); });
-      countrySearch.addEventListener('blur',function(){ setTimeout(function(){ countryList.classList.add('hidden'); },200); });
 
-      // Auto-detect from IP
-      fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
-        if(!d.country_code) return;
-        var iso=d.country_code;
-        for(var i=0;i<dialSel.options.length;i++){
-          if(dialSel.options[i].dataset.iso===iso){ dialSel.selectedIndex=i; break; }
+      function openDialDrop() {
+        dialDropdown.classList.remove('hidden');
+        dialBtn.setAttribute('aria-expanded','true');
+        dialSearch.value = '';
+        renderDialList('');
+        dialSearch.focus();
+      }
+      function closeDialDrop() {
+        dialDropdown.classList.add('hidden');
+        dialBtn.setAttribute('aria-expanded','false');
+      }
+
+      dialBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (dialDropdown.classList.contains('hidden')) { openDialDrop(); } else { closeDialDrop(); }
+      });
+      dialSearch.addEventListener('input', function() { renderDialList(this.value.trim()); });
+      dialSearch.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDialDrop(); });
+
+      // ── COUNTRY DROPDOWN ─────────────────────────────────────────────
+      var countryBtn      = document.getElementById('wl-country-btn');
+      var countryLabel    = document.getElementById('wl-country-label');
+      var countryDropdown = document.getElementById('wl-country-dropdown');
+      var countrySearch   = document.getElementById('wl-country-search');
+      var countryList     = document.getElementById('wl-country-list');
+      var countryHidden   = document.getElementById('wl-country-hidden');
+
+      function renderCountryList(q) {
+        var frag = document.createDocumentFragment();
+        var lo = q ? q.toLowerCase() : '';
+        SORTED.forEach(function(c) {
+          if (lo && c[0].toLowerCase().indexOf(lo) === -1) return;
+          var li = document.createElement('li');
+          li.setAttribute('role','option');
+          li.style.cssText = 'padding:8px 14px;cursor:pointer;font-size:13px;font-family:inherit;color:#F6F2E8;';
+          li.textContent = flag(c[2]) + ' ' + c[0];
+          li.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            countryHidden.value = c[0];
+            countryLabel.textContent = flag(c[2]) + ' ' + c[0];
+            countryLabel.style.color = '#F6F2E8';
+            countryDropdown.classList.add('hidden');
+            countryBtn.setAttribute('aria-expanded','false');
+            countrySearch.value = '';
+          });
+          li.addEventListener('mouseover', function(){ this.style.background='rgba(140,30,60,0.35)'; });
+          li.addEventListener('mouseout',  function(){ this.style.background=''; });
+          frag.appendChild(li);
+        });
+        countryList.innerHTML = '';
+        countryList.appendChild(frag);
+      }
+
+      function openCountryDrop() {
+        countryDropdown.classList.remove('hidden');
+        countryBtn.setAttribute('aria-expanded','true');
+        countrySearch.value = '';
+        renderCountryList('');
+        countrySearch.focus();
+      }
+      function closeCountryDrop() {
+        countryDropdown.classList.add('hidden');
+        countryBtn.setAttribute('aria-expanded','false');
+      }
+
+      countryBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (countryDropdown.classList.contains('hidden')) { openCountryDrop(); } else { closeCountryDrop(); }
+      });
+      countrySearch.addEventListener('input', function() { renderCountryList(this.value.trim()); });
+      countrySearch.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCountryDrop(); });
+
+      // Close both dropdowns on outside click
+      document.addEventListener('click', function(e) {
+        if (dialDropdown && !dialDropdown.classList.contains('hidden')) {
+          if (!document.getElementById('wl-dialcode-wrap').contains(e.target)) closeDialDrop();
         }
-        if(!countryHidden.value){
-          var match=WL_DATA.find(function(c){return c[2]===iso;});
-          if(match){ countrySearch.value=match[0]; countryHidden.value=match[0]; }
+        if (countryDropdown && !countryDropdown.classList.contains('hidden')) {
+          if (!document.getElementById('wl-country-wrap').contains(e.target)) closeCountryDrop();
         }
+      });
+
+      // ── EMAIL VALIDATION ──────────────────────────────────────────────
+      var emailInp  = document.getElementById('wl-email-input');
+      var emailErr  = document.getElementById('wl-email-error');
+      var EMAIL_RE  = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      function validateEmail() {
+        var val = emailInp ? emailInp.value.trim() : '';
+        if (val && !EMAIL_RE.test(val)) {
+          emailErr.classList.remove('hidden');
+          return false;
+        } else {
+          emailErr.classList.add('hidden');
+          return true;
+        }
+      }
+      if (emailInp) {
+        emailInp.addEventListener('input', validateEmail);
+        emailInp.addEventListener('blur',  validateEmail);
+      }
+
+      // Block submission if email invalid — intercept before main.js handler
+      var wlForm = document.getElementById('waitlist-form');
+      if (wlForm) {
+        wlForm.addEventListener('submit', function(e) {
+          if (!validateEmail()) { e.stopImmediatePropagation(); e.preventDefault(); emailInp.focus(); }
+        }, true); // capture phase so it fires before main.js submit listener
+      }
+
+      // ── IP AUTO-DETECT ────────────────────────────────────────────────
+      function setByISO(iso) {
+        var match = WL_DATA.find(function(c){ return c[2] === iso; });
+        if (!match) return;
+        // Dial code
+        if (dialValue && !dialValue.value) {
+          dialValue.value = match[1];
+          dialLabel.textContent = flag(match[2]) + ' ' + match[1];
+          dialLabel.style.color = '#F6F2E8';
+        }
+        // Country
+        if (countryHidden && !countryHidden.value) {
+          countryHidden.value = match[0];
+          countryLabel.textContent = flag(match[2]) + ' ' + match[0];
+          countryLabel.style.color = '#F6F2E8';
+        }
+      }
+      fetch('https://ipapi.co/json/').then(function(r){ return r.json(); }).then(function(d){
+        if (d && d.country_code) setByISO(d.country_code);
       }).catch(function(){});
     })();
   </script>
