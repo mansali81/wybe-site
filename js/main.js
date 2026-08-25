@@ -477,8 +477,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
-        form.classList.add('hidden');
-        if (successEl) successEl.classList.remove('hidden');
+
+        if (subj === 'WYBE, Quick Contact') {
+          form.reset();
+          var tick = document.getElementById('contact-tick');
+          if (tick) {
+            tick.classList.remove('hidden');
+            tick.classList.add('visible');
+            setTimeout(function() {
+              tick.classList.add('hidden');
+              tick.classList.remove('visible');
+            }, 3000);
+          }
+        } else {
+          form.classList.add('hidden');
+          if (successEl) successEl.classList.remove('hidden');
+        }
       } catch (err) {
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
       }

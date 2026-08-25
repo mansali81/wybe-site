@@ -1055,6 +1055,19 @@ button.bg-burgundy:hover {
   .wybe-spinner { animation: none; }
 }
 
+@keyframes contact-tick-pop {
+  0%   { opacity: 0; transform: scale(0.3); }
+  60%  { transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+#contact-tick.visible {
+  display: inline-flex;
+  animation: contact-tick-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  #contact-tick.visible { animation: none; }
+}
+
 /* ── FAQ (accessible accordion) ─────────────────────────
    Each item is a <button aria-expanded aria-controls> plus a
    <div role="region"> answer. The <button> gets a lime border-left

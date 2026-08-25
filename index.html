@@ -1463,10 +1463,8 @@
               <div>
                 <textarea name="message" required rows="3" placeholder="What are you looking for?" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 resize-none drop-shadow-md"></textarea>
               </div>
-              <!-- Primary submit: orange pill sized to its label + arrow
-                   (was w-full, cropped to content per ask). Centred in
-                   the form column via a flex wrapper. -->
-              <div class="flex justify-center">
+              <!-- Primary submit: orange pill + inline tick confirmation -->
+              <div class="flex justify-center items-center gap-3">
                 <button type="submit"
                         class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-sm font-bold tracking-widest uppercase px-8 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
                   Send Message
@@ -1475,11 +1473,11 @@
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </button>
+                <span id="contact-tick" class="hidden" aria-live="polite" aria-label="Message sent">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 15.5 9.5"/></svg>
+                </span>
               </div>
             </form>
-            <div class="hidden mt-3 flex justify-center py-4">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-label="Message sent"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 15.5 9.5"/></svg>
-            </div>
           </div>
 
           <!-- BOTTOM: DM icons -->
