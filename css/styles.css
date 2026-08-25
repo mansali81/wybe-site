@@ -3125,13 +3125,35 @@ li.service-tier.service-tier--info,
   border-color: #FF6600;
   outline: none;
 }
-/* Show the orange Email Results pill button. */
-#body-composition-section #ucalc-email-form button[type="submit"] {
-  display: inline-flex;
-  width: 100%;
-  justify-content: center;
+/* Button row: button + inline success side by side */
+#body-composition-section .ucalc-action-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
 }
-/* Legacy text send-row is replaced by the orange button; hide it. */
+/* Email Results button: auto-width, fits its text */
+#body-composition-section .ucalc-email-btn {
+  width: auto;
+  margin-top: 0;
+  padding: 10px 20px;
+  font-size: 11px;
+}
+/* Inline success: tick + text next to button */
+#body-composition-section #ucalc-email-success {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(246,242,232,0.75);
+  line-height: 1.3;
+}
+#body-composition-section #ucalc-email-success.hidden {
+  display: none;
+}
+/* Legacy text send-row hidden */
 #body-composition-section .ucalc-send-row {
   display: none !important;
 }
