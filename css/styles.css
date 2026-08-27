@@ -705,6 +705,114 @@ h4, h5, h6, .wybe-subhead {
     object-position: 40% 50%;
   }
 }
+
+/* ══ HERO FIXED-WINDOW PARALLAX ═══════════════════════════
+   Reproduces the danielrama.com/#intro model: the hero image lives in
+   a viewport-locked window that does NOT scroll away, the image drifts
+   slowly inside it (~0.2x scroll speed) as a depth cue, and the next
+   section rises and wipes over the window like a curtain.
+
+   The curtain is pure CSS paint order, not JS: .hero is positioned with
+   z-index:0, so per CSS 2.1 Appendix E step 8 every LATER positioned
+   sibling paints over it in tree order. See the #about..#contact rule
+   at the bottom of this block — those sections must be positioned AND
+   opaque or the fixed layer shows straight through them.
+
+   Driven by js/main.js (search "HERO FIXED-WINDOW PARALLAX"). ────── */
+
+/* ── 1. Motion-agnostic hero image geometry ─────────────
+   .parallax-wrapper / .parallax-img get their position + sizing from
+   the block at line 506, which is trapped inside
+   @media (prefers-reduced-motion: no-preference). Reduced-motion users
+   therefore got a `static` <img> with an auto-height containing block,
+   so the `top: -6%; height: 112%` override below was silently dropped
+   and the hero image rendered wrong. Restate — unconditionally — the
+   geometry the HERO needs. This is a bug fix independent of the
+   parallax; it is also the fallback the parallax degrades to. */
+.hero-bg {
+  overflow: hidden;
+}
+.hero-bg > picture {
+  position: static;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hero-bg .parallax-img {
+  position: absolute;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  /* top / height / object-fit / object-position stay owned by the
+     .hero-bg .parallax-img rule above — same specificity (0,2,0), and
+     this rule deliberately does not restate them. */
+}
+
+/* ── 2. The fixed window ────────────────────────────────
+   .is-fixed is added by JS ONLY when GSAP + ScrollTrigger are live,
+   the viewport is >= 768px, and prefers-reduced-motion is
+   no-preference. Without it the hero renders exactly as it did before
+   this feature — that is the no-JS / CDN-failure / reduced-motion /
+   mobile fallback, and it is the DEFAULT, not a special case. */
+.hero.is-fixed .hero-bg,
+.hero.is-fixed .hero-tint {
+  position: fixed;
+  /* inset: 0 with no explicit height resolves against the initial
+     containing block, which the UA keeps in sync with the viewport for
+     free. Deliberately NOT 100vh / 100svh / 100dvh: dvh re-lays-out on
+     every address-bar pixel, svh letterboxes. */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: auto;              /* clears .hero-bg's height: 100% */
+  /* #home is sections[0], so main.js hands it .section-in-view at once
+     and `.section-in-view > div` lands transform: translateY(0)
+     scale(1) here. Identity today, harmless — but a non-identity
+     transform would make this element its own containing block and the
+     fixed positioning would silently collapse. Pin it to none. */
+  transform: none;
+  will-change: auto;
+}
+.hero.is-fixed .hero-bg   { z-index: 0; }
+.hero.is-fixed .hero-tint { z-index: 1; }
+
+/* Overscan for the drift. JS runs the image from +10 % to -10 % of the
+   hero height — 0.20 * H of travel over 0.20 * H of scroll, i.e. the
+   0.2x rate, split symmetrically so each edge needs only 10 %. 12 %
+   each side leaves ~2 % of margin against sub-pixel rounding.
+   The old 112 % (6 % a side) caps out at 0.12x — not enough.
+   Cost: object-fit: cover on a taller box crops more HORIZONTALLY
+   (~90 % -> ~81 % of source width visible at 1440x900). If the subject
+   clips, shift the object-position X values above toward 70/75/80 %,
+   or drop to 0.15x drift (top: -9.5%; height: 119%). */
+.hero.is-fixed .hero-bg .parallax-img {
+  top: -12%;
+  height: 124%;
+  backface-visibility: hidden;   /* keep the layer on the compositor */
+}
+
+/* ── 3. Occlusion guarantee ─────────────────────────────
+   For a later section to wipe over the fixed hero window it must be
+   (a) POSITIONED, so it lands in the same z-index:auto/0 tree-order
+   pass and therefore paints after .hero, and (b) OPAQUE.
+   #book and #contact had NEITHER: with no position: relative their
+   backgrounds painted in Appendix E step 4 — below the positioned
+   hero — so no background colour would ever have covered it.
+   Adding #1E1E1E to sections that already show body's #1E1E1E is a
+   visual no-op. No z-index: `relative` alone is enough, and a new
+   stacking context here could trap sticky scenes or modal overlays. */
+#about,
+#calculators,
+#results,
+#services,
+#book,
+#contact,
+body > footer {
+  position: relative;
+  background-color: #1E1E1E;
+}
 /* Hero copy is visible by default — no scroll or JS required. Pre-JS
    and no-JS both paint the headline / tagline / CTA above the fold. */
 .hero-tagline,

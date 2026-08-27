@@ -40,6 +40,17 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- GSAP + ScrollTrigger drive the hero fixed-window parallax. Warm the
+       connection early: the hero layer only switches to its fixed mode
+       once they arrive, so a slow CDN is a visible delay. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <!-- The hero image is the LCP element and the first thing painted in
+       the fixed window. `media` mirrors the <picture> breakpoint in the
+       hero so phones never fetch the 255 KB desktop crop. -->
+  <link rel="preload" as="image" href="/images/Hero.webp"
+        media="(min-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/images/hero-mobile.webp"
+        media="(max-width: 767px)" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>

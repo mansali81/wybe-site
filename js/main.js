@@ -181,6 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (h > 0 && h !== last) {
         document.documentElement.style.setProperty('--nav-h', h + 'px');
         last = h;
+        // .hero { padding: var(--nav-h) 0 24px } — a --nav-h change
+        // resizes the hero and invalidates every ScrollTrigger start/end
+        // measured against it. ScrollTrigger debounces its own resize
+        // refresh, but its ordering against this synchronous write is
+        // not guaranteed, so be explicit.
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       }
     };
     write();
@@ -720,30 +726,217 @@ document.addEventListener('DOMContentLoaded', () => {
     update();
   })();
 
-  // ── HERO PARALLAX (subtle, no crop-fighting) ──────────
-  // Only the HERO image gets a parallax transform. Every other
-  // image on the site is object-fit:contain + transform:none.
-  // GSAP scrub tied to #home scroll progress. yPercent stays inside
-  // the 6% runway defined by the .hero-bg .parallax-img override
-  // (top:-6%; height:112%) so no wrapper-bg peeks at the extremes.
-  window.addEventListener('load', () => {
-    if (reduceMotion) return;
-    if (!window.gsap || !window.ScrollTrigger) return;
-    const heroImg = document.querySelector('.hero-bg__img');
-    if (!heroImg) return;
-    window.gsap.registerPlugin(window.ScrollTrigger);
-    window.gsap.to(heroImg, {
-      yPercent: -5,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '#home',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
+  // ── HERO FIXED-WINDOW PARALLAX ────────────────────────
+  // The danielrama.com/#intro model:
+  //   (a) .hero-bg + .hero-tint become a position:fixed, viewport-sized
+  //       window that does NOT scroll away with the page.
+  //   (b) The <img> inside drifts at ~0.2x scroll speed — the depth cue.
+  //   (c) #about (opaque, later in tree order) rises and wipes over the
+  //       window like a curtain. That is pure paint order — zero JS.
+  //   (d) .hero-content rises at ~1.35x and fades out by ~55 % progress.
+  //
+  // Progressive enhancement: the .is-fixed class is the ONLY thing that
+  // switches the layer to fixed, and every fixed rule in styles.css is
+  // scoped behind it. If GSAP never arrives the class is never added and
+  // the hero renders exactly as it did before this feature — it can
+  // never be left in a half-applied state.
+  (function () {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    const bg      = hero.querySelector('.hero-bg');
+    const tint    = hero.querySelector('.hero-tint');
+    const img     = hero.querySelector('.hero-bg__img');
+    const content = hero.querySelector('.hero-content');
+    if (!bg || !img || !content) return;
+
+    // GSAP + ScrollTrigger load with `defer` (they execute BEFORE
+    // DOMContentLoaded, so they are normally already here), but poll
+    // anyway for a slow CDN — same pattern as js/scenes.js. Deliberately
+    // NOT waiting for window.load: that waits on Hero.webp decoding,
+    // which is exactly the window in which the user could scroll and
+    // watch the layer snap from absolute to fixed.
+    function whenGsapReady(cb) {
+      if (window.gsap && window.ScrollTrigger) { cb(); return; }
+      let tries = 0;
+      const t = setInterval(() => {
+        if ((window.gsap && window.ScrollTrigger) || tries++ > 60) {
+          clearInterval(t);
+          if (window.gsap && window.ScrollTrigger) cb();
+        }
+      }, 50);
+    }
+
+    whenGsapReady(function () {
+      const gsap = window.gsap;
+      const ScrollTrigger = window.ScrollTrigger;
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Mobile browsers fire resize when the URL bar collapses. Without
+      // this ScrollTrigger re-measures mid-scroll and the hero jumps.
+      // Real desktop resizes still refresh normally.
+      ScrollTrigger.config({ ignoreMobileResize: true });
+
+      // gsap.matchMedia (NOT the deprecated ScrollTrigger.matchMedia —
+      // that one does not revert non-ScrollTrigger inline styles).
+      // Deliberately not reusing the module-level `reduceMotion` const:
+      // it is captured once at load, whereas matchMedia responds live to
+      // an OS-level motion-preference change and tears down cleanly.
+      const mm = gsap.matchMedia();
+
+      // ── >= 768px, motion-safe: the fixed window ──────────
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+        hero.classList.add('is-fixed');
+
+        // Symmetric drift: +10 % -> -10 % of hero height = 0.20 * H of
+        // travel over 0.20 * H of scroll = the 0.2x rate. Function-based
+        // so invalidateOnRefresh re-measures after a --nav-h rewrite or
+        // a viewport resize instead of replaying a stale pixel value.
+        const drift = () => hero.offsetHeight * 0.10;
+
+        // (a) image drift inside the fixed window
+        gsap.fromTo(img,
+          { y: () => drift() },
+          {
+            y: () => -drift(),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+
+        // (b) copy rises FASTER than the page. It already travels -1.0H
+        // by sitting in normal flow; this adds -0.35H on top, for a net
+        // 1.35x. Targets .hero-content (the PARENT) on purpose — the
+        // .hero-tagline / .hero-sub / .hero-cta children each carry
+        // `animation: hero-enter ... both`, whose fill-mode:both final
+        // keyframe would override a transform set on them directly.
+        gsap.to(content, {
+          y: () => -hero.offsetHeight * 0.35,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // (c) ...and is fully faded by ~55 % of the hero scroll.
+        // autoAlpha, NOT opacity: it lands visibility:hidden at exactly
+        // 0, so the invisible "Book Now" CTA stops taking clicks and
+        // leaves the tab order instead of sitting there as a phantom
+        // hit target and a phantom tab stop.
+        gsap.to(content, {
+          autoAlpha: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: () => '+=' + (hero.offsetHeight * 0.55),
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // (d) switch the layer off once the hero is off-screen so it
+        // costs nothing — a full-viewport masked layer would otherwise
+        // composite every frame for the whole page.
+        // SEPARATE trigger with start:'top bottom' so it also reads as
+        // active at scrollY 0 (the drift trigger's 'top top' start does
+        // not). onRefresh as well as onToggle so a deep-link load like
+        // /#contact computes its state from self.isActive instead of
+        // waiting for a scroll event that never comes.
+        const setLive = (on) => {
+          bg.style.visibility = on ? 'visible' : 'hidden';
+          if (tint) tint.style.visibility = on ? 'visible' : 'hidden';
+          img.style.willChange = on ? 'transform' : 'auto';
+        };
+        // Read the state straight off geometry rather than off
+        // self.isActive: onRefresh fires DURING the refresh, before the
+        // trigger's progress has been applied, so isActive is stale
+        // there. That is exactly the deep-link case (/#contact loads
+        // with the hero already thousands of px above the viewport) —
+        // relying on isActive left the layer visible over the whole page.
+        const heroInView = () => {
+          const r = hero.getBoundingClientRect();
+          return r.bottom > 0 && r.top < (window.innerHeight || 0);
+        };
+        ScrollTrigger.create({
+          trigger: hero,
+          start: 'top bottom',
+          end: 'bottom top',
+          onToggle:  (self) => setLive(self.isActive),
+          onRefresh: () => setLive(heroInView()),
+        });
+        // ...and once now, so the very first paint after the class lands
+        // is correct even if no refresh or scroll event ever arrives.
+        setLive(heroInView());
+
+        // Cleanup when the query stops matching (resize across 768px, or
+        // the user flips prefers-reduced-motion). matchMedia reverts the
+        // inline styles IT set; the class and the manual writes above
+        // are ours to undo.
+        return () => {
+          hero.classList.remove('is-fixed');
+          bg.style.visibility = '';
+          if (tint) tint.style.visibility = '';
+          img.style.willChange = '';
+          content.style.visibility = '';
+        };
+      });
+
+      // ── < 768px, motion-safe: in-flow scrub only ─────────
+      // iOS Safari + position:fixed + a resizing visual viewport is the
+      // classic failure mode for this effect (the reference site drops
+      // it on mobile too). Keep the layer absolute and ship the small,
+      // safe scrub that shipped before. 768px matches the existing
+      // .hero-bg .parallax-img mobile override in styles.css.
+      mm.add('(max-width: 767px) and (prefers-reduced-motion: no-preference)', () => {
+        gsap.to(img, {
+          yPercent: -5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+
+      // Late layout settles. The hero is min-height:100vh so image decode
+      // cannot change its height, but --nav-h is rewritten on
+      // document.fonts.ready and .hero's padding reads it; and sections
+      // below can shift total document height once images land.
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => ScrollTrigger.refresh());
+      }
+      window.addEventListener('load', () => {
+        ScrollTrigger.refresh();
+        // A fresh load with a hash (/#contact) gets re-scrolled by the
+        // HASH ANCHOR module below, which runs at load -> fonts.ready ->
+        // +120 ms. Both refreshes above fire BEFORE that, so the hero
+        // would be left measured against the pre-jump scroll position
+        // and the fixed layer would stay painted over the whole page.
+        // Re-run once the jump has settled. Only when there IS a hash.
+        if (window.location.hash) {
+          const after = () => setTimeout(() => ScrollTrigger.refresh(), 220);
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(after);
+          } else {
+            after();
+          }
+        }
+      }, { once: true });
     });
-  }, { once: true });
+  })();
 
   // ── HASH ANCHOR SCROLL ON FRESH PAGE LOAD ────────────
   // The browser fires its native anchor jump before JS has run or images
