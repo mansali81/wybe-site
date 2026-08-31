@@ -1008,24 +1008,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // in main.js can't silently break FAQ open/close.
 
   // ── TESTIMONIAL TRUNCATION + MODAL ────────────────────
-  // The FIRST testimonial card (Amit) is the benchmark — every
-  // body is capped at Amit's natural scrollHeight so all cards
-  // render at exactly the same shape. Amit fits fully (his cap
-  // = his own content). Longer testimonials exceed the cap →
-  // .is-truncated → fade gradient + "Read More" button.
-  // Read-more click uses event delegation with lazy modal lookup
-  // (modal lives at end of <body>, always resolvable by then).
+  // All testimonial cards are capped at a fixed body height so every
+  // card lands at ~378px total (28px top pad + 265px body + 12px margin
+  // + ~57px meta + 16px bottom pad). Bodies taller than the cap get
+  // .is-truncated → fade gradient + "Read More" button. Read-more click
+  // uses event delegation with lazy modal lookup (modal lives at end of
+  // <body>, always resolvable by then).
   (function() {
     const cards   = () => Array.from(document.querySelectorAll('.wybe-testimonial'));
     const bodies  = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
 
-    // Amit's card is the benchmark. Cards size INTRINSICALLY to
-    // (padding + body + Read-More button if present + meta) — no
-    // forced height, so Amit's card ends exactly where his text
-    // ends. Longer bodies (Zarine, Anahita) get a body max-height
-    // cap equal to Amit's natural scrollHeight, so their bodies
-    // truncate to Amit's height and their cards land at the same
-    // visible total. Read More expands the body in place.
+    // Fixed body cap (px) — all cards reach ~378px total at this value.
+    const BODY_CAP = 265;
+
     const equalize = () => {
       const allCards  = cards();
       const allBodies = bodies();
@@ -1035,18 +1030,14 @@ document.addEventListener('DOMContentLoaded', () => {
       allCards.forEach(c => { c.style.removeProperty('height'); c.classList.remove('is-expanded'); });
       // Force layout flush.
       void allCards[0].offsetHeight;
-      // Cap every body to Amit's body scrollHeight so truncated
-      // ones still show is-truncated + Read More.
-      const bodyCap = allBodies[0].scrollHeight;
+      // Cap every body to BODY_CAP; mark truncated if content overflows.
       allBodies.forEach(b => {
-        b.style.maxHeight = bodyCap + 'px';
+        b.style.maxHeight = BODY_CAP + 'px';
         b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
       });
-      // Measure Amit's TOTAL card height (natural — no forcing on Amit).
+      // Measure the first card's rendered height and lock all others to it
+      // so minor meta-row differences (avatar vs initials) don't break alignment.
       const amitH = allCards[0].offsetHeight;
-      // Lock every OTHER card to Amit's height. Their bodies flex-fill
-      // via the :not(:first-child) rule in styles.css so no empty
-      // space appears between text and meta.
       allCards.forEach((c, i) => {
         if (i === 0) return;
         c.style.height = amitH + 'px';

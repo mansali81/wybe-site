@@ -1413,7 +1413,7 @@ button.bg-burgundy:hover {
 
 .wybe-testimonial {
   position: relative;
-  padding: 44px 24px 24px;
+  padding: 28px 20px 16px;
   background: #FFFFFF;
   border: 1px solid rgba(30, 30, 30, 0.10);
   border-top: 3px solid #FF6600;
@@ -1422,12 +1422,6 @@ button.bg-burgundy:hover {
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* No min-height — each card sizes to its natural content. Amit's
-     testimonial fits fully (no Read More), so his card sets the
-     natural benchmark. Zarine's body exceeds the body max-height
-     below, gets truncated, and shows Read More — but her card
-     still renders at the SAME height as Amit's because the body
-     is capped to the same visible max. */
 }
 .wybe-testimonial__quote {
   position: absolute;
@@ -1448,7 +1442,7 @@ button.bg-burgundy:hover {
   color: #1E1E1E;
   margin: 0 0 12px;
   quotes: none;
-  max-height: 520px;
+  max-height: 265px;
   overflow: hidden;
   position: relative;
 }
