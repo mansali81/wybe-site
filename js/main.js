@@ -1018,14 +1018,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards   = () => Array.from(document.querySelectorAll('.wybe-testimonial'));
     const bodies  = () => Array.from(document.querySelectorAll('.wybe-testimonial__body'));
 
-    // Fixed body cap (px) — all cards reach ~378px total at this value.
-    const BODY_CAP = 265;
+    // Fixed body cap (px): 44px top-pad + 250px body + 10px margin + ~57px meta
+    // + 16px bottom-pad = ~377px card height (≈378px target).
+    const BODY_CAP = 250;
 
     const equalize = () => {
       const allCards  = cards();
       const allBodies = bodies();
       if (!allCards.length) return;
-      // Reset overrides from any previous pass.
+      // Reset height overrides; temporarily collapse any expanded cards so
+      // measurements are clean, then re-expand them after.
+      const wasExpanded = new Set(
+        allCards.filter(c => c.classList.contains('is-expanded'))
+      );
       allBodies.forEach(b => { b.style.maxHeight = 'none'; });
       allCards.forEach(c => { c.style.removeProperty('height'); c.classList.remove('is-expanded'); });
       // Force layout flush.
@@ -1033,15 +1038,17 @@ document.addEventListener('DOMContentLoaded', () => {
       // Cap every body to BODY_CAP; mark truncated if content overflows.
       allBodies.forEach(b => {
         b.style.maxHeight = BODY_CAP + 'px';
-        b.classList.toggle('is-truncated', b.scrollHeight > b.clientHeight + 2);
+        // scrollHeight reflects full content even with overflow:hidden.
+        b.classList.toggle('is-truncated', b.scrollHeight > BODY_CAP + 2);
       });
-      // Measure the first card's rendered height and lock all others to it
-      // so minor meta-row differences (avatar vs initials) don't break alignment.
-      const amitH = allCards[0].offsetHeight;
+      // Measure first card height and lock all others to it.
+      const benchH = allCards[0].offsetHeight;
       allCards.forEach((c, i) => {
         if (i === 0) return;
-        c.style.height = amitH + 'px';
+        c.style.height = benchH + 'px';
       });
+      // Restore any cards the user had expanded before resize.
+      wasExpanded.forEach(c => c.classList.add('is-expanded'));
     };
 
     // Fire equalize after every layout-shifting milestone: initial

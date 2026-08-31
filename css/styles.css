@@ -1405,7 +1405,7 @@ button.bg-burgundy:hover {
     padding: 0 4px;
   }
   .testimonials-track .wybe-testimonial {
-    flex: 0 0 min(65vw, 480px);
+    flex: 0 0 min(80vw, 378px);
     max-width: none;
     scroll-snap-align: center;
   }
@@ -1413,7 +1413,7 @@ button.bg-burgundy:hover {
 
 .wybe-testimonial {
   position: relative;
-  padding: 28px 20px 16px;
+  padding: 44px 20px 16px;
   background: #FFFFFF;
   border: 1px solid rgba(30, 30, 30, 0.10);
   border-top: 3px solid #FF6600;
@@ -1425,10 +1425,10 @@ button.bg-burgundy:hover {
 }
 .wybe-testimonial__quote {
   position: absolute;
-  top: 8px; left: 18px;
+  top: 4px; left: 16px;
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: 64px;
+  font-size: 40px;
   line-height: 1;
   color: #FF6600;
   opacity: 0.55;
@@ -1437,20 +1437,14 @@ button.bg-burgundy:hover {
 .wybe-testimonial__body {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.55;
   color: #1E1E1E;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   quotes: none;
-  max-height: 265px;
+  max-height: 250px;
   overflow: hidden;
   position: relative;
-}
-/* Non-Amit cards flex-fill their body so they can be locked to
-   Amit's total card height without leaving empty space. Amit's
-   card (:first-child) stays intrinsic — no flex, no forced height. */
-.wybe-testimonial:not(:first-child) .wybe-testimonial__body {
-  flex: 1 1 auto;
 }
 .wybe-testimonial__body::before,
 .wybe-testimonial__body::after { content: none; }
@@ -1458,19 +1452,12 @@ button.bg-burgundy:hover {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  height: 56px;
+  height: 48px;
   pointer-events: none;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 90%);
 }
 
-/* Read-More button — in-flow, directly under the truncated body.
-   Only appears when the body has .is-truncated (JS-toggled when
-   scrollHeight > clientHeight). Amit's card fits fully → no
-   button and no extra flow height. Uniform card heights come
-   from the equal max-height cap on every body: since every
-   truncated body renders at Amit's exact scrollHeight, all cards
-   end up the same visible height whether or not they carry a
-   Read More button. */
+/* Read-More button — shown when body has .is-truncated (JS-toggled). */
 .wybe-testimonial__more {
   display: none;
   align-self: flex-start;
@@ -1494,12 +1481,19 @@ button.bg-burgundy:hover {
 .wybe-testimonial__body.is-truncated + .wybe-testimonial__more {
   display: inline-block;
 }
-/* Expanded state — Read More click adds .is-expanded to the article.
-   Body cap lifts so the full text renders; fade pseudo suppressed.
-   Card height is intrinsic (no forced inline height any more), so
-   the article grows downward on its own. Click Read Less to collapse. */
+/* Expanded state — card height stays fixed; body becomes scrollable
+   so full text is reachable without the card overflowing the page. */
 .wybe-testimonial.is-expanded .wybe-testimonial__body {
-  max-height: none !important;
+  max-height: 250px !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 102, 0, 0.4) transparent;
+}
+.wybe-testimonial.is-expanded .wybe-testimonial__body::-webkit-scrollbar { width: 3px; }
+.wybe-testimonial.is-expanded .wybe-testimonial__body::-webkit-scrollbar-track { background: transparent; }
+.wybe-testimonial.is-expanded .wybe-testimonial__body::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 0, 0.5); border-radius: 2px;
 }
 .wybe-testimonial.is-expanded .wybe-testimonial__body.is-truncated::after {
   content: none;
