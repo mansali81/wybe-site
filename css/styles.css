@@ -3048,7 +3048,7 @@ li.service-tier.service-tier--info,
   justify-content: space-between;
   list-style: none;
   padding-left: 0;
-  margin: 0;
+  margin: 0 0 0 95px;
   height: 477px;
   position: relative;
 }
@@ -3378,6 +3378,7 @@ li.service-tier.service-tier--info,
   }
   .ucalc-intro-list {
     height: auto;
+    margin-left: 0;
     gap: 16px;
   }
 
