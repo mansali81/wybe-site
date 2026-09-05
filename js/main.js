@@ -258,7 +258,16 @@ document.addEventListener('DOMContentLoaded', () => {
       menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
       menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     };
+    let _menuTouchToggled = false;
+    menuBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      _menuTouchToggled = true;
+      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+      setTimeout(() => { _menuTouchToggled = false; }, 500);
+    });
     menuBtn.addEventListener('click', () => {
+      if (_menuTouchToggled) return;
       const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
       setOpen(!isOpen);
     });
