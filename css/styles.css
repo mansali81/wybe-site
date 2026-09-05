@@ -3085,6 +3085,8 @@ li.service-tier.service-tier--info,
   color: #ffffff;
   opacity: 0.85;
   display: block;
+  text-align: center;
+  width: 100%;
 }
 
 
