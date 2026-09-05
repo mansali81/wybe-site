@@ -2105,36 +2105,26 @@ html:not(.gsap-ready) .wybe-reveal {
 }
 
 /* ── BOOK SECTION: cover image frame ────────────────
-   .wybe-book-cover-frame is the clipping box; the image inside it is
-   slightly taller (by 2×overhang = 16%) so the parallax translateY
-   sweep stays within the frame and never reveals a white edge.
-   margin-left: auto shifts the frame rightward within the left grid
-   column; the extra width gives a bit more presence than the old 360px. */
+   Full portrait cover shown in natural proportions.
+   No overflow:hidden so parallax translateY drift is visible.
+   The image is in normal document flow (width:100%; height:auto)
+   and the JS parallax system applies translate3d on scroll. */
 .wybe-book-cover-frame {
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  max-width: 440px;
-  margin-left: 40px;         /* nudge right within the left column */
-  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.65),
-              0 4px 16px rgba(0, 0, 0, 0.35);
-  /* aspect-ratio keeps the frame the right shape before the image loads */
-  aspect-ratio: 1188 / 1600;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.70),
+              0 4px 16px rgba(0, 0, 0, 0.40);
 }
 .wybe-book-cover-img {
-  position: absolute;
-  top: -8%;               /* overhang = gentle mode 8% top + 8% bottom = 16% extra */
-  left: 0;
   width: 100%;
-  height: 116%;           /* 100% + 2 × 8% so no edge is ever revealed */
-  object-fit: cover;
-  object-position: center top;
+  height: auto;
   display: block;
+  border-radius: 12px;
 }
 @media (max-width: 767px) {
   .wybe-book-cover-frame {
-    max-width: 280px;
-    margin-left: auto;     /* center on mobile */
+    max-width: 260px;
+    margin-left: auto;
     margin-right: auto;
   }
 }
