@@ -435,6 +435,15 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 
+  <!-- Lenis smooth scroll. Bare IIFE exposing a global `Lenis` — the
+       package's "main"/"unpkg" entries point at an ESM build that a
+       plain <script> cannot load, so the /dist/lenis.min.js path is
+       required. Deferred, so it has executed by the time main.js's
+       DOMContentLoaded handler runs (main.js itself is NOT deferred,
+       but its whole body is inside that listener). The preconnect to
+       cdn.jsdelivr.net above already covers this request. -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" defer></script>
+
   <!-- jsPDF for client-side PDF generation (calculator results) -->
 
   <!-- Person schema: Mansoor -->
@@ -1010,7 +1019,7 @@
            ScrollTrigger (main.js: HORIZONTAL TESTIMONIALS block) pins
            the container and translates the track left as the user
            scrolls, so cards slide in from the right like a stack. -->
-      <div class="testimonials-container">
+      <div class="testimonials-container" data-lenis-prevent-horizontal>
       <div class="testimonials-track">
         <!-- Real client — Amit Kumar. Verbatim testimonial + photo. -->
         <article class="wybe-testimonial wybe-reveal">
@@ -1361,7 +1370,7 @@
                     <input id="wl-dialcode-search" type="text" placeholder="Search country or code…" autocomplete="off" aria-label="Search dial code"
                            style="width:100%;box-sizing:border-box;background:transparent;color:#F6F2E8;font-size:12px;border:1px solid rgba(246,242,232,0.2);padding:5px 8px;outline:none;font-family:inherit;">
                   </div>
-                  <ul id="wl-dialcode-list" role="listbox" style="max-height:160px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
+                  <ul id="wl-dialcode-list" data-lenis-prevent role="listbox" style="max-height:160px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
                 </div>
               </div>
               <input id="wl-mobile-num" type="tel" required placeholder="Mobile / WhatsApp" autocomplete="tel-national"
@@ -1384,7 +1393,7 @@
                 <input id="wl-country-search" type="text" placeholder="Search country…" autocomplete="off" aria-label="Search country"
                        style="width:100%;box-sizing:border-box;background:transparent;color:#F6F2E8;font-size:13px;border:1px solid rgba(246,242,232,0.2);padding:6px 10px;outline:none;font-family:inherit;">
               </div>
-              <ul id="wl-country-list" role="listbox" style="max-height:190px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
+              <ul id="wl-country-list" data-lenis-prevent role="listbox" style="max-height:190px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
             </div>
           </div>
 
@@ -1907,7 +1916,9 @@
           t.classList.add('bg-cream', 'text-charcoal', 'border-charcoal/15');
         });
         const services = document.getElementById('services');
-        if (services) services.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Routed through Lenis when present; also drops the ~2 x --nav-h
+        // overshoot that scrollIntoView({block:'start'}) has here.
+        if (services) window.wybeScrollTo(services);
       };
 
       if (backBtn) {
@@ -2000,7 +2011,7 @@
         // Swap quiz off, result on.
         if (quizState) quizState.classList.add('hidden');
         result.classList.remove('hidden');
-        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.wybeScrollTo(result);
         // Quiz done → release the Services sticky-snap lock. Also
         // carries the recommended plan on detail.plan so analytics
         // (js/track.js) can label the Quiz Complete event.
@@ -2033,7 +2044,7 @@
         // Retake: quiz is fresh (no answers yet), release the lock so scroll
         // works normally again. It'll re-arm on the first new answer.
         document.dispatchEvent(new CustomEvent('wybe:quiz-end'));
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.wybeScrollTo(form);
       });
     })();
 
@@ -2654,7 +2665,7 @@
        the modal element so getElementById finds it. -->
   <div id="faq-modal" class="faq-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="faq-modal__backdrop" data-faq-close></div>
-    <div class="faq-modal__card" role="document">
+    <div class="faq-modal__card" role="document" data-lenis-prevent>
       <button type="button" class="faq-modal__close" data-faq-close aria-label="Close FAQ">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="w-5 h-5">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -3281,7 +3292,17 @@
         applyFilter(key);
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
-        document.documentElement.style.overflow = 'hidden';
+        // html{overflow:hidden} does NOT stop Lenis — its checkOverflow
+        // is gated behind autoToggle, which we leave off. Left alone,
+        // Lenis keeps consuming wheel and advancing targetScroll while
+        // window.scrollTo is a no-op, then the page jumps to that drifted
+        // value on close. stop() also calls reset(), which resyncs from
+        // actualScroll, so start() cannot jump.
+        // The .faq-modal__card carries data-lenis-prevent so it still
+        // scrolls internally while Lenis is stopped (Lenis checks the
+        // prevent attribute BEFORE its isStopped guard).
+        if (window.__lenis) window.__lenis.stop();
+        else document.documentElement.style.overflow = 'hidden';
         // Move focus into the modal (close button = first
         // interactive element).
         setTimeout(function () {
@@ -3293,7 +3314,8 @@
       function close() {
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
-        document.documentElement.style.overflow = '';
+        if (window.__lenis) window.__lenis.start();
+        else document.documentElement.style.overflow = '';
         document.removeEventListener('keydown', trapFocus);
         if (lastFocus && typeof lastFocus.focus === 'function') {
           lastFocus.focus();

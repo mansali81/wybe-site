@@ -167,6 +167,104 @@ function buildResultsHtml(name, email, s) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Hoisted above the Lenis block below, which needs it. There is a
+  // second, function-scoped `reduceMotion` inside the FAQ module at
+  // ~line 358; that one is independent and stays where it is.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── SMOOTH SCROLL (Lenis) ─────────────────────────────
+  // Lenis scrolls the REAL window — its setScroll() calls
+  // window.scrollTo({behavior:'instant'}) — so window.scrollY stays
+  // truthful, native `scroll` events still fire, and ScrollTrigger
+  // needs NO scrollerProxy.
+  //
+  // Exposed on window.__lenis (null when absent) so every module below
+  // can subscribe via onScroll() without caring whether it loaded.
+  window.__lenis = null;
+  (function () {
+    // Reduced motion: do NOT instantiate at all. Lenis's own
+    // respectReducedMotion only forces lerp=1 — it still
+    // preventDefault()s every wheel event, still routes scrolling
+    // through its rAF, and still puts .lenis on <html>. Skipping
+    // instantiation gives those users a genuinely native scrollport.
+    if (reduceMotion) return;
+    // CDN failure -> native scroll. Never a half-applied state.
+    if (!window.Lenis) return;
+
+    const lenis = new Lenis({
+      lerp: 0.09,          // slightly heavier than the 0.1 default
+      smoothWheel: true,
+      syncTouch: false,    // DEFAULT, and deliberate: touch stays fully
+                           // native (momentum + rubber-banding). Setting
+                           // this true is the most common source of iOS
+                           // Lenis complaints.
+      autoRaf: false,      // we drive raf() from gsap.ticker below
+      anchors: false,      // we own anchor handling — scrollTo(node)
+                           // subtracts BOTH scroll-margin-top and
+                           // scroll-padding-top, and this site sets both
+                           // to var(--nav-h), which would overshoot by
+                           // 2 x --nav-h. We always pass a number.
+    });
+    window.__lenis = lenis;
+
+    // Frame-sync with GSAP. Two independent rAF loops desync by up to a
+    // frame and show as jitter on any scrubbed tween. lagSmoothing(0) is
+    // required: GSAP otherwise clamps deltaTime after a long frame and
+    // Lenis snaps.
+    if (window.gsap) {
+      window.gsap.ticker.add((time) => lenis.raf(time * 1000));
+      window.gsap.ticker.lagSmoothing(0);
+    } else {
+      const loop = (t) => { lenis.raf(t); requestAnimationFrame(loop); };
+      requestAnimationFrame(loop);
+    }
+
+    // Update ScrollTrigger from Lenis's emitter (synchronous, inside
+    // raf()) rather than waiting for the browser's async scroll event.
+    // Deliberately NOT ScrollTrigger.normalizeScroll() — it also
+    // preventDefault()s wheel and the two fight.
+    if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
+
+    // Document height changes must reach Lenis's dimensions cache. Same
+    // milestones main.js already uses for ScrollTrigger.refresh().
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => lenis.resize());
+    }
+    window.addEventListener('load', () => lenis.resize(), { once: true });
+  })();
+
+  // Single scroll subscription point for every module below. Under
+  // Lenis the callback already runs inside a rAF frame, so no inner
+  // rAF is needed; the fallback adds one. Note the Lenis emitter fires
+  // SYNCHRONOUSLY inside raf() and scrollTo(), which is also what makes
+  // the whole scroll system testable headlessly.
+  const onScroll = (cb) => {
+    if (window.__lenis) { window.__lenis.on('scroll', cb); return; }
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; cb(); });
+    }, { passive: true });
+  };
+
+  // Shared programmatic-scroll helper, exposed for the inline scripts
+  // in index.html (calculator -> services, quiz result, retake).
+  // Native scrollIntoView would fight Lenis: Lenis only resyncs from
+  // actualScroll when it is not mid-animation, so a native smooth
+  // scroll landing during a Lenis animation gets overwritten.
+  // Also fixes a pre-existing overshoot: scrollIntoView({block:'start'})
+  // honours scroll-margin-top AND scroll-padding-top, both var(--nav-h)
+  // here, so those three call sites have always landed ~2 x --nav-h low.
+  window.wybeScrollTo = function (el, opts) {
+    if (!el) return;
+    const navH = parseInt(getComputedStyle(document.documentElement)
+      .getPropertyValue('--nav-h'), 10) || 0;
+    const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - navH);
+    if (window.__lenis) window.__lenis.scrollTo(top, Object.assign({ duration: 0.9 }, opts));
+    else window.scrollTo({ top, behavior: 'smooth' });
+  };
+
   // ── FIXED NAV HEIGHT SYNC ────────────────────────────
   // The fixed header's real rendered height is written to --nav-h on
   // <html>. Every offset (body padding proxy, .hero margin/height,
@@ -208,19 +306,16 @@ document.addEventListener('DOMContentLoaded', () => {
     bar.className = 'wybe-scroll-progress';
     bar.setAttribute('aria-hidden', 'true');
     document.body.appendChild(bar);
-    let ticking = false;
     const update = () => {
       const h = document.documentElement;
       const scrolled = h.scrollTop || document.body.scrollTop;
       const max = (h.scrollHeight - h.clientHeight) || 1;
       bar.style.width = (Math.min(1, scrolled / max) * 100).toFixed(2) + '%';
-      ticking = false;
     };
-    window.addEventListener('scroll', () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    }, { passive: true });
+    // onScroll() owns the rAF batching (and under Lenis the callback
+    // already runs inside a frame), so the local `ticking` flag and the
+    // window listener that used to be here are gone.
+    onScroll(update);
     update();
   })();
 
@@ -232,20 +327,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('wybe-nav');
     if (!nav) return;
     const header = nav.closest('.wybe-header') || document.querySelector('.wybe-header');
-    let ticking = false;
     const update = () => {
       const on = window.scrollY > 50;
       nav.classList.toggle('is-scrolled', on);
       if (header) {
         header.classList.toggle('is-scrolled', on);
       }
-      ticking = false;
     };
-    window.addEventListener('scroll', () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    }, { passive: true });
+    onScroll(update);
     update();
   })();
 
@@ -547,7 +636,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── SCROLL-IN ANIMATIONS ──────────────────────────────
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // (reduceMotion is declared at the top of this handler — the Lenis
+  // block needs it before this point.)
 
   if ('IntersectionObserver' in window && !reduceMotion) {
     const sections = document.querySelectorAll('section');
@@ -656,7 +746,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const req = () => {
       if (!ticking) { requestAnimationFrame(update); ticking = true; }
     };
-    window.addEventListener('scroll', req, { passive: true });
+    // Scroll goes through onScroll() — under Lenis that is the
+    // synchronous emitter inside raf(), so `update` runs in-frame and
+    // req()'s rAF batching would only add a frame of latency. req() is
+    // kept for the resize / load / fonts paths, which are not
+    // scroll-driven.
+    onScroll(update);
     window.addEventListener('resize', () => { measure(); req(); }, { passive: true });
     window.addEventListener('load', () => { measure(); req(); }, { once: true });
     if (document.fonts && document.fonts.ready) {
@@ -725,7 +820,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const req = () => {
       if (!ticking) { requestAnimationFrame(update); ticking = true; }
     };
-    window.addEventListener('scroll', req, { passive: true });
+    // Scroll goes through onScroll() — under Lenis that is the
+    // synchronous emitter inside raf(), so `update` runs in-frame and
+    // req()'s rAF batching would only add a frame of latency. req() is
+    // kept for the resize / load / fonts paths, which are not
+    // scroll-driven.
+    onScroll(update);
     window.addEventListener('resize', () => { measure(); req(); }, { passive: true });
     window.addEventListener('load', () => { measure(); req(); }, { once: true });
     if (document.fonts && document.fonts.ready) {
@@ -1000,7 +1100,17 @@ document.addEventListener('DOMContentLoaded', () => {
         getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10
       ) || 0;
       const top = target.getBoundingClientRect().top + window.scrollY - navH;
-      window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+      // Pass a NUMBER, never the node: lenis.scrollTo(node) subtracts
+      // both scroll-margin-top and scroll-padding-top, and this site
+      // sets both to var(--nav-h) — a node target would overshoot by
+      // 2 x --nav-h. force:true because scrollTo() returns early when
+      // stopped/locked, and this runs at load where that is not
+      // guaranteed.
+      if (window.__lenis) {
+        window.__lenis.scrollTo(Math.max(0, top), { immediate: true, force: true });
+      } else {
+        window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+      }
     }
     // Wait for full load (images, fonts) then scroll, with a small extra
     // delay to absorb any remaining layout paint from lazy-loaded content.
