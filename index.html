@@ -879,38 +879,13 @@
         <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
       </div>
 
-      <!-- Photo becomes a CSS background on the outer grid (see
-           #body-composition-section CSS). Calculator form + results
-           panel live side by side inside .calc-panels-grid on desktop;
-           stack on mobile. Both panels visible at all times on desktop
-           once results exist — no swap. -->
+      <!-- Subheading beneath the Calculator title, above the form+image row -->
+      <p class="ucalc-intro-heading">Get your BMI, IBW, BFP &amp; TDEE Results.</p>
+
+      <!-- Form LEFT | Nutrition image RIGHT on desktop; stack vertically on mobile. -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
         <div class="calculator-form-wrapper w-full">
         <div class="calc-panels-grid">
-
-        <!-- STATE 1 only — intro panel on the LEFT showing the four metrics.
-             Full name (small cream) on top, abbreviation (bold orange) below.
-             Centered in its column. Hidden in STATE 2 via CSS :has() rule. -->
-        <div id="ucalc-intro">
-          <ul class="ucalc-intro-list">
-            <li>
-              <span class="ucalc-intro-abbr">BMI</span>
-              <span class="ucalc-intro-name">Body Mass Index</span>
-            </li>
-            <li>
-              <span class="ucalc-intro-abbr">IBW</span>
-              <span class="ucalc-intro-name">Ideal Body Weight</span>
-            </li>
-            <li>
-              <span class="ucalc-intro-abbr">BFP</span>
-              <span class="ucalc-intro-name">Body Fat Percentage</span>
-            </li>
-            <li>
-              <span class="ucalc-intro-abbr">TDEE</span>
-              <span class="ucalc-intro-name">Total Daily Energy Expenditure</span>
-            </li>
-          </ul>
-        </div>
 
         <form id="unified-calc-form" data-view="form">
           <!-- Row 1 & 2: Name and Email, each full-width -->
@@ -976,6 +951,13 @@
           </button>
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
+
+        <!-- RIGHT column: nutrition image -->
+        <div class="ucalc-photo-col">
+          <img src="images/Nutrition%202.webp"
+               alt="Nutrition coaching at WYBE"
+               class="ucalc-photo-img">
+        </div>
 
         <!-- Confirmation panel — shown after a successful submit -->
         <div id="ucalc-confirm" class="hidden" data-view="confirm">
