@@ -277,6 +277,7 @@
        font vs the previous LCD variant. */
     #unified-calc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     #unified-calc-form.hidden { display: none !important; }
+    #unified-calc-form .wybe-input-row--full,
     #unified-calc-form .ucalc-submit-btn,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
     @media (max-width: 767px) {
@@ -903,12 +904,12 @@
         </div>
 
         <form id="unified-calc-form" data-view="form">
-          <!-- Row 1: Name | Email -->
-          <div class="wybe-input-row">
+          <!-- Row 1 & 2: Name and Email, each full-width -->
+          <div class="wybe-input-row wybe-input-row--full">
             <label for="ucalc-name">Full name</label>
             <input type="text" id="ucalc-name" autocomplete="name" placeholder="">
           </div>
-          <div class="wybe-input-row">
+          <div class="wybe-input-row wybe-input-row--full">
             <label for="ucalc-email-field">Email</label>
             <input type="email" id="ucalc-email-field" autocomplete="email" placeholder="">
           </div>
