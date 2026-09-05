@@ -1326,11 +1326,8 @@
       <!-- 2-column layout: left = Coming Soon + cover, right = form.
            Mobile stacks naturally: Coming Soon → cover → form. -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <!-- LEFT block: eyebrow + cover image with parallax -->
+      <!-- LEFT block: cover image with parallax -->
       <div class="text-left">
-        <p class="scene-eyebrow" style="margin-bottom: 24px;">
-          <span class="line-mask"><span class="line-inner">Coming Soon</span></span>
-        </p>
         <div class="wybe-book-cover-frame">
           <img src="images/the-1825-days-cover-white.webp"
                alt="The 1825 Days — the complete nutrition guide for your child"
@@ -1342,6 +1339,8 @@
 
       <!-- RIGHT block: waitlist form -->
       <div class="text-left">
+        <p class="font-sans font-bold text-sm tracking-widest uppercase" style="color:#FF6600; margin-bottom: 4px;">Book in Progress</p>
+        <p class="font-sans text-sm" style="color:#F6F2E8; margin-bottom: 24px;">Written for Parents</p>
         <form id="waitlist-form" data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="max-w-md space-y-3">
           <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
