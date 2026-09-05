@@ -368,6 +368,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') setOpen(false);
     });
+    // Close when clicking/tapping anywhere outside the menu or button
+    document.addEventListener('pointerdown', (e) => {
+      if (menuBtn.getAttribute('aria-expanded') === 'true'
+          && !mobileMenu.contains(e.target)
+          && !menuBtn.contains(e.target)) {
+        setOpen(false);
+      }
+    });
   }
 
   // ── ACTIVE NAV LINK (single-page anchors) ─────────────
