@@ -3107,6 +3107,15 @@ li.service-tier.service-tier--info,
   #body-composition-section .calc-panels-grid #unified-calc-form.hidden {
     display: grid !important;
   }
+  /* Confirm panel: sit in the same grid cell as the form (col 2, row 1).
+     When confirm is visible, let the form actually hide so only one shows. */
+  #body-composition-section .calc-panels-grid #ucalc-confirm {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  #body-composition-section .calc-panels-grid:has(#ucalc-confirm:not(.hidden)) #unified-calc-form.hidden {
+    display: none !important;
+  }
   /* Desktop: Edit-inputs header + "Your Results" label collapse to
      zero (Edit is only needed when the form is hidden — mobile case). */
   #body-composition-section .calc-panels-grid #ucalc-view-results

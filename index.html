@@ -871,7 +871,7 @@
   <!-- CALCULATORS — one unified form → one report. Fill what you know
        and the results panel unlocks whichever metrics your inputs
        support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
-  <section id="calculators" class="wybe-story relative overflow-visible py-8 md:py-12">
+  <section id="calculators" class="wybe-story relative overflow-visible pt-2 pb-8 md:pt-4 md:pb-12">
     <div id="body-composition-section" class="w-full max-w-6xl mx-auto px-6">
       <!-- Section header — single heading, no eyebrow, no subtext. -->
       <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
@@ -979,8 +979,7 @@
 
         <!-- Confirmation panel — shown after a successful submit -->
         <div id="ucalc-confirm" class="hidden" data-view="confirm">
-          <p class="font-sans text-lg font-semibold mb-3" style="color:#FF6600;">Done! Email sent.</p>
-          <p class="font-sans text-sm leading-relaxed" style="color:rgba(246,242,232,0.70);">Check your email for your body composition report.</p>
+          <p class="font-sans text-lg font-semibold" style="color:#FF6600;">Success! Emailed Report.</p>
         </div>
         </div><!-- /.calc-panels-grid -->
         </div><!-- /.calculator-form-wrapper -->
@@ -2385,19 +2384,21 @@
             ibw:      store.ibw  ? store.ibw.point  : '',
             tdee:     store.tdee ? store.tdee.value : '',
           });
-          await fetch(GAS_URL, {
+          const res = await fetch(GAS_URL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params.toString(),
           });
+          if (!res.ok) throw new Error('server_error');
+          const json = await res.json();
+          if (!json.success) throw new Error(json.error || 'submission_failed');
           setSending(false);
           form.classList.add('hidden');
           if (els.confirm) els.confirm.classList.remove('hidden');
           if (typeof window.wybeTrack === 'function') window.wybeTrack('Calculator Submit');
         } catch (_) {
           setSending(false);
-          showErr('Connection error — check your network and try again.');
+          showErr('Something went wrong — please try again or contact us directly.');
         }
       });
     })();
