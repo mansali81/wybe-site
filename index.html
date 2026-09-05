@@ -2312,19 +2312,25 @@
           }
         }
         // ── BFP (Navy circumference) ──
+        // Formula constants are calibrated for inches; convert cm inputs before use.
+        // h/neck/waist/hip (cm) are kept unchanged for BMI, IBW, and TDEE.
         const bfpOK = gender && neck && waist && (!isFemale || hip);
         if (bfpOK) {
+          const heightIn = h    / 2.54;
+          const neckIn   = neck / 2.54;
+          const waistIn  = waist / 2.54;
+          const hipIn    = hip  ? hip / 2.54 : null;
           let bfp;
           if (isFemale) {
-            const diff = waist + hip - neck;
+            const diff = waistIn + hipIn - neckIn;
             if (diff > 0) {
-              const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(h);
+              const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(heightIn);
               bfp = 495 / denom - 450;
             }
           } else {
-            const diff = waist - neck;
+            const diff = waistIn - neckIn;
             if (diff > 0) {
-              const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(h);
+              const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(heightIn);
               bfp = 495 / denom - 450;
             }
           }
