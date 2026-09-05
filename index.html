@@ -1314,13 +1314,26 @@
         <h2 class="section-title">Book</h2>
         <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
       </div>
-      <!-- 2-column layout: left = Coming Soon + form, right = cover image. -->
+      <!-- 2-column layout: left = Coming Soon + cover, right = form.
+           Mobile stacks naturally: Coming Soon → cover → form. -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <!-- LEFT block: eyebrow + waitlist form -->
+      <!-- LEFT block: eyebrow + cover image with parallax -->
       <div class="text-left">
         <p class="scene-eyebrow" style="margin-bottom: 24px;">
           <span class="line-mask"><span class="line-inner">Coming Soon</span></span>
         </p>
+        <div class="wybe-book-cover-frame">
+          <img src="images/the-1825-days-cover-white.webp"
+               alt="The 1825 Days — the complete nutrition guide for your child"
+               class="wybe-book-cover-img"
+               data-parallax
+               data-parallax-speed="0.10"
+               data-parallax-mode="gentle">
+        </div>
+      </div>
+
+      <!-- RIGHT block: waitlist form -->
+      <div class="text-left">
         <form id="waitlist-form" data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="max-w-md space-y-3">
           <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -1383,18 +1396,6 @@
           <p class="font-sans text-sm text-cream/70 leading-relaxed">Thank you for joining the waitlist for The 1825 Days. You&rsquo;ll be the first to know when the guide is ready. Keep an eye on your inbox for early updates!</p>
         </div>
         <p id="waitlist-send-error" class="hidden font-sans text-xs text-red-300 mt-2" role="alert">Connection error — check your network and try again.</p>
-      </div>
-
-      <!-- RIGHT block: full book cover with parallax drift -->
-      <div class="flex justify-center md:justify-end">
-        <div class="wybe-book-cover-frame">
-          <img src="images/the-1825-days-cover-white.webp"
-               alt="The 1825 Days — the complete nutrition guide for your child"
-               class="wybe-book-cover-img"
-               data-parallax
-               data-parallax-speed="0.10"
-               data-parallax-mode="gentle">
-        </div>
       </div>
 
       </div><!-- /.grid -->

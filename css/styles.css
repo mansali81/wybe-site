@@ -2980,7 +2980,7 @@ li.service-tier.service-tier--info,
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
-  gap: 24px;
+  gap: 12px;
   align-items: start;
   background: none;
 }
@@ -3112,6 +3112,14 @@ li.service-tier.service-tier--info,
   display: block;
   text-align: center;
   width: 100%;
+}
+/* TDEE is 4 chars — scale down so it sits inside the brush stroke
+   at the same visual weight as the 3-char abbreviations. */
+.ucalc-intro-list li:last-child .ucalc-intro-abbr {
+  font-size: clamp(20px, 2.4vw, 30px);
+}
+.ucalc-intro-list li:last-child .ucalc-intro-name {
+  font-size: clamp(10px, 0.9vw, 11px);
 }
 
 
