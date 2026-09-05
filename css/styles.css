@@ -2109,6 +2109,27 @@ html:not(.gsap-ready) .wybe-reveal {
    No overflow:hidden so parallax translateY drift is visible.
    The image is in normal document flow (width:100%; height:auto)
    and the JS parallax system applies translate3d on scroll. */
+/* Drift headroom for the cover's parallax. The image translates
+   +/- 0.5 * speed * frameHeight (=/- 54 px at data-parallax-speed 0.20,
+   frame 538 px at 1280 px wide), and the downward extreme lands on the
+   way OUT of the viewport — exactly where #contact begins. #contact is
+   position:relative with an opaque #1E1E1E background (added for the
+   hero occlusion chain) and follows #book in tree order, so it paints
+   over anything this section overflows. Without this headroom the
+   cover's bottom edge is sliced by a hard horizontal line as it exits.
+   Deliberately NOT solved with z-index on #book: floating the cover
+   over the contact section looks broken, and #book's stacking is part
+   of the hero's occlusion chain. 3rem preserves the existing md:py-12.
+   Scoped to >=768px on purpose: below that the frame is max-width 260px
+   (~350 px tall) AND main.js halves the speed on mobile, so the swing is
+   only about +/- 17 px, which the existing py-8 (2rem) already clears.
+   Applying the headroom there would just add dead space on phones. */
+@media (min-width: 768px) {
+  #book {
+    padding-bottom: calc(3rem + 60px);
+  }
+}
+
 .wybe-book-cover-frame {
   max-width: 420px;
   border-radius: 12px;
