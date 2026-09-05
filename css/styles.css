@@ -825,8 +825,19 @@ h4, h5, h6, .wybe-subhead {
    clips, shift the object-position X values above toward 70/75/80 %,
    or drop to 0.15x drift (top: -9.5%; height: 119%). */
 .hero.is-fixed .hero-bg .parallax-img {
-  top: -12%;
-  height: 124%;
+  /* Was top:-12%; height:124% — a 1.24x overscan supporting a 0.20x
+     drift. Raised to 1.30 so the drift can run at 0.26x (+/-13 % each
+     way). Measured against godaylight.com, whose movers run a 1.20x
+     overscan AND a scale() push-in: our structure was already right,
+     the amplitude was simply too small to read.
+     Cost: object-fit:cover on a taller box crops more HORIZONTALLY —
+     roughly 3 more points of source width at 1440x900. object-position
+     is 80-85 % X (see the rules above), so the loss comes off the LEFT
+     of the frame, which is wall backdrop rather than the subject.
+     If the subject ever clips, step back to top:-12%; height:124% and
+     drift 0.10. */
+  top: -15%;
+  height: 130%;
   backface-visibility: hidden;   /* keep the layer on the compositor */
 }
 

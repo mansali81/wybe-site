@@ -796,17 +796,53 @@ document.addEventListener('DOMContentLoaded', () => {
       mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         hero.classList.add('is-fixed');
 
-        // Symmetric drift: +10 % -> -10 % of hero height = 0.20 * H of
-        // travel over 0.20 * H of scroll = the 0.2x rate. Function-based
+        // Symmetric drift: +13 % -> -13 % of hero height = 0.26 * H of
+        // travel over 0.26 * H of scroll = a 0.26x rate. Function-based
         // so invalidateOnRefresh re-measures after a --nav-h rewrite or
         // a viewport resize instead of replaying a stale pixel value.
-        const drift = () => hero.offsetHeight * 0.10;
+        // Raised from 0.10 (0.20x): measured against godaylight.com, a
+        // 10 % swing simply does not read.
+        //
+        // Measured off the FIXED LAYER, not the section. .hero-bg is
+        // position:fixed; inset:0, so its height is the VIEWPORT — and
+        // that is what the 1.30 overscan in styles.css is a percentage
+        // of. hero.offsetHeight is the section, which can exceed the
+        // viewport when the copy is tall (measured 800 vs 720 at
+        // 1280x720). Using the section height spent 104 px against a
+        // 108 px budget — a 4 px margin that any copy change would
+        // blow, showing a hard edge at the drift extreme. Off the
+        // fixed layer the budget is exact at every viewport.
+        const driftBase = () => (bg && bg.offsetHeight) || window.innerHeight;
+        const drift = () => driftBase() * 0.13;
 
         // (a) image drift inside the fixed window
         gsap.fromTo(img,
           { y: () => drift() },
           {
             y: () => -drift(),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+
+        // (a2) Scale push-in. Scaling UP can never reveal a frame edge,
+        // so this costs nothing from the overscan budget that (a)
+        // spends. It is the component godaylight.com has and this site
+        // did not — their movers carry scale(1.20337) alongside the
+        // translate — and it is what makes a parallax read as depth
+        // rather than as a slide. GSAP composes y and scale into a
+        // single matrix on the same element, so this does not fight
+        // the fromTo above.
+        gsap.fromTo(img,
+          { scale: 1 },
+          {
+            scale: 1.07,
             ease: 'none',
             scrollTrigger: {
               trigger: hero,
