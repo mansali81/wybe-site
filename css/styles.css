@@ -48,8 +48,38 @@ main:focus {
   outline: none;
 }
 
-html {
+/* Native smooth scrolling, EXCEPT where Lenis is driving. Lenis adds
+   .lenis to <html> and owns smoothing there; leaving this on would give
+   two smoothers one scrollport — Lenis's own writes pass
+   behavior:'instant' so they win, but native fragment navigation and
+   focus()-induced scrolling would still animate underneath it. The
+   other 15 pages do not load Lenis and keep today's behaviour.
+   Deliberately its own rule: scroll-padding-top and overflow-x below
+   must apply on EVERY page, Lenis or not. */
+html:not(.lenis) {
   scroll-behavior: smooth;
+}
+
+/* ── Lenis runtime rules, inlined from lenis@1.3.26/dist/lenis.css ──
+   Only the two that matter here. Deliberately NOT loading that file as
+   a 5th CDN request, and deliberately omitting two of its rules:
+     - `html.lenis, html.lenis body { height: auto }` is a no-op —
+       neither html nor body sets a height in this stylesheet.
+     - `.lenis.lenis-smooth iframe { pointer-events: none }` is inert
+       (no iframes on index.html) but WOULD make an embedded widget
+       unclickable while smooth-scrolling. If one is ever added, put
+       data-lenis-prevent on its wrapper instead. */
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;                 /* what lenis.stop() actually freezes */
+}
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+html {
   scroll-padding-top: var(--nav-h);
   /* Safety net against horizontal overflow. `overflow-x: clip` behaves
      like `hidden` but does NOT create a new scroll container, so
