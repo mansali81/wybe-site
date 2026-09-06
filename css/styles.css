@@ -3056,11 +3056,12 @@ li.service-tier.service-tier--info,
   background: none;
 }
 @media (min-width: 768px) {
-  /* Form LEFT | Image RIGHT */
+  /* Form LEFT | Image RIGHT — stretch so image col matches form height */
   #body-composition-section .calc-panels-grid {
     grid-template-columns: 1fr 1fr;
     justify-content: stretch;
     gap: 32px;
+    align-items: stretch;
   }
 }
 
@@ -3213,23 +3214,30 @@ li.service-tier.service-tier--info,
 }
 
 /* ── CALCULATOR PHOTO COLUMN ────────────────────────────── */
+/* Mobile: fixed cap, image fills it, crops from top */
 .ucalc-photo-col {
   display: flex;
-  align-items: flex-start;
   max-height: 360px;
+  overflow: hidden;
+  border-radius: 16px;
 }
+/* Desktop: min-height:0 stops the image's natural intrinsic height from
+   inflating the grid row. The form content drives the row height;
+   align-self:stretch then pulls the photo col up to match it exactly. */
 @media (min-width: 768px) {
   .ucalc-photo-col {
-    max-height: 520px;
+    max-height: none;
+    min-height: 0;
+    align-self: stretch;
+    border-radius: 16px;
   }
 }
 .ucalc-photo-img {
   width: 100%;
   height: 100%;
-  max-height: inherit;
   object-fit: cover;
-  object-position: center top;
-  border-radius: 16px;
+  object-position: 50% 100%;
+  border-radius: 0;
   display: block;
 }
 
