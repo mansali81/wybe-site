@@ -3214,22 +3214,28 @@ li.service-tier.service-tier--info,
 }
 
 /* ── CALCULATOR PHOTO COLUMN ────────────────────────────── */
-/* Mobile: fixed cap, image fills it, crops from top */
+/* Mobile: explicit height so object-fit/position work correctly; image
+   fills the box, bottom-anchored so any crop comes from the top only. */
 .ucalc-photo-col {
-  display: flex;
-  max-height: 360px;
+  position: relative;
+  height: 360px;
   overflow: hidden;
   border-radius: 16px;
 }
-/* Desktop: min-height:0 stops the image's natural intrinsic height from
-   inflating the grid row. The form content drives the row height;
-   align-self:stretch then pulls the photo col up to match it exactly. */
+/* Desktop: image is absolutely positioned so it contributes ZERO content
+   size to the grid track-sizing phase — the form alone drives the row
+   height. align-self:stretch then makes the photo col fill that height
+   exactly, and the absolute image fills the col. min-height:0 kept as
+   belt-and-suspenders in case any UA still uses min-height:auto floor. */
 @media (min-width: 768px) {
   .ucalc-photo-col {
-    max-height: none;
+    height: auto;
     min-height: 0;
     align-self: stretch;
-    border-radius: 16px;
+  }
+  .ucalc-photo-img {
+    position: absolute;
+    inset: 0;
   }
 }
 .ucalc-photo-img {
@@ -3237,8 +3243,8 @@ li.service-tier.service-tier--info,
   height: 100%;
   object-fit: cover;
   object-position: 50% 100%;
-  border-radius: 0;
   display: block;
+  border-radius: 0;
 }
 
 /* Stat grid inside the results panel — 2x2 grid, sizes to content,
