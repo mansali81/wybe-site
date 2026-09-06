@@ -3052,7 +3052,7 @@ li.service-tier.service-tier--info,
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
   gap: 24px;
-  align-items: stretch;
+  align-items: start;
   background: none;
 }
 @media (min-width: 768px) {
@@ -3215,13 +3215,20 @@ li.service-tier.service-tier--info,
 /* ── CALCULATOR PHOTO COLUMN ────────────────────────────── */
 .ucalc-photo-col {
   display: flex;
-  align-items: stretch;
-  min-height: 240px;
+  align-items: flex-start;
+  max-height: 360px;
+}
+@media (min-width: 768px) {
+  .ucalc-photo-col {
+    max-height: 520px;
+  }
 }
 .ucalc-photo-img {
   width: 100%;
   height: 100%;
+  max-height: inherit;
   object-fit: cover;
+  object-position: center top;
   border-radius: 16px;
   display: block;
 }
