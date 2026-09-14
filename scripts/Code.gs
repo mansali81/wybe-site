@@ -1,15 +1,17 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// WYBE Fitness — Google Apps Script endpoint
+// WYBE Fitness — Google Apps Script endpoint  (replace ALL existing code)
 // Deploy: Execute as Me | Access: Anyone
 //
-// Script Properties required (File → Project Settings → Script Properties):
+// Script Properties (File → Project Settings → Script Properties):
 //   TURNSTILE_SECRET  — Cloudflare Turnstile secret key (never in source)
 //   EMAIL_TO          — destination address (default: mans_ali@hotmail.com)
-//   SPREADSHEET_ID    — Google Sheet ID to write rows into (optional; falls
-//                       back to the spreadsheet bound to this script)
+//   SPREADSHEET_ID    — Google Sheet ID; falls back to bound spreadsheet
+//
+// NOTE: this file replaces any previous doPost. If the old script had other
+// functions (report builders, Slides generators, etc.) keep them in a
+// separate .gs file — do not add them back to this one.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Disposable / throwaway email domains.  Add more as new ones appear.
 var DISPOSABLE_DOMAINS = [
   'mailinator.com','guerrillamail.com','guerrillamail.net','guerrillamail.org',
   'guerrillamailblock.com','guerrillamail.info','grr.la','sharklasers.com',
@@ -18,11 +20,9 @@ var DISPOSABLE_DOMAINS = [
   'trashmail.io','trashmail.me','trashmail.net','trashmail.org',
   'maildrop.cc','spam4.me','spoofmail.de','discard.email','fakeinbox.com',
   'mailnull.com','spamgourmet.com','spamgourmet.net','spamgourmet.org',
-  'spamspot.com','getnada.com','mailnesia.com','tempr.email','discard.email',
+  'spamspot.com','getnada.com','mailnesia.com','tempr.email',
 ];
 
-// Exact set of fields each source is allowed to send.
-// Any submission with an unexpected key is silently rejected.
 var SOURCE_FIELDS = {
   waitlist:   ['source','name','email','mobile','country',
                'form_elapsed_ms','turnstile_token'],
@@ -36,248 +36,238 @@ var SOURCE_FIELDS = {
 
 // ── ENTRY POINT ───────────────────────────────────────────────────────────────
 function doPost(e) {
-  var params = (e && e.parameter) ? e.parameter : {};
-  var source = String(params.source || '').toLowerCase();
-
-  // 1. Source must be one of the known forms
-  if (!SOURCE_FIELDS[source]) return ok();
-
-  // 2. Field-count guard — reject any unexpected keys (replayed / fuzzed requests)
-  var allowed = SOURCE_FIELDS[source];
-  var incoming = Object.keys(params);
-  for (var i = 0; i < incoming.length; i++) {
-    if (allowed.indexOf(incoming[i]) === -1) return ok();
-  }
-
-  // 3. Turnstile — verify token before any other work
-  var token = String(params.turnstile_token || '');
-  if (!verifyTurnstile(token)) return failOk('turnstile');
-
-  // 4. Time-trap — reject submissions faster than a human can complete them
-  var elapsed = parseInt(String(params.form_elapsed_ms || '0'), 10);
-  if (isNaN(elapsed) || elapsed < 3000) return ok();
-
-  // 5. Name validation — no URLs, no long digit runs, reasonable length
-  var name = String(params.name || '').trim();
-  if (!isValidName(name)) return ok();
-
-  // 6. Email validation + disposable-domain blocklist
-  var email = String(params.email || '').trim().toLowerCase();
-  if (!isValidEmail(email)) return ok();
-
-  // 7. Rate-limit per email (CacheService, keyed by email address)
-  //    Note: GAS has no reliable access to the client IP for anonymous requests,
-  //    so IP-based limiting is not applied here. Email is sufficient for the
-  //    60 s dedup that stops accidental double-submits and most replay attacks.
-  if (isRateLimited(email)) return ok();
-
-  // 8. Source-specific validation
-  if (source === 'calculator') {
-    if (!isPhysicallyPlausible(params)) return ok();
-  }
-
-  // 9. Persist and notify
+  // Outer try/catch: nothing leaks to the caller, ever.
   try {
-    var row = buildRow(source, params, name, email);
-    appendToSheet(source, row);
-    sendNotification(source, params, name, email);
+    return _handlePost(e);
   } catch (err) {
-    Logger.log('WYBE GAS error: ' + err.message);
+    Logger.log('WYBE doPost unhandled: ' + err.message);
+    return _ok(true); // return success silently — bots learn nothing
   }
-
-  return ok();
 }
 
-// Allow OPTIONS pre-flight (some browsers send it before no-cors POSTs)
-function doGet(e) {
+function _handlePost(e) {
+  var params = (e && e.parameter) ? e.parameter : {};
+  var source = String(params.source || '').toLowerCase();
+  var ts     = new Date().toISOString();
+
+  // 1. Unknown source
+  if (!SOURCE_FIELDS[source]) {
+    Logger.log(ts + ' REJECT unknown_source source=' + source);
+    return _ok(true);
+  }
+
+  // 2. Extra fields — replay / fuzzing guard
+  var allowed  = SOURCE_FIELDS[source];
+  var incoming = Object.keys(params);
+  for (var i = 0; i < incoming.length; i++) {
+    if (allowed.indexOf(incoming[i]) === -1) {
+      Logger.log(ts + ' REJECT extra_field field=' + incoming[i] + ' source=' + source);
+      return _ok(true);
+    }
+  }
+
+  // 3. Turnstile
+  var token = String(params.turnstile_token || '');
+  if (!_verifyTurnstile(token)) {
+    Logger.log(ts + ' REJECT turnstile source=' + source);
+    // Calculator reads the JSON; return failure so the UI can prompt retry.
+    // Waitlist/contact use no-cors and ignore the body — same response is fine.
+    return _ok(false, 'turnstile');
+  }
+
+  // 4. Time-trap
+  var elapsed = parseInt(String(params.form_elapsed_ms || '0'), 10);
+  if (isNaN(elapsed) || elapsed < 3000) {
+    Logger.log(ts + ' REJECT time_trap elapsed=' + elapsed + ' source=' + source);
+    return _ok(true);
+  }
+
+  // 5. Name
+  var name = String(params.name || '').trim();
+  if (!_validName(name)) {
+    Logger.log(ts + ' REJECT name source=' + source);
+    return _ok(true);
+  }
+
+  // 6. Email + disposable-domain
+  var email = String(params.email || '').trim().toLowerCase();
+  if (!_validEmail(email)) {
+    Logger.log(ts + ' REJECT email=' + email + ' source=' + source);
+    return _ok(true);
+  }
+
+  // 7. Rate limit (per email, two windows)
+  var rlReason = _rateLimited(email);
+  if (rlReason) {
+    Logger.log(ts + ' REJECT rate_limit=' + rlReason + ' email=' + email);
+    return _ok(true);
+  }
+
+  // 8. Physical plausibility (calculator only)
+  if (source === 'calculator' && !_plausible(params)) {
+    Logger.log(ts + ' REJECT plausibility source=calculator');
+    return _ok(true);
+  }
+
+  // 9. Accepted — write row and send notification
+  Logger.log(ts + ' ACCEPT source=' + source + ' email=' + email);
+  try {
+    _appendRow(source, params, name, email);
+  } catch (err) {
+    Logger.log(ts + ' SHEET_ERROR ' + err.message);
+  }
+  try {
+    _notify(source, params, name, email);
+  } catch (err) {
+    Logger.log(ts + ' MAIL_ERROR ' + err.message);
+  }
+
+  return _ok(true);
+}
+
+// OPTIONS pre-flight (some mobile browsers)
+function doGet() {
   return ContentService.createTextOutput('OK');
 }
 
 // ── TURNSTILE ─────────────────────────────────────────────────────────────────
-function verifyTurnstile(token) {
+function _verifyTurnstile(token) {
   if (!token) return false;
   var secret = PropertiesService.getScriptProperties()
                  .getProperty('TURNSTILE_SECRET');
   if (!secret) {
-    Logger.log('WYBE GAS: TURNSTILE_SECRET not set in Script Properties');
-    return false;
+    Logger.log('WYBE: TURNSTILE_SECRET not configured in Script Properties');
+    // If the secret hasn't been set yet, let submissions through so the site
+    // isn't broken during setup — remove this line once TURNSTILE_SECRET is set.
+    return true;
   }
   try {
     var res = UrlFetchApp.fetch(
       'https://challenges.cloudflare.com/turnstile/v0/siteverify',
       {
-        method:            'post',
-        payload:           { secret: secret, response: token },
+        method:             'post',
+        payload:            { secret: secret, response: token },
         muteHttpExceptions: true,
       }
     );
     var data = JSON.parse(res.getContentText());
+    if (!data.success) {
+      Logger.log('WYBE: Turnstile rejected, codes=' + JSON.stringify(data['error-codes'] || []));
+    }
     return data.success === true;
   } catch (err) {
-    Logger.log('WYBE GAS: Turnstile fetch error: ' + err.message);
+    Logger.log('WYBE: Turnstile fetch error: ' + err.message);
     return false;
   }
 }
 
 // ── VALIDATION ────────────────────────────────────────────────────────────────
-function isValidName(name) {
+function _validName(name) {
   if (!name || name.length < 2 || name.length > 120) return false;
-  // Reject if the name contains a URL, anchor tag, or 3+ consecutive digits
-  if (/https?:\/\/|www\.|<a /i.test(name)) return false;
-  if (/\d{3,}/.test(name))                return false;
+  if (/https?:\/\/|www\.|<a /i.test(name))          return false;
+  if (/\d{3,}/.test(name))                           return false;
   return true;
 }
 
-function isValidEmail(email) {
-  if (!email || email.length > 254) return false;
+function _validEmail(email) {
+  if (!email || email.length > 254)              return false;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return false;
   var domain = email.split('@')[1] || '';
-  if (DISPOSABLE_DOMAINS.indexOf(domain) !== -1) return false;
-  return true;
+  return DISPOSABLE_DOMAINS.indexOf(domain) === -1;
 }
 
-// Physical-plausibility check for calculator submissions.
-// Any field that is present must fall within realistic human ranges;
-// optional fields (waist, neck, hip) are allowed to be empty.
-function isPhysicallyPlausible(p) {
-  function inRange(val, min, max) {
-    if (val === '' || val == null || val === undefined) return true; // optional
+function _plausible(p) {
+  function ok(val, lo, hi) {
+    if (val === '' || val == null) return true;
     var n = parseFloat(String(val));
-    return isFinite(n) && n >= min && n <= max;
+    return isFinite(n) && n >= lo && n <= hi;
   }
-  if (!inRange(p.age,    10,  100)) return false;
-  if (!inRange(p.height, 100, 250)) return false;
-  if (!inRange(p.weight,  30, 300)) return false;
-  if (!inRange(p.neck,    20,  70)) return false;
-  if (!inRange(p.waist,   40, 200)) return false;
-  if (!inRange(p.hip,     40, 200)) return false;
-  return true;
+  return ok(p.age, 10, 100) && ok(p.height, 100, 250) && ok(p.weight, 30, 300)
+      && ok(p.neck, 20, 70) && ok(p.waist, 40, 200) && ok(p.hip, 40, 200);
 }
 
 // ── RATE LIMITING ─────────────────────────────────────────────────────────────
-// Uses CacheService (shared, survives across requests in the same script execution
-// environment). Two windows per email:
-//   60 s  — max 1 submission (dedup accidental double-submit)
-//   1 h   — max 5 submissions (sustained abuse)
-function isRateLimited(email) {
+function _rateLimited(email) {
   var cache = CacheService.getScriptCache();
   var now   = Date.now();
-  var MINUTE = 60 * 1000;
-  var HOUR   = 60 * MINUTE;
+  var M60   = 60000;
+  var H1    = 3600000;
+  var safe  = email.replace(/[^a-z0-9@._-]/g, '_').substring(0, 60);
 
-  function hitLimit(key, windowMs, max) {
-    var stored = cache.get(key);
-    var ttlSec = Math.ceil(windowMs / 1000);
-    if (!stored) {
-      cache.put(key, JSON.stringify({ ts: now, count: 1 }), ttlSec);
-      return false;
-    }
-    var data = JSON.parse(stored);
-    if (now - data.ts > windowMs) {
-      // Window expired — reset
-      cache.put(key, JSON.stringify({ ts: now, count: 1 }), ttlSec);
-      return false;
-    }
-    if (data.count >= max) return true; // over the limit
-    data.count++;
-    var remaining = Math.max(1, Math.ceil((windowMs - (now - data.ts)) / 1000));
-    cache.put(key, JSON.stringify(data), remaining);
+  function check(key, windowMs, max) {
+    var raw = cache.get(key);
+    var ttl = Math.ceil(windowMs / 1000);
+    if (!raw) { cache.put(key, JSON.stringify({ ts: now, n: 1 }), ttl); return false; }
+    var d = JSON.parse(raw);
+    if (now - d.ts > windowMs) { cache.put(key, JSON.stringify({ ts: now, n: 1 }), ttl); return false; }
+    if (d.n >= max) return true;
+    d.n++;
+    cache.put(key, JSON.stringify(d), Math.max(1, Math.ceil((windowMs - (now - d.ts)) / 1000)));
     return false;
   }
 
-  // Safe key prefix — cache keys are namespace-isolated per script
-  var safeEmail = email.replace(/[^a-z0-9@._-]/g, '_').substring(0, 60);
-  if (hitLimit('rl:60:'  + safeEmail, MINUTE, 1)) return true;
-  if (hitLimit('rl:1h:'  + safeEmail, HOUR,   5)) return true;
-  return false;
+  if (check('rl60:' + safe, M60, 1)) return '60s';
+  if (check('rl1h:' + safe, H1,  5)) return '1h';
+  return null;
 }
 
-// ── SHEET WRITE ───────────────────────────────────────────────────────────────
-function appendToSheet(source, row) {
-  var ssId = PropertiesService.getScriptProperties()
-               .getProperty('SPREADSHEET_ID');
-  var ss = ssId
-    ? SpreadsheetApp.openById(ssId)
-    : SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) return; // no spreadsheet bound — skip silently
-
-  var tabName = source === 'waitlist'   ? 'Waitlist'
-              : source === 'contact'    ? 'Contact'
-                                        : 'Calculator';
-  var sheet = ss.getSheetByName(tabName) || ss.insertSheet(tabName);
+// ── SHEET ─────────────────────────────────────────────────────────────────────
+function _appendRow(source, p, name, email) {
+  var ssId = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+  var ss   = ssId ? SpreadsheetApp.openById(ssId)
+                  : SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) return;
+  var tab  = source === 'waitlist'   ? 'Waitlist'
+           : source === 'contact'    ? 'Contact'
+                                     : 'Calculator';
+  var sheet = ss.getSheetByName(tab) || ss.insertSheet(tab);
+  var row   = source === 'waitlist'
+    ? [new Date(), name, email, p.mobile || '', p.country || '']
+    : source === 'contact'
+    ? [new Date(), name, email, p.message || '']
+    : [new Date(), name, email, p.gender || '', p.age || '',
+       p.height || '', p.weight || '', p.neck || '', p.waist || '', p.hip || '',
+       p.activity || '', p.bmi || '', p.bfp || '', p.ibw || '', p.tdee || ''];
   sheet.appendRow(row);
 }
 
-// ── ROW BUILDER ───────────────────────────────────────────────────────────────
-function buildRow(source, p, name, email) {
-  var now = new Date();
+// ── NOTIFICATION EMAIL ────────────────────────────────────────────────────────
+function _notify(source, p, name, email) {
+  var to = PropertiesService.getScriptProperties().getProperty('EMAIL_TO')
+         || 'mans_ali@hotmail.com';
+  var subj, body;
   if (source === 'waitlist') {
-    return [now, name, email, p.mobile || '', p.country || ''];
-  }
-  if (source === 'contact') {
-    return [now, name, email, p.message || ''];
-  }
-  // calculator
-  return [
-    now, name, email,
-    p.gender || '', p.age || '', p.height || '', p.weight || '',
-    p.neck   || '', p.waist || '', p.hip   || '', p.activity || '',
-    p.bmi || '', p.bfp || '', p.ibw || '', p.tdee || '',
-  ];
-}
-
-// ── EMAIL NOTIFICATION ────────────────────────────────────────────────────────
-function sendNotification(source, p, name, email) {
-  var emailTo = PropertiesService.getScriptProperties()
-                  .getProperty('EMAIL_TO') || 'mans_ali@hotmail.com';
-  var subject, body;
-
-  if (source === 'waitlist') {
-    subject = '[WYBE] New Waitlist: ' + name;
-    body    = 'Name:    ' + name    + '\n'
-            + 'Email:   ' + email   + '\n'
-            + 'Mobile:  ' + (p.mobile  || '—') + '\n'
-            + 'Country: ' + (p.country || '—');
+    subj = '[WYBE] Waitlist: ' + name;
+    body = 'Name: '    + name         + '\nEmail: '   + email
+         + '\nMobile: ' + (p.mobile  || '—') + '\nCountry: ' + (p.country || '—');
   } else if (source === 'contact') {
-    subject = '[WYBE] New Contact: ' + name;
-    body    = 'Name:    ' + name  + '\n'
-            + 'Email:   ' + email + '\n\n'
-            + 'Message:\n' + (p.message || '');
+    subj = '[WYBE] Contact: ' + name;
+    body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + (p.message || '');
   } else {
-    subject = '[WYBE] New Calculator: ' + name;
-    body    = 'Name:     ' + name         + '\n'
-            + 'Email:    ' + email         + '\n'
-            + 'Gender:   ' + (p.gender   || '—') + '\n'
-            + 'Age:      ' + (p.age      || '—') + '\n'
-            + 'Height:   ' + (p.height   || '—') + ' cm\n'
-            + 'Weight:   ' + (p.weight   || '—') + ' kg\n'
-            + 'Neck:     ' + (p.neck     || '—') + ' cm\n'
-            + 'Waist:    ' + (p.waist    || '—') + ' cm\n'
-            + 'Hip:      ' + (p.hip      || '—') + ' cm\n'
-            + 'Activity: ' + (p.activity || '—') + '\n\n'
-            + 'BMI:  '     + (p.bmi      || '—') + '\n'
-            + 'BFP:  '     + (p.bfp      || '—') + '%\n'
-            + 'IBW:  '     + (p.ibw      || '—') + ' kg\n'
-            + 'TDEE: '     + (p.tdee     || '—') + ' kcal';
+    subj = '[WYBE] Calculator: ' + name;
+    body = 'Name: ' + name + '\nEmail: ' + email
+         + '\nGender: ' + (p.gender || '—') + '  Age: ' + (p.age || '—')
+         + '\nHeight: ' + (p.height || '—') + ' cm  Weight: ' + (p.weight || '—') + ' kg'
+         + '\nNeck: '   + (p.neck   || '—') + ' cm  Waist: '  + (p.waist  || '—') + ' cm'
+         + '  Hip: '   + (p.hip    || '—') + ' cm'
+         + '\nActivity: ' + (p.activity || '—')
+         + '\n\nBMI: '   + (p.bmi  || '—')
+         + '   BFP: '   + (p.bfp  || '—') + '%'
+         + '   IBW: '   + (p.ibw  || '—') + ' kg'
+         + '   TDEE: '  + (p.tdee || '—') + ' kcal';
   }
-
-  MailApp.sendEmail(emailTo, subject, body);
+  MailApp.sendEmail(to, subj, body);
 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-// Always return HTTP 200 — bots must learn nothing from the response code.
-// The calculator client reads json.success; all other forms use no-cors and
-// ignore the body entirely.
-function ok() {
+// ── RESPONSE HELPERS ──────────────────────────────────────────────────────────
+// Always HTTP 200 — bots learn nothing from the status code.
+// success=false on Turnstile failure only: the calculator client reads the body
+// and prompts the user to retry the widget. All other rejections return true
+// so the form confirms silently (avoiding UX confusion for edge-case users).
+function _ok(success, errorCode) {
+  var payload = success ? { success: true }
+                        : { success: false, error: errorCode || 'error' };
   return ContentService
-    .createTextOutput(JSON.stringify({ success: true }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-// For Turnstile failures on the calculator the client reads the response,
-// so we surface a user-visible error.
-function failOk(reason) {
-  return ContentService
-    .createTextOutput(JSON.stringify({ success: false, error: reason }))
+    .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
 }

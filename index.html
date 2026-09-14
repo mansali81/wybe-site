@@ -2266,23 +2266,23 @@
 
       // Timestamp when the IIFE loaded — server rejects elapsed < 3000 ms.
       const CALC_LOAD_TS = Date.now();
-      const tsWidget = document.getElementById(‘ucalc-turnstile’);
+      const tsWidget = document.getElementById('ucalc-turnstile');
 
-      form.addEventListener(‘submit’, async (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         clearErr();
 
         // ── Turnstile guard ───────────────────────────
-        const tsToken = (form.querySelector(‘[name="cf-turnstile-response"]’) || {}).value || ‘’;
+        const tsToken = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
         if (!tsToken) {
-          showErr(‘Please complete the security check and try again.’);
+          showErr('Please complete the security check and try again.');
           return;
         }
 
-        const name  = (els.name.value  || ‘’).trim();
-        const email = (els.email.value || ‘’).trim();
-        if (name.length < 2)         { showErr(‘Enter your full name.’); return; }
-        if (!EMAIL_RE.test(email))   { showErr("That email doesn’t look right — try name@example.com."); return; }
+        const name  = (els.name.value  || '').trim();
+        const email = (els.email.value || '').trim();
+        if (name.length < 2)         { showErr('Enter your full name.'); return; }
+        if (!EMAIL_RE.test(email))   { showErr("That email doesn't look right — try name@example.com."); return; }
 
         const gender   = els.gender.value;
         const isFemale = gender === 'female';
