@@ -548,6 +548,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Any other data-form falls back to Web3Forms.
   var GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
 
+  // Timestamp when the script loaded — used for the time-trap.
+  // GAS rejects submissions with elapsed < 3000 ms.
+  var PAGE_LOAD_TS = Date.now();
+
   document.querySelectorAll('form[data-form]').forEach(function(form) {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -563,8 +567,24 @@ document.addEventListener('DOMContentLoaded', () => {
       var errElId = subj === 'WYBE, Quick Contact' ? 'contact-send-error' : subj === '1825 Days, Waitlist' ? 'waitlist-send-error' : null;
       if (errElId) { var prevErr = document.getElementById(errElId); if (prevErr) prevErr.classList.add('hidden'); }
 
+      // ── TURNSTILE CHECK ───────────────────────────────
+      // Both waitlist and contact forms carry a .cf-turnstile widget.
+      // Block submission client-side if the token is missing so the user
+      // gets a clear message rather than a silent GAS rejection.
+      var tsWidget = form.querySelector('.cf-turnstile');
+      var tsToken  = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
+      if ((subj === '1825 Days, Waitlist' || subj === 'WYBE, Quick Contact') && !tsToken) {
+        if (btn) { btn.textContent = originalText; btn.disabled = false; }
+        if (errElId) {
+          var errEl = document.getElementById(errElId);
+          if (errEl) { errEl.textContent = 'Please complete the security check and try again.'; errEl.classList.remove('hidden'); }
+        }
+        return;
+      }
+
       try {
         var params = null;
+        var elapsed = String(Date.now() - PAGE_LOAD_TS);
 
         if (subj === '1825 Days, Waitlist') {
           var dialEl = document.getElementById('wl-dialcode-value');
@@ -572,9 +592,17 @@ document.addEventListener('DOMContentLoaded', () => {
           var cHidEl = document.getElementById('wl-country-hidden');
           var mobileVal  = (dialEl ? dialEl.value : '') + (numEl ? numEl.value.trim() : (raw.mobile || ''));
           var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : (raw.country || '');
-          params = new URLSearchParams({ source: 'waitlist', name: raw.name || '', email: raw.email || '', mobile: mobileVal, country: countryVal });
+          params = new URLSearchParams({
+            source: 'waitlist', name: raw.name || '', email: raw.email || '',
+            mobile: mobileVal, country: countryVal,
+            turnstile_token: tsToken, form_elapsed_ms: elapsed,
+          });
         } else if (subj === 'WYBE, Quick Contact') {
-          params = new URLSearchParams({ source: 'contact', name: raw.name || '', email: raw.email || '', message: raw.message || '' });
+          params = new URLSearchParams({
+            source: 'contact', name: raw.name || '', email: raw.email || '',
+            message: raw.message || '',
+            turnstile_token: tsToken, form_elapsed_ms: elapsed,
+          });
         } else {
           raw.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
           raw.subject = subj || 'WYBE Enquiry';
@@ -597,6 +625,9 @@ document.addEventListener('DOMContentLoaded', () => {
           body: params.toString(),
         });
 
+        // Reset widget so it can be used again if the page isn't navigated away
+        if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
+
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
 
         if (subj === 'WYBE, Quick Contact') {
@@ -615,6 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (successEl) successEl.classList.remove('hidden');
         }
       } catch (err) {
+        if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
         if (errElId) { var errEl = document.getElementById(errElId); if (errEl) errEl.classList.remove('hidden'); }
       }
