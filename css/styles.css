@@ -2445,7 +2445,7 @@ footer a:not([class*="bg-burgundy"]):hover::after,
 .section-title {
   font-family: var(--font-header);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.15;
@@ -3208,8 +3208,12 @@ li.service-tier.service-tier--info,
   color: #FF6600;
   font-weight: 400;
   white-space: nowrap;
-  margin: 16px 0 0;
-  font-size: 12px;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+/* Prevent the note wrapping on narrow phones */
+@media (max-width: 390px) {
+  .ucalc-intro-heading { font-size: 13px; }
 }
 
 /* ── CALCULATOR PHOTO COLUMN ────────────────────────────── */
