@@ -1262,7 +1262,7 @@ button.bg-burgundy:hover {
 #wl-country-list::-webkit-scrollbar-track { background: transparent; }
 #wl-dialcode-list::-webkit-scrollbar-thumb,
 #wl-country-list::-webkit-scrollbar-thumb { background: rgba(246,242,232,0.2); border-radius: 2px; }
-#wl-country-btn { background: transparent; border: none; color: #F6F2E8; cursor: pointer; }
+#wl-country-btn { background: transparent; color: #F6F2E8; cursor: pointer; }
 #wl-country-btn:focus { outline: none; }
 
 @keyframes contact-tick-pop {
