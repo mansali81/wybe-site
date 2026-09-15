@@ -1383,8 +1383,8 @@
             </div>
           </div>
 
-          <!-- Turnstile widget (dark theme, full-width) -->
-          <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="dark" data-size="flexible"></div>
+          <!-- hCaptcha widget — verified by Web3Forms server-side -->
+          <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
           <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
           <input type="hidden" name="form_elapsed_ms" id="wl-elapsed-ms" value="0">
           <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
@@ -1437,8 +1437,8 @@
               <div>
                 <textarea name="message" required rows="3" placeholder="What are you looking for?" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 resize-none drop-shadow-md"></textarea>
               </div>
-              <!-- Turnstile widget (dark theme, full-width) -->
-              <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="dark" data-size="flexible"></div>
+              <!-- hCaptcha widget — verified by Web3Forms server-side -->
+              <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
               <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
               <input type="hidden" name="form_elapsed_ms" id="contact-elapsed-ms" value="0">
               <!-- Primary submit: orange pill + inline tick confirmation -->
@@ -3359,5 +3359,7 @@
       });
     })();
   </script>
+  <!-- Web3Forms hCaptcha integration — covers waitlist + contact forms -->
+  <script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>

@@ -1241,6 +1241,15 @@ button.bg-burgundy:hover {
   .wybe-spinner { animation: none; }
 }
 
+/* ── hCaptcha widget: dark-friendly, no overflow at 390px ────────────── */
+.h-captcha {
+  max-width: 100%;
+  overflow: hidden;
+}
+.h-captcha iframe {
+  max-width: 100% !important;
+}
+
 /* ── Waitlist: custom searchable dropdowns ───────────── */
 .wl-mobile-wrap { position: relative; }
 #wl-dialcode-btn { background: transparent; border: none; color: #F6F2E8; }

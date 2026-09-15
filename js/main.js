@@ -567,13 +567,12 @@ document.addEventListener('DOMContentLoaded', () => {
       var errElId = subj === 'WYBE, Quick Contact' ? 'contact-send-error' : subj === '1825 Days, Waitlist' ? 'waitlist-send-error' : null;
       if (errElId) { var prevErr = document.getElementById(errElId); if (prevErr) prevErr.classList.add('hidden'); }
 
-      // ── TURNSTILE CHECK ───────────────────────────────
-      // Both waitlist and contact forms carry a .cf-turnstile widget.
-      // Block submission client-side if the token is missing so the user
-      // gets a clear message rather than a silent GAS rejection.
-      var tsWidget = form.querySelector('.cf-turnstile');
-      var tsToken  = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
-      if ((subj === '1825 Days, Waitlist' || subj === 'WYBE, Quick Contact') && !tsToken) {
+      // ── hCAPTCHA CHECK (waitlist + contact → Web3Forms) ──────────────
+      // The Web3Forms script.js populates [name="h-captcha-response"] when
+      // the user solves the widget. Block early with a visible message so
+      // the user knows what to do rather than getting a silent rejection.
+      var hcToken = (form.querySelector('[name="h-captcha-response"]') || {}).value || '';
+      if ((subj === '1825 Days, Waitlist' || subj === 'WYBE, Quick Contact') && !hcToken) {
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
         if (errElId) {
           var errEl = document.getElementById(errElId);
@@ -583,7 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        var params = null;
         var elapsed = String(Date.now() - PAGE_LOAD_TS);
 
         if (subj === '1825 Days, Waitlist') {
@@ -592,17 +590,49 @@ document.addEventListener('DOMContentLoaded', () => {
           var cHidEl = document.getElementById('wl-country-hidden');
           var mobileVal  = (dialEl ? dialEl.value : '') + (numEl ? numEl.value.trim() : (raw.mobile || ''));
           var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : (raw.country || '');
-          params = new URLSearchParams({
-            source: 'waitlist', name: raw.name || '', email: raw.email || '',
-            mobile: mobileVal, country: countryVal,
-            turnstile_token: tsToken, form_elapsed_ms: elapsed,
+          var wfRes = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
+              subject: '1825 Days, Waitlist',
+              name: raw.name || '', email: raw.email || '',
+              mobile: mobileVal, country: countryVal,
+              form_elapsed_ms: elapsed,
+              'h-captcha-response': hcToken,
+            }),
           });
+          if (!wfRes.ok) throw new Error('server_error');
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          form.classList.add('hidden');
+          if (successEl) successEl.classList.remove('hidden');
+
         } else if (subj === 'WYBE, Quick Contact') {
-          params = new URLSearchParams({
-            source: 'contact', name: raw.name || '', email: raw.email || '',
-            message: raw.message || '',
-            turnstile_token: tsToken, form_elapsed_ms: elapsed,
+          var wfRes = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
+              subject: 'WYBE, Quick Contact',
+              name: raw.name || '', email: raw.email || '',
+              message: raw.message || '',
+              form_elapsed_ms: elapsed,
+              'h-captcha-response': hcToken,
+            }),
           });
+          if (!wfRes.ok) throw new Error('server_error');
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          form.reset();
+          var tick = document.getElementById('contact-tick');
+          if (tick) {
+            tick.classList.remove('hidden');
+            tick.classList.add('visible');
+            setTimeout(function() {
+              tick.classList.add('hidden');
+              tick.classList.remove('visible');
+            }, 3000);
+          }
+
         } else {
           raw.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
           raw.subject = subj || 'WYBE Enquiry';
@@ -615,38 +645,9 @@ document.addEventListener('DOMContentLoaded', () => {
           if (btn) { btn.textContent = originalText; btn.disabled = false; }
           form.classList.add('hidden');
           if (successEl) successEl.classList.remove('hidden');
-          return;
         }
 
-        await fetch(GAS_ENDPOINT, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params.toString(),
-        });
-
-        // Reset widget so it can be used again if the page isn't navigated away
-        if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
-
-        if (btn) { btn.textContent = originalText; btn.disabled = false; }
-
-        if (subj === 'WYBE, Quick Contact') {
-          form.reset();
-          var tick = document.getElementById('contact-tick');
-          if (tick) {
-            tick.classList.remove('hidden');
-            tick.classList.add('visible');
-            setTimeout(function() {
-              tick.classList.add('hidden');
-              tick.classList.remove('visible');
-            }, 3000);
-          }
-        } else {
-          form.classList.add('hidden');
-          if (successEl) successEl.classList.remove('hidden');
-        }
       } catch (err) {
-        if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
         if (errElId) { var errEl = document.getElementById(errElId); if (errEl) errEl.classList.remove('hidden'); }
       }
