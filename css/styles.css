@@ -1241,13 +1241,12 @@ button.bg-burgundy:hover {
   .wybe-spinner { animation: none; }
 }
 
-/* ── hCaptcha widget: dark-friendly, no overflow at 390px ────────────── */
+/* ── hCaptcha widget: compact, dark-friendly, aligned with form fields ── */
 .h-captcha {
-  max-width: 100%;
-  overflow: hidden;
-}
-.h-captcha iframe {
-  max-width: 100% !important;
+  transform: scale(0.82);
+  transform-origin: left top;
+  margin-top: 4px;
+  margin-bottom: -14px;
 }
 
 /* ── Waitlist: custom searchable dropdowns ───────────── */
