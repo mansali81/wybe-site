@@ -54,114 +54,150 @@
     .about-prose strong { color: #FFFFFF; font-weight: 700; }
     .about-prose a { color: #FF6600; text-decoration: underline; text-underline-offset: 3px; }
     .about-prose a:hover { color: #E65500; }
-    /* Cluster of one credential's scans — sits as a single cell inside
-       the .cert-grid below. Multiple scans stack vertically inside a
-       cell (rare: only a couple of credentials have 2 scans). */
-    .cert-group { display: flex; flex-direction: column; gap: 12px; }
-    .cert-group__title {
-      font-family: 'Inter', sans-serif; font-weight: 900;
-      font-size: 14px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: #FF6600;
-      margin: 0 0 4px;
-      line-height: 1.25;
-    }
-    /* Outer grid — three columns on desktop, two on tablets, one on
-       mobile — so credentials read next to each other, not stacked. */
-    .cert-grid {
+    /* ── CERTIFICATE SHOWCASE — single-cert carousel ──────────────── */
+    .cert-layout {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+      border-top: 1px solid rgba(246,242,232,.12);
+      padding-top: 40px;
     }
-    @media (min-width: 640px) {
-      .cert-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (min-width: 1024px) {
-      .cert-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    /* Certificate image tile — thumbnail on top, single-line caption
-       below. Whole tile is a link to open the image full-size in a
-       new tab. */
-    .cert-tile {
-      display: block;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      overflow: hidden;
-      text-decoration: none;
-      transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-    }
-    .cert-tile:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 102, 0, 0.35);
-      transform: translateY(-2px);
-    }
-    .cert-tile__img {
-      display: block;
+    .cert-stage {
+      position: relative;
+      background: #141414;
+      border: 1px solid rgba(246,242,232,.14);
+      border-radius: 14px;
+      padding: 22px;
+      height: 400px;
       width: 100%;
-      height: 220px;
-      object-fit: cover;
-      object-position: center;
-      background: #0e0e0e;
-    }
-    .cert-tile__caption {
-      padding: 12px 14px 14px;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 13px; letter-spacing: 0.02em;
-      color: #FFFFFF;
-      line-height: 1.35;
-    }
-    /* ── CERTIFICATE MODAL — lightbox for the scan tiles ──
-       Fixed full-viewport overlay, click any .cert-tile to open the
-       linked image here in place instead of a new tab. Close via the
-       orange X in the top-LEFT corner, Escape key, or backdrop click. */
-    .cert-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 5100;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 24px 24px;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      cursor: zoom-out;
+      overflow: hidden;
+      cursor: zoom-in;
     }
-    .cert-modal.is-open { display: flex; }
-    .cert-modal__card {
-      position: relative;
-      max-width: min(1100px, 100%);
-      max-height: 100%;
-      display: flex;
-      cursor: default;
-    }
-    .cert-modal__img {
-      display: block;
+    .cert-stage img {
       max-width: 100%;
-      max-height: calc(100vh - 80px);
+      max-height: 100%;
       object-fit: contain;
-      border-top: 3px solid #FF6600;
-      border-radius: 10px;
-      background: #0e0e0e;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+      transition: opacity .35s ease;
     }
-    .cert-modal__close {
+    .cert-stage-hint {
       position: absolute;
-      top: -14px; left: -14px;    /* top-LEFT corner per ask */
-      width: 36px; height: 36px;
+      bottom: 12px;
+      right: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(246,242,232,.45);
+      pointer-events: none;
+    }
+    .cert-panel { display: flex; flex-direction: column; }
+    .cert-index {
+      font-family: 'Inter', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      color: rgba(246,242,232,.10);
+      line-height: 1;
+      margin-bottom: 14px;
+      user-select: none;
+    }
+    .cert-issuer {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: #FF6600;
+      font-weight: 700;
+      margin: 0 0 10px;
+    }
+    .cert-qual {
+      font-family: 'Inter', sans-serif;
+      font-size: 30px;
+      line-height: 1.2;
+      color: #F6F2E8;
+      font-weight: 700;
+      margin: 0 0 18px;
+    }
+    .cert-progress {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(246,242,232,.55);
+      margin: 0 0 26px;
+    }
+    .cert-arrows { display: flex; gap: 14px; margin-bottom: 20px; }
+    .cert-arrow {
+      width: 42px; height: 42px;
       border-radius: 50%;
-      background: #FF6600;
-      color: #0e0e0e;
-      border: 2px solid #0e0e0e;
-      display: inline-flex;
+      border: 1px solid rgba(246,242,232,.25);
+      background: transparent;
+      color: #F6F2E8;
+      display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      z-index: 2;
+      transition: background-color .2s ease, border-color .2s ease, color .2s ease;
     }
-    .cert-modal__close:hover { background: #E65500; transform: scale(1.05); }
-    .cert-modal__close:focus-visible { outline: 2px solid #F6F2E8; outline-offset: 3px; }
+    .cert-arrow:hover { background: #FF6600; border-color: #FF6600; color: #1E1E1E; }
+    .cert-arrow:focus-visible { outline: 2px solid #FF6600; outline-offset: 3px; }
+    .cert-strip { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cert-thumb {
+      width: 46px; height: 32px;
+      border-radius: 4px;
+      overflow: hidden;
+      padding: 0;
+      border: 1px solid rgba(246,242,232,.18);
+      opacity: .4;
+      cursor: pointer;
+      transition: opacity .2s ease, border-color .2s ease;
+      flex-shrink: 0;
+    }
+    .cert-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cert-thumb.is-active { opacity: 1; border-color: #FF6600; }
+    .cert-thumb:hover:not(.is-active) { opacity: .7; }
+    .cert-thumb:focus-visible { outline: 2px solid #FF6600; outline-offset: 2px; }
+    .cert-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,.94);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+      cursor: zoom-out;
+      padding: 40px;
+      gap: 16px;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    .cert-overlay.is-open { display: flex; }
+    .cert-overlay img {
+      max-width: 94vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .cert-overlay-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(246,242,232,.75);
+      text-align: center;
+      margin: 0;
+    }
+    @media (max-width: 900px) {
+      .cert-layout { grid-template-columns: 1fr; gap: 28px; }
+      .cert-stage { height: 260px; }
+      .cert-qual { font-size: 22px; }
+      .cert-index { font-size: 40px; }
+      .cert-strip { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .cert-strip::-webkit-scrollbar { display: none; }
+      .cert-overlay { padding: 16px; }
+    }
   </style>
 </head>
 <body class="text-cream">
@@ -249,85 +285,28 @@
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Credentials</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-8">Certifications Achieved</h2>
 
-        <div class="cert-grid">
-          <div class="cert-group">
-            <h3 class="cert-group__title">Level 4 Personal Trainer</h3>
-            <a href="/images/Certificates/k11-dpt-certificate.webp"  class="cert-tile">
-              <img src="/images/Certificates/k11-dpt-certificate.webp" alt="K11 Diploma in Personal Training Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Diploma in Personal Training (K11)</p>
-            </a>
-            <a href="/images/Certificates/k11-reps-certificate.webp"  class="cert-tile">
-              <img src="/images/Certificates/k11-reps-certificate.webp" alt="K11 REPs Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">K11 REPs Certificate</p>
-            </a>
-          </div>
+        <div class="cert-layout">
+          <!-- LEFT: stage -->
+          <button class="cert-stage" id="cert-stage" aria-label="Enlarge certificate" tabindex="0">
+            <img id="cert-stage-img" src="" alt="" decoding="async">
+            <span class="cert-stage-hint" aria-hidden="true">Click to enlarge</span>
+          </button>
 
-          <div class="cert-group">
-            <h3 class="cert-group__title">REPS UAE Member</h3>
-            <a href="/images/Certificates/reps-uae-e-certificate-2027.webp"  class="cert-tile">
-              <img src="/images/Certificates/reps-uae-e-certificate-2027.webp" alt="REPs UAE E-Certificate 2027" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">REPs UAE E-Certificate (2027)</p>
-            </a>
-          </div>
-
-          <div class="cert-group">
-            <h3 class="cert-group__title">Human Performance Nutritionist</h3>
-            <a href="/images/Certificates/hpn-certificate.webp"  class="cert-tile">
-              <img src="/images/Certificates/hpn-certificate.webp" alt="Human Performance Nutrition Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Human Performance Nutrition Certificate</p>
-            </a>
-          </div>
-
-          <div class="cert-group">
-            <h3 class="cert-group__title">Fitness Instructor</h3>
-            <a href="/images/Certificates/fitness-instructor-ns.webp"  class="cert-tile">
-              <img src="/images/Certificates/fitness-instructor-ns.webp" alt="Fitness Instructor Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Fitness Instructor Certificate</p>
-            </a>
-            <a href="/images/Certificates/nsqf-certificate.webp"  class="cert-tile">
-              <img src="/images/Certificates/nsqf-certificate.webp" alt="NSQF Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">NSQF Certificate</p>
-            </a>
-          </div>
-
-          <div class="cert-group">
-            <h3 class="cert-group__title">CPR &middot; AED &middot; First Aid</h3>
-            <a href="/images/Certificates/cpr-aed-and-first-aid-certification.webp"  class="cert-tile">
-              <img src="/images/Certificates/cpr-aed-and-first-aid-certification.webp" alt="CPR AED First Aid Certification" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Certification</p>
-            </a>
-            <a href="/images/Certificates/cpr-aed-and-first-aid-card.webp"  class="cert-tile">
-              <img src="/images/Certificates/cpr-aed-and-first-aid-card.webp" alt="CPR AED First Aid Card" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">CPR &middot; AED &middot; First Aid Card</p>
-            </a>
-          </div>
-
-          <div class="cert-group">
-            <h3 class="cert-group__title">Nutrition &amp; Hydration</h3>
-            <a href="/images/Certificates/nutrition-and-hydration.webp"  class="cert-tile">
-              <img src="/images/Certificates/nutrition-and-hydration.webp" alt="Nutrition and Hydration Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Nutrition &amp; Hydration Certificate</p>
-            </a>
-          </div>
-
-          <div class="cert-group">
-            <h3 class="cert-group__title">Fitness &amp; Weight Loss</h3>
-            <a href="/images/Certificates/fitness-and-weight-loss-module-1.webp"  class="cert-tile">
-              <img src="/images/Certificates/fitness-and-weight-loss-module-1.webp" alt="Fitness and Weight Loss Module 1" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Module 1</p>
-            </a>
-            <a href="/images/Certificates/fitness-and-weight-loss-module-2.webp"  class="cert-tile">
-              <img src="/images/Certificates/fitness-and-weight-loss-module-2.webp" alt="Fitness and Weight Loss Module 2" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Module 2</p>
-            </a>
-          </div>
-
-          <div class="cert-group">
-            <h3 class="cert-group__title">Public Speaking</h3>
-            <a href="/images/Certificates/public-speaking-certificate.webp"  class="cert-tile">
-              <img src="/images/Certificates/public-speaking-certificate.webp" alt="Public Speaking Certificate" loading="lazy" decoding="async" class="cert-tile__img">
-              <p class="cert-tile__caption">Public Speaking Certificate</p>
-            </a>
+          <!-- RIGHT: detail panel -->
+          <div class="cert-panel">
+            <div class="cert-index" id="cert-index" aria-hidden="true">01</div>
+            <p class="cert-issuer" id="cert-issuer"></p>
+            <h3 class="cert-qual" id="cert-qual"></h3>
+            <p class="cert-progress" id="cert-progress" aria-live="polite"></p>
+            <div class="cert-arrows">
+              <button class="cert-arrow" id="cert-prev" aria-label="Previous certificate">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button class="cert-arrow" id="cert-next" aria-label="Next certificate">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+            <div class="cert-strip" id="cert-strip" role="list" aria-label="All certificates"></div>
           </div>
         </div>
       </div>
@@ -359,81 +338,153 @@
     </div>
   </footer>
 
-  <!-- Certificate lightbox — one shared modal for every .cert-tile
-       click. Kept at body level so it never inherits any transformed
-       ancestor. The wiring script directly below attaches listeners
-       AFTER the modal exists in the DOM. -->
-  <div id="cert-modal" class="cert-modal" role="dialog" aria-modal="true" aria-hidden="true" data-cert-close>
-    <div class="cert-modal__card" role="document">
-      <button type="button" class="cert-modal__close" data-cert-close aria-label="Close certificate">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-      <img class="cert-modal__img" alt="" data-cert-img>
-    </div>
+  <!-- Full-screen overlay — click anywhere or Escape to close -->
+  <div id="cert-overlay" class="cert-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Certificate enlarged view">
+    <img id="cert-overlay-img" src="" alt="">
+    <p id="cert-overlay-caption" class="cert-overlay-caption"></p>
   </div>
+
   <script>
+  (function () {
+    var CERTS = [
+      { src: 'reps-uae-e-certificate-2027.webp',         issuer: 'REPS UAE MEMBER',                qualification: 'Level 4 Personal Trainer' },
+      { src: 'k11-reps-certificate.webp',                issuer: 'PD APPROVAL',                    qualification: 'Certificate of Achievement' },
+      { src: 'k11-dpt-certificate.webp',                 issuer: 'K11 SCHOOL OF FITNESS SCIENCES', qualification: 'Diploma in Personal Training' },
+      { src: 'hpn-certificate.webp',                     issuer: 'K11 SCHOOL OF FITNESS SCIENCES', qualification: 'Human Performance Nutritionist' },
+      { src: 'nsqf-certificate.webp',                    issuer: 'NSDC · SKILL INDIA',        qualification: 'NSQF Level 4' },
+      { src: 'cpr-aed-and-first-aid-certification.webp', issuer: 'ADVANCED MEDICAL CERTIFICATION', qualification: 'CPR, AED & First Aid' },
+      { src: 'cpr-aed-and-first-aid-card.webp',          issuer: 'ADVANCED MEDICAL CERTIFICATION', qualification: 'CPR, AED & First Aid Card' },
+      { src: 'fitness-instructor-ns.webp',               issuer: 'NEW SKILLS ACADEMY',             qualification: 'Fitness Instructor' },
+      { src: 'nutrition-and-hydration.webp',             issuer: 'NEW SKILLS ACADEMY',             qualification: 'Nutrition & Hydration' },
+      { src: 'fitness-and-weight-loss-module-1.webp',    issuer: 'SHAW ACADEMY',                   qualification: 'Fitness & Weight Loss — Module 1' },
+      { src: 'fitness-and-weight-loss-module-2.webp',    issuer: 'SHAW ACADEMY',                   qualification: 'Fitness & Weight Loss — Module 2' },
+      { src: 'public-speaking-certificate.webp',         issuer: 'FLO AKINBIYI',                   qualification: 'Public Speaking' }
+    ];
+
+    var BASE = '/images/Certificates/';
+    var current = 0;
+    var lastFocus = null;
+
+    var stageBtn   = document.getElementById('cert-stage');
+    var stageImg   = document.getElementById('cert-stage-img');
+    var indexEl    = document.getElementById('cert-index');
+    var issuerEl   = document.getElementById('cert-issuer');
+    var qualEl     = document.getElementById('cert-qual');
+    var progressEl = document.getElementById('cert-progress');
+    var prevBtn    = document.getElementById('cert-prev');
+    var nextBtn    = document.getElementById('cert-next');
+    var strip      = document.getElementById('cert-strip');
+    var overlay    = document.getElementById('cert-overlay');
+    var overlayImg = document.getElementById('cert-overlay-img');
+    var overlayCap = document.getElementById('cert-overlay-caption');
+
+    if (!stageBtn) return;
+
+    function mod(n) { return ((n % CERTS.length) + CERTS.length) % CERTS.length; }
+
+    function preload(idx) {
+      [mod(idx - 1), mod(idx + 1)].forEach(function (i) {
+        var img = new Image(); img.src = BASE + CERTS[i].src;
+      });
+    }
+
+    function updatePanel(idx, skipFade) {
+      var c = CERTS[idx];
+      indexEl.textContent    = String(idx + 1).padStart(2, '0');
+      issuerEl.textContent   = c.issuer;
+      qualEl.textContent     = c.qualification;
+      progressEl.textContent = 'Certificate ' + (idx + 1) + ' of ' + CERTS.length;
+      stageBtn.setAttribute('aria-label', 'Enlarge certificate: ' + c.qualification);
+      stageImg.alt = c.qualification + ' certificate issued by ' + c.issuer;
+      strip.querySelectorAll('.cert-thumb').forEach(function (btn, i) {
+        btn.classList.toggle('is-active', i === idx);
+        btn.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+      });
+    }
+
+    function goto(idx) {
+      if (idx === current && stageImg.src) return;
+      var c = CERTS[idx];
+      current = idx;
+      stageImg.style.opacity = '0';
+      setTimeout(function () {
+        stageImg.src = BASE + c.src;
+        stageImg.style.opacity = '1';
+      }, 180);
+      updatePanel(idx, false);
+      preload(idx);
+    }
+
+    /* Build thumbnail strip */
+    CERTS.forEach(function (c, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cert-thumb';
+      btn.setAttribute('role', 'listitem');
+      btn.setAttribute('aria-label', c.qualification);
+      btn.setAttribute('aria-pressed', 'false');
+      var img = document.createElement('img');
+      img.src = BASE + c.src;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.width = 46; img.height = 32;
+      btn.appendChild(img);
+      btn.addEventListener('click', function () { goto(i); });
+      strip.appendChild(btn);
+    });
+
+    /* Init first certificate */
     (function () {
-      var modal = document.getElementById('cert-modal');
-      if (!modal) return;
-      var imgEl = modal.querySelector('[data-cert-img]');
-      var card  = modal.querySelector('.cert-modal__card');
-      var lastFocus = null;
-
-      function open(url, alt) {
-        lastFocus = document.activeElement;
-        imgEl.setAttribute('src', url);
-        imgEl.setAttribute('alt', alt || '');
-        modal.classList.add('is-open');
-        modal.setAttribute('aria-hidden', 'false');
-        document.documentElement.style.overflow = 'hidden';
-        setTimeout(function () {
-          var btn = modal.querySelector('.cert-modal__close');
-          if (btn) btn.focus();
-        }, 60);
-      }
-      function close() {
-        modal.classList.remove('is-open');
-        modal.setAttribute('aria-hidden', 'true');
-        document.documentElement.style.overflow = '';
-        imgEl.setAttribute('src', '');
-        if (lastFocus && lastFocus.focus) lastFocus.focus();
-      }
-
-      // Intercept every certificate-tile click. preventDefault so the
-      // href fallback (opening the WebP in a new tab) never fires when
-      // JS is available.
-      var tiles = document.querySelectorAll('.cert-tile');
-      for (var i = 0; i < tiles.length; i++) {
-        (function (tile) {
-          tile.addEventListener('click', function (e) {
-            e.preventDefault();
-            var url = tile.getAttribute('href');
-            var img = tile.querySelector('img');
-            var alt = img ? img.getAttribute('alt') : '';
-            open(url, alt);
-          });
-        })(tiles[i]);
-      }
-
-      // Close via the X button, backdrop click (modal itself), or Esc.
-      // The .cert-modal__card is not marked [data-cert-close], so
-      // clicks on the image or its card don't trigger a close.
-      modal.addEventListener('click', function (e) {
-        if (e.target === card || card.contains(e.target)) {
-          // Only close if the close button was hit; card/image stays.
-          if (e.target.closest('[data-cert-close]')) close();
-          return;
-        }
-        // Backdrop area (outside the card) — close.
-        close();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
-      });
+      var c = CERTS[0];
+      stageImg.src = BASE + c.src;
+      stageImg.style.opacity = '1';
+      updatePanel(0, true);
+      preload(0);
     })();
+
+    prevBtn.addEventListener('click', function () { goto(mod(current - 1)); });
+    nextBtn.addEventListener('click', function () { goto(mod(current + 1)); });
+
+    /* Arrow-key navigation when focus is inside the component */
+    document.getElementById('certifications').addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); goto(mod(current - 1)); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goto(mod(current + 1)); }
+    });
+
+    /* ── Overlay ─────────────────────────────────────────── */
+    function openOverlay() {
+      lastFocus = document.activeElement;
+      var c = CERTS[current];
+      overlayImg.src = BASE + c.src;
+      overlayImg.alt = c.qualification + ' certificate issued by ' + c.issuer;
+      overlayCap.textContent = c.issuer + ' · ' + c.qualification;
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { overlay.style.opacity = '1'; });
+      });
+    }
+
+    function closeOverlay() {
+      overlay.style.opacity = '0';
+      setTimeout(function () {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }, 200);
+    }
+
+    stageBtn.addEventListener('click', openOverlay);
+    stageBtn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openOverlay(); }
+    });
+    overlay.addEventListener('click', closeOverlay);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeOverlay();
+    });
+  })();
   </script>
   <script src="/js/wybe-cursor.js" defer></script>
   <script src="/js/main.js"></script>
