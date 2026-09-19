@@ -54,149 +54,97 @@
     .about-prose strong { color: #FFFFFF; font-weight: 700; }
     .about-prose a { color: #FF6600; text-decoration: underline; text-underline-offset: 3px; }
     .about-prose a:hover { color: #E65500; }
-    /* ── CERTIFICATE SHOWCASE — single-cert carousel ──────────────── */
-    .cert-layout {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 48px;
-      align-items: center;
+    /* ── CERTIFICATE SHOWCASE ──────────────────────── */
+    .cert-show {
+      margin-top: 36px;
       border-top: 1px solid rgba(246,242,232,.12);
-      padding-top: 40px;
+      padding-top: 36px;
     }
+    /* No background, no border, no padding, no radius.
+       The certificate sits directly on the page background. */
     .cert-stage {
       position: relative;
-      background: #141414;
-      border: 1px solid rgba(246,242,232,.14);
-      border-radius: 14px;
-      padding: 22px;
-      height: 400px;
-      width: 100%;
+      margin: 0 auto;
+      max-width: 1000px;
+      height: 560px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      cursor: zoom-in;
     }
-    .cert-stage img {
+    .cert-img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
       transition: opacity .35s ease;
     }
-    .cert-stage-hint {
+    /* Invisible hit zones — chevron is the only visible element */
+    .cert-zone {
       position: absolute;
-      bottom: 12px;
-      right: 14px;
-      font-family: 'Inter', sans-serif;
-      font-size: 10px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(246,242,232,.45);
-      pointer-events: none;
-    }
-    .cert-panel { display: flex; flex-direction: column; }
-    .cert-index {
-      font-family: 'Inter', sans-serif;
-      font-size: 56px;
-      font-weight: 800;
-      color: rgba(246,242,232,.10);
-      line-height: 1;
-      margin-bottom: 14px;
-      user-select: none;
-    }
-    .cert-issuer {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      letter-spacing: 1.6px;
-      text-transform: uppercase;
-      color: #FF6600;
-      font-weight: 700;
-      margin: 0 0 10px;
-    }
-    .cert-qual {
-      font-family: 'Inter', sans-serif;
-      font-size: 30px;
-      line-height: 1.2;
-      color: #F6F2E8;
-      font-weight: 700;
-      margin: 0 0 18px;
-    }
-    .cert-progress {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: rgba(246,242,232,.55);
-      margin: 0 0 26px;
-    }
-    .cert-arrows { display: flex; gap: 14px; margin-bottom: 20px; }
-    .cert-arrow {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      border: 1px solid rgba(246,242,232,.25);
+      top: 0; bottom: 0;
+      width: 26%;
+      border: none;
       background: transparent;
-      color: #F6F2E8;
+      cursor: pointer;
+      z-index: 2;
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+      padding: 0 8px;
     }
-    .cert-arrow:hover { background: #FF6600; border-color: #FF6600; color: #1E1E1E; }
-    .cert-arrow:focus-visible { outline: 2px solid #FF6600; outline-offset: 3px; }
-    .cert-strip { display: flex; flex-wrap: wrap; gap: 8px; }
-    .cert-thumb {
-      width: 46px; height: 32px;
-      border-radius: 4px;
-      overflow: hidden;
+    .cert-zone--prev { left: 0;  justify-content: flex-start; }
+    .cert-zone--next { right: 0; justify-content: flex-end; }
+    .cert-zone:hover { background: transparent; }
+    .cert-zone span {
+      font-size: 34px;
+      line-height: 1;
+      color: #FF6600;
+      opacity: 0;
+      transition: opacity .28s ease, transform .28s ease;
+      pointer-events: none;
+    }
+    .cert-zone--prev span { transform: translateX(8px); }
+    .cert-zone--next span { transform: translateX(-8px); }
+    .cert-zone:hover span,
+    .cert-zone:focus-visible span { opacity: 1; transform: translateX(0); }
+    /* Thumbnail strip */
+    .cert-strip {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 24px auto 0;
+    }
+    .cert-strip button {
+      width: 70px; height: 48px;
       padding: 0;
-      border: 1px solid rgba(246,242,232,.18);
-      opacity: .4;
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid rgba(246,242,232,.16);
+      background: transparent;
       cursor: pointer;
-      transition: opacity .2s ease, border-color .2s ease;
+      opacity: .35;
+      filter: grayscale(.65);
+      transition: all .28s ease;
       flex-shrink: 0;
     }
-    .cert-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .cert-thumb.is-active { opacity: 1; border-color: #FF6600; }
-    .cert-thumb:hover:not(.is-active) { opacity: .7; }
-    .cert-thumb:focus-visible { outline: 2px solid #FF6600; outline-offset: 2px; }
-    .cert-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10,10,10,.94);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      z-index: 9999;
-      cursor: zoom-out;
-      padding: 40px;
-      gap: 16px;
-      opacity: 0;
-      transition: opacity .2s ease;
-    }
-    .cert-overlay.is-open { display: flex; }
-    .cert-overlay img {
-      max-width: 94vw;
-      max-height: 88vh;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-    .cert-overlay-caption {
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(246,242,232,.75);
-      text-align: center;
-      margin: 0;
+    .cert-strip button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cert-strip button:hover { opacity: .7; filter: grayscale(.2); }
+    .cert-strip button[aria-current="true"] {
+      opacity: 1;
+      filter: none;
+      border-color: #FF6600;
+      transform: translateY(-3px);
     }
     @media (max-width: 900px) {
-      .cert-layout { grid-template-columns: 1fr; gap: 28px; }
-      .cert-stage { height: 260px; }
-      .cert-qual { font-size: 22px; }
-      .cert-index { font-size: 40px; }
-      .cert-strip { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .cert-stage { height: 400px; }
+      .cert-strip {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-content: flex-start;
+      }
       .cert-strip::-webkit-scrollbar { display: none; }
-      .cert-overlay { padding: 16px; }
     }
   </style>
 </head>
@@ -294,29 +242,17 @@
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Credentials</p>
         <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-8">Certifications Achieved</h2>
 
-        <div class="cert-layout">
-          <!-- LEFT: stage -->
-          <button class="cert-stage" id="cert-stage" aria-label="Enlarge certificate" tabindex="0">
-            <img id="cert-stage-img" src="" alt="" decoding="async">
-            <span class="cert-stage-hint" aria-hidden="true">Click to enlarge</span>
-          </button>
-
-          <!-- RIGHT: detail panel -->
-          <div class="cert-panel">
-            <div class="cert-index" id="cert-index" aria-hidden="true">01</div>
-            <p class="cert-issuer" id="cert-issuer"></p>
-            <h3 class="cert-qual" id="cert-qual"></h3>
-            <p class="cert-progress" id="cert-progress" aria-live="polite"></p>
-            <div class="cert-arrows">
-              <button class="cert-arrow" id="cert-prev" aria-label="Previous certificate">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-              </button>
-              <button class="cert-arrow" id="cert-next" aria-label="Next certificate">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-            </div>
-            <div class="cert-strip" id="cert-strip" role="list" aria-label="All certificates"></div>
+        <div class="cert-show">
+          <div class="cert-stage" aria-roledescription="carousel">
+            <img class="cert-img" id="cert-img" src="" alt="" aria-live="polite">
+            <button class="cert-zone cert-zone--prev" id="cert-prev" aria-label="Previous certificate">
+              <span aria-hidden="true">&#8249;</span>
+            </button>
+            <button class="cert-zone cert-zone--next" id="cert-next" aria-label="Next certificate">
+              <span aria-hidden="true">&#8250;</span>
+            </button>
           </div>
+          <div class="cert-strip" id="cert-strip"></div>
         </div>
       </div>
 
@@ -347,47 +283,33 @@
     </div>
   </footer>
 
-  <!-- Full-screen overlay — click anywhere or Escape to close -->
-  <div id="cert-overlay" class="cert-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Certificate enlarged view">
-    <img id="cert-overlay-img" src="" alt="">
-    <p id="cert-overlay-caption" class="cert-overlay-caption"></p>
-  </div>
-
   <script>
   (function () {
     var CERTS = [
-      { src: 'reps-uae-e-certificate-2027.webp',         issuer: 'REPS UAE MEMBER',                qualification: 'Level 4 Personal Trainer' },
-      { src: 'k11-reps-certificate.webp',                issuer: 'PD APPROVAL',                    qualification: 'Certificate of Achievement' },
-      { src: 'k11-dpt-certificate.webp',                 issuer: 'K11 SCHOOL OF FITNESS SCIENCES', qualification: 'Diploma in Personal Training' },
-      { src: 'hpn-certificate.webp',                     issuer: 'K11 SCHOOL OF FITNESS SCIENCES', qualification: 'Human Performance Nutritionist' },
-      { src: 'nsqf-certificate.webp',                    issuer: 'NSDC · SKILL INDIA',        qualification: 'NSQF Level 4' },
-      { src: 'cpr-aed-and-first-aid-certification.webp', issuer: 'ADVANCED MEDICAL CERTIFICATION', qualification: 'CPR, AED & First Aid' },
-      { src: 'cpr-aed-and-first-aid-card.webp',          issuer: 'ADVANCED MEDICAL CERTIFICATION', qualification: 'CPR, AED & First Aid Card' },
-      { src: 'fitness-instructor-ns.webp',               issuer: 'NEW SKILLS ACADEMY',             qualification: 'Fitness Instructor' },
-      { src: 'nutrition-and-hydration.webp',             issuer: 'NEW SKILLS ACADEMY',             qualification: 'Nutrition & Hydration' },
-      { src: 'fitness-and-weight-loss-module-1.webp',    issuer: 'SHAW ACADEMY',                   qualification: 'Fitness & Weight Loss — Module 1' },
-      { src: 'fitness-and-weight-loss-module-2.webp',    issuer: 'SHAW ACADEMY',                   qualification: 'Fitness & Weight Loss — Module 2' },
-      { src: 'public-speaking-certificate.webp',         issuer: 'FLO AKINBIYI',                   qualification: 'Public Speaking' }
+      { src: 'reps-uae-e-certificate-2027.webp',         alt: 'Level 4 Personal Trainer certificate issued by REPs UAE' },
+      { src: 'k11-reps-certificate.webp',                alt: 'Certificate of Achievement issued by PD Approval' },
+      { src: 'k11-dpt-certificate.webp',                 alt: 'Diploma in Personal Training issued by K11 School of Fitness Sciences' },
+      { src: 'hpn-certificate.webp',                     alt: 'Human Performance Nutritionist certificate issued by K11 School of Fitness Sciences' },
+      { src: 'nsqf-certificate.webp',                    alt: 'NSQF Level 4 certificate issued by NSDC and Skill India' },
+      { src: 'cpr-aed-and-first-aid-certification.webp', alt: 'CPR, AED and First Aid certification issued by Advanced Medical Certification' },
+      { src: 'cpr-aed-and-first-aid-card.webp',          alt: 'CPR, AED and First Aid card issued by Advanced Medical Certification' },
+      { src: 'fitness-instructor-ns.webp',               alt: 'Fitness Instructor certification issued by New Skills Academy' },
+      { src: 'nutrition-and-hydration.webp',             alt: 'Nutrition and Hydration certification issued by New Skills Academy' },
+      { src: 'fitness-and-weight-loss-module-1.webp',    alt: 'Fitness and Weight Loss Module 1 certificate issued by Shaw Academy' },
+      { src: 'fitness-and-weight-loss-module-2.webp',    alt: 'Fitness and Weight Loss Module 2 certificate issued by Shaw Academy' },
+      { src: 'public-speaking-certificate.webp',         alt: 'Public Speaking certificate issued by Flo Akinbiyi' }
     ];
 
-    var BASE = '/images/Certificates/';
+    var BASE    = '/images/Certificates/';
     var current = 0;
-    var lastFocus = null;
 
-    var stageBtn   = document.getElementById('cert-stage');
-    var stageImg   = document.getElementById('cert-stage-img');
-    var indexEl    = document.getElementById('cert-index');
-    var issuerEl   = document.getElementById('cert-issuer');
-    var qualEl     = document.getElementById('cert-qual');
-    var progressEl = document.getElementById('cert-progress');
-    var prevBtn    = document.getElementById('cert-prev');
-    var nextBtn    = document.getElementById('cert-next');
-    var strip      = document.getElementById('cert-strip');
-    var overlay    = document.getElementById('cert-overlay');
-    var overlayImg = document.getElementById('cert-overlay-img');
-    var overlayCap = document.getElementById('cert-overlay-caption');
+    var certImg = document.getElementById('cert-img');
+    var prevBtn = document.getElementById('cert-prev');
+    var nextBtn = document.getElementById('cert-next');
+    var strip   = document.getElementById('cert-strip');
+    var stage   = certImg ? certImg.closest('.cert-stage') : null;
 
-    if (!stageBtn) return;
+    if (!certImg) return;
 
     function mod(n) { return ((n % CERTS.length) + CERTS.length) % CERTS.length; }
 
@@ -397,30 +319,23 @@
       });
     }
 
-    function updatePanel(idx, skipFade) {
-      var c = CERTS[idx];
-      indexEl.textContent    = String(idx + 1).padStart(2, '0');
-      issuerEl.textContent   = c.issuer;
-      qualEl.textContent     = c.qualification;
-      progressEl.textContent = 'Certificate ' + (idx + 1) + ' of ' + CERTS.length;
-      stageBtn.setAttribute('aria-label', 'Enlarge certificate: ' + c.qualification);
-      stageImg.alt = c.qualification + ' certificate issued by ' + c.issuer;
-      strip.querySelectorAll('.cert-thumb').forEach(function (btn, i) {
-        btn.classList.toggle('is-active', i === idx);
-        btn.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
-      });
-    }
-
     function goto(idx) {
-      if (idx === current && stageImg.src) return;
+      if (idx === current && certImg.getAttribute('src')) return;
       var c = CERTS[idx];
       current = idx;
-      stageImg.style.opacity = '0';
+      certImg.style.opacity = '0';
       setTimeout(function () {
-        stageImg.src = BASE + c.src;
-        stageImg.style.opacity = '1';
-      }, 180);
-      updatePanel(idx, false);
+        certImg.src = BASE + c.src;
+        certImg.alt = c.alt;
+        certImg.style.opacity = '1';
+      }, 170);
+      var thumbs = strip.querySelectorAll('button');
+      thumbs.forEach(function (btn, i) {
+        btn.setAttribute('aria-current', i === idx ? 'true' : 'false');
+      });
+      if (thumbs[idx]) {
+        thumbs[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      }
       preload(idx);
     }
 
@@ -428,71 +343,48 @@
     CERTS.forEach(function (c, i) {
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'cert-thumb';
-      btn.setAttribute('role', 'listitem');
-      btn.setAttribute('aria-label', c.qualification);
-      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', c.alt);
+      btn.setAttribute('aria-current', 'false');
       var img = document.createElement('img');
       img.src = BASE + c.src;
       img.alt = '';
       img.loading = 'lazy';
-      img.width = 46; img.height = 32;
+      img.width = 70; img.height = 48;
       btn.appendChild(img);
       btn.addEventListener('click', function () { goto(i); });
       strip.appendChild(btn);
     });
 
-    /* Init first certificate */
+    /* Init */
     (function () {
       var c = CERTS[0];
-      stageImg.src = BASE + c.src;
-      stageImg.style.opacity = '1';
-      updatePanel(0, true);
+      certImg.src = BASE + c.src;
+      certImg.alt = c.alt;
+      certImg.style.opacity = '1';
+      strip.querySelectorAll('button')[0].setAttribute('aria-current', 'true');
       preload(0);
     })();
 
     prevBtn.addEventListener('click', function () { goto(mod(current - 1)); });
     nextBtn.addEventListener('click', function () { goto(mod(current + 1)); });
 
-    /* Arrow-key navigation when focus is inside the component */
+    /* Arrow keys when focus is inside the certifications section */
     document.getElementById('certifications').addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft')  { e.preventDefault(); goto(mod(current - 1)); }
       if (e.key === 'ArrowRight') { e.preventDefault(); goto(mod(current + 1)); }
     });
 
-    /* ── Overlay ─────────────────────────────────────────── */
-    function openOverlay() {
-      lastFocus = document.activeElement;
-      var c = CERTS[current];
-      overlayImg.src = BASE + c.src;
-      overlayImg.alt = c.qualification + ' certificate issued by ' + c.issuer;
-      overlayCap.textContent = c.issuer + ' · ' + c.qualification;
-      overlay.classList.add('is-open');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.documentElement.style.overflow = 'hidden';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { overlay.style.opacity = '1'; });
-      });
+    /* Touch swipe on the stage */
+    if (stage) {
+      var touchX = 0;
+      stage.addEventListener('touchstart', function (e) {
+        touchX = e.touches[0].clientX;
+      }, { passive: true });
+      stage.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 40) goto(dx < 0 ? mod(current + 1) : mod(current - 1));
+      }, { passive: true });
     }
-
-    function closeOverlay() {
-      overlay.style.opacity = '0';
-      setTimeout(function () {
-        overlay.classList.remove('is-open');
-        overlay.setAttribute('aria-hidden', 'true');
-        document.documentElement.style.overflow = '';
-        if (lastFocus && lastFocus.focus) lastFocus.focus();
-      }, 200);
-    }
-
-    stageBtn.addEventListener('click', openOverlay);
-    stageBtn.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openOverlay(); }
-    });
-    overlay.addEventListener('click', closeOverlay);
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeOverlay();
-    });
   })();
   </script>
   <script src="/js/wybe-cursor.js" defer></script>
