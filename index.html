@@ -278,11 +278,9 @@
     #unified-calc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     #unified-calc-form.hidden { display: none !important; }
     #unified-calc-form .wybe-input-row--full,
-    #unified-calc-form .ucalc-submit-btn,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
     @media (max-width: 767px) {
       #unified-calc-form { grid-template-columns: 1fr; }
-      #unified-calc-form .ucalc-submit-btn,
       #unified-calc-form #ucalc-error { grid-column: auto; }
     }
     .wybe-input-row {
@@ -947,14 +945,14 @@
             </select>
           </div>
 
-          <!-- Turnstile widget — spans both grid columns; dark theme -->
-          <div class="wybe-input-row--full">
-            <div class="cf-turnstile" id="ucalc-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="flexible"></div>
+          <!-- Turnstile + submit on one row, spanning both grid columns -->
+          <div class="wybe-input-row--full calc-captcha-row">
+            <div class="cf-turnstile" id="ucalc-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="normal"></div>
+            <button type="submit" class="wybe-calc-cta ucalc-submit-btn">
+              <span class="ucalc-submit-label">Get Result &rarr;</span>
+              <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
+            </button>
           </div>
-          <button type="submit" class="wybe-calc-cta ucalc-submit-btn">
-            <span class="ucalc-submit-label">Get Result &rarr;</span>
-            <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
-          </button>
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
 
@@ -1383,11 +1381,13 @@
             </div>
           </div>
 
-          <!-- hCaptcha widget — verified by Web3Forms server-side -->
-          <div class="h-captcha" data-captcha="true" data-size="compact" data-theme="dark"></div>
           <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
           <input type="hidden" name="form_elapsed_ms" id="wl-elapsed-ms" value="0">
-          <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
+          <!-- hCaptcha + submit on one row -->
+          <div class="captcha-row">
+            <div class="h-captcha" data-captcha="true" data-size="normal" data-theme="dark"></div>
+            <button type="submit" class="bg-burgundy text-charcoal font-sans font-bold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
+          </div>
         </form>
         <div class="hidden mt-4">
           <p class="font-sans text-lg font-semibold mb-2" style="color:#FF6600;">Success! You&rsquo;re on the list.</p>
@@ -1437,20 +1437,22 @@
               <div>
                 <textarea name="message" required rows="3" placeholder="What are you looking for?" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 resize-none drop-shadow-md"></textarea>
               </div>
-              <!-- hCaptcha widget — verified by Web3Forms server-side -->
-              <div class="h-captcha" data-captcha="true" data-size="compact" data-theme="dark"></div>
               <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
               <input type="hidden" name="form_elapsed_ms" id="contact-elapsed-ms" value="0">
-              <!-- Primary submit: orange pill + inline tick confirmation -->
-              <div class="flex justify-center items-center gap-3">
+              <!-- hCaptcha + submit on one row -->
+              <div class="captcha-row">
+                <div class="h-captcha" data-captcha="true" data-size="normal" data-theme="dark"></div>
                 <button type="submit"
-                        class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-sm font-bold tracking-widest uppercase px-8 py-3 rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
+                        class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans font-bold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
                   Send Message
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </button>
+              </div>
+              <!-- Tick + error sit below the row -->
+              <div class="flex items-center gap-2 mt-2">
                 <span id="contact-tick" class="hidden" aria-live="polite" aria-label="Message sent">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 15.5 9.5"/></svg>
                 </span>

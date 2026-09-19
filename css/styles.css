@@ -1241,12 +1241,79 @@ button.bg-burgundy:hover {
   .wybe-spinner { animation: none; }
 }
 
-/* ── hCaptcha widget: compact, dark-friendly, aligned with form fields ── */
+/* ── Captcha row: widget left, submit button right ───────────────────── */
+/* transform doesn't change layout box — give each widget an explicit
+   width/height matching the scaled visual footprint so flex alignment
+   works against the pixels the eye sees, not the unscaled box. */
+.captcha-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+.captcha-row button[type="submit"] {
+  flex: 1 1 auto;
+  height: 44px;
+  padding: 12px 24px;
+  font-size: 13px;
+  letter-spacing: 1.4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  margin: 0;
+}
+.calc-captcha-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
 .h-captcha {
-  transform: scale(0.82);
+  transform: scale(0.78);
   transform-origin: left top;
-  margin-top: 4px;
-  margin-bottom: -14px;
+  width: 236px;  /* 302px × 0.78 ≈ 236 — locks layout box to visual width */
+  height: 61px;  /* 78px × 0.78 ≈ 61  — locks layout box to visual height */
+  flex: 0 0 auto;
+  margin: 0;
+  position: relative;
+  top: 1px;
+}
+#ucalc-turnstile {
+  transform: scale(0.78);
+  transform-origin: left top;
+  width: 234px;  /* 300px × 0.78 = 234 */
+  height: 51px;  /* 65px × 0.78 ≈ 51 */
+  flex: 0 0 auto;
+  margin: 0;
+  position: relative;
+  top: 1px;
+}
+
+/* Scoped with ID so this beats the #body-composition-section .wybe-calc-cta
+   rule (0,1,1,0) that would otherwise re-apply margin-top and width:auto */
+#body-composition-section .calc-captcha-row .ucalc-submit-btn {
+  flex: 1 1 auto;
+  height: 40px;
+  padding: 8px 12px;
+  margin: 0;
+  justify-content: center;
+  white-space: nowrap;
+  width: auto;
+}
+
+@media (max-width: 480px) {
+  .captcha-row,
+  .calc-captcha-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .captcha-row button[type="submit"],
+  #body-composition-section .calc-captcha-row .ucalc-submit-btn { width: 100%; }
+  .h-captcha, #ucalc-turnstile { top: 0; }
 }
 
 /* ── Waitlist: custom searchable dropdowns ───────────── */
@@ -1976,7 +2043,6 @@ html:not(.gsap-ready) .wybe-reveal {
               box-shadow 0.25s ease,
               background-color 0.25s ease,
               color 0.25s ease;
-  margin-top: 16px;
 }
 .wybe-calc-cta:hover {
   background: #E65500;
