@@ -40,7 +40,8 @@
   <link rel="stylesheet" href="/css/styles.css">
   <style>
     body { background-color: #1E1E1E; color: #F6F2E8; }
-    .about-prose { max-width: 100%; }
+    .about-heading { font-size: 22px !important; line-height: 1.3 !important; color: #FF6600 !important; text-transform: none; }
+    .about-prose { max-width: 900px; }
     .about-prose h2 {
       font-family: 'Inter', sans-serif; font-weight: 900;
       font-size: clamp(20px, 2.6vw, 28px); letter-spacing: -0.01em;
@@ -52,8 +53,16 @@
       color: rgba(246, 242, 232, 0.88); margin: 0 0 16px;
     }
     .about-prose strong { color: #FFFFFF; font-weight: 700; }
+    .about-prose strong.wybe-quote { color: #FF6600; font-weight: 700; }
     .about-prose a { color: #FF6600; text-decoration: underline; text-underline-offset: 3px; }
     .about-prose a:hover { color: #E65500; }
+    .about-prose a.wybe-link { color: #FF6600; text-decoration: none; border-bottom: 1px solid rgba(255,102,0,.4); }
+    .about-prose a.wybe-link:hover { border-bottom-color: #FF6600; }
+    .about-figure { float: right; width: 38%; max-width: 420px; margin: 6px 0 24px 40px; }
+    @media (max-width: 767px) {
+      .about-heading { font-size: 22px; }
+      .about-figure { float: none; width: 100%; max-width: none; margin: 0 0 24px 0; }
+    }
     /* ── CERTIFICATE SHOWCASE ──────────────────────── */
     .cert-show {
       margin-top: 36px;
@@ -179,29 +188,17 @@
   <main id="main" tabindex="-1" class="pt-32 md:pt-40 pb-16 md:pb-20">
     <div class="max-w-6xl mx-auto px-6">
 
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <a href="/" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
-          <span aria-hidden="true">&larr;</span> Back to Home
-        </a>
-        <a href="/#services" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
-          Explore Services <span aria-hidden="true">&rarr;</span>
-        </a>
+      <div class="mb-16">
+        <h1 class="font-bold mb-4 about-heading">Wybe with Mansoor</h1>
+        <div class="w-14 h-px bg-burgundy mb-0"></div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-center mb-16">
-        <figure class="md:col-span-5 m-0">
+      <div class="about-prose">
+        <figure class="about-figure m-0">
           <img src="/images/Dips.webp"
                alt="Mansoor Ahamad Ali performing parallel-bar dips — WYBE founder and practitioner"
                class="w-full h-auto rounded-md">
         </figure>
-        <div class="md:col-span-7">
-          <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">The Practitioner</p>
-          <h1 class="font-sans text-4xl md:text-5xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali Mohamed</h1>
-          <div class="w-14 h-px bg-burgundy mb-0"></div>
-        </div>
-      </div>
-
-      <div class="about-prose">
 
         <p>Twenty years ago, when I first started coaching, I noticed a pattern that bothered me.</p>
 
@@ -209,13 +206,13 @@
 
         <p>That was my turning point. I realized that real, lasting transformation isn&rsquo;t built on gym trends or extreme routines; it requires a slower, far better path grounded in how the human body actually functions, through Human Biomechanics, Kinesiology, and evidence-based nutrition.</p>
 
-        <p>It was during these early years that my core philosophy took shape: &ldquo;WE ARE, WHAT WE THINK, EAT, AND DO.&rdquo;</p>
+        <p>It was during these early years that my core philosophy took shape: <strong class="wybe-quote">&ldquo;WE ARE, WHAT WE THINK, EAT, AND DO.&rdquo;</strong></p>
 
         <p>Over the next two decades, I had the privilege of working one-on-one with people from every walk of life, background, and culture. Sitting across from so many different individuals taught me a profound truth: while our schedules, stress levels, and daily environments vary, the fundamental mechanics of human performance are universal.</p>
 
         <p>The human body never responds to gimmicks; it responds to consistent, intelligently designed effort. I realized my true purpose wasn&rsquo;t just giving people a workout, but designing that effort so thoughtfully that consistency and physical efficiency became natural habits for everyone.</p>
 
-        <p>That realization gave birth to WYBE.</p>
+        <p>That realization gave birth to <a href="https://wybe.fit/" class="wybe-link">WYBE</a>.</p>
 
         <p>I wanted to create a coaching system where anyone, whether they are a self-starter looking for a structured plan, an individual hitting a plateau, or someone seeking high-touch personal mentorship could access real, science-backed guidance. To ensure everyone gets the exact level of support they need, I created accessible structured workout programs, focused fitness consultations, and an exclusive 1-on-1 performance coaching mentorship that I keep strictly limited to guarantee complete focus on every client.</p>
 
@@ -225,8 +222,9 @@
 
         <p>Specifically written for parents navigating the critical first five years of an infant&rsquo;s life (1,825 days), the book translates twenty years of movement, nutrition, and focus coaching into a practical framework, giving parents the physical resilience, energy, and vitality to thrive alongside their growing children.</p>
 
-        <p>Everything I teach, build, and share through WYBE is grounded in real-world experience and backed by rigorous academic education in human movement and health sciences. I believe trust is earned through complete transparency. To explore the formal qualifications, specialized accreditations, and certifications that form the backbone of my practice, I invite you to scroll down and explore my verified credentials displayed directly below on this page.</p>
+        <p>Everything I teach, build, and share through <a href="https://wybe.fit/" class="wybe-link">WYBE</a> is grounded in real-world experience and backed by rigorous academic education in human movement and health sciences. I believe trust is earned through complete transparency. To explore the formal qualifications, specialized accreditations, and certifications that form the backbone of my practice, I invite you to scroll down and explore my verified credentials displayed directly below on this page.</p>
 
+        <div style="clear: both"></div>
       </div>
 
       <div class="flex justify-end mt-10">
