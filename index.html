@@ -738,15 +738,15 @@
         </button>
       </div>
     </div>
-    <!-- Menu — full-width dropdown, dark background, all viewports. -->
+    <!-- CANONICAL MENU — edit js/site-chrome.js as the single source of truth and mirror here -->
     <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
-      <a href="#home"                       class="wybe-mobile-link" role="menuitem">Home</a>
-      <a href="#about"                      class="wybe-mobile-link" role="menuitem">About</a>
-      <a href="faq.html"                    class="wybe-mobile-link" role="menuitem">FAQ</a>
-      <a href="#services"                   class="wybe-mobile-link" role="menuitem">Services</a>
-      <a href="#calculators"                class="wybe-mobile-link" role="menuitem">Calculator</a>
-      <a href="publication.html"            class="wybe-mobile-link" role="menuitem">Publication</a>
-      <a href="about.html#certifications"   class="wybe-mobile-link" role="menuitem">Certifications</a>
+      <a href="/"                            class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="/#about"                      class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="/#services"                   class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="/#calculators"                class="wybe-mobile-link" role="menuitem">Calculator</a>
+      <a href="/publication.html"            class="wybe-mobile-link" role="menuitem">Publication</a>
+      <a href="/about.html#certifications"   class="wybe-mobile-link" role="menuitem">Certifications</a>
+      <a href="/faq.html"                    class="wybe-mobile-link" role="menuitem">FAQ</a>
     </div>
   </nav>
   </header>
@@ -3363,5 +3363,7 @@
   </script>
   <!-- Web3Forms hCaptcha integration — covers waitlist + contact forms -->
   <script src="https://web3forms.com/client/script.js" async defer></script>
+  <!-- CANONICAL CHROME — replaces header/footer with single-source versions from js/site-chrome.js -->
+  <script src="/js/site-chrome.js"></script>
 </body>
 </html>

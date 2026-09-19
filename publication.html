@@ -71,44 +71,36 @@
       background-color: #1E1E1E;
       color: #F6F2E8;
     }
-    body > *:not(.wybe-cursor):not(.wybe-nav) { position: relative; z-index: 1; }
+    body > *:not(.wybe-cursor):not(.wybe-nav):not(.wybe-header):not(.wybe-skip-link) { position: relative; z-index: 1; }
   </style>
   <script src="js/wybe-cursor.js" defer></script>
 </head>
 <body class="text-cream">
 
-  <!-- NAVBAR (cross-page links use absolute paths back to index.html#anchor) -->
+  <!-- CANONICAL HEADER — edit js/site-chrome.js as the single source of truth and mirror here -->
+  <header class="wybe-header" role="banner">
   <nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-[96px]">
-        <a href="index.html#home" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
+        <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
           <span class="wybe-brand__word">WYBE</span>
         </a>
-        <div class="hidden md:flex items-center gap-7">
-          <a href="index.html#calculators" class="wybe-nav-link">Calculators</a>
-          <a href="index.html#services"    class="wybe-nav-link">Services</a>
-          <a href="publication.html"       class="wybe-nav-link is-active">My Publication</a>
-          <a href="index.html#contact" class="wybe-cta">Book Now</a>
-        </div>
-        <button id="menu-btn" type="button"
-                class="wybe-hamburger md:hidden"
-                aria-label="Open menu"
-                aria-controls="mobile-menu"
-                aria-expanded="false">
+        <button id="menu-btn" type="button" class="wybe-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
-    <div id="mobile-menu" class="wybe-mobile-menu hidden md:hidden" role="menu">
-      <a href="index.html"                    class="wybe-mobile-link" role="menuitem">Home</a>
-      <a href="index.html#about"              class="wybe-mobile-link" role="menuitem">About</a>
-      <a href="index.html#services"           class="wybe-mobile-link" role="menuitem">Services</a>
-      <a href="index.html#calculators"        class="wybe-mobile-link" role="menuitem">Calculators</a>
-      <a href="publication.html"              class="wybe-mobile-link is-active" role="menuitem">My Publication</a>
-      <a href="about.html#certifications"     class="wybe-mobile-link" role="menuitem">My Certifications</a>
-      <a href="index.html#contact"     class="wybe-cta wybe-cta--full" role="menuitem">Book Now</a>
+    <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
+      <a href="/"                          class="wybe-mobile-link" role="menuitem">Home</a>
+      <a href="/#about"                    class="wybe-mobile-link" role="menuitem">About</a>
+      <a href="/#services"                 class="wybe-mobile-link" role="menuitem">Services</a>
+      <a href="/#calculators"              class="wybe-mobile-link" role="menuitem">Calculator</a>
+      <a href="/publication.html"          class="wybe-mobile-link" role="menuitem">Publication</a>
+      <a href="/about.html#certifications" class="wybe-mobile-link" role="menuitem">Certifications</a>
+      <a href="/faq.html"                  class="wybe-mobile-link" role="menuitem">FAQ</a>
     </div>
   </nav>
+  </header>
 
   <!-- PAGE HERO: title + intro -->
   <header class="pt-32 pb-16 border-b border-cream/10">
@@ -515,17 +507,8 @@
     </div>
   </footer>
 
-  <!-- Minimal mobile menu toggle (no need for the full main.js here) -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('menu-btn');
-      const menu = document.getElementById('mobile-menu');
-      if (btn && menu) {
-        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.add('hidden')));
-      }
-    });
-  </script>
+  <script src="/js/main.js"></script>
   <script src="js/track.js" defer></script>
+  <script src="/js/site-chrome.js"></script>
 </body>
 </html>
