@@ -2343,10 +2343,13 @@ footer a:not([class*="bg-burgundy"]):hover::after,
    `prefers-reduced-motion: no-preference`. Touch / coarse pointers and
    reduced-motion users all fall through to the native system cursor. */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  html, body, a, button, [role='button'], select, summary, label {
+  html, body, a, button, input, select, textarea,
+  [role='button'], summary, label, .cursor-pointer, [class*='cursor-'] {
     cursor: none;
   }
-  input[type='text'], input[type='email'], input[type='tel'], input[type='number'], input[type='password'], textarea {
+  /* Restore native text caret for all text-entry fields. */
+  input[type='text'], input[type='email'], input[type='tel'],
+  input[type='number'], input[type='password'], textarea {
     cursor: text;
   }
 

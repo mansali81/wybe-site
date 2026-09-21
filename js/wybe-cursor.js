@@ -41,42 +41,87 @@
     ball.classList.add('is-visible');
   }
 
-  // Trail emitter — every TRAIL_STEP px of pointer travel, spawn a
-  // small orange dot at the current position. Each dot fades + shrinks
-  // via CSS animation and self-removes on animationend. Cheap: only
-  // 1 DOM node per ~10 px, and each lives for 550 ms.
-  let lastTrailX = -1000, lastTrailY = -1000;
-  const TRAIL_STEP = 7;
+  // ── TRAIL (time-based) ───────────────────────────────
+  // A dot spawns every TRAIL_INTERVAL ms inside the rAF loop, at the
+  // ball's current CSS position. Time-based emission gives even dot
+  // spacing regardless of movement speed or main-thread load, and
+  // keeps the trail behind the ball (not ahead). A live-node cap
+  // prevents fast sweeps from flooding the DOM — oldest node is
+  // removed immediately when the cap is hit, before animationend.
+  const MAX_TRAIL      = 20;
+  const TRAIL_INTERVAL = 25;   // ms between dots
+  const MIN_TRAIL_MOVE = 2;    // px — don't stack dots on a stationary pointer
+  const trailNodes     = [];
+  let lastTrailTime    = 0;
+  let lastDotX         = -1000;
+  let lastDotY         = -1000;
+  let rafId            = null;
+
   function spawnTrail(x, y) {
+    if (trailNodes.length >= MAX_TRAIL) {
+      const oldest = trailNodes.shift();
+      oldest.remove();
+    }
     const d = document.createElement('div');
     d.className = 'wybe-cursor__trail';
     d.style.left = x + 'px';
     d.style.top  = y + 'px';
     document.body.appendChild(d);
-    d.addEventListener('animationend', () => d.remove(), { once: true });
+    trailNodes.push(d);
+    d.addEventListener('animationend', () => {
+      const i = trailNodes.indexOf(d);
+      if (i !== -1) trailNodes.splice(i, 1);
+      d.remove();
+    }, { once: true });
   }
 
+  function rafLoop(ts) {
+    rafId = null;
+    if (!visible) return;
+    if (ts - lastTrailTime >= TRAIL_INTERVAL) {
+      const x = parseFloat(ball.style.getPropertyValue('--tx')) || 0;
+      const y = parseFloat(ball.style.getPropertyValue('--ty')) || 0;
+      const dx = x - lastDotX;
+      const dy = y - lastDotY;
+      if (dx * dx + dy * dy >= MIN_TRAIL_MOVE * MIN_TRAIL_MOVE) {
+        spawnTrail(x, y);
+        lastDotX = x;
+        lastDotY = y;
+      }
+      lastTrailTime = ts;
+    }
+    rafId = requestAnimationFrame(rafLoop);
+  }
+
+  function startRaf() {
+    if (!rafId) rafId = requestAnimationFrame(rafLoop);
+  }
+
+  // ── POINTER TRACKING ────────────────────────────────
+  // leaveTimer debounces pointerleave: rapid horizontal mouse sweeps
+  // repeatedly cross the viewport edge, triggering spurious hides.
+  // Wait 150 ms before actually hiding; cancel if pointermove arrives.
+  let leaveTimer = null;
+
   window.addEventListener('pointermove', (e) => {
-    // Position via CSS custom properties so the CSS transform (which
-    // composes translate + scale for the hover state) can read the
-    // pointer position without being clobbered by an inline
-    // style.transform value.
     ball.style.setProperty('--tx', e.clientX + 'px');
     ball.style.setProperty('--ty', e.clientY + 'px');
+    if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
     showOnce();
-    const dx = e.clientX - lastTrailX, dy = e.clientY - lastTrailY;
-    if (dx * dx + dy * dy >= TRAIL_STEP * TRAIL_STEP) {
-      spawnTrail(e.clientX, e.clientY);
-      lastTrailX = e.clientX;
-      lastTrailY = e.clientY;
-    }
+    startRaf();
   }, { passive: true });
 
   window.addEventListener('pointerleave', () => {
-    visible = false;
-    ball.classList.remove('is-visible');
+    leaveTimer = setTimeout(() => {
+      visible = false;
+      ball.classList.remove('is-visible');
+      leaveTimer = null;
+    }, 150);
   });
+
   window.addEventListener('blur', () => {
+    // Genuine window focus loss — hide immediately.
+    if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
     visible = false;
     ball.classList.remove('is-visible');
   });

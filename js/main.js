@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!window.Lenis) return;
 
     const lenis = new Lenis({
-      lerp: 0.09,          // slightly heavier than the 0.1 default
+      lerp: 0.15,          // snappier than default 0.1 — page tracks wheel closely
       smoothWheel: true,
       syncTouch: false,    // DEFAULT, and deliberate: touch stays fully
                            // native (momentum + rubber-banding). Setting
