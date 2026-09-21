@@ -41,7 +41,9 @@
   <style>
     body { background-color: #1E1E1E; color: #F6F2E8; }
     .about-heading { font-size: 22px !important; line-height: 1.3 !important; color: #FF6600 !important; text-transform: none; }
-    .about-prose { max-width: 900px; margin-left: auto; margin-right: auto; }
+    /* Single 900px column governs heading, full-width images, and prose together.
+       Do NOT put a matching cap on .about-prose — one constraint, one container. */
+    .about-column { max-width: 900px; margin-left: auto; margin-right: auto; }
     .about-prose h2 {
       font-family: 'Inter', sans-serif; font-weight: 900;
       font-size: clamp(20px, 2.6vw, 28px); letter-spacing: -0.01em;
@@ -51,6 +53,9 @@
       font-family: 'Raleway', sans-serif; font-weight: 400;
       font-size: 16px; line-height: 1.7;
       color: rgba(246, 242, 232, 0.88); margin: 0 0 16px;
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
     }
     .about-prose strong { color: #FFFFFF; font-weight: 700; }
     .about-prose strong.wybe-quote { color: #FF6600; font-weight: 700; }
@@ -59,9 +64,21 @@
     .about-prose a.wybe-link { color: #FF6600; text-decoration: none; border-bottom: 1px solid rgba(255,102,0,.4); }
     .about-prose a.wybe-link:hover { border-bottom-color: #FF6600; }
     .about-figure { float: right; width: 38%; max-width: 420px; margin: 6px 0 24px 40px; }
+    /* Full-width content images (philosophy, methodology). clear:both forces them
+       to drop below any active float — critical for the methodology image. */
+    .about-figure-full {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      margin: 32px auto;
+      height: auto;
+      border-radius: 8px;
+      clear: both;
+    }
     @media (max-width: 767px) {
       .about-heading { font-size: 22px; }
       .about-figure { float: none; width: 100%; max-width: none; margin: 0 0 24px 0; }
+      .about-figure-full { margin: 24px auto; border-radius: 6px; }
     }
     /* ── CERTIFICATE SHOWCASE ──────────────────────── */
     .cert-show {
@@ -189,43 +206,57 @@
   <main id="main" tabindex="-1" class="pt-32 md:pt-40 pb-16 md:pb-20">
     <div class="max-w-6xl mx-auto px-6">
 
-      <div class="mb-16">
-        <h1 class="font-bold mb-4 about-heading">Wybe with Mansoor</h1>
-        <div class="w-14 h-px bg-burgundy mb-0"></div>
-      </div>
+      <div class="about-column">
 
-      <div class="about-prose">
-        <figure class="about-figure m-0">
-          <img src="/images/Dips.webp"
-               alt="Mansoor Ahamad Ali performing parallel-bar dips — WYBE founder and practitioner"
-               class="w-full h-auto rounded-md">
-        </figure>
+        <div class="mb-4">
+          <h1 class="font-bold mb-4 about-heading">@wybewithmansoor</h1>
+          <div class="w-14 h-px bg-burgundy mb-0"></div>
+        </div>
 
-        <p>Twenty years ago, when I first started coaching, I noticed a pattern that bothered me.</p>
+        <img src="/images/wybe-philosophy.svg"
+             alt="The WYBE philosophy: we are what we think, eat, and do"
+             class="about-figure-full"
+             loading="lazy">
 
-        <p>Almost everyone who walked through my door was looking for a fast answer or a quick fix. But time and again, I watched those shortcuts fail, leaving people frustrated and right back where they started.</p>
+        <div class="about-prose">
+          <figure class="about-figure m-0">
+            <img src="/images/Dips.webp"
+                 alt="Mansoor Ahamad Ali performing parallel-bar dips — WYBE founder and practitioner"
+                 class="w-full h-auto rounded-md">
+          </figure>
 
-        <p>That was my turning point. I realized that real, lasting transformation isn&rsquo;t built on gym trends or extreme routines; it requires a slower, far better path grounded in how the human body actually functions, through Human Biomechanics, Kinesiology, and evidence-based nutrition.</p>
+          <p>Twenty years ago, when I first started coaching, I noticed a pattern that bothered me.</p>
 
-        <p>It was during these early years that my core philosophy took shape: <strong class="wybe-quote">&ldquo;WE ARE, WHAT WE THINK, EAT, AND DO.&rdquo;</strong></p>
+          <p>Almost everyone who walked through my door was looking for a fast answer or a quick fix. But time and again, I watched those shortcuts fail, leaving people frustrated and right back where they started.</p>
 
-        <p>Over the next two decades, I had the privilege of working one-on-one with people from every walk of life, background, and culture. Sitting across from so many different individuals taught me a profound truth: while our schedules, stress levels, and daily environments vary, the fundamental mechanics of human performance are universal.</p>
+          <p>That was my turning point. I realized that real, lasting transformation isn&rsquo;t built on gym trends or extreme routines; it requires a slower, far better path grounded in how the human body actually functions, through Human Biomechanics, Kinesiology, and evidence-based nutrition.</p>
 
-        <p>The human body never responds to gimmicks; it responds to consistent, intelligently designed effort. I realized my true purpose wasn&rsquo;t just giving people a workout, but designing that effort so thoughtfully that consistency and physical efficiency became natural habits for everyone.</p>
+          <p>It was during these early years that my core philosophy took shape: <strong class="wybe-quote">&ldquo;WE ARE, WHAT WE THINK, EAT, AND DO.&rdquo;</strong></p>
 
-        <p>That realization gave birth to <a href="https://wybe.fit/" class="wybe-link">WYBE</a>.</p>
+          <p>Over the next two decades, I had the privilege of working one-on-one with people from every walk of life, background, and culture. Sitting across from so many different individuals taught me a profound truth: while our schedules, stress levels, and daily environments vary, the fundamental mechanics of human performance are universal.</p>
 
-        <p>I wanted to create a coaching system where anyone, whether they are a self-starter looking for a structured plan, an individual hitting a plateau, or someone seeking high-touch personal mentorship could access real, science-backed guidance. To ensure everyone gets the exact level of support they need, I created accessible structured workout programs, focused fitness consultations, and an exclusive 1-on-1 performance coaching mentorship that I keep strictly limited to guarantee complete focus on every client.</p>
+          <p>The human body never responds to gimmicks; it responds to consistent, intelligently designed effort. I realized my true purpose wasn&rsquo;t just giving people a workout, but designing that effort so thoughtfully that consistency and physical efficiency became natural habits for everyone.</p>
 
-        <p>Regardless of where someone begins, we never rely on templates or guesswork. We begin with a deep baseline assessment evaluating movement mechanics, injury history, sleep quality, workload, and nutrition patterns. From there, we continuously revise the plan every 12 to 24 weeks based on real data and direct feedback. And because I&rsquo;ve learned that most people don&rsquo;t lose motivation, they lose focus, we integrate mind coaching, treating focus as a skill that can be trained and mastered.</p>
+          <p>That realization gave birth to <a href="https://wybe.fit/" class="wybe-link">WYBE</a>.</p>
 
-        <p>As my work evolved, I realized these principles needed to reach beyond individual performance and support the very foundation of our homes: our families. This inspired my forthcoming book, <a href="https://wybe.fit/publication.html">1825 Days</a>.</p>
+          <img src="/images/wybe-methodology.svg"
+               alt="The WYBE coaching methodology"
+               class="about-figure-full"
+               loading="lazy">
 
-        <p>Specifically written for parents navigating the critical first five years of an infant&rsquo;s life (1,825 days), the book translates twenty years of movement, nutrition, and focus coaching into a practical framework, giving parents the physical resilience, energy, and vitality to thrive alongside their growing children.</p>
+          <p>I wanted to create a coaching system where anyone, whether they are a self-starter looking for a structured plan, an individual hitting a plateau, or someone seeking high-touch personal mentorship could access real, science-backed guidance. To ensure everyone gets the exact level of support they need, I created accessible structured workout programs, focused fitness consultations, and an exclusive 1-on-1 performance coaching mentorship that I keep strictly limited to guarantee complete focus on every client.</p>
 
-        <p>Everything I teach, build, and share through <a href="https://wybe.fit/" class="wybe-link">WYBE</a> is grounded in real-world experience and backed by rigorous academic education in human movement and health sciences. I believe trust is earned through complete transparency. To explore the formal qualifications, specialized accreditations, and certifications that form the backbone of my practice, I invite you to scroll down and explore my verified credentials displayed directly below on this page.</p>
+          <p>Regardless of where someone begins, we never rely on templates or guesswork. We begin with a deep baseline assessment evaluating movement mechanics, injury history, sleep quality, workload, and nutrition patterns. From there, we continuously revise the plan every 12 to 24 weeks based on real data and direct feedback. And because I&rsquo;ve learned that most people don&rsquo;t lose motivation, they lose focus, we integrate mind coaching, treating focus as a skill that can be trained and mastered.</p>
 
-        <div style="clear: both"></div>
+          <p>As my work evolved, I realized these principles needed to reach beyond individual performance and support the very foundation of our homes: our families. This inspired my forthcoming book, <a href="https://wybe.fit/publication.html">1825 Days</a>.</p>
+
+          <p>Specifically written for parents navigating the critical first five years of an infant&rsquo;s life (1,825 days), the book translates twenty years of movement, nutrition, and focus coaching into a practical framework, giving parents the physical resilience, energy, and vitality to thrive alongside their growing children.</p>
+
+          <p>Everything I teach, build, and share through <a href="https://wybe.fit/" class="wybe-link">WYBE</a> is grounded in real-world experience and backed by rigorous academic education in human movement and health sciences. I believe trust is earned through complete transparency. To explore the formal qualifications, specialized accreditations, and certifications that form the backbone of my practice, I invite you to scroll down and explore my verified credentials displayed directly below on this page.</p>
+
+          <div style="clear: both"></div>
+        </div>
+
       </div>
 
       <div class="flex justify-end mt-10">
