@@ -130,17 +130,22 @@
     .cert-zone--next span { transform: translateX(-8px); }
     .cert-zone:hover span,
     .cert-zone:focus-visible span { opacity: 1; transform: translateX(0); }
-    /* Thumbnail strip */
+    /* Thumbnail strip — flex:1 1 0 + max-width cap: 12 thumbnails share
+       the row evenly and shrink proportionally if the column narrows,
+       so this won't re-break if the column width changes. */
     .cert-strip {
       display: flex;
-      gap: 10px;
+      flex-wrap: nowrap;
+      gap: 8px;
       justify-content: center;
-      flex-wrap: wrap;
       max-width: 900px;
       margin: 24px auto 0;
     }
     .cert-strip button {
-      width: 70px; height: 48px;
+      flex: 1 1 0;
+      max-width: 68px;
+      width: auto;
+      height: 46px;
       padding: 0;
       border-radius: 5px;
       overflow: hidden;
@@ -150,7 +155,6 @@
       opacity: .35;
       filter: grayscale(.65);
       transition: all .28s ease;
-      flex-shrink: 0;
     }
     .cert-strip button img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .cert-strip button:hover { opacity: .7; filter: grayscale(.2); }
@@ -162,14 +166,18 @@
     }
     @media (max-width: 900px) {
       .cert-stage { height: 400px; }
+    }
+    /* Below 640px twelve flex items would be ~25px each — too small to tap.
+       Switch to a fixed-size horizontally-scrolling row instead. */
+    @media (max-width: 640px) {
       .cert-strip {
-        flex-wrap: nowrap;
         overflow-x: auto;
+        justify-content: flex-start;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        justify-content: flex-start;
       }
       .cert-strip::-webkit-scrollbar { display: none; }
+      .cert-strip button { flex: 0 0 60px; max-width: 60px; height: 42px; }
     }
   </style>
 </head>
