@@ -12,27 +12,21 @@
   <!-- End Google Analytics 4 -->
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Favicon (SVG logo mark; modern browsers use SVG directly, iOS uses apple-touch-icon) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- REMOVE noindex when publication content goes live -->
+  <meta name="robots" content="noindex, follow">
   <link rel="icon" type="image/svg+xml" href="/images/Logo.svg">
   <link rel="apple-touch-icon" href="/images/Logo.svg">
-  <title>Fitness, Nutrition & Mindset Articles | WYBE Publication, Dubai</title>
-  <meta name="description" content="Evidence-based essays on training, nutrition, biomechanics and mindset by Mansoor Ahamad Ali, a Dubai-based personal trainer and human performance nutritionist.">
+  <title>Publication — Coming Soon | WYBE</title>
+  <meta name="description" content="Essays on fitness, nutrition and mindset by Mansoor Ahamad Ali. Coming soon.">
   <link rel="canonical" href="https://wybe.fit/publication.html">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WYBE">
-  <meta property="og:title" content="Fitness, Nutrition & Mindset Articles | WYBE Publication, Dubai">
-  <meta property="og:description" content="Evidence-based essays on training, nutrition, biomechanics and mindset by Mansoor Ahamad Ali, a Dubai-based personal trainer and human performance nutritionist.">
+  <meta property="og:title" content="Publication — Coming Soon | WYBE">
+  <meta property="og:description" content="Essays on fitness, nutrition and mindset by Mansoor Ahamad Ali. Coming soon.">
   <meta property="og:url" content="https://wybe.fit/publication.html">
   <meta property="og:image" content="https://wybe.fit/images/Contactus.webp">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Fitness, Nutrition & Mindset Articles | WYBE Publication, Dubai">
-  <meta name="twitter:description" content="Evidence-based essays on training, nutrition, biomechanics and mindset by Mansoor Ahamad Ali, a Dubai-based personal trainer and human performance nutritionist.">
-  <meta name="twitter:image" content="https://wybe.fit/images/Contactus.webp">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,17 +37,9 @@
       theme: {
         extend: {
           colors: {
-            // New brand palette from Wybe_colorpalette.pdf. Token names kept.
-            cream: '#F6F2E8',
-            'cream-dark': '#EDE7D8',
-            'sage-tint': '#F0EDDF',
-            'sage-mist': '#E9E4CE',
-            'charcoal-muted': '#4A6070',
-            burgundy: '#FF6600',
-            forest: '#001A24',
-            'burgundy-dark': '#E65500',
-            'charcoal-light': '#FFFFFF',
-            charcoal: '#1E1E1E',
+            cream: '#F6F2E8', 'cream-dark': '#EDE7D8',
+            burgundy: '#FF6600', 'burgundy-dark': '#E65500',
+            charcoal: '#1E1E1E', 'charcoal-light': '#FFFFFF',
           },
           fontFamily: {
             sans:    ['Raleway', 'Inter', 'sans-serif'],
@@ -63,19 +49,54 @@
       }
     }
   </script>
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Site-level background + stacking. Type is defined in css/styles.css. -->
+  <link rel="stylesheet" href="/css/styles.css">
   <style>
-    body {
-      background-color: #1E1E1E;
-      color: #F6F2E8;
+    body { background-color: #1E1E1E; color: #F6F2E8; }
+
+    /* ── PUBLICATION HOLDING STATE ────────────────────────────────────────── */
+    .pub-holding {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
     }
-    body > *:not(.wybe-cursor):not(.wybe-nav):not(.wybe-header):not(.wybe-skip-link) { position: relative; z-index: 1; }
+    .pub-holding__inner { max-width: 560px; text-align: center; }
+    .pub-holding__eyebrow {
+      font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
+      color: #FF6600; font-weight: 700; margin: 28px 0 10px;
+    }
+    .pub-holding__title {
+      font-size: 34px; line-height: 1.2; color: #F6F2E8;
+      font-weight: 700; margin: 0 0 14px;
+    }
+    .pub-holding__body {
+      font-size: 15px; line-height: 1.6;
+      color: rgba(246,242,232,.6); margin: 0;
+    }
+
+    /* ── MOTION GRAPHIC ───────────────────────────────────────────────────── */
+    @keyframes pub-spin-cw  { to { transform: rotate(360deg); } }
+    @keyframes pub-spin-ccw { to { transform: rotate(-360deg); } }
+
+    /* Rings rotate around their own centre (60,60 in the SVG coordinate space,
+       translated to 0,0 by each <g transform="translate(60,60)">). */
+    .pub-ring { transform-origin: 0 0; }
+    .pub-ring--outer { animation: pub-spin-cw  20s linear infinite; }
+    .pub-ring--mid   { animation: pub-spin-ccw 12s linear infinite; }
+    .pub-ring--inner { animation: pub-spin-cw   8s linear infinite; }
+
+    /* Static state must look intentional: partial arcs and orbital dots
+       compose a recognisable diagram even without motion. */
+    @media (prefers-reduced-motion: reduce) {
+      .pub-holding__motion * { animation: none !important; }
+    }
   </style>
-  <script src="js/wybe-cursor.js" defer></script>
+  <script src="/js/wybe-cursor.js" defer></script>
 </head>
 <body class="text-cream">
+
+  <a href="#main" class="wybe-skip-link">Skip to content</a>
 
   <!-- CANONICAL HEADER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <header class="wybe-header" role="banner">
@@ -90,6 +111,7 @@
         </button>
       </div>
     </div>
+    <!-- CANONICAL MENU — edit js/site-chrome.js as the single source of truth and mirror here -->
     <div id="mobile-menu" class="wybe-mobile-menu hidden" role="menu">
       <a href="/"                          class="wybe-mobile-link" role="menuitem">Home</a>
       <a href="/#about"                    class="wybe-mobile-link" role="menuitem">About</a>
@@ -102,413 +124,72 @@
   </nav>
   </header>
 
-  <!-- PAGE HERO: title + intro -->
-  <header class="pt-32 pb-16 border-b border-cream/10">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Insights</p>
-      <div class="w-12 h-px bg-burgundy mx-auto mb-6"></div>
-      <h1 class="font-display text-4xl md:text-5xl font-bold text-cream mb-5 leading-tight">Training, Nutrition &amp; Mindset, Evidence-Based Essays</h1>
-      <p class="font-sans text-base md:text-lg text-cream/75 leading-relaxed">
-        Field notes from two decades of working with real people. Articles grouped by topic so you can read into whichever conversation is most relevant to where you are right now.
+  <main id="main" tabindex="-1" class="pub-holding">
+    <div class="pub-holding__inner">
+
+      <!-- PLACEHOLDER: animated SVG. Replace with supplied image when available.
+           Swap this div's contents for <img src="..." alt="..."> — no other changes needed. -->
+      <div class="pub-holding__motion" aria-hidden="true">
+        <!--
+          Three concentric arcs rotating at different speeds in alternating directions.
+          Outer: full circle, 20 s clockwise.
+          Mid:   ¾ arc,       12 s counter-clockwise.
+          Inner: ½ arc + orbital dot, 8 s clockwise.
+          All arc circumferences computed from 2πr; partial arcs use stroke-dasharray.
+        -->
+        <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring — full circle, r=52, circumference≈327 -->
+          <g class="pub-ring pub-ring--outer" transform="translate(60,60)">
+            <circle cx="0" cy="0" r="52"
+              fill="none" stroke="#FF6600" stroke-width="1.5"
+              stroke-opacity="1"/>
+            <!-- Orbital marker at top of outer ring -->
+            <circle cx="0" cy="-52" r="2.5" fill="#FF6600" opacity="0.7"/>
+          </g>
+          <!-- Mid ring — ¾ arc, r=36, circ≈226 → dash 170 gap 56 -->
+          <g class="pub-ring pub-ring--mid" transform="translate(60,60)">
+            <circle cx="0" cy="0" r="36"
+              fill="none" stroke="#FF6600" stroke-width="1.5"
+              stroke-opacity="0.5"
+              stroke-dasharray="170 56"/>
+          </g>
+          <!-- Inner ring — ½ arc, r=20, circ≈126 → dash 63 gap 63 -->
+          <g class="pub-ring pub-ring--inner" transform="translate(60,60)">
+            <circle cx="0" cy="0" r="20"
+              fill="none" stroke="#FF6600" stroke-width="1.5"
+              stroke-opacity="0.25"
+              stroke-dasharray="63 63"/>
+            <!-- Orbital marker at top of inner ring -->
+            <circle cx="0" cy="-20" r="3.5" fill="#FF6600" opacity="0.9"/>
+          </g>
+        </svg>
+      </div>
+
+      <p class="pub-holding__eyebrow">Publication</p>
+      <h1 class="pub-holding__title">In Progress</h1>
+      <p class="pub-holding__body">
+        Essays on fitness, nutrition and mindset are being written. Check back soon.
       </p>
     </div>
+  </main>
 
-    <!-- In-page section nav (sticky-feel anchor links) -->
-    <nav class="max-w-4xl mx-auto px-6 mt-10">
-      <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-sans text-xs tracking-widest uppercase">
-        <li><a href="#mindset" class="text-cream/70 hover:text-burgundy transition-colors">Mindset</a></li>
-        <li class="text-cream/30">·</li>
-        <li><a href="#nutrition" class="text-cream/70 hover:text-burgundy transition-colors">Nutrition</a></li>
-        <li class="text-cream/30">·</li>
-        <li><a href="#workout-programmes" class="text-cream/70 hover:text-burgundy transition-colors">Work Out Programmes</a></li>
-        <li class="text-cream/30">·</li>
-        <li><a href="#biomechanics" class="text-cream/70 hover:text-burgundy transition-colors">Biomechanics &amp; Kinesiology</a></li>
-        <li class="text-cream/30">·</li>
-        <li><a href="#one-on-one" class="text-cream/70 hover:text-burgundy transition-colors">1-on-1 Practice</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- ─────────────────────────────────────────────────────────────────────
-       SECTION 1: MINDSET
-       ────────────────────────────────────────────────────────────────── -->
-  <section id="mindset" class="py-16 scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="mb-10 max-w-2xl">
-        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Mindset</p>
-        <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Mind First</h2>
-        <p class="font-sans text-base text-cream/75 leading-relaxed">
-          The internal work that has to come before the external work. Discipline, identity, attention, and the quiet daily choices that decide whether anything else compounds.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <!-- Placeholder cards — replace with real articles as they are written. -->
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; In progress</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Wellness Is a Daily Identity, Not a 30-Day Challenge</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            The challenge mindset rewards effort the way a casino rewards spins &mdash; intensely, briefly, and on a schedule that does not survive the rest of life. Identity work is slower, quieter, and the only thing that holds when the gym closes for a week or the kids get sick.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; In progress</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Discipline Beats Motivation Because Motivation Is Weather</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            Motivation is a passing condition, not a strategy. The clients who last are the ones who built systems that work on the days motivation does not show up &mdash; and they built those systems on purpose.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; In progress</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Attention Is the One Resource You Cannot Out-Earn</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
-            Sleep, food, training, recovery &mdash; everything we coach is downstream of attention. Where you spend it dictates what you build. The clients who change the fastest are not the ones with the most willpower; they are the ones who learned to spend their attention on a smaller number of things.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-      </div>
-
-      <!-- CTA -->
-      <div class="bg-charcoal/40 backdrop-blur-sm border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        <div>
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this work in practice?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Start with a 1-on-1 conversation about where your training and mind are right now.</p>
-        </div>
-        <a href="index.html#contact" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
-          Get in touch
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────────────────────────────────
-       SECTION 2: NUTRITION
-       ────────────────────────────────────────────────────────────────── -->
-  <section id="nutrition" class="bg-cream-dark py-16 scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="mb-10 max-w-2xl">
-        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Nutrition</p>
-        <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Food Is Science</h2>
-        <p class="font-sans text-base text-cream/75 leading-relaxed">
-          Beyond macros and meal-prep marketing. What actually moves body composition, performance, and the way you live with food long-term.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Macronutrients Are a Starting Point, Not the Whole Story</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            If your plan for nutrition begins and ends with hitting your protein, you are working with a half-truth. Macros matter &mdash; protein for repair, carbs for performance, fat for hormonal function &mdash; but they are the easiest variable to track and the easiest to over-index on. The deeper conversations are about timing, food quality, micronutrient density, and the gut.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 5 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Why Your Protein Timing Probably Doesn&rsquo;t Matter (and What Does)</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            The &ldquo;anabolic window&rdquo; was useful as a marketing story and not much else. If your daily protein intake is sufficient, distributed across three or four meals, and your training is structured, the precise minute you consume protein post-workout is largely irrelevant. What actually matters is consistency, total volume, and source quality.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Hydration Beyond 8 Glasses: The Three Signals That Matter</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
-            Eight glasses of water is the wellness equivalent of one-size-fits-all socks. It works as a baseline and fails everyone at the edges. Real hydration is read from the body, not from a counter on your phone. There are three signals worth paying attention to: urine colour first thing in the morning, performance during your highest-intensity training set, and how your skin behaves.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-      </div>
-
-      <div class="bg-cream border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        <div>
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want a plan that fits how you actually eat?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Book a Human Performance Nutrition consultation.</p>
-        </div>
-        <a href="index.html?service=nutrition#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
-          Book a consultation
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────────────────────────────────
-       SECTION 3: WORK OUT PROGRAMMES
-       ────────────────────────────────────────────────────────────────── -->
-  <section id="workout-programmes" class="py-16 scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="mb-10 max-w-2xl">
-        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Work Out Programmes</p>
-        <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">How to Build a Year of Training</h2>
-        <p class="font-sans text-base text-cream/75 leading-relaxed">
-          What separates a programme that compounds from one that wastes a year. Periodisation, progression, and the small decisions that shape a decade of lifting.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 4 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Why Most Beginner Programs Fail in Week 3</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            Beginner training does not fail because the programme is wrong. It fails in week three because the programme is too interesting. The trainee starts adding variety, swapping exercises they have seen online, chasing the next stimulus before they have extracted the value from the first one.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 8 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Periodisation Without the Jargon: Three Blocks That Work</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            Periodisation gets dressed up in language that obscures what it is: a way of sequencing training stress so adaptation outpaces fatigue. You do not need a Russian textbook to do this well. You need three blocks: an accumulation block, an intensification block, and a deload.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 9 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Your First Year of Lifting: The 12 Decisions That Matter</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
-            The first year of training shapes the next ten. What you skip you will pay for later; what you over-emphasise you will have to unlearn. Most of what matters in year one is decisions, not workouts &mdash; the small choices about which lifts to commit to, how often to train, what to track, and when to stop chasing personal records and start chasing technical mastery.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-      </div>
-
-      <div class="bg-charcoal/40 backdrop-blur-sm border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        <div>
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Ready for a structured plan?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Get a personalised Beginner, Intermediate, or Advanced programme.</p>
-        </div>
-        <a href="index.html?service=digital-plan#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
-          Find my level
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────────────────────────────────
-       SECTION 4: HUMAN BIOMECHANICS & KINESIOLOGY
-       ────────────────────────────────────────────────────────────────── -->
-  <section id="biomechanics" class="bg-cream-dark py-16 scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="mb-10 max-w-2xl">
-        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">Human Biomechanics &amp; Kinesiology</p>
-        <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">Lifting Without Wrecking Yourself</h2>
-        <p class="font-sans text-base text-cream/75 leading-relaxed">
-          The lifts that build durable strength &mdash; how to set up, brace, and execute them through the lens of biomechanics and kinesiology, without leaking force or earning injuries you spend your forties paying for.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">The Hip Hinge: Why Your Deadlift Stalls Below the Knee</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            Most stalls in the deadlift are not strength problems. They are bracing problems disguised as strength problems. The bar leaves the floor with intent, then drifts forward, the hips shoot back, and the bar stops near the knees. What looks like a weak posterior chain is almost always a hip hinge that has lost its line of force.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 5 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Bracing for the Bench: Three Cues That Add 10 kg Overnight</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            There are heavier benchers in your gym than there should be. Not because they train more, not because they recover better. Because they brace. The bench press is sold as a chest movement and trained as one, but the strongest pressers in the room understand it as a whole-body event.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 7 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Squat Depth Is a Mobility Conversation, Not a Discipline One</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
-            If you cannot hit depth in a back squat, the answer is rarely &ldquo;try harder&rdquo;. The squat is the most honest movement in the gym: it reflects your ankle mobility, your hip mobility, your thoracic position, and your bracing capacity all at once. Forcing depth without the underlying mechanics is how you accumulate the injuries you spend your forties paying for.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-cream border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-      </div>
-
-      <div class="bg-cream border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        <div>
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">Want this in practice?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Book a 1-on-1 form &amp; technique consultation.</p>
-        </div>
-        <a href="index.html?service=fitness#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
-          Book a review
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─────────────────────────────────────────────────────────────────────
-       SECTION 5: 1-ON-1 PRACTICE
-       ────────────────────────────────────────────────────────────────── -->
-  <section id="one-on-one" class="py-16 scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="mb-10 max-w-2xl">
-        <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-3">1-on-1 Practice</p>
-        <div class="w-10 h-px bg-burgundy mb-5"></div>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mb-4 leading-tight">What Coaching Actually Looks Like</h2>
-        <p class="font-sans text-base text-cream/75 leading-relaxed">
-          The texture of long-form coaching &mdash; what changes inside a year of dedicated 1-on-1 work, and the patterns I see again and again with high-performing clients.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 8 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">What a Year of 1-on-1 Coaching Actually Looks Like</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            Most people picture personal training as workouts on a calendar. After two decades of coaching, I can tell you that view misses the work. A year of 1-on-1 coaching is a year of small decisions, daily check-ins, monthly recalibrations, and the slow assembly of a body and a routine that hold under pressure.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 5 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">The Five Questions I Ask Every New UAE Client</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4">
-            Before any programme is written, before any session is booked, there are five questions I need answered. Not &ldquo;what are your goals&rdquo; &mdash; that one is rarely useful at intake. The questions that matter are about your last six months of training and how you live the 23 hours outside the gym.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-
-        <article class="border-t border-cream/15 pt-6 md:col-span-2">
-          <p class="font-sans text-[11px] tracking-widest uppercase text-burgundy mb-2">Essay &middot; 6 min read</p>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-cream mb-3 leading-tight">Coaching Is About the 23 Hours, Not the One</h3>
-          <p class="font-sans text-sm text-cream/80 leading-relaxed mb-4 max-w-3xl">
-            An hour of coached training is not where transformation happens. Transformation happens in the 23 hours that follow: the meals you choose, the sleep you protect, the stress you fail to manage, the supplements you remember to take. The hour I am with a client is the smallest window in their day, and it is the easiest one. The harder work is what I send them home to.
-          </p>
-          <span class="inline-flex items-center gap-1.5 bg-charcoal/40 backdrop-blur-sm border border-cream/15 text-cream/60 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-burgundy/60"></span>
-            Coming soon
-          </span>
-        </article>
-      </div>
-
-      <div class="bg-charcoal/40 backdrop-blur-sm border border-cream/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        <div>
-          <p class="font-sans text-xs font-bold tracking-widest uppercase text-burgundy mb-2">UAE-based and serious about the work?</p>
-          <p class="font-display text-lg md:text-xl font-semibold text-cream leading-snug">Apply for 1-on-1 personal training.</p>
-        </div>
-        <a href="index.html?service=personal-training#services" class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans text-xs font-bold tracking-widest uppercase px-6 py-3 hover:bg-burgundy-dark transition-colors shrink-0">
-          Apply
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER (same shape as index.html, all cross-page links absolute) -->
-  <footer class="bg-charcoal text-white">
-    <div class="max-w-6xl mx-auto px-6 py-16">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-        <div>
-          <p class="font-display text-2xl font-bold tracking-widest uppercase mb-3">WYBE</p>
-          <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Build Everyday.<br>Personal Trainer, Human Performance Nutritionist &amp; Mind Coach.<br>UAE &middot; Global</p>
-        </div>
-        <div>
-          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
-          <ul class="space-y-0">
-            <li><a href="index.html#home" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Home</a></li>
-            <li><a href="index.html#about" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
-            <li><a href="index.html#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Services</a></li>
-            <li><a href="index.html#calculators" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Calculators</a></li>
-            <li><a href="publication.html" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Publication</a></li>
-            <li><a href="index.html#book" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
-            <li><a href="index.html#contact" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
-          <div class="flex gap-5 mb-6">
-            <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white/70 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="https://tiktok.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white/70 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.28 8.28 0 0 0 4.84 1.54V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
-            </a>
-            <a href="https://youtube.com/@wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-white/70 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            </a>
-          </div>
-          <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
-          <div class="flex gap-5">
-            <a href="#" data-email data-user="mansoor" data-domain="wybe.fit" aria-label="Email Mansoor" class="text-white/70 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
-            </a>
-            <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-white/70 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-        <p class="font-sans text-xs text-white/40">&copy; 2026 WYBE &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved</p>
-        <p class="font-sans text-xs text-white/40"><a href="https://mansoorahamadali.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">mansoorahamadali.com</a></p>
-      </div>
+  <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
+  <footer class="text-white border-t border-cream/10 mt-4">
+    <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+      <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+        <span class="text-white/25">&middot;</span>
+        <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
+        <span class="text-white/25">&middot;</span>
+        <a href="/legal-notice.html" class="hover:text-white transition-colors">Legal Notice</a>
+        <span class="text-white/25">&middot;</span>
+        <a href="https://mansoorahamadali.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">mansoorahamadali.com</a>
+      </p>
     </div>
   </footer>
 
   <script src="/js/main.js"></script>
-  <script src="js/track.js" defer></script>
   <script src="/js/site-chrome.js"></script>
 </body>
 </html>
