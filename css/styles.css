@@ -2282,7 +2282,7 @@ html:not(.gsap-ready) .wybe-reveal {
    a lime underline sweeps in left-to-right. Matches the calc-rail feel so
    the whole site reads as reactive. */
 nav a:not([class*="bg-burgundy"]):not(.wybe-brand),
-footer a:not([class*="bg-burgundy"]),
+footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link),
 .wybe-hover-title {
   display: inline-block;
   position: relative;
@@ -2292,7 +2292,7 @@ footer a:not([class*="bg-burgundy"]),
   will-change: transform;
 }
 nav a:not([class*="bg-burgundy"]):not(.wybe-brand)::after,
-footer a:not([class*="bg-burgundy"])::after,
+footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link)::after,
 .wybe-hover-title::after {
   content: '';
   position: absolute;
@@ -2305,14 +2305,14 @@ footer a:not([class*="bg-burgundy"])::after,
   pointer-events: none;
 }
 nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover,
-footer a:not([class*="bg-burgundy"]):hover,
+footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover,
 .wybe-hover-title:hover {
   color: #FF6600 !important;
   transform: translateY(-2px);
   letter-spacing: 0.01em;
 }
 nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover::after,
-footer a:not([class*="bg-burgundy"]):hover::after,
+footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
 .wybe-hover-title:hover::after {
   transform: scaleX(1);
 }
@@ -3636,4 +3636,31 @@ li.service-tier.service-tier--info,
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+/* ── FOOTER BRAND LINKS ───────────────────────────
+   .wybe-footer-wordmark — the large WYBE wordmark in the footer brand column.
+   Inherits the site-wide footer hover animation (lift + orange + underline sweep).
+   .wybe-footer-link — the orange WYBE in the copyright line. Matches the
+   wybe-link style used in About body copy: static border-bottom that intensifies
+   on hover. Excluded from the footer sweep animation via :not(.wybe-footer-link)
+   selectors above. */
+.wybe-footer-wordmark {
+  text-decoration: none;
+  color: inherit;
+}
+.wybe-footer-link {
+  color: #FF6600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,102,0,.4);
+  transition: border-bottom-color 0.3s ease;
+}
+.wybe-footer-link:hover {
+  border-bottom-color: #FF6600;
+}
+.wybe-footer-link:focus-visible,
+.wybe-footer-wordmark:focus-visible {
+  outline: 2px solid #FF6600;
+  outline-offset: 3px;
+  border-radius: 2px;
 }
