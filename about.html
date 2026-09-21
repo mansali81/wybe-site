@@ -80,7 +80,7 @@
     .about-prose a.wybe-link:hover { border-bottom-color: #FF6600; }
     /* width: 34% (down from 38%) widens the text column beside the image,
        reducing the need for aggressive hyphenation on short words. */
-    .about-figure { float: right; width: 34%; max-width: 420px; margin: 6px 0 24px 40px; }
+    .about-figure { float: right; width: 34%; max-width: 420px; margin: 6px 0 24px 40px; shape-outside: margin-box; shape-margin: 12px; }
     /* Full-width content images (philosophy, methodology). clear:both forces them
        to drop below any active float — critical for the methodology image. */
     .about-figure-full {
@@ -244,7 +244,7 @@
              loading="lazy">
 
         <div class="about-prose">
-          <figure class="about-figure m-0">
+          <figure class="about-figure">
             <img src="/images/Dips.webp"
                  alt="Mansoor Ahamad Ali performing parallel-bar dips — WYBE founder and practitioner"
                  class="w-full h-auto rounded-md">
