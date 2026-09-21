@@ -56,14 +56,31 @@
       text-align: justify;
       hyphens: auto;
       -webkit-hyphens: auto;
+      /* Don't break words under 8 chars or leave fragments < 4 chars;
+         cap consecutive hyphenated lines at 2 to avoid ladder effect. */
+      hyphenate-limit-chars: 8 4 4;
+      -webkit-hyphenate-limit-before: 4;
+      -webkit-hyphenate-limit-after: 4;
+      -webkit-hyphenate-limit-lines: 2;
     }
     .about-prose strong { color: #FFFFFF; font-weight: 700; }
-    .about-prose strong.wybe-quote { color: #FF6600; font-weight: 700; }
+    /* Block display breaks the line before the quote without a <br>.
+       text-align:left overrides the parent justify so the quote line
+       doesn't stretch — a standalone quote shouldn't fill the measure. */
+    .about-prose strong.wybe-quote {
+      display: block;
+      margin-top: 6px;
+      color: #FF6600;
+      font-weight: 700;
+      text-align: left;
+    }
     .about-prose a { color: #FF6600; text-decoration: underline; text-underline-offset: 3px; }
     .about-prose a:hover { color: #E65500; }
     .about-prose a.wybe-link { color: #FF6600; text-decoration: none; border-bottom: 1px solid rgba(255,102,0,.4); }
     .about-prose a.wybe-link:hover { border-bottom-color: #FF6600; }
-    .about-figure { float: right; width: 38%; max-width: 420px; margin: 6px 0 24px 40px; }
+    /* width: 34% (down from 38%) widens the text column beside the image,
+       reducing the need for aggressive hyphenation on short words. */
+    .about-figure { float: right; width: 34%; max-width: 420px; margin: 6px 0 24px 40px; }
     /* Full-width content images (philosophy, methodology). clear:both forces them
        to drop below any active float — critical for the methodology image. */
     .about-figure-full {
