@@ -258,18 +258,19 @@ h4, h5, h6, .wybe-subhead {
   visibility: hidden;
   pointer-events: none;
 }
-.wybe-brand__word {
-  font-family: var(--font-header);
-  font-weight: 900;
-  font-size: 32px;
-  letter-spacing: 0.02em;
-  color: #F6F2E8;
-  line-height: 1;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+/* Brand mark: the brand book's stacked "WY / BE" lettermark (orange on
+   soft black variant), replacing the old text-only wordmark. Sized by
+   height so it scales proportionally; the source PNG is high enough
+   resolution to stay crisp well past 2x this size. */
+.wybe-brand__logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+  transition: filter 0.3s ease;
 }
-.wybe-header.is-scrolled .wybe-brand__word {
-  text-shadow: none;
+.wybe-header.is-scrolled .wybe-brand__logo {
+  filter: none;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
@@ -285,10 +286,6 @@ h4, h5, h6, .wybe-subhead {
   transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
   border-radius: 1px;
   pointer-events: none;
-}
-/* Hover: wordmark shifts to brand orange. */
-.wybe-brand:hover .wybe-brand__word {
-  color: #FF6600;
 }
 .wybe-brand:hover::after { transform: scaleX(1); }
 .wybe-brand:focus-visible {
