@@ -264,7 +264,7 @@ h4, h5, h6, .wybe-subhead {
    resolution to stay crisp well past 2x this size. */
 .wybe-brand__logo {
   display: block;
-  height: 40px;
+  height: 64px;
   width: auto;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
   transition: filter 0.3s ease;
