@@ -52,16 +52,19 @@
   <link rel="stylesheet" href="/css/styles.css">
   <style>
     body { background-color: #1E1E1E; color: #F6F2E8; }
+    :root { --header-h: 97px; }
 
     /* ── PUBLICATION HOLDING STATE ────────────────────────────────────────── */
     .pub-holding {
-      min-height: 70vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 120px 24px 80px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: var(--header-h) 24px 0;
+      box-sizing: border-box;
     }
-    .pub-holding__inner { max-width: 560px; text-align: center; }
+    .pub-holding__inner { margin-top: 0; max-width: 560px; text-align: center; }
     .pub-holding__eyebrow {
       font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
       color: #FF6600; font-weight: 700; margin: 28px 0 10px;
@@ -75,21 +78,8 @@
       color: rgba(246,242,232,.6); margin: 0;
     }
 
-    /* ── MOTION GRAPHIC ───────────────────────────────────────────────────── */
-    @keyframes pub-spin-cw  { to { transform: rotate(360deg); } }
-    @keyframes pub-spin-ccw { to { transform: rotate(-360deg); } }
-
-    /* Rings rotate around their own centre (60,60 in the SVG coordinate space,
-       translated to 0,0 by each <g transform="translate(60,60)">). */
-    .pub-ring { transform-origin: 0 0; }
-    .pub-ring--outer { animation: pub-spin-cw  20s linear infinite; }
-    .pub-ring--mid   { animation: pub-spin-ccw 12s linear infinite; }
-    .pub-ring--inner { animation: pub-spin-cw   8s linear infinite; }
-
-    /* Static state must look intentional: partial arcs and orbital dots
-       compose a recognisable diagram even without motion. */
-    @media (prefers-reduced-motion: reduce) {
-      .pub-holding__motion * { animation: none !important; }
+    @media (max-width: 768px) {
+      :root { --header-h: 72px; }
     }
   </style>
   <script src="/js/wybe-cursor.js" defer></script>
@@ -104,7 +94,7 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-[96px]">
         <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
-          <span class="wybe-brand__word">WYBE</span>
+          <img src="/images/logo-mark-orange.png" alt="" class="wybe-brand__logo">
         </a>
         <button id="menu-btn" type="button" class="wybe-hamburger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -127,44 +117,7 @@
   <main id="main" tabindex="-1" class="pub-holding">
     <div class="pub-holding__inner">
 
-      <!-- PLACEHOLDER: animated SVG. Replace with supplied image when available.
-           Swap this div's contents for <img src="..." alt="..."> — no other changes needed. -->
-      <div class="pub-holding__motion" aria-hidden="true">
-        <!--
-          Three concentric arcs rotating at different speeds in alternating directions.
-          Outer: full circle, 20 s clockwise.
-          Mid:   ¾ arc,       12 s counter-clockwise.
-          Inner: ½ arc + orbital dot, 8 s clockwise.
-          All arc circumferences computed from 2πr; partial arcs use stroke-dasharray.
-        -->
-        <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
-          <!-- Outer ring — full circle, r=52, circumference≈327 -->
-          <g class="pub-ring pub-ring--outer" transform="translate(60,60)">
-            <circle cx="0" cy="0" r="52"
-              fill="none" stroke="#FF6600" stroke-width="1.5"
-              stroke-opacity="1"/>
-            <!-- Orbital marker at top of outer ring -->
-            <circle cx="0" cy="-52" r="2.5" fill="#FF6600" opacity="0.7"/>
-          </g>
-          <!-- Mid ring — ¾ arc, r=36, circ≈226 → dash 170 gap 56 -->
-          <g class="pub-ring pub-ring--mid" transform="translate(60,60)">
-            <circle cx="0" cy="0" r="36"
-              fill="none" stroke="#FF6600" stroke-width="1.5"
-              stroke-opacity="0.5"
-              stroke-dasharray="170 56"/>
-          </g>
-          <!-- Inner ring — ½ arc, r=20, circ≈126 → dash 63 gap 63 -->
-          <g class="pub-ring pub-ring--inner" transform="translate(60,60)">
-            <circle cx="0" cy="0" r="20"
-              fill="none" stroke="#FF6600" stroke-width="1.5"
-              stroke-opacity="0.25"
-              stroke-dasharray="63 63"/>
-            <!-- Orbital marker at top of inner ring -->
-            <circle cx="0" cy="-20" r="3.5" fill="#FF6600" opacity="0.9"/>
-          </g>
-        </svg>
-      </div>
-
+      <!-- IMAGE: drop <img src="…" alt="…"> here above the eyebrow when the image is ready -->
       <p class="pub-holding__eyebrow">Publication</p>
       <h1 class="pub-holding__title">In Progress</h1>
       <p class="pub-holding__body">
