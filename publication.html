@@ -64,26 +64,51 @@
       padding: var(--header-h) 24px 0;
       box-sizing: border-box;
     }
-    .pub-holding__inner { margin-top: 0; max-width: 560px; text-align: center; }
-    .pub-holding__art {
-      display: block;
-      width: clamp(140px, 22vw, 220px);
-      margin: 0 auto;
+    .pub-holding__inner {
+      margin-top: 0;
+      max-width: 1180px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 64px;
+      text-align: left;
     }
-    .pub-holding__art img { display: block; width: 100%; height: auto; }
+    .pub-copy { flex: 1 1 auto; min-width: 0; }
     .pub-holding__eyebrow {
-      font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
-      color: #FF6600; font-weight: 700; margin: 28px 0 10px;
+      text-align: left;
+      color: #FF6600;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin: 0 0 22px;
     }
     .pub-holding__title {
-      font-size: 34px; line-height: 1.2; color: #F6F2E8;
-      font-weight: 700; margin: 0 0 14px;
+      text-align: left;
+      font-size: 68px;
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: #FFFFFF;
+      margin: 0 0 26px;
     }
     .pub-holding__body {
-      font-size: 15px; line-height: 1.6;
-      color: rgba(246,242,232,.6); margin: 0;
+      text-align: left;
+      font-size: 19px;
+      line-height: 1.65;
+      color: #B9B7B4;
+      margin: 0;
+      max-width: 440px;
     }
+    .pub-mark { flex: 0 0 auto; width: 250px; }
+    .pub-mark svg { width: 100%; height: auto; display: block; }
 
+    @media (max-width: 860px) {
+      .pub-holding__inner { flex-direction: column-reverse; gap: 44px; }
+      .pub-mark { width: 170px; }
+      .pub-holding__title { font-size: 44px; }
+    }
     @media (max-width: 768px) {
       :root { --header-h: 72px; }
     }
@@ -123,17 +148,25 @@
   <main id="main" tabindex="-1" class="pub-holding">
     <div class="pub-holding__inner">
 
-      <!-- Orange pencil writes three lines, pauses, repeats — 5.4s loop, transparent SVG.
-           Decorative only (alt=""); the eyebrow/title/body below already state the page's status. -->
-      <picture class="pub-holding__art" aria-hidden="true">
-        <source media="(prefers-reduced-motion: reduce)" srcset="/images/wybe-being-written-static.svg">
-        <img src="/images/wybe-being-written.svg" width="220" height="212" alt="" decoding="async">
-      </picture>
-      <p class="pub-holding__eyebrow">Publication</p>
-      <h1 class="pub-holding__title">In Progress</h1>
-      <p class="pub-holding__body">
-        Essays on fitness, nutrition and mindset are being written. Check back soon.
-      </p>
+      <div class="pub-copy">
+        <p class="pub-holding__eyebrow">Publication</p>
+        <h1 class="pub-holding__title">In Progress</h1>
+        <p class="pub-holding__body">New perspectives on mind, food and movement are taking shape.</p>
+      </div>
+
+      <div class="pub-mark">
+        <svg viewBox="0 0 262 327" fill="none" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="Publication in progress">
+          <rect x="2.5" y="2.5" width="257" height="322" rx="10" stroke="#FF6600" stroke-width="5"/>
+          <rect x="43" y="47" width="74" height="30" rx="2" fill="#FF6600"/>
+          <rect x="137" y="51" width="77" height="6" rx="3" fill="#FF6600" fill-opacity="0.42"/>
+          <rect x="137" y="67" width="50" height="6" rx="3" fill="#FF6600" fill-opacity="0.42"/>
+          <rect x="43" y="130" width="169" height="5" rx="2.5" fill="#FF6600"/>
+          <rect x="43" y="182" width="169" height="5" rx="2.5" fill="#FF6600"/>
+          <rect x="43" y="234" width="122" height="5" rx="2.5" fill="#FF6600"/>
+        </svg>
+      </div>
+
     </div>
   </main>
 
