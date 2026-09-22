@@ -247,10 +247,12 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 12px;
   color: #F6F2E8;
   text-decoration: none;
   cursor: pointer;
   padding: 6px 2px;
+  margin-top: 10px;
   transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 .wybe-header.is-scrolled .wybe-brand {
@@ -264,13 +266,40 @@ h4, h5, h6, .wybe-subhead {
    resolution to stay crisp well past 2x this size. */
 .wybe-brand__logo {
   display: block;
-  height: 64px;
+  height: 52px;
   width: auto;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
   transition: filter 0.3s ease;
 }
 .wybe-header.is-scrolled .wybe-brand__logo {
   filter: none;
+}
+/* WYBE (Latin) over وايب (Arabic) — sits beside the mark. */
+.wybe-brand__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: 1;
+}
+.wybe-brand__en {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.wybe-brand__ar {
+  font-family: 'Noto Kufi Arabic', var(--font-header), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #FFFFFF;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.wybe-header.is-scrolled .wybe-brand__en,
+.wybe-header.is-scrolled .wybe-brand__ar {
+  text-shadow: none;
 }
 /* Underline sweep — matches .wybe-nav-link's ::after so the brand
    participates in the same hover language. */
