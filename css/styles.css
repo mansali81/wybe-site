@@ -437,19 +437,22 @@ h4, h5, h6, .wybe-subhead {
   letter-spacing: 0.11em;
   text-transform: none;
   color: #F6F2E8;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 2px;
+  text-decoration: none;
   padding: 8px 4px;
   border: 0;
   text-align: center;
   width: 100%;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75), 0 0 3px rgba(0, 0, 0, 0.6);
-  transition: color 0.2s ease, text-decoration-color 0.25s ease;
+  transition: color 0.2s ease;
 }
 .wybe-mobile-link:hover,
-.wybe-mobile-link.is-active { color: #FF6600; text-decoration-color: #FF6600; }
+.wybe-mobile-link.is-active {
+  color: #FF6600;
+  text-decoration: underline;
+  text-decoration-color: #FF6600;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
 .wybe-mobile-link:focus-visible {
   outline: 2px solid #FF6600;
   outline-offset: 2px;
