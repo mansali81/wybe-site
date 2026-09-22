@@ -437,16 +437,19 @@ h4, h5, h6, .wybe-subhead {
   letter-spacing: 0.11em;
   text-transform: none;
   color: #F6F2E8;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
   padding: 8px 4px;
   border: 0;
   text-align: center;
   width: 100%;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75), 0 0 3px rgba(0, 0, 0, 0.6);
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-decoration-color 0.25s ease;
 }
 .wybe-mobile-link:hover,
-.wybe-mobile-link.is-active { color: #FF6600; }
+.wybe-mobile-link.is-active { color: #FF6600; text-decoration-color: #FF6600; }
 .wybe-mobile-link:focus-visible {
   outline: 2px solid #FF6600;
   outline-offset: 2px;
@@ -2279,7 +2282,7 @@ html:not(.gsap-ready) .wybe-reveal {
    element with .wybe-hover-title. Text lifts 2px, brightens to lime, and
    a lime underline sweeps in left-to-right. Matches the calc-rail feel so
    the whole site reads as reactive. */
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand),
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link),
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link),
 .wybe-hover-title {
   display: inline-block;
@@ -2289,7 +2292,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link),
               letter-spacing .3s ease;
   will-change: transform;
 }
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand)::after,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link)::after,
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link)::after,
 .wybe-hover-title::after {
   content: '';
@@ -2302,14 +2305,14 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link)::after,
   transition: transform .45s cubic-bezier(0.19, 1, 0.22, 1);
   pointer-events: none;
 }
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):hover,
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover,
 .wybe-hover-title:hover {
   color: #FF6600 !important;
   transform: translateY(-2px);
   letter-spacing: 0.01em;
 }
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand):hover::after,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):hover::after,
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
 .wybe-hover-title:hover::after {
   transform: scaleX(1);
