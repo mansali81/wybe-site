@@ -3637,15 +3637,22 @@ li.service-tier.service-tier--info,
 }
 
 /* ── FOOTER BRAND LINKS ───────────────────────────
-   .wybe-footer-wordmark — the large WYBE wordmark in the footer brand column.
-   Inherits the site-wide footer hover animation (lift + orange + underline sweep).
+   .wybe-footer-wordmark — the orange logo mark in the footer brand column
+   (replaces the old text wordmark). Inherits the site-wide footer hover
+   animation (lift + underline sweep) from the generic `footer a` rule above.
    .wybe-footer-link — the orange WYBE in the copyright line. Matches the
    wybe-link style used in About body copy: static border-bottom that intensifies
    on hover. Excluded from the footer sweep animation via :not(.wybe-footer-link)
    selectors above. */
 .wybe-footer-wordmark {
+  display: inline-block;
   text-decoration: none;
   color: inherit;
+}
+.wybe-footer-wordmark__img {
+  display: block;
+  height: 40px;
+  width: auto;
 }
 .wybe-footer-link {
   color: #FF6600;
