@@ -65,6 +65,12 @@
       box-sizing: border-box;
     }
     .pub-holding__inner { margin-top: 0; max-width: 560px; text-align: center; }
+    .pub-holding__art {
+      display: block;
+      width: clamp(140px, 22vw, 220px);
+      margin: 0 auto;
+    }
+    .pub-holding__art img { display: block; width: 100%; height: auto; }
     .pub-holding__eyebrow {
       font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
       color: #FF6600; font-weight: 700; margin: 28px 0 10px;
@@ -117,7 +123,12 @@
   <main id="main" tabindex="-1" class="pub-holding">
     <div class="pub-holding__inner">
 
-      <!-- IMAGE: drop <img src="…" alt="…"> here above the eyebrow when the image is ready -->
+      <!-- Orange pencil writes three lines, pauses, repeats — 5.4s loop, transparent SVG.
+           Decorative only (alt=""); the eyebrow/title/body below already state the page's status. -->
+      <picture class="pub-holding__art" aria-hidden="true">
+        <source media="(prefers-reduced-motion: reduce)" srcset="/images/wybe-being-written-static.svg">
+        <img src="/images/wybe-being-written.svg" width="220" height="212" alt="" decoding="async">
+      </picture>
       <p class="pub-holding__eyebrow">Publication</p>
       <h1 class="pub-holding__title">In Progress</h1>
       <p class="pub-holding__body">

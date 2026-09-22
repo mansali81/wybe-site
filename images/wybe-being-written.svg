@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="220" height="212" viewBox="0 0 220 212" role="img" aria-labelledby="wybe-writing-title wybe-writing-desc">
+  <title id="wybe-writing-title">WYBE — Being written</title>
+  <desc id="wybe-writing-desc">An orange pencil writes three lines on a page, pauses, and repeats. Publication in progress.</desc>
+  <!--
+    WYBE orange: #FF6600. Transparent background. Loop: 5.4 seconds.
+    The pencil outline is from Lucide, under the ISC License:
+    Copyright (c) 2026 Lucide Icons and Contributors
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  -->
+  <style>
+    .wybe-writing-line { transform-origin:0 0; animation:wybe-writing-first 5.4s ease-in-out infinite; }
+    .wybe-writing-second { animation-name:wybe-writing-second; }
+    .wybe-writing-third { animation-name:wybe-writing-third; }
+    .wybe-writing-pen { animation:wybe-writing-pencil 5.4s ease-in-out infinite; }
+    @keyframes wybe-writing-first {
+      0%,7%,96%,100% { transform:scaleX(0); opacity:0; }
+      8% { transform:scaleX(0); opacity:1; }
+      25%,83% { transform:scaleX(1); opacity:1; }
+      93% { transform:scaleX(1); opacity:0; }
+    }
+    @keyframes wybe-writing-second {
+      0%,31%,96%,100% { transform:scaleX(0); opacity:0; }
+      32% { transform:scaleX(0); opacity:1; }
+      49%,83% { transform:scaleX(1); opacity:1; }
+      93% { transform:scaleX(1); opacity:0; }
+    }
+    @keyframes wybe-writing-third {
+      0%,55%,96%,100% { transform:scaleX(0); opacity:0; }
+      56% { transform:scaleX(0); opacity:1; }
+      70%,83% { transform:scaleX(1); opacity:1; }
+      93% { transform:scaleX(1); opacity:0; }
+    }
+    @keyframes wybe-writing-pencil {
+      0%,7% { transform:translate(0,0); opacity:0; }
+      8% { transform:translate(0,0); opacity:1; }
+      25% { transform:translate(84px,0); }
+      32% { transform:translate(0,26px); }
+      49% { transform:translate(84px,26px); }
+      56% { transform:translate(0,52px); }
+      70% { transform:translate(61px,52px); opacity:1; }
+      78%,100% { transform:translate(74px,44px); opacity:0; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .wybe-writing-line { animation:none; transform:none; opacity:1; }
+      .wybe-writing-pen { animation:none; opacity:0; }
+    }
+  </style>
+  <defs>
+    <g id="wybe-pencil-shape" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7">
+      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+      <path d="m15 5 4 4" fill="none"/>
+    </g>
+    <mask id="wybe-pencil-clearance" maskUnits="userSpaceOnUse" x="0" y="0" width="220" height="212" style="mask-type:luminance">
+      <rect width="220" height="212" fill="#fff"/>
+      <g class="wybe-writing-pen">
+        <g transform="translate(59 56) scale(1.541666667)">
+          <use href="#wybe-pencil-shape" xlink:href="#wybe-pencil-shape" fill="#000" stroke="#000"/>
+        </g>
+      </g>
+    </mask>
+  </defs>
+  <g fill="#FF6600" mask="url(#wybe-pencil-clearance)">
+    <rect x="44.25" y="23.25" width="129.5" height="161.5" rx="3.75" fill="none" stroke="#FF6600" stroke-width="2.5"/>
+    <rect x="64.5" y="45.5" width="37" height="16"/>
+    <g opacity="0.42">
+      <rect x="111.5" y="45.5" width="39" height="4"/>
+      <rect x="111.5" y="55.5" width="28" height="4"/>
+    </g>
+    <g transform="translate(64.5 87.5)"><rect class="wybe-writing-line" width="84" height="3" rx="1.5"/></g>
+    <g transform="translate(64.5 113.5)"><rect class="wybe-writing-line wybe-writing-second" width="84" height="3" rx="1.5"/></g>
+    <g transform="translate(64.5 139.5)"><rect class="wybe-writing-line wybe-writing-third" width="61" height="3" rx="1.5"/></g>
+  </g>
+  <g class="wybe-writing-pen">
+    <g transform="translate(59 56) scale(1.541666667)">
+      <use href="#wybe-pencil-shape" xlink:href="#wybe-pencil-shape" fill="none" stroke="#FF6600"/>
+    </g>
+  </g>
+</svg>
