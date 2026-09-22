@@ -271,107 +271,6 @@
     }
     .wybe-calc-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
     .wybe-calc-title      { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
-    /* Airy input rows: hairline underline, no box */
-    /* Compact calculator rows so all fields fit within the 640 px
-       card without inner scrolling. Reduced padding + smaller value
-       font vs the previous LCD variant. */
-    #unified-calc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    #unified-calc-form.hidden { display: none !important; }
-    #unified-calc-form .wybe-input-row--full,
-    #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
-    @media (max-width: 767px) {
-      #unified-calc-form { grid-template-columns: 1fr; }
-      #unified-calc-form #ucalc-error { grid-column: auto; }
-    }
-    .wybe-input-row {
-      display: grid; grid-template-columns: 1fr auto; align-items: end;
-      padding: 6px 12px; gap: 2px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 8px;
-      transition: border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
-    }
-    .wybe-input-row:focus-within {
-      border-color: #FF6600;
-      background: rgba(0, 0, 0, 0.55);
-      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
-    }
-    .wybe-input-row label {
-      grid-column: 1 / -1;
-      display: flex; align-items: center;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
-      color: rgba(255,255,255,0.55); margin-bottom: 0;
-    }
-    .wybe-input-row input,
-    .wybe-input-row select {
-      display: block; width: 100%; background: transparent; border: 0; outline: 0;
-      font-family: 'Raleway', 'Inter', sans-serif; font-weight: 400; font-size: 17px;
-      color: #FFFFFF; padding: 0; letter-spacing: -0.02em;
-      font-variant-numeric: tabular-nums;
-    }
-    /* The whole calculator card — LCD frame with subtle inset shadow. */
-    #unified-calc-form,
-    #ucalc-view-results,
-    #ucalc-confirm {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
-                  0 8px 32px rgba(0, 0, 0, 0.45);
-    }
-    #ucalc-confirm.hidden { display: none !important; }
-    @media (min-width: 768px) {
-      #unified-calc-form, #ucalc-view-results, #ucalc-confirm { padding: 28px; }
-    }
-    /* Native <select> looks OS-ish and out of place next to the airy
-       inputs. Strip the OS chrome and paint our own chevron (orange,
-       matches the section accent) as a background-image on the right.
-       padding-right leaves room so the value text never runs under it. */
-    .wybe-input-row select {
-      -webkit-appearance: none;
-         -moz-appearance: none;
-              appearance: none;
-      cursor: pointer;
-      padding-right: 28px;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF6600' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 2px center;
-      background-size: 18px 18px;
-    }
-    .wybe-input-row select::-ms-expand { display: none; }
-    /* Focus state — the row's underline already flips to orange via
-       :focus-within; also drop the OS blue focus ring on the control. */
-    .wybe-input-row input:focus,
-    .wybe-input-row select:focus { outline: none; box-shadow: none; }
-    /* Placeholder text reads as a hint, not a filled value. Lighter
-       colour + thinner weight + smaller size + italic so it's visually
-       distinct from the 22 px / 900 answer text. */
-    .wybe-input-row input::placeholder {
-      color: rgba(255, 255, 255, 0.32);
-      font-weight: 400;
-      font-size: 15px;
-      font-style: italic;
-      letter-spacing: 0.01em;
-    }
-    /* Empty <select> ("Select…" state) also styled as a hint. */
-    .wybe-input-row select:invalid,
-    .wybe-input-row select:has(option[value=""]:checked) {
-      color: rgba(255, 255, 255, 0.32);
-      font-weight: 400;
-      font-size: 15px;
-      font-style: italic;
-      letter-spacing: 0.01em;
-    }
-    /* Dropdown menu itself — dark background matching the site theme,
-       not the OS cream default. color-scheme:dark asks the browser
-       to render the open menu popup in its own dark UI chrome (helps
-       macOS Safari where <option> bg is ignored). Chrome/Edge/Firefox
-       additionally honor the explicit option bg below. */
-    .wybe-input-row select { color-scheme: dark; }
-    .wybe-input-row select option { color: #FFFFFF; background: #1E1E1E; font-weight: 400; font-style: normal; font-size: 15px; }
-    .wybe-input-row .info-tip { color: rgba(255,255,255,0.4); }
 
     /* Image-frame heights on the home page. Wrappers are absolutely-
        positioned inside so they collapse to 0 without an explicit
@@ -389,30 +288,6 @@
     @media (min-width: 768px) {
       #contact .contact-image { min-height: 560px; }
     }
-    .wybe-calc-cta        {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #FF6600; color: #000000;
-      font-family: 'Inter', sans-serif; font-weight: 900;
-      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
-      padding: 14px 28px; border-radius: 999px;
-      border: 0; cursor: pointer;
-      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.20);
-      transition: transform .25s cubic-bezier(0.19, 1, 0.22, 1),
-                  filter .25s ease,
-                  box-shadow .25s ease,
-                  background-color .25s ease,
-                  color .25s ease;
-      margin-top: 20px;
-    }
-    .wybe-calc-cta:hover  {
-      background: #E65500;
-      color: #FFFFFF;
-      transform: scale(1.05);
-      filter: brightness(1.08);
-      box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
-    }
-    .wybe-calc-cta:disabled { opacity: 0.5; cursor: not-allowed; }
-
     /* 7. About Me: description swaps out, metrics fade in as user scrolls past. */
     /* Obsolete: bio↔metrics flip. The About section now shows both
        together permanently. Rules kept as no-ops so the .wybe-metric-value
@@ -744,7 +619,7 @@
       <a href="/#about"                      class="wybe-mobile-link" role="menuitem">About</a>
       <a href="/faq.html"                    class="wybe-mobile-link" role="menuitem">FAQ</a>
       <a href="/#services"                   class="wybe-mobile-link" role="menuitem">Services</a>
-      <a href="/#calculators"                class="wybe-mobile-link" role="menuitem">Calculator</a>
+      <a href="/calculators.html"                class="wybe-mobile-link" role="menuitem">Calculator</a>
       <a href="/publication.html"            class="wybe-mobile-link" role="menuitem">Publication</a>
       <a href="/about.html#certifications"   class="wybe-mobile-link" role="menuitem">Certifications</a>
     </div>
@@ -870,106 +745,31 @@
 
 
   <!-- #CALCULATORS -->
-  <!-- CALCULATORS — one unified form → one report. Fill what you know
-       and the results panel unlocks whichever metrics your inputs
-       support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
-  <section id="calculators" class="wybe-story relative overflow-visible pt-2 pb-8 md:pt-4 md:pb-12">
-    <div id="body-composition-section" class="w-full max-w-6xl mx-auto px-6">
-      <!-- Section header — single heading, no eyebrow, no subtext. -->
-      <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
+  <!-- Teaser only — the full calculator (form, engine, PDF report) lives at
+       /calculators.html. This used to be a second, full copy of the same
+       form embedded here, which drifted out of sync with the standalone
+       page and caused real bugs (see git history). One implementation now,
+       linked from both entry points. -->
+  <section id="calculators" class="relative overflow-visible pt-2 pb-8 md:pt-4 md:pb-12">
+    <div class="w-full max-w-6xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto">
         <h2 class="section-title">Calculator</h2>
         <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
+        <p class="font-sans text-base text-cream/70 leading-relaxed mt-6">
+          Your weight tells you very little. Get your BMI, Ideal Body Weight,
+          Body Fat % and daily calorie needs, with a full breakdown emailed
+          to you as a PDF.
+        </p>
+        <a href="/calculators.html" class="hero-cta mt-8" style="display:inline-flex;">
+          <span>Try Calculator</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+               class="hero-cta__arrow" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
-
-      <!-- Form LEFT | Nutrition image RIGHT on desktop; stack vertically on mobile. -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
-        <div class="calculator-form-wrapper w-full">
-        <div class="calc-panels-grid">
-
-        <form id="unified-calc-form" data-view="form">
-          <p class="ucalc-intro-heading">Get your BMI, IBW, BFP &amp; TDEE results.</p>
-          <!-- Row 1 & 2: Name and Email, each full-width -->
-          <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-name">Full name</label>
-            <input type="text" id="ucalc-name" autocomplete="name" placeholder="">
-          </div>
-          <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-email-field">Email</label>
-            <input type="email" id="ucalc-email-field" autocomplete="email" placeholder="">
-          </div>
-          <!-- Row 2: Gender | Age -->
-          <div class="wybe-input-row">
-            <label for="ucalc-gender">Gender</label>
-            <select id="ucalc-gender" required>
-              <option value="" selected>Select&hellip;</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-          <div class="wybe-input-row">
-            <label for="ucalc-age">Age</label>
-            <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="">
-          </div>
-          <!-- Row 3: Height | Weight -->
-          <div class="wybe-input-row">
-            <label for="ucalc-height">Height (cm)</label>
-            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="">
-          </div>
-          <div class="wybe-input-row">
-            <label for="ucalc-weight">Weight (kg)</label>
-            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="">
-          </div>
-          <!-- Row 4: Neck | Waist -->
-          <div class="wybe-input-row">
-            <label for="ucalc-neck">Neck (cm)</label>
-            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="">
-          </div>
-          <div class="wybe-input-row">
-            <label for="ucalc-waist">Waist (cm)</label>
-            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="">
-          </div>
-          <!-- Row 5: Hip (female-only) | Activity Level -->
-          <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
-            <label for="ucalc-hip">Hip (cm)</label>
-            <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="">
-          </div>
-          <div class="wybe-input-row" id="ucalc-activity-wrap">
-            <label for="ucalc-activity">Activity level</label>
-            <select id="ucalc-activity" required>
-              <option value="" selected>Select&hellip;</option>
-              <option value="1.2">Sedentary</option>
-              <option value="1.375">Lightly active</option>
-              <option value="1.55">Moderately active</option>
-              <option value="1.725">Very active</option>
-              <option value="1.9">Athlete</option>
-            </select>
-          </div>
-
-          <!-- Turnstile + submit on one row, spanning both grid columns -->
-          <div class="wybe-input-row--full calc-captcha-row">
-            <div class="cf-turnstile" id="ucalc-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="normal"></div>
-            <button type="submit" class="wybe-calc-cta ucalc-submit-btn">
-              <span class="ucalc-submit-label">Get Result &rarr;</span>
-              <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
-            </button>
-          </div>
-          <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
-        </form>
-
-        <!-- RIGHT column: nutrition image -->
-        <div class="ucalc-photo-col">
-          <img src="images/Nutrition%202.webp"
-               alt="Nutrition coaching at WYBE"
-               class="ucalc-photo-img">
-        </div>
-
-        <!-- Confirmation panel — shown after a successful submit -->
-        <div id="ucalc-confirm" class="hidden" data-view="confirm">
-          <p class="font-sans text-lg font-semibold" style="color:#FF6600;">Success! Emailed Report.</p>
-        </div>
-        </div><!-- /.calc-panels-grid -->
-        </div><!-- /.calculator-form-wrapper -->
-      </div><!-- /calculator grid -->
     </div>
   </section>
 
@@ -2172,262 +1972,6 @@
     // shows the bio and the "By The Numbers" stat grid together
     // permanently — no swap, no toggle button, no IntersectionObserver
     // trigger. Content is always visible at rest.
-
-    // Shared store of the latest unified calculator output.
-    const CalcStore = { unified: null };
-
-    // ── UNIFIED CALCULATOR ────────────────────────────
-    (function () {
-      const form = document.getElementById('unified-calc-form');
-      if (!form) return;
-
-      const els = {
-        name:          document.getElementById('ucalc-name'),
-        email:         document.getElementById('ucalc-email-field'),
-        gender:        document.getElementById('ucalc-gender'),
-        age:           document.getElementById('ucalc-age'),
-        height:        document.getElementById('ucalc-height'),
-        weight:        document.getElementById('ucalc-weight'),
-        neck:          document.getElementById('ucalc-neck'),
-        waist:         document.getElementById('ucalc-waist'),
-        hip:           document.getElementById('ucalc-hip'),
-        hipWrap:       document.getElementById('ucalc-hip-wrap'),
-        activity:      document.getElementById('ucalc-activity'),
-        activityWrap:  document.getElementById('ucalc-activity-wrap'),
-        error:         document.getElementById('ucalc-error'),
-        confirm:       document.getElementById('ucalc-confirm'),
-        submitBtn:     form.querySelector('.ucalc-submit-btn'),
-        submitLabel:   form.querySelector('.ucalc-submit-label'),
-        submitSpinner: form.querySelector('.ucalc-submit-spinner'),
-      };
-
-      // Hip only for female; activity spans full-width when hip is hidden.
-      const toggleHip = () => {
-        const isFemale = els.gender.value === 'female';
-        els.hipWrap.classList.toggle('hidden', !isFemale);
-        if (els.activityWrap) {
-          els.activityWrap.style.gridColumn = isFemale ? '' : '1 / -1';
-        }
-      };
-      els.gender.addEventListener('change', toggleHip);
-      toggleHip();
-
-      const num = (el) => {
-        const v = parseFloat(el.value);
-        return isFinite(v) && v > 0 ? v : null;
-      };
-
-      const bmiCategory = (bmi) => {
-        if (bmi < 18.5) return { name: 'Underweight',   note: 'Below the typical healthy range.' };
-        if (bmi < 25)   return { name: 'Normal weight', note: 'Within the healthy adult range.' };
-        if (bmi < 30)   return { name: 'Overweight',    note: 'Above the healthy range.' };
-        return          { name: 'Obese',                note: 'Long-term health risks rise sharply here.' };
-      };
-      const BFP_BANDS_MALE = [
-        { name: 'Essential fat',        low: 2,  high: 5  },
-        { name: 'Athletic',             low: 6,  high: 13 },
-        { name: 'Fitness',              low: 14, high: 17 },
-        { name: 'Acceptable / Average', low: 18, high: 24 },
-        { name: 'Obese',                low: 25, high: null },
-      ];
-      const BFP_BANDS_FEMALE = [
-        { name: 'Essential fat',        low: 10, high: 13 },
-        { name: 'Athletic',             low: 14, high: 20 },
-        { name: 'Fitness',              low: 21, high: 24 },
-        { name: 'Acceptable / Average', low: 25, high: 31 },
-        { name: 'Obese',                low: 32, high: null },
-      ];
-      const bfpCategory = (bfp, isFemale) => {
-        const bands = isFemale ? BFP_BANDS_FEMALE : BFP_BANDS_MALE;
-        for (let i = 0; i < bands.length; i++) {
-          const b = bands[i];
-          if (b.high === null || bfp <= b.high) {
-            const note = (b.high === null)
-              ? b.name + ' Range is ' + b.low + '% and higher.'
-              : b.name + ' Range is ' + b.low + '% to ' + b.high + '%.';
-            return { name: b.name, note: note };
-          }
-        }
-        return { name: bands[bands.length - 1].name, note: '' };
-      };
-      const tdeeCategory = (tdee) => {
-        if (tdee < 1700) return 'Low energy needs, careful with cuts';
-        if (tdee < 2500) return 'Moderate metabolic range';
-        if (tdee < 3200) return 'High energy needs';
-        return 'Very high energy needs, athlete tier';
-      };
-      const roundKcal = (n) => Math.round(n / 5) * 5;
-
-      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      const showErr = (msg) => { els.error.textContent = msg; els.error.classList.remove('hidden'); };
-      const clearErr = () => els.error.classList.add('hidden');
-      const setSending = (on) => {
-        if (els.submitBtn)     els.submitBtn.disabled = on;
-        if (els.submitSpinner) els.submitSpinner.classList.toggle('hidden', !on);
-        if (els.submitLabel)   els.submitLabel.textContent = on ? 'Sending…' : 'Get Result →';
-      };
-
-      // Timestamp when the IIFE loaded — server rejects elapsed < 3000 ms.
-      const CALC_LOAD_TS = Date.now();
-      const tsWidget = document.getElementById('ucalc-turnstile');
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearErr();
-
-        // ── Turnstile guard ───────────────────────────
-        const tsToken = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
-        if (!tsToken) {
-          showErr('Please complete the security check and try again.');
-          return;
-        }
-
-        const name  = (els.name.value  || '').trim();
-        const email = (els.email.value || '').trim();
-        if (name.length < 2)         { showErr('Enter your full name.'); return; }
-        if (!EMAIL_RE.test(email))   { showErr("That email doesn't look right — try name@example.com."); return; }
-
-        const gender   = els.gender.value;
-        const isFemale = gender === 'female';
-        const age      = els.age.value ? parseInt(els.age.value, 10) : null;
-        const h        = num(els.height);
-        const w        = num(els.weight);
-        const neck     = num(els.neck);
-        const waist    = num(els.waist);
-        const hip      = num(els.hip);
-        const mult     = els.activity.value ? parseFloat(els.activity.value) : null;
-
-        if (!h || !w) { showErr('Enter at least your height and weight to get started.'); return; }
-
-        const store = {
-          gender: gender || null, age,
-          height: h, weight: w, neck, waist,
-          hip: isFemale ? hip : null,
-          activityMult: mult,
-          activityLabel: mult ? els.activity.options[els.activity.selectedIndex].text : null,
-          bmi: null, ibw: null, bfp: null, tdee: null,
-        };
-
-        // ── BMI ──
-        {
-          const hm = h / 100;
-          const bmi = w / (hm * hm);
-          if (isFinite(bmi) && bmi >= 5 && bmi <= 80) {
-            const cat = bmiCategory(bmi);
-            store.bmi = { value: bmi.toFixed(1), category: cat.name, note: cat.note };
-          }
-        }
-        // ── IBW (Broca) ──
-        if (gender) {
-          const maleIBW = h - 100;
-          const target = gender === 'male' ? maleIBW : maleIBW * 0.9;
-          if (isFinite(target) && target >= 20 && target <= 160) {
-            const point = Math.round(target);
-            const low = Math.round(target - 5);
-            const high = Math.round(target + 5);
-            store.ibw = { point, low, high, note: 'IBW range is ' + low + ' to ' + high + ' kg.' };
-          }
-        }
-        // ── BFP (Navy circumference) ──
-        // Formula constants are calibrated for inches; convert cm inputs before use.
-        // h/neck/waist/hip (cm) are kept unchanged for BMI, IBW, and TDEE.
-        const bfpOK = gender && neck && waist && (!isFemale || hip);
-        if (bfpOK) {
-          const heightIn = h    / 2.54;
-          const neckIn   = neck / 2.54;
-          const waistIn  = waist / 2.54;
-          const hipIn    = hip  ? hip / 2.54 : null;
-          let bfp;
-          if (isFemale) {
-            const diff = waistIn + hipIn - neckIn;
-            if (diff > 0) {
-              const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(heightIn);
-              bfp = 495 / denom - 450;
-            }
-          } else {
-            const diff = waistIn - neckIn;
-            if (diff > 0) {
-              const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(heightIn);
-              bfp = 495 / denom - 450;
-            }
-          }
-          if (isFinite(bfp)) {
-            const rounded = Math.round(bfp * 10) / 10;
-            const cat = (rounded < 2 || rounded > 60)
-              ? { name: 'Outside plausible range', note: 'The formula returned a value outside the realistic 2–60% band. One of your measurements is likely off.' }
-              : bfpCategory(rounded, isFemale);
-            store.bfp = { value: rounded.toFixed(1), category: cat.name, note: cat.note };
-          }
-        }
-        // ── TDEE (Mifflin-St Jeor) ──
-        if (gender && age && mult) {
-          const bmr = gender === 'male'
-            ? 10 * w + 6.25 * h - 5 * age + 5
-            : 10 * w + 6.25 * h - 5 * age - 161;
-          if (isFinite(bmr) && bmr >= 500) {
-            const tdee = bmr * mult;
-            const maintain = roundKcal(tdee);
-            store.tdee = { value: maintain, category: tdeeCategory(tdee), cut: roundKcal(tdee - 500), maintain, bulk: roundKcal(tdee + 250) };
-          }
-        }
-
-        CalcStore.unified = store;
-
-        // POST to wybe-api: renders the PDF report with headless Chrome and
-        // hands it to Apps Script for email + sheet logging. Same backend and
-        // payload shape as calculators.html's working flow — this widget used
-        // to post straight to an old Apps Script deployment directly and check
-        // a `json.success` field that endpoint never returned, so it failed on
-        // every submission even though that old script still sent an email.
-        setSending(true);
-        try {
-          const apiBase = (typeof WYBE_API_BASE !== 'undefined') ? WYBE_API_BASE : '';
-          const payload = {
-            name: name,
-            email: email,
-            age: store.age,
-            gender: store.gender,
-            activityLevel: store.activityLabel || '',
-            height: store.height,
-            weight: store.weight,
-            neck: store.neck,
-            waist: store.waist,
-            hip: store.hip || '',
-            bmi:          store.bmi  ? store.bmi.value    : '',
-            bmiCategory:  store.bmi  ? store.bmi.category : '',
-            bmiNote:      store.bmi  ? store.bmi.note     : '',
-            ibw:          store.ibw  ? store.ibw.point    : '',
-            ibwLow:       store.ibw  ? store.ibw.low      : '',
-            ibwHigh:      store.ibw  ? store.ibw.high     : '',
-            bfp:          store.bfp  ? store.bfp.value    : '',
-            bfpCategory:  store.bfp  ? store.bfp.category : '',
-            bfpNote:      store.bfp  ? store.bfp.note     : '',
-            tdee:             store.tdee ? store.tdee.value    : '',
-            tdeeCategory:     store.tdee ? store.tdee.category : '',
-            cutCalories:      store.tdee ? store.tdee.cut      : '',
-            maintainCalories: store.tdee ? store.tdee.maintain : '',
-            leanBulkCalories: store.tdee ? store.tdee.bulk     : '',
-          };
-          const res = await fetch(apiBase + '/api/calculator-report', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-          const json = await res.json().catch(function () { return {}; });
-          if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');
-          // Reset widget — Turnstile tokens are single-use
-          if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
-          setSending(false);
-          form.classList.add('hidden');
-          if (els.confirm) els.confirm.classList.remove('hidden');
-          if (typeof window.wybeTrack === 'function') window.wybeTrack('Calculator Submit');
-        } catch (_) {
-          if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
-          setSending(false);
-          showErr('Something went wrong — please try again or contact us directly.');
-        }
-      });
-    })();
 
 
     // ── WAITLIST: custom searchable dial-code + country dropdowns + email validation ───
