@@ -246,7 +246,7 @@ h4, h5, h6, .wybe-subhead {
 .wybe-brand {
   position: relative;
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   color: #F6F2E8;
   text-decoration: none;
@@ -274,26 +274,30 @@ h4, h5, h6, .wybe-subhead {
 .wybe-header.is-scrolled .wybe-brand__logo {
   filter: none;
 }
-/* WYBE (Latin) over وايب (Arabic) — sits beside the mark. */
+/* WYBE (Latin) over وايب (Arabic) — sits beside the mark, matched to the
+   logo's own height so the top line ("WYBE") sits level with "WY" and
+   the bottom line ("وايب") sits level with "BE", not spilling past it. */
 .wybe-brand__text {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 2px;
-  line-height: 1;
+  height: 52px;
 }
 .wybe-brand__en {
   font-family: var(--font-header);
   font-weight: 900;
-  font-size: 22px;
-  letter-spacing: 0.04em;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0.02em;
   color: #FFFFFF;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 .wybe-brand__ar {
   font-family: 'Noto Kufi Arabic', var(--font-header), sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 28px;
+  line-height: 1;
   color: #FFFFFF;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
