@@ -12,7 +12,7 @@
   /* ── CANONICAL HEADER ──────────────────────────────────────────────────── */
   var HEADER_HTML = [
     '<nav id="wybe-nav" class="wybe-nav" role="navigation" aria-label="Primary">',
-    '  <div class="max-w-6xl mx-auto px-6">',
+    '  <div class="px-6">',
     '    <div class="flex items-center justify-between h-[96px]">',
     '      <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">',
     '        <img src="/images/logo-mark-orange.png" alt="" class="wybe-brand__logo">',
