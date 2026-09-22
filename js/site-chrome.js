@@ -36,8 +36,8 @@
 
   /* ── CANONICAL FOOTER ──────────────────────────────────────────────────── */
   var FOOTER_HTML = [
-    '<div class="max-w-6xl mx-auto px-6 py-16">',
-    '  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">',
+    '<div class="max-w-6xl mx-auto px-6 pt-16 pb-12">',
+    '  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">',
     '    <div>',
     '      <a href="/#home" class="mb-3 wybe-footer-wordmark" aria-label="WYBE — Wellness You Build Everyday, home">',
     '        <img src="/images/logo-mark-orange.png" alt="" class="wybe-footer-wordmark__img">',
@@ -85,7 +85,9 @@
     '      </div>',
     '    </div>',
     '  </div>',
-    '  <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">',
+    '</div>',
+    '<div class="border-t border-white/10">',
+    '  <div class="max-w-6xl mx-auto px-6 pt-6 pb-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">',
     '    <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>',
     '    <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">',
     '      <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a>',
