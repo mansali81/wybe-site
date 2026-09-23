@@ -21,13 +21,13 @@
 <ellipse cx="199.2" cy="233.7" rx="116.88" ry="119.28" fill="url(#philosophy-rim)" filter="url(#philosophy-innerShadow)"/>
 <ellipse cx="198.2" cy="231.7" rx="110.88" ry="113.28" fill="url(#philosophy-disc)"/>
 
-<defs><linearGradient id="philosophy-greenRing" x1="0" y1=".2" x2="1" y2=".8"><stop stop-color="#197455"/><stop offset=".52" stop-color="#329261"/><stop offset="1" stop-color="#1b6748"/></linearGradient></defs>
+<defs><linearGradient id="philosophy-greenRing" x1="0" y1=".2" x2="1" y2=".8"><stop stop-color="#ff541e"/><stop offset=".52" stop-color="#ff7518"/><stop offset="1" stop-color="#d7590d"/></linearGradient></defs>
 <ellipse cx="843.2" cy="247.8" rx="145.6" ry="149.1" fill="#555764" opacity=".27" filter="url(#philosophy-ringShadow)"/>
 <ellipse cx="835.2" cy="233.8" rx="145.6" ry="149.1" fill="url(#philosophy-greenRing)"/>
 <ellipse cx="835.2" cy="233.8" rx="116.48" ry="119.28" fill="url(#philosophy-rim)" filter="url(#philosophy-innerShadow)"/>
 <ellipse cx="834.2" cy="231.8" rx="110.48" ry="113.28" fill="url(#philosophy-disc)"/>
 
-<defs><linearGradient id="philosophy-purpleRing" x1="0" y1=".2" x2="1" y2=".8"><stop stop-color="#742164"/><stop offset=".52" stop-color="#962781"/><stop offset="1" stop-color="#5f174f"/></linearGradient></defs>
+<defs><linearGradient id="philosophy-purpleRing" x1="0" y1=".2" x2="1" y2=".8"><stop stop-color="#ff541e"/><stop offset=".52" stop-color="#ff7518"/><stop offset="1" stop-color="#d7590d"/></linearGradient></defs>
 <ellipse cx="1477" cy="247.8" rx="145.8" ry="149.1" fill="#555764" opacity=".27" filter="url(#philosophy-ringShadow)"/>
 <ellipse cx="1469" cy="233.8" rx="145.8" ry="149.1" fill="url(#philosophy-purpleRing)"/>
 <ellipse cx="1469" cy="233.8" rx="116.64000000000001" ry="119.28" fill="url(#philosophy-rim)" filter="url(#philosophy-innerShadow)"/>
