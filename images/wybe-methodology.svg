@@ -43,10 +43,10 @@
 <defs>
 <linearGradient id="methodology-orangeLeft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff731a"/><stop offset="1" stop-color="#fa781a"/></linearGradient>
 <linearGradient id="methodology-orangeRight" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#d76316"/><stop offset="1" stop-color="#c65213"/></linearGradient>
-<linearGradient id="methodology-greenLeft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#298457"/><stop offset="1" stop-color="#25704e"/></linearGradient>
-<linearGradient id="methodology-greenRight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#245e43"/><stop offset="1" stop-color="#144630"/></linearGradient>
-<linearGradient id="methodology-purpleLeft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8a2c74"/><stop offset="1" stop-color="#762064"/></linearGradient>
-<linearGradient id="methodology-purpleRight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6a1b58"/><stop offset="1" stop-color="#521244"/></linearGradient>
+<linearGradient id="methodology-greenLeft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff731a"/><stop offset="1" stop-color="#fa781a"/></linearGradient>
+<linearGradient id="methodology-greenRight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d76316"/><stop offset="1" stop-color="#c65213"/></linearGradient>
+<linearGradient id="methodology-purpleLeft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff731a"/><stop offset="1" stop-color="#fa781a"/></linearGradient>
+<linearGradient id="methodology-purpleRight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d76316"/><stop offset="1" stop-color="#c65213"/></linearGradient>
 </defs>
 <path d="M1705 319L1858 351V603H1705Z" fill="url(#methodology-purpleLeft)"/>
 <path d="M1858 351L2011 319V603H1858Z" fill="url(#methodology-purpleRight)"/>
