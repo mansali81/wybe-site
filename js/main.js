@@ -544,9 +544,8 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // ── FORM HANDLER ─────────────────────────────────────
-  // Waitlist and contact forms POST to Google Apps Script.
-  // Any other data-form falls back to Web3Forms.
-  var GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
+  // Every data-form posts to Web3Forms. Only the calculator uses the
+  // wybe-api backend (see WYBE_API_BASE at the top of this file).
 
   // Timestamp when the script loaded — used for the time-trap.
   // GAS rejects submissions with elapsed < 3000 ms.
