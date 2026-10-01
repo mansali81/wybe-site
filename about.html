@@ -270,12 +270,13 @@
       </div>
     </section>
 
-    <!-- Full-width opaque wrapper. It must stay full-bleed and opaque to
-         wipe over the fixed hero window (see "Occlusion guarantee" in
-         styles.css); the inner container now runs full width too, with
-         only side padding holding the text off the edges. -->
+    <!-- .about-body must stay full-bleed and opaque to wipe over the fixed
+         hero window (see "Occlusion guarantee" in styles.css). The inner
+         container is the one that gets the max-width, so the copy sits in a
+         centred column with equal gutters while the curtain still covers
+         the whole viewport. -->
     <div class="about-body pt-12 md:pt-16">
-     <div class="px-6 md:px-10" style="margin-top:0">
+     <div class="max-w-6xl mx-auto px-6" style="margin-top:0">
 
       <div class="about-column">
 
