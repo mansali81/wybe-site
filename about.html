@@ -18,7 +18,20 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- GSAP + ScrollTrigger drive the hero fixed-window parallax. Warm the
+       connection early: the hero layer only switches to its fixed mode
+       once they arrive, so a slow CDN is a visible delay. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <!-- The hero image is the LCP element. `media` mirrors the <picture>
+       breakpoint in the hero so phones never fetch the desktop crop. -->
+  <link rel="preload" as="image" href="/images/Hero.webp"
+        media="(min-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/images/hero-mobile.webp"
+        media="(max-width: 767px)" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <!-- GSAP + ScrollTrigger (hero fixed-window parallax) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -88,19 +101,48 @@
       border-radius: 8px;
       clear: both;
     }
-    /* Page banner (ex home-page hero). Fixed aspect so the tall source
-       crops to a banner instead of eating the fold; object-position keeps
-       the subject in frame as the viewport narrows. */
-    .about-banner {
-      display: block;
-      width: 100%;
+    /* Hero copy sits bottom-left here instead of centred as on the home
+       page. Only the alignment changes — the image layer, tint, overscan
+       and parallax are the shared .hero rules, untouched. */
+    .hero--about .hero-frame {
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding-bottom: clamp(40px, 8vh, 96px);
+    }
+    .hero--about .hero-content {
+      text-align: left;
       max-width: 900px;
-      margin: 0 auto 32px;
-      height: auto;
-      aspect-ratio: 16 / 7;
-      object-fit: cover;
-      object-position: center 32%;
-      border-radius: 8px;
+      width: 100%;
+    }
+    /* The generic ".section-in-view h1" scroll animation uses fill-mode
+       both, so it pins any un-opted-out h1 at opacity 0 until it fires.
+       The home hero dodges this via the .hero-tagline opacity:1 rule;
+       give the same protection here, then run the same hero-enter fade. */
+    .hero--about .hero-content h1,
+    .hero--about .hero-content > div {
+      opacity: 1;
+      clip-path: none;
+      animation: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero--about .hero-content h1 {
+        animation: hero-enter .7s cubic-bezier(0.19, 1, 0.22, 1) .05s both;
+      }
+      .hero--about .hero-content > div {
+        animation: hero-enter .7s cubic-bezier(0.19, 1, 0.22, 1) .2s both;
+      }
+    }
+    /* Sits directly on the image, so it needs the same shadow stack the
+       home headline uses for legibility over busy regions. */
+    .hero--about .about-heading {
+      text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 4px 18px rgba(0,0,0,.50);
+    }
+    /* Occlusion guarantee (see styles.css "3. Occlusion guarantee"): the
+       section after the hero must be POSITIONED and OPAQUE or the fixed
+       hero window shows straight through it instead of being wiped. */
+    .about-body {
+      position: relative;
+      background-color: #1E1E1E;
     }
     @media (max-width: 767px) {
       .about-heading { font-size: 22px; }
@@ -237,26 +279,43 @@
   </nav>
   </header>
 
-  <main id="main" tabindex="-1" class="pt-28 md:pt-32 pb-16 md:pb-20">
-    <div class="max-w-6xl mx-auto px-6" style="margin-top:0">
+  <main id="main" tabindex="-1" class="pb-16 md:pb-20">
 
-      <div class="about-column">
-
-        <!-- Page banner — moved here from the home-page hero. Mobile keeps
-             the tighter 1350x1080 crop; desktop uses the 2592x1632 original. -->
+    <!-- HERO — identical structure to the home-page hero so it picks up the
+         same .hero rules and the same fixed-window parallax in main.js.
+         Only .hero--about differs, and only to move the copy bottom-left. -->
+    <section class="hero hero--about" data-hero>
+      <!-- Background image layer — full-bleed behind copy, parallax on
+           scroll. Object-position: right so the subject stays visible on
+           the right side of the frame, copy overlaid on the left. -->
+      <div class="hero-bg parallax-wrapper" aria-hidden="true">
         <picture>
+          <!-- Mobile source: a tighter 1350x1080 crop composed for phones.
+               The desktop Hero.webp (2592x1632) stays the fallback for
+               everything above the 767 px breakpoint. -->
           <source media="(max-width: 767px)" srcset="/images/hero-mobile.webp" type="image/webp">
           <img src="/images/Hero.webp"
-               alt="Mansoor Ahamad Ali training — WYBE founder"
-               class="about-banner"
-               width="2592" height="1632"
-               fetchpriority="high">
+               alt=""
+               class="parallax-img hero-bg__img"
+               data-parallax-speed="0.15">
         </picture>
-
-        <div class="mb-4">
+      </div>
+      <!-- Gradient tint — lifts the copy off the raw hero image. -->
+      <div class="hero-tint" aria-hidden="true"></div>
+      <div class="hero-frame">
+        <div class="hero-content" data-hero-content>
           <h1 class="font-bold mb-4 about-heading">@wybewithmansoor</h1>
           <div class="w-14 h-px bg-burgundy mb-0"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- Full-width opaque wrapper: the max-width container goes INSIDE it,
+         so the curtain covers the whole viewport, not just the text column. -->
+    <div class="about-body pt-12 md:pt-16">
+     <div class="max-w-6xl mx-auto px-6" style="margin-top:0">
+
+      <div class="about-column">
 
         <div class="about-prose">
           <p>Twenty years ago, when I first started coaching, I noticed a pattern that bothered me.</p>
@@ -325,6 +384,7 @@
         </a>
       </div>
 
+     </div>
     </div>
   </main>
 
