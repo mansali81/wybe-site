@@ -2259,7 +2259,9 @@ html:not(.gsap-ready) .wybe-reveal {
 }
 
 .wybe-book-cover-frame {
-  max-width: 420px;
+  /* min() so the cover can never outgrow its column at any viewport, even
+     though 480px is below the column width at every desktop size measured. */
+  max-width: min(100%, 480px);
   border-radius: 12px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.70),
               0 4px 16px rgba(0, 0, 0, 0.40);
