@@ -2271,10 +2271,16 @@ html:not(.gsap-ready) .wybe-reveal {
   border-radius: 12px;
 }
 @media (max-width: 767px) {
+  /* Fill the column instead of a fixed 260px cap, which left the cover at
+     247px in a column that is 311-372px wide on phones. The 380px ceiling
+     only binds above ~448px viewport, so it never clips a phone; it just
+     stops the cover ballooning just under the 768px breakpoint.
+     .wybe-book-cover-img stays width:100%/height:auto, so the aspect ratio,
+     radius and shadow are untouched. */
   .wybe-book-cover-frame {
-    max-width: 260px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: min(100%, 380px);
+    width: 100%;
+    margin-inline: auto;
   }
 }
 
@@ -3493,7 +3499,12 @@ li.service-tier.service-tier--info,
   display: none;
 }
 
-#contact-us-section .grid {
+/* Child combinator, NOT a descendant selector. As `#contact-us-section .grid`
+   this also matched the Name/Email field grid nested inside the form, forcing
+   it to display:flex and overriding Tailwind's grid-cols-1 — which is why the
+   two inputs sat side by side at ~131px each on a 375px screen. Only the
+   section's own outer layout wrapper should be flex-centred. */
+#contact-us-section > .grid {
   display: flex;
   justify-content: center;
   align-items: center;
