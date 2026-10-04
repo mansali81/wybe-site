@@ -544,11 +544,33 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // ── FORM HANDLER ─────────────────────────────────────
-  // Every data-form posts to Web3Forms. Only the calculator uses the
-  // wybe-api backend (see WYBE_API_BASE at the top of this file).
+  // Waitlist and contact post to the Apps Script web app, which writes the
+  // sheet row, emails the submitter an acknowledgement, and notifies Mansoor.
+  // Web3Forms only ever notified the owner — its autoresponder is a paid
+  // feature — which is why submitters stopped receiving confirmations.
+  // Every OTHER data-form still posts to Web3Forms.
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
+
+  // Apps Script answers a POST with a 302 to script.googleusercontent.com.
+  // fetch follows that transparently and BOTH hops send
+  // Access-Control-Allow-Origin: *, so the JSON body is readable — no
+  // mode:'no-cors' needed. That matters: no-cors returns an opaque response,
+  // which is why the old version could never tell success from failure and
+  // just assumed it worked. Content-Type form-urlencoded is CORS-safelisted,
+  // so this is a simple request and triggers no preflight (Apps Script does
+  // not answer preflights).
+  async function postToGas(fields) {
+    var res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(fields).toString(),
+    });
+    if (!res.ok) return false;
+    var json = await res.json().catch(function () { return {}; });
+    return json.ok === true;
+  }
 
   // Timestamp when the script loaded — used for the time-trap.
-  // GAS rejects submissions with elapsed < 3000 ms.
   var PAGE_LOAD_TS = Date.now();
 
   document.querySelectorAll('form[data-form]').forEach(function(form) {
@@ -566,18 +588,31 @@ document.addEventListener('DOMContentLoaded', () => {
       var errElId = subj === 'WYBE, Quick Contact' ? 'contact-send-error' : subj === '1825 Days, Waitlist' ? 'waitlist-send-error' : null;
       if (errElId) { var prevErr = document.getElementById(errElId); if (prevErr) prevErr.classList.add('hidden'); }
 
-      // ── hCAPTCHA CHECK (waitlist + contact → Web3Forms) ──────────────
-      // The Web3Forms script.js populates [name="h-captcha-response"] when
-      // the user solves the widget. Block early with a visible message so
-      // the user knows what to do rather than getting a silent rejection.
-      var hcToken = (form.querySelector('[name="h-captcha-response"]') || {}).value || '';
-      if ((subj === '1825 Days, Waitlist' || subj === 'WYBE, Quick Contact') && !hcToken) {
-        if (btn) { btn.textContent = originalText; btn.disabled = false; }
-        if (errElId) {
-          var errEl = document.getElementById(errElId);
-          if (errEl) { errEl.textContent = 'Please complete the security check and try again.'; errEl.classList.remove('hidden'); }
+      // ── BOT CHECKS (waitlist + contact) ──────────────────────────────
+      // The hCaptcha widget was rendered by Web3Forms' own script against
+      // THEIR sitekey, so its token is only verifiable by Web3Forms. Now
+      // that these two forms post to Apps Script instead, that token is
+      // meaningless and the widget is gone. The honeypot and the time-trap
+      // below are the real signals and cost the user nothing.
+      var isGasForm = (subj === '1825 Days, Waitlist' || subj === 'WYBE, Quick Contact');
+      if (isGasForm) {
+        // Honeypot: hidden checkbox no human can see. Bots tick everything.
+        // Report success so the bot does not retry with the field cleared.
+        if (raw.botcheck) {
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          form.classList.add('hidden');
+          if (successEl) successEl.classList.remove('hidden');
+          return;
         }
-        return;
+        // Time-trap: a human cannot read and fill these forms in under 3s.
+        if (Date.now() - PAGE_LOAD_TS < 3000) {
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          if (errElId) {
+            var tEl = document.getElementById(errElId);
+            if (tEl) { tEl.textContent = 'Please take a moment to check your details, then try again.'; tEl.classList.remove('hidden'); }
+          }
+          return;
+        }
       }
 
       try {
@@ -589,37 +624,29 @@ document.addEventListener('DOMContentLoaded', () => {
           var cHidEl = document.getElementById('wl-country-hidden');
           var mobileVal  = (dialEl ? dialEl.value : '') + (numEl ? numEl.value.trim() : (raw.mobile || ''));
           var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : (raw.country || '');
-          var wfRes = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
-              subject: '1825 Days, Waitlist',
-              name: raw.name || '', email: raw.email || '',
-              mobile: mobileVal, country: countryVal,
-              form_elapsed_ms: elapsed,
-              'h-captcha-response': hcToken,
-            }),
+          // Field names must match what doPost reads: name, email, mobile, country.
+          var gasOk = await postToGas({
+            source: 'waitlist',
+            name: raw.name || '', email: raw.email || '',
+            mobile: mobileVal, country: countryVal,
+            form_elapsed_ms: elapsed,
           });
-          if (!wfRes.ok) throw new Error('server_error');
+          if (!gasOk) throw new Error('server_error');
           if (btn) { btn.textContent = originalText; btn.disabled = false; }
           form.classList.add('hidden');
           if (successEl) successEl.classList.remove('hidden');
 
         } else if (subj === 'WYBE, Quick Contact') {
-          var wfRes = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              access_key: '9dd51d8a-998b-4b71-bda2-fd22eb6a752a',
-              subject: 'WYBE, Quick Contact',
-              name: raw.name || '', email: raw.email || '',
-              message: raw.message || '',
-              form_elapsed_ms: elapsed,
-              'h-captcha-response': hcToken,
-            }),
+          // doPost also sends Mansoor the owner notification for this source,
+          // so Web3Forms is dropped here rather than kept as a second call —
+          // keeping it would duplicate every owner notification.
+          var gasOk = await postToGas({
+            source: 'contact',
+            name: raw.name || '', email: raw.email || '',
+            message: raw.message || '',
+            form_elapsed_ms: elapsed,
           });
-          if (!wfRes.ok) throw new Error('server_error');
+          if (!gasOk) throw new Error('server_error');
           if (btn) { btn.textContent = originalText; btn.disabled = false; }
           form.reset();
           var tick = document.getElementById('contact-tick');
