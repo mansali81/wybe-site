@@ -2336,21 +2336,26 @@
 
         CalcStore.unified = store;
 
-        // POST to wybe-api: renders the PDF report with headless Chrome and
-        // hands it to Apps Script for email + sheet logging. Same backend and
-        // payload shape as calculators.html's working flow — this widget used
-        // to post straight to an old Apps Script deployment directly and check
-        // a `json.success` field that endpoint never returned, so it failed on
-        // every submission even though that old script still sent an email.
+        // POST straight to the Apps Script web app, which builds the PDF via
+        // Slides, emails it, and appends the sheet row. This used to route
+        // through wybe-api so headless Chrome could render the PDF, but that
+        // step failed on every submission ("Failed to launch the browser
+        // process" — puppeteer-core and @sparticuz/chromium were ~9 Chromium
+        // majors apart) and threw before ever reaching Apps Script. Since the
+        // script produces its own PDF, the whole Chrome hop is unnecessary.
+        //
+        // Field names must match what doPost reads, hence activity (not
+        // activityLevel). The extra *Category/*Note/calorie keys are ignored
+        // by the script but cost nothing and keep the payload self-describing.
         setSending(true);
         try {
-          const apiBase = (typeof WYBE_API_BASE !== 'undefined') ? WYBE_API_BASE : '';
           const payload = {
+            source: 'calculator',
             name: name,
             email: email,
             age: store.age,
             gender: store.gender,
-            activityLevel: store.activityLabel || '',
+            activity: store.activityLabel || '',
             height: store.height,
             weight: store.weight,
             neck: store.neck,
@@ -2371,10 +2376,11 @@
             maintainCalories: store.tdee ? store.tdee.maintain : '',
             leanBulkCalories: store.tdee ? store.tdee.bulk     : '',
           };
-          const res = await fetch(apiBase + '/api/calculator-report', {
+          // form-urlencoded, not JSON: doPost reads e.parameter.
+          const res = await fetch(GAS_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(payload).toString(),
           });
           const json = await res.json().catch(function () { return {}; });
           if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');

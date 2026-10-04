@@ -638,11 +638,12 @@
 
         try {
           const payload = {
+            source: 'calculator',
             name:   name,
             email:  email,
             age:    _s.age,
             gender: _s.gender,
-            activityLevel: _s.activityLabel || '',
+            activity: _s.activityLabel || '',
             height: _s.height,
             weight: _s.weight,
             neck:   _s.neck,
@@ -663,11 +664,14 @@
             maintainCalories: _s.tdee ? _s.tdee.maintain : '',
             leanBulkCalories: _s.tdee ? _s.tdee.bulk     : '',
           };
-          const apiBase = (typeof WYBE_API_BASE !== 'undefined') ? WYBE_API_BASE : '';
-          const res = await fetch(apiBase + '/api/calculator-report', {
+          // Straight to Apps Script, which builds the PDF via Slides. The old
+          // wybe-api hop existed only to render the PDF with headless Chrome,
+          // which failed on every submission. form-urlencoded, not JSON:
+          // doPost reads e.parameter.
+          const res = await fetch(GAS_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(payload).toString(),
           });
           const json = await res.json().catch(function() { return {}; });
           if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');

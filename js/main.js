@@ -2,6 +2,14 @@
 // Update this after deploying the wybe-api project to Vercel.
 var WYBE_API_BASE = 'https://wybe-api.vercel.app';
 
+// ── APPS SCRIPT WEB APP ──────────────────────────────
+// Every form that needs a sheet row + an email posts here: the calculator
+// (which builds its own PDF via Slides), the book waitlist, and contact.
+// MUST stay at top level — the calculator handlers are inline scripts in
+// index.html and calculators.html, so anything scoped inside the
+// DOMContentLoaded callback below is invisible to them.
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
+
 // LEGACY STUB — kept so any cached page referencing buildResultsHtml
 // does not throw a ReferenceError. Real PDF generation is now server-side.
 function buildResultsHtml(name, email, s) {
@@ -549,7 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Web3Forms only ever notified the owner — its autoresponder is a paid
   // feature — which is why submitters stopped receiving confirmations.
   // Every OTHER data-form still posts to Web3Forms.
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec';
+  // GAS_URL is declared at the top of this file (shared with the calculator).
 
   // Apps Script answers a POST with a 302 to script.googleusercontent.com.
   // fetch follows that transparently and BOTH hops send
