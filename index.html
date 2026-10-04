@@ -1284,8 +1284,12 @@
       <!-- 2-column layout: left = Coming Soon + cover, right = form.
            Mobile stacks naturally: Coming Soon → cover → form. -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <!-- LEFT block: cover image with parallax -->
-      <div class="text-left">
+      <!-- LEFT block: cover image with parallax.
+           order-2 on mobile puts the cover BELOW the form; md:order-1 restores
+           it to the left column from 768px up. Reordered in CSS only so the
+           DOM order — and therefore the parallax lookup and desktop
+           behaviour — is unchanged. -->
+      <div class="text-left order-2 md:order-1">
         <div class="wybe-book-cover-frame">
           <img src="images/the-1825-days-cover-white.webp"
                alt="The 1825 Days — the complete nutrition guide for your child"
@@ -1295,8 +1299,9 @@
         </div>
       </div>
 
-      <!-- RIGHT block: waitlist form -->
-      <div class="text-left">
+      <!-- RIGHT block: waitlist form. order-1 on mobile lifts the copy and
+           form above the cover; md:order-2 restores the right column. -->
+      <div class="text-left order-1 md:order-2">
         <p class="font-sans font-bold text-sm tracking-widest uppercase" style="color:#FF6600; margin-bottom: 4px;">Book in Progress</p>
         <h3 class="font-heading text-2xl md:text-3xl leading-tight text-cream mt-3 mb-3">The first five years, made simple.</h3>
         <p class="font-sans text-sm md:text-base text-cream/70 leading-relaxed mb-5 max-w-[46ch]">Every child has 1,825 days between birth and their fifth birthday. That&rsquo;s the window when nutrition shapes growth, brain development and lifelong eating habits more than at any other time. THE 1,825 DAYS is a practical, evidence-based guide that takes the guesswork out of feeding your child, from first milk and first solids to toddler plates and preschool lunchboxes. It cuts through conflicting advice with clear, research-backed guidance, stage-by-stage meal ideas and 36 simple recipes, so you can feed with confidence, not guilt.</p>
