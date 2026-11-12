@@ -44,6 +44,13 @@
        connection early: the hero layer only switches to its fixed mode
        once they arrive, so a slow CDN is a visible delay. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <!-- The hero image is the LCP element and the first thing painted in
+       the fixed window. `media` mirrors the <picture> breakpoint in the
+       hero so phones never fetch the 255 KB desktop crop. -->
+  <link rel="preload" as="image" href="/images/Hero.webp"
+        media="(min-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/images/hero-mobile.webp"
+        media="(max-width: 767px)" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -751,12 +758,31 @@
        announce entering the main region. -->
   <main id="main" tabindex="-1">
 
-  <!-- HERO — text-only on the solid dark backdrop. The background image
-       moved to about.html; the .hero-tint scrim went with it since its
-       only job was lifting the copy off the photo. The fixed-window
-       parallax in main.js no-ops without .hero-bg (it bails on the
-       null check), so nothing else needs disabling. -->
+  <!-- HERO — background image + fixed-window parallax, same as about.html.
+       Unlike that page this hero carries copy over the photo, so it keeps
+       the .hero-tint scrim: measured against the actual image pixels the
+       headline sits at 1.66:1 and the sub-line at 2.91:1 without it (both
+       below WCAG AA), and at 5.41:1 / 6.89:1 with it. -->
   <section id="home" class="hero" data-hero>
+    <!-- Background image layer — full-bleed behind copy, parallax on
+         scroll. Object-position: right so the subject stays visible on
+         the right side of the frame, copy overlaid on the left. -->
+    <div class="hero-bg parallax-wrapper" aria-hidden="true">
+      <picture>
+        <!-- Mobile source: a tighter 1350x1080 crop composed for phones
+             (face + torso + dumbbell prominent, less wall backdrop).
+             The desktop Hero.webp (2592x1632) stays the fallback for
+             everything above the 767 px breakpoint. -->
+        <source media="(max-width: 767px)" srcset="/images/hero-mobile.webp" type="image/webp">
+        <img src="/images/Hero.webp"
+             alt=""
+             class="parallax-img hero-bg__img"
+             data-parallax-speed="0.15">
+      </picture>
+    </div>
+    <!-- Gradient tint — centre-weighted scrim behind the copy so the
+         text lifts off the raw hero image. -->
+    <div class="hero-tint" aria-hidden="true"></div>
     <div class="hero-frame">
       <div class="hero-content" data-hero-content>
         <h1 class="hero-tagline">
