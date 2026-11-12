@@ -578,6 +578,37 @@ document.addEventListener('DOMContentLoaded', () => {
     return json.ok === true;
   }
 
+  // ── PHONE NUMBER VALIDATION ──────────────────────────────────────
+  // Shared by both book waitlists. Returns { ok, digits } where digits is
+  // the normalised, digits-only form to save.
+  //
+  // dialCode is only meaningful for the split index.html field: a UAE
+  // number written locally as 050… carries a trunk zero that must come off
+  // before the +971, otherwise we would store +9710501234567.
+  function wybeValidatePhone(value, dialCode) {
+    var v = String(value == null ? '' : value).trim();
+    if (!v) return { ok: false };
+    // Only digits and the usual separators. Anything else (letters, etc.)
+    // is rejected outright rather than silently stripped.
+    if (!/^[0-9+\-().\s]+$/.test(v)) return { ok: false };
+    var digits = v.replace(/^\+/, '').replace(/[\s\-().]/g, '');
+    if (!/^[0-9]+$/.test(digits)) return { ok: false };
+    if (dialCode === '+971' && digits.charAt(0) === '0') digits = digits.slice(1);
+    if (digits.length < 7 || digits.length > 15) return { ok: false };
+    return { ok: true, digits: digits };
+  }
+
+  // Clear the phone error as soon as the user edits the field.
+  ['wl-mobile-num', 'waitlist-mobile'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      var errEl = document.getElementById('waitlist-send-error');
+      if (errEl) errEl.classList.add('hidden');
+      delete el.dataset.wybeDigits;
+    });
+  });
+
   // Timestamp when the script loaded — used for the time-trap.
   var PAGE_LOAD_TS = Date.now();
 
@@ -623,6 +654,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
+      // ── PHONE VALIDATION (both waitlists) ────────────────────────────
+      // Runs BEFORE the try block, so nothing is sent on a bad number.
+      // Two shapes share this branch: index.html splits the number across a
+      // dial-code picker (#wl-dialcode-value) and a national box
+      // (#wl-mobile-num); book.html has one combined field (#waitlist-mobile)
+      // that the assembly below already falls back to via raw.mobile.
+      var phoneEl = null, dialForCheck = '';
+      if (subj === '1825 Days, Waitlist') {
+        phoneEl = document.getElementById('wl-mobile-num') || document.getElementById('waitlist-mobile');
+        var dialProbe = document.getElementById('wl-dialcode-value');
+        dialForCheck = dialProbe ? dialProbe.value : '';
+      }
+      if (phoneEl) {
+        var phoneCheck = wybeValidatePhone(phoneEl.value, dialForCheck);
+        if (!phoneCheck.ok) {
+          if (btn) { btn.textContent = originalText; btn.disabled = false; }
+          if (errElId) {
+            var pEl = document.getElementById(errElId);
+            if (pEl) {
+              pEl.textContent = 'Please enter a valid mobile number (at least 7 digits).';
+              pEl.classList.remove('hidden');
+            }
+          }
+          phoneEl.focus();      // everything the user typed is left intact
+          return;
+        }
+        // Stash the normalised digits so the assembly below saves the
+        // trunk-zero-stripped form rather than the raw keystrokes.
+        phoneEl.dataset.wybeDigits = phoneCheck.digits;
+      }
+
       try {
         var elapsed = String(Date.now() - PAGE_LOAD_TS);
 
@@ -630,7 +692,19 @@ document.addEventListener('DOMContentLoaded', () => {
           var dialEl = document.getElementById('wl-dialcode-value');
           var numEl  = document.getElementById('wl-mobile-num');
           var cHidEl = document.getElementById('wl-country-hidden');
-          var mobileVal  = (dialEl ? dialEl.value : '') + (numEl ? numEl.value.trim() : (raw.mobile || ''));
+          // Prefer the normalised digits stashed by the validator above, so
+          // "050 123 4567" with +971 saves as +971501234567, not
+          // +9710501234567. Falls back to the raw value if absent.
+          var numSrc    = numEl || document.getElementById('waitlist-mobile');
+          var numClean  = numSrc && numSrc.dataset.wybeDigits
+                            ? numSrc.dataset.wybeDigits
+                            : (numEl ? numEl.value.trim() : (raw.mobile || ''));
+          // With no dial-code picker (book.html) the field holds the whole
+          // number, so keep a leading "+" the user typed — otherwise
+          // "+971 50 123 4567" would be stored as bare "971501234567" and
+          // lose the international-format marker.
+          var plusPrefix = (!dialEl && numSrc && /^\s*\+/.test(numSrc.value)) ? '+' : '';
+          var mobileVal  = (dialEl ? dialEl.value : plusPrefix) + numClean;
           var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : (raw.country || '');
           // Field names must match what doPost reads: name, email, mobile, country.
           var gasOk = await postToGas({

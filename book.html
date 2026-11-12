@@ -302,8 +302,14 @@
             </div>
             <div>
               <label for="waitlist-mobile" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Mobile</label>
-              <input type="tel" id="waitlist-mobile" name="mobile" required placeholder="+971 50 000 0000" class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
+              <input type="tel" id="waitlist-mobile" name="mobile" required placeholder="+971 50 000 0000"
+                     inputmode="tel" autocomplete="tel" minlength="7"
+                     class="border border-charcoal/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-charcoal/30">
             </div>
+            <!-- This form had no error element; the shared handler in main.js
+                 looks for #waitlist-send-error. Styled for this page's light
+                 theme rather than the dark one used on index.html. -->
+            <p id="waitlist-send-error" class="hidden font-sans text-xs text-red-600 -mt-2" role="alert" aria-live="polite"></p>
             <div>
               <label for="waitlist-who" class="font-sans text-xs tracking-widest uppercase text-charcoal/50 block mb-2">Who Are You?</label>
               <select id="waitlist-who" name="who_you_are" required class="border border-charcoal/20 bg-cream px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
