@@ -104,6 +104,18 @@
                   0 8px 32px rgba(0, 0, 0, 0.45);
     }
     #ucalc-confirm.hidden { display: none !important; }
+    .ucalc-sendnote {
+      font-family: 'Raleway', 'Inter', sans-serif;
+      font-size: 12px; line-height: 1.5;
+      color: rgba(246, 242, 232, 0.55);
+      margin-top: 10px;
+    }
+    /* The confirmation replaces a much taller form. Without a floor the
+       card collapses on submit. Mirrors index.html. */
+    #ucalc-confirm {
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: var(--ucalc-panel-h, 0px);
+    }
     @media (min-width: 768px) {
       #unified-calc-form, #ucalc-view-results, #ucalc-confirm { padding: 28px; }
     }
@@ -259,7 +271,7 @@
       <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Calculators</h1>
       <div class="w-12 h-px bg-burgundy mb-6"></div>
       <p class="font-sans text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
-        Your weight tells you very little. Your body fat percentage defines your body aesthetics. Your results are calculated right here in your browser. Your measurements are only sent if you choose to email yourself the results.
+        Your weight tells you very little. Your body fat percentage defines your body aesthetics. Enter your measurements and your personalised report lands in your inbox within minutes.
       </p>
     </div>
   </section>
@@ -276,155 +288,81 @@
       <div class="max-w-2xl mx-auto">
         <form id="unified-calc-form" data-view="form">
           <div class="wybe-calc-title-rule"></div>
+          <p class="ucalc-intro-heading">Fill in your details and I&rsquo;ll email you a personalised report: BMI, ideal weight, body fat % and daily calories.</p>
 
+          <div class="wybe-input-row wybe-input-row--full">
+            <label for="ucalc-name">Full name</label>
+            <input type="text" id="ucalc-name" autocomplete="name" required placeholder="">
+          </div>
+          <div class="wybe-input-row wybe-input-row--full">
+            <label for="ucalc-email-field">Email</label>
+            <input type="email" id="ucalc-email-field" autocomplete="email" required placeholder="">
+          </div>
           <div class="wybe-input-row">
             <label for="ucalc-gender">Gender</label>
-            <select id="ucalc-gender">
-              <option value="">Select&hellip;</option>
+            <select id="ucalc-gender" required>
+              <option value="" selected>Select&hellip;</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-age">Age</label>
-            <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="32">
+            <input type="number" id="ucalc-age" min="5" max="120" step="1" required placeholder="">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-height">Height (cm)</label>
-            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="178">
+            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-weight">Weight (kg)</label>
-            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="78">
+            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-neck">Neck (cm)</label>
-            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="38">
+            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-waist">Waist (cm)</label>
-            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="85">
+            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
             <label for="ucalc-hip">Hip (cm)</label>
-            <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="95">
+            <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="">
           </div>
-          <div class="wybe-input-row">
+          <div class="wybe-input-row" id="ucalc-activity-wrap">
             <label for="ucalc-activity">Activity level</label>
-            <select id="ucalc-activity">
-              <option value="">Select&hellip;</option>
-              <option value="1.2">Sedentary, desk job, no training</option>
-              <option value="1.375">Lightly active, 1-3 days/week</option>
-              <option value="1.55">Moderately active, 3-5 days/week</option>
-              <option value="1.725">Very active, 6-7 days/week</option>
-              <option value="1.9">Extra active, physical job + daily training</option>
+            <select id="ucalc-activity" required>
+              <option value="" selected>Select&hellip;</option>
+              <option value="1.2">Sedentary</option>
+              <option value="1.375">Lightly active</option>
+              <option value="1.55">Moderately active</option>
+              <option value="1.725">Very active</option>
+              <option value="1.9">Athlete</option>
             </select>
           </div>
 
-          <button type="submit" class="wybe-calc-cta">Get Result &rarr;</button>
+          <div class="wybe-input-row--full calc-consent-row">
+            <input type="checkbox" id="ucalc-consent" name="consent" value="yes" required>
+            <label for="ucalc-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+          </div>
+
+          <div class="wybe-input-row--full calc-captcha-row">
+            <button type="submit" class="wybe-calc-cta ucalc-submit-btn">
+              <span class="ucalc-submit-label">Email my report &rarr;</span>
+              <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="wybe-input-row--full ucalc-sendnote">Your report is sent by email. Results are not shown on screen.</p>
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
 
-        <div id="ucalc-view-results" class="hidden" data-view="results" style="background:#1A2E22;">
-          <div class="flex items-center justify-between mb-6">
-            <button type="button" id="ucalc-edit-inputs"
-                    class="inline-flex items-center gap-1.5 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
-              <span aria-hidden="true">&uarr;</span> Edit inputs
-            </button>
-            <p class="font-sans text-xs tracking-widest uppercase text-cream/60">Your Results</p>
-          </div>
-
-          <div id="ucalc-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="ucalc-tile" data-metric="bmi">
-              <p class="ucalc-tile-eyebrow">Body Mass Index</p>
-              <p class="ucalc-tile-value"><span data-value>&mdash;</span></p>
-              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
-              <p class="ucalc-tile-note" data-note>&mdash;</p>
-              <p class="ucalc-tile-hint hidden" data-hint>Enter height + weight to unlock.</p>
-            </div>
-            <div class="ucalc-tile" data-metric="ibw">
-              <p class="ucalc-tile-eyebrow">Ideal Body Weight</p>
-              <p class="ucalc-tile-value"><span data-value>&mdash;</span> <span class="ucalc-tile-unit">kg</span></p>
-              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
-              <p class="ucalc-tile-note" data-note>&mdash;</p>
-              <p class="ucalc-tile-hint hidden" data-hint>Enter gender + height to unlock.</p>
-            </div>
-            <div class="ucalc-tile" data-metric="bfp">
-              <p class="ucalc-tile-eyebrow">Body Fat %</p>
-              <p class="ucalc-tile-value"><span data-value>&mdash;</span><span class="ucalc-tile-unit">%</span></p>
-              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
-              <p class="ucalc-tile-note" data-note>&mdash;</p>
-              <p class="ucalc-tile-hint hidden" data-hint>Enter gender + height + neck + waist (+ hip for female) to unlock.</p>
-            </div>
-            <div class="ucalc-tile" data-metric="tdee">
-              <p class="ucalc-tile-eyebrow">Daily Calorie Needs</p>
-              <p class="ucalc-tile-value"><span data-value>&mdash;</span> <span class="ucalc-tile-unit">kcal</span></p>
-              <p class="ucalc-tile-cat" data-cat>&mdash;</p>
-              <p class="ucalc-tile-note" data-note>&mdash;</p>
-              <p class="ucalc-tile-hint hidden" data-hint>Enter gender + age + height + weight + activity to unlock.</p>
-              <div class="ucalc-tile-targets hidden" data-targets>
-                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Cut (fat loss)</span><span class="font-bold text-white"><span data-cut>&mdash;</span> kcal</span></p>
-                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Maintain</span><span class="font-bold text-white"><span data-maintain>&mdash;</span> kcal</span></p>
-                <p class="flex justify-between border-t border-white/10 pt-2 mt-2 font-sans text-xs"><span class="text-white/60">Lean bulk</span><span class="font-bold text-white"><span data-bulk>&mdash;</span> kcal</span></p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Disclaimer sits directly below the result tiles -->
-          <p class="mt-6 font-sans text-[11px] text-white/45 leading-snug">
-            * Estimates. BFP is Navy circumference, ~&plusmn;4-5% of DEXA/BIA. BMI screens for weight class, not composition. IBW uses Broca&rsquo;s Index (&plusmn;5 kg band). TDEE uses Mifflin-St Jeor.
-          </p>
-
-          <!-- Thin orange line separating the report from the email form -->
-          <div style="height:1px; background:#FF6600; margin: 24px 0;"></div>
-
-          <!-- Email form — name, email, then the orange Email Results button -->
-          <div id="ucalc-email-block">
-            <form id="ucalc-email-form" data-pdf-form data-calc="unified" action="https://api.web3forms.com/submit" method="POST" class="space-y-3" enctype="multipart/form-data" novalidate>
-              <input type="hidden" name="access_key" value="9dd51d8a-998b-4b71-bda2-fd22eb6a752a">
-              <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
-              <input type="hidden" name="subject" value="WYBE, Unified Report PDF Request">
-              <input type="hidden" name="report_summary" id="ucalc-email-summary">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <label class="sr-only" for="ucalc-email-name">Full name</label>
-                <input id="ucalc-email-name" type="text" name="name" required autocomplete="name" placeholder="Full name"
-                       class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30"
-                       aria-invalid="false" data-input="name">
-                <label class="sr-only" for="ucalc-email-input">Email address</label>
-                <input id="ucalc-email-input" type="email" name="email" required autocomplete="email" placeholder="your@email.com"
-                       class="bg-transparent border-b border-white/25 px-0 py-2 font-sans text-sm text-white w-full focus:outline-none focus:border-burgundy placeholder:text-white/30"
-                       aria-describedby="ucalc-email-hint" aria-invalid="false" data-input="email">
-              </div>
-              <p id="ucalc-email-hint" class="sr-only">Enter a valid email address, for example name@example.com.</p>
-              <p id="ucalc-email-error" class="hidden font-sans text-xs text-red-300 -mt-1" role="alert" aria-live="polite"></p>
-              <!-- Consent — required before the measurements are processed. -->
-              <div class="calc-consent-row">
-                <input type="checkbox" id="ucalc-email-consent" name="consent" value="yes" required>
-                <label for="ucalc-email-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
-              </div>
-              <button type="submit" class="wybe-calc-cta" data-submit>
-                <span data-btn-label>Email Results</span>
-                <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
-              </button>
-            </form>
-
-            <div id="ucalc-email-success" class="hidden mt-3 flex items-start gap-2 text-sm text-cream/90" role="status" aria-live="polite">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mt-0.5 text-burgundy flex-shrink-0" aria-hidden="true">
-                <path d="M20 6L9 17l-5-5"/>
-              </svg>
-              <span><strong class="text-cream">Sent.</strong> Your results are on the way to your inbox. Check spam if you don&rsquo;t see it within a few minutes.</span>
-            </div>
-
-            <div id="ucalc-email-fail" class="hidden mt-3 border border-red-300/40 bg-red-500/10 px-3 py-2 rounded-md flex items-start justify-between gap-3" role="alert" aria-live="assertive">
-              <p class="font-sans text-xs text-cream/90 leading-snug">
-                Send failed &mdash; check your connection and try again.
-              </p>
-              <button type="button" data-retry class="font-sans text-xs font-bold uppercase tracking-widest text-burgundy underline underline-offset-2 flex-shrink-0">
-                Retry
-              </button>
-            </div>
-          </div>
-
+        <!-- Confirmation panel — shown after a successful submit -->
+        <div id="ucalc-confirm" class="hidden" data-view="confirm">
+          <p class="font-sans text-xl font-bold mb-3" style="color:#FF6600;">Your report is on its way</p>
+          <p class="font-sans text-sm leading-relaxed mb-4" style="color:rgba(246,242,232,.75);">Sent to <span id="ucalc-sent-to" class="font-semibold" style="color:#F6F2E8;"></span>. It usually arrives within 2 minutes. If you don&rsquo;t see it, check your Spam or Junk folder and mark it as &ldquo;Not spam&rdquo; so you get my future emails.</p>
+          <button type="button" id="ucalc-resend" class="font-sans text-sm underline" style="color:#FF6600;">Wrong email? Send again</button>
+        </div>
           <!-- Footer CTA -->
           <p class="mt-8 text-center font-sans text-sm text-cream/70">
             For Better Results, <a href="services-fitness.html" class="underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-cream transition-colors">Book a Consultation</a>.
@@ -504,39 +442,47 @@
 
   <script src="js/main.js"></script>
   <script>
-    // Shared store of the latest unified calculator output for the PDF handler to read.
     const CalcStore = { unified: null };
 
     // ── UNIFIED CALCULATOR ────────────────────────────
+      // Mirrors the homepage controller exactly: one form, email-only, no
+      // on-screen results. Kept in sync with index.html by hand; the only
+      // difference is that this page has no Turnstile widget, so that guard
+      // is absent here.
     (function () {
       const form = document.getElementById('unified-calc-form');
       if (!form) return;
 
       const els = {
-        gender:      document.getElementById('ucalc-gender'),
-        age:         document.getElementById('ucalc-age'),
-        height:      document.getElementById('ucalc-height'),
-        weight:      document.getElementById('ucalc-weight'),
-        neck:        document.getElementById('ucalc-neck'),
-        waist:       document.getElementById('ucalc-waist'),
-        hip:         document.getElementById('ucalc-hip'),
-        hipWrap:     document.getElementById('ucalc-hip-wrap'),
-        activity:    document.getElementById('ucalc-activity'),
-        error:       document.getElementById('ucalc-error'),
-        results:     document.getElementById('ucalc-results'),
-        viewResults: document.getElementById('ucalc-view-results'),
-        editBtn:     document.getElementById('ucalc-edit-inputs'),
-        emailSummary:document.getElementById('ucalc-email-summary'),
-      };
-      const tiles = {
-        bmi:  document.querySelector('[data-metric="bmi"]'),
-        ibw:  document.querySelector('[data-metric="ibw"]'),
-        bfp:  document.querySelector('[data-metric="bfp"]'),
-        tdee: document.querySelector('[data-metric="tdee"]'),
+        name:          document.getElementById('ucalc-name'),
+        email:         document.getElementById('ucalc-email-field'),
+        gender:        document.getElementById('ucalc-gender'),
+        age:           document.getElementById('ucalc-age'),
+        height:        document.getElementById('ucalc-height'),
+        weight:        document.getElementById('ucalc-weight'),
+        neck:          document.getElementById('ucalc-neck'),
+        waist:         document.getElementById('ucalc-waist'),
+        hip:           document.getElementById('ucalc-hip'),
+        hipWrap:       document.getElementById('ucalc-hip-wrap'),
+        activity:      document.getElementById('ucalc-activity'),
+        activityWrap:  document.getElementById('ucalc-activity-wrap'),
+        error:         document.getElementById('ucalc-error'),
+        confirm:       document.getElementById('ucalc-confirm'),
+        submitBtn:     form.querySelector('.ucalc-submit-btn'),
+        submitLabel:   form.querySelector('.ucalc-submit-label'),
+        submitSpinner: form.querySelector('.ucalc-submit-spinner'),
       };
 
+      // Hip only for female; activity spans full-width when hip is hidden.
       const toggleHip = () => {
-        els.hipWrap.classList.toggle('hidden', els.gender.value !== 'female');
+        const isFemale = els.gender.value === 'female';
+        els.hipWrap.classList.toggle('hidden', !isFemale);
+        // Keep the attribute in step with visibility: a hidden `required`
+        // field blocks native submit with an unfocusable control.
+        if (els.hip) { isFemale ? els.hip.setAttribute('required','') : els.hip.removeAttribute('required'); }
+        if (els.activityWrap) {
+          els.activityWrap.style.gridColumn = isFemale ? '' : '1 / -1';
+        }
       };
       els.gender.addEventListener('change', toggleHip);
       toggleHip();
@@ -547,24 +493,37 @@
       };
 
       const bmiCategory = (bmi) => {
-        if (bmi < 18.5) return { name: 'Underweight',   note: 'Below the typical healthy range. Build muscle, not just weight, with progressive training and a calorie surplus.' };
-        if (bmi < 25)   return { name: 'Normal weight', note: 'Within the healthy adult range. Focus on body composition and strength rather than this single number.' };
-        if (bmi < 30)   return { name: 'Overweight',    note: 'Above the healthy range. A structured plan with progressive training and a small calorie deficit can move this down.' };
-        return          { name: 'Obese',                note: 'Long-term health risks rise sharply here. A structured plan and consistent execution change this faster than you think.' };
+        if (bmi < 18.5) return { name: 'Underweight',   note: 'Below the typical healthy range.' };
+        if (bmi < 25)   return { name: 'Normal weight', note: 'Within the healthy adult range.' };
+        if (bmi < 30)   return { name: 'Overweight',    note: 'Above the healthy range.' };
+        return          { name: 'Obese',                note: 'Long-term health risks rise sharply here.' };
       };
+      const BFP_BANDS_MALE = [
+        { name: 'Essential fat',        low: 2,  high: 5  },
+        { name: 'Athletic',             low: 6,  high: 13 },
+        { name: 'Fitness',              low: 14, high: 17 },
+        { name: 'Acceptable / Average', low: 18, high: 24 },
+        { name: 'Obese',                low: 25, high: null },
+      ];
+      const BFP_BANDS_FEMALE = [
+        { name: 'Essential fat',        low: 10, high: 13 },
+        { name: 'Athletic',             low: 14, high: 20 },
+        { name: 'Fitness',              low: 21, high: 24 },
+        { name: 'Acceptable / Average', low: 25, high: 31 },
+        { name: 'Obese',                low: 32, high: null },
+      ];
       const bfpCategory = (bfp, isFemale) => {
-        if (isFemale) {
-          if (bfp < 14) return { name: 'Essential fat range',   note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
-          if (bfp < 19) return { name: 'Athletes range',        note: 'Highly trained, competition-lean. Requires careful nutrition and recovery to maintain.' };
-          if (bfp < 21) return { name: 'Fitness range',         note: 'Visibly trained, healthy, sustainable. A strong target for most active women.' };
-          if (bfp < 32) return { name: 'Average / Acceptable',  note: 'Within the healthy adult range. Resistance training and nutrition can move this lower if that is your goal.' };
-          return          { name: 'Above average',              note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this.' };
+        const bands = isFemale ? BFP_BANDS_FEMALE : BFP_BANDS_MALE;
+        for (let i = 0; i < bands.length; i++) {
+          const b = bands[i];
+          if (b.high === null || bfp <= b.high) {
+            const note = (b.high === null)
+              ? b.name + ' Range is ' + b.low + '% and higher.'
+              : b.name + ' Range is ' + b.low + '% to ' + b.high + '%.';
+            return { name: b.name, note: note };
+          }
         }
-        if (bfp < 6)  return { name: 'Essential fat range',   note: 'Very low body fat. Generally only sustainable for very short periods and should be supervised by a professional.' };
-        if (bfp < 13) return { name: 'Athletes range',        note: 'Competition-lean. Requires careful nutrition and recovery to maintain.' };
-        if (bfp < 16) return { name: 'Fitness range',         note: 'Visibly trained and healthy. A strong target for most active men.' };
-        if (bfp < 25) return { name: 'Average / Acceptable',  note: 'Within the healthy adult range. Resistance training and a diet plan can move this lower if that is your goal.' };
-        return          { name: 'Above average',              note: 'Health risks (cardiovascular, metabolic) start to increase. A structured plan can change this.' };
+        return { name: bands[bands.length - 1].name, note: '' };
       };
       const tdeeCategory = (tdee) => {
         if (tdee < 1700) return 'Low energy needs, careful with cuts';
@@ -574,59 +533,106 @@
       };
       const roundKcal = (n) => Math.round(n / 5) * 5;
 
-      const renderTile = (metric, valueHtml, category, note, extras) => {
-        const t = tiles[metric];
-        if (!t) return;
-        t.classList.add('is-unlocked');
-        t.classList.remove('is-locked');
-        t.querySelector('[data-value]').innerHTML = valueHtml;
-        t.querySelector('[data-cat]').textContent = category || '';
-        t.querySelector('[data-note]').textContent = note || '';
-        t.querySelector('[data-hint]').classList.add('hidden');
-        if (metric === 'tdee' && extras) {
-          const wrap = t.querySelector('[data-targets]');
-          if (wrap) {
-            wrap.querySelector('[data-cut]').textContent      = extras.cut.toLocaleString();
-            wrap.querySelector('[data-maintain]').textContent = extras.maintain.toLocaleString();
-            wrap.querySelector('[data-bulk]').textContent     = extras.bulk.toLocaleString();
-            wrap.classList.remove('hidden');
-          }
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      const showErr = (msg, target) => {
+        els.error.textContent = msg;
+        els.error.classList.remove('hidden');
+        if (target) {
+          target.setAttribute('aria-invalid', 'true');
+          try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
         }
       };
-      const lockTile = (metric) => {
-        const t = tiles[metric];
-        if (!t) return;
-        t.classList.add('is-locked');
-        t.classList.remove('is-unlocked');
-        t.querySelector('[data-value]').textContent = '—';
-        t.querySelector('[data-cat]').textContent = '';
-        t.querySelector('[data-note]').textContent = '';
-        t.querySelector('[data-hint]').classList.remove('hidden');
-        const targets = t.querySelector('[data-targets]');
-        if (targets) targets.classList.add('hidden');
+      const clearErr = () => {
+        els.error.classList.add('hidden');
+        els.error.textContent = '';
+      };
+      // A field counts as filled only if it parses AND sits inside its range,
+      // so the HTML min/max are enforced in JS too rather than just hinted.
+      const inRange = (el, lo, hi) => {
+        if (!el || el.value === '') return false;
+        const n = parseFloat(el.value);
+        return isFinite(n) && n >= lo && n <= hi;
+      };
+      const setSending = (on) => {
+        if (els.submitBtn)     els.submitBtn.disabled = on;
+        if (els.submitSpinner) els.submitSpinner.classList.toggle('hidden', !on);
+        if (els.submitLabel)   els.submitLabel.textContent = on ? 'Sending…' : 'Get Result →';
       };
 
-      const showErr = (msg) => { els.error.textContent = msg; els.error.classList.remove('hidden'); };
-      const clearErr = () => els.error.classList.add('hidden');
+      // Clear the error the moment the user edits any field. Previously
+      // clearErr() ran only at the start of the next submit, so a message
+      // like "Enter your full name." stayed on screen after it was fixed.
+      ['name','email','gender','age','height','weight','neck','waist','hip','activity']
+        .forEach((k) => {
+          const el = els[k];
+          if (!el) return;
+          ['input','change'].forEach((evt) => el.addEventListener(evt, () => {
+            el.setAttribute('aria-invalid', 'false');
+            clearErr();
+          }));
+        });
 
-      form.addEventListener('submit', (e) => {
+      // "Wrong email? Send again" — bring the form back with the
+      // measurements intact and only the address cleared.
+      const resendBtn = document.getElementById('ucalc-resend');
+      if (resendBtn) {
+        resendBtn.addEventListener('click', () => {
+          if (els.confirm) els.confirm.classList.add('hidden');
+          form.classList.remove('hidden');
+          clearErr();
+          if (els.email) { els.email.value = ''; els.email.focus(); }
+        });
+      }
+
+      // Timestamp when the IIFE loaded — server rejects elapsed < 3000 ms.
+      const CALC_LOAD_TS = Date.now();
+
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         clearErr();
 
+        const name  = (els.name.value  || '').trim();
+        const email = (els.email.value || '').trim();
         const gender   = els.gender.value;
         const isFemale = gender === 'female';
-        const age      = els.age.value ? parseInt(els.age.value, 10) : null;
+
+        // Every field is mandatory. Checked here as well as via the HTML
+        // `required` attribute, because the submit handler preventDefault()s
+        // and native validation would otherwise never run. Hip is the one
+        // conditional: it only applies to the female BFP formula.
+        const checks = [
+          [els.name,     name.length >= 2,                      'Enter your full name (at least 2 characters).'],
+          [els.email,    EMAIL_RE.test(email),                  "That email doesn't look right — try name@example.com."],
+          [els.gender,   !!gender,                              'Select your gender.'],
+          [els.age,      inRange(els.age, 5, 120),              'Enter your age (5–120).'],
+          [els.height,   inRange(els.height, 50, 260),          'Enter your height in cm (50–260).'],
+          [els.weight,   inRange(els.weight, 20, 400),          'Enter your weight in kg (20–400).'],
+          [els.neck,     inRange(els.neck, 20, 70),             'Enter your neck measurement in cm (20–70).'],
+          [els.waist,    inRange(els.waist, 40, 200),           'Enter your waist measurement in cm (40–200).'],
+          [els.hip,      !isFemale || inRange(els.hip, 50, 200),'Enter your hip measurement in cm (50–200).'],
+          [els.activity, !!els.activity.value,                  'Select your activity level.'],
+        ];
+        for (const [el, ok, msg] of checks) {
+          if (!ok) { showErr(msg, el); return; }
+        }
+
+        // ── Consent guard ─────────────────────────────
+        // Runs after the field checks: consent is the last item in the
+        // field order, so an empty form should flag the name first.
+        const consentEl = document.getElementById('ucalc-consent');
+        if (!consentEl || !consentEl.checked) {
+          showErr('Please agree to the Privacy Policy before we send your results.');
+          return;
+        }
+
+
+        const age      = parseInt(els.age.value, 10);
         const h        = num(els.height);
         const w        = num(els.weight);
         const neck     = num(els.neck);
         const waist    = num(els.waist);
         const hip      = num(els.hip);
-        const mult     = els.activity.value ? parseFloat(els.activity.value) : null;
-
-        if (!h || !w) {
-          showErr('Enter at least your height and weight to get started.');
-          return;
-        }
+        const mult     = parseFloat(els.activity.value);
 
         const store = {
           gender: gender || null, age,
@@ -637,16 +643,16 @@
           bmi: null, ibw: null, bfp: null, tdee: null,
         };
 
+        // ── BMI ──
         {
           const hm = h / 100;
           const bmi = w / (hm * hm);
           if (isFinite(bmi) && bmi >= 5 && bmi <= 80) {
             const cat = bmiCategory(bmi);
-            renderTile('bmi', bmi.toFixed(1), cat.name, cat.note);
             store.bmi = { value: bmi.toFixed(1), category: cat.name, note: cat.note };
-          } else { lockTile('bmi'); }
+          }
         }
-
+        // ── IBW (Broca) ──
         if (gender) {
           const maleIBW = h - 100;
           const target = gender === 'male' ? maleIBW : maleIBW * 0.9;
@@ -654,227 +660,123 @@
             const point = Math.round(target);
             const low = Math.round(target - 5);
             const high = Math.round(target + 5);
-            const html = point + ' <span class="text-white/45 text-2xl">(' + low + '–' + high + ')</span>';
-            const note = 'Healthy target band, \xb15 kg around ' + point + " kg. Broca's Index; exercising men should track body-fat % instead.";
-            renderTile('ibw', html, 'IBW ' + point + ' kg', note);
-            store.ibw = { point, low, high, note };
-          } else { lockTile('ibw'); }
-        } else { lockTile('ibw'); }
-
+            store.ibw = { point, low, high, note: 'IBW range is ' + low + ' to ' + high + ' kg.' };
+          }
+        }
+        // ── BFP (Navy circumference) ──
+        // Formula constants are calibrated for inches; convert cm inputs before use.
+        // h/neck/waist/hip (cm) are kept unchanged for BMI, IBW, and TDEE.
         const bfpOK = gender && neck && waist && (!isFemale || hip);
         if (bfpOK) {
+          const heightIn = h    / 2.54;
+          const neckIn   = neck / 2.54;
+          const waistIn  = waist / 2.54;
+          const hipIn    = hip  ? hip / 2.54 : null;
           let bfp;
           if (isFemale) {
-            const diff = waist + hip - neck;
+            const diff = waistIn + hipIn - neckIn;
             if (diff > 0) {
-              const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(h);
+              const denom = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(heightIn);
               bfp = 495 / denom - 450;
             }
           } else {
-            const diff = waist - neck;
+            const diff = waistIn - neckIn;
             if (diff > 0) {
-              const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(h);
+              const denom = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(heightIn);
               bfp = 495 / denom - 450;
             }
           }
           if (isFinite(bfp)) {
             const rounded = Math.round(bfp * 10) / 10;
-            let cat;
-            if (rounded < 2 || rounded > 60) {
-              cat = { name: 'Outside plausible range', note: 'The formula returned a value outside the realistic 2–60% band. One of your measurements is likely off.' };
-            } else {
-              cat = bfpCategory(rounded, isFemale);
-            }
-            renderTile('bfp', rounded.toFixed(1), cat.name, cat.note);
+            const cat = (rounded < 2 || rounded > 60)
+              ? { name: 'Outside plausible range', note: 'The formula returned a value outside the realistic 2–60% band. One of your measurements is likely off.' }
+              : bfpCategory(rounded, isFemale);
             store.bfp = { value: rounded.toFixed(1), category: cat.name, note: cat.note };
-          } else { lockTile('bfp'); }
-        } else { lockTile('bfp'); }
-
+          }
+        }
+        // ── TDEE (Mifflin-St Jeor) ──
         if (gender && age && mult) {
           const bmr = gender === 'male'
             ? 10 * w + 6.25 * h - 5 * age + 5
             : 10 * w + 6.25 * h - 5 * age - 161;
           if (isFinite(bmr) && bmr >= 500) {
             const tdee = bmr * mult;
-            const cat = tdeeCategory(tdee);
-            const cut = roundKcal(tdee - 500);
             const maintain = roundKcal(tdee);
-            const bulk = roundKcal(tdee + 250);
-            renderTile('tdee', maintain.toLocaleString(), cat, '', { cut, maintain, bulk });
-            store.tdee = { value: maintain, category: cat, cut, maintain, bulk };
-          } else { lockTile('tdee'); }
-        } else { lockTile('tdee'); }
-
-        // Swap views: hide the form, reveal the results panel in its place.
-        form.classList.add('hidden');
-        els.viewResults.classList.remove('hidden');
-
-        const any = store.bmi || store.ibw || store.bfp || store.tdee;
-        if (any) {
-          const parts = [];
-          if (store.bmi)  parts.push('BMI ' + store.bmi.value + ' (' + store.bmi.category + ')');
-          if (store.bfp)  parts.push('BFP ' + store.bfp.value + '% (' + store.bfp.category + ')');
-          if (store.tdee) parts.push('TDEE ' + store.tdee.value.toLocaleString() + ' kcal (' + store.tdee.category + ')');
-          if (store.ibw)  parts.push('IBW ' + store.ibw.point + ' kg (' + store.ibw.low + '–' + store.ibw.high + ')');
-          els.emailSummary.value = parts.join(' · ');
+            store.tdee = { value: maintain, category: tdeeCategory(tdee), cut: roundKcal(tdee - 500), maintain, bulk: roundKcal(tdee + 250) };
+          }
         }
-
-        els.viewResults.scrollIntoView({
-          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-          block: 'start'
-        });
 
         CalcStore.unified = store;
-      });
 
-      if (els.editBtn) {
-        els.editBtn.addEventListener('click', () => {
-          els.viewResults.classList.add('hidden');
-          form.classList.remove('hidden');
-          form.scrollIntoView({
-            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-            block: 'start'
-          });
-        });
-      }
-    })();
-
-    // ── UNIFIED CALCULATOR EMAIL HANDLER ──────────
-    // Formats results as plain text and emails them directly to the
-    // address the user enters — no PDF download, no local file.
-    (function () {
-      const form = document.getElementById('ucalc-email-form');
-      if (!form) return;
-
-
-      const btn         = form.querySelector('[data-submit]');
-      const btnLabel    = form.querySelector('[data-btn-label]');
-      const btnSpinner  = form.querySelector('[data-btn-spinner]');
-      const nameInput   = form.querySelector('[data-input="name"]');
-      const emailInput  = form.querySelector('[data-input="email"]');
-      const errorSlot   = document.getElementById('ucalc-email-error');
-      const successPanel = document.getElementById('ucalc-email-success');
-      const failPanel    = document.getElementById('ucalc-email-fail');
-      const retryBtn     = failPanel && failPanel.querySelector('[data-retry]');
-
-      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-      const showError = (msg, target) => {
-        errorSlot.textContent = msg;
-        errorSlot.classList.remove('hidden');
-        if (target) {
-          target.setAttribute('aria-invalid', 'true');
-          try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
-        }
-      };
-      const clearError = () => {
-        errorSlot.textContent = '';
-        errorSlot.classList.add('hidden');
-        nameInput  && nameInput.setAttribute('aria-invalid',  'false');
-        emailInput && emailInput.setAttribute('aria-invalid', 'false');
-      };
-      const setSending = (on) => {
-        if (!btn) return;
-        btn.disabled = on;
-        if (btnSpinner) btnSpinner.classList.toggle('hidden', !on);
-        if (btnLabel)   btnLabel.textContent = on ? 'Sending…' : 'Email Results';
-      };
-
-      const send = async () => {
-        clearError();
-        failPanel.classList.add('hidden');
-        successPanel.classList.add('hidden');
-
-        const name  = (nameInput.value  || '').trim();
-        const email = (emailInput.value || '').trim();
-
-        if (name.length < 2) {
-          showError('Enter your full name so I know how to address the email.', nameInput);
-          return;
-        }
-        if (!EMAIL_RE.test(email)) {
-          showError("That email doesn't look right — try name@example.com.", emailInput);
-          return;
-        }
-
-        // Consent guard — the input is `required`, but this form carries
-        // novalidate, so native validation never runs and the JS must check.
-        const consentEl = document.getElementById('ucalc-email-consent');
-        if (!consentEl || !consentEl.checked) {
-          showError('Please agree to the Privacy Policy before we send your results.', consentEl);
-          return;
-        }
-
-        const _s = CalcStore.unified;
-        if (!_s) {
-          showError('Calculate your numbers first, then send the report.');
-          return;
-        }
-
+        // POST straight to the Apps Script web app, which builds the PDF via
+        // Slides, emails it, and appends the sheet row. This used to route
+        // through wybe-api so headless Chrome could render the PDF, but that
+        // step failed on every submission ("Failed to launch the browser
+        // process" — puppeteer-core and @sparticuz/chromium were ~9 Chromium
+        // majors apart) and threw before ever reaching Apps Script. Since the
+        // script produces its own PDF, the whole Chrome hop is unnecessary.
+        //
+        // Field names must match what doPost reads, hence activity (not
+        // activityLevel). The extra *Category/*Note/calorie keys are ignored
+        // by the script but cost nothing and keep the payload self-describing.
         setSending(true);
-
         try {
           const payload = {
             source: 'calculator',
             consent: 'yes',
-            name:   name,
-            email:  email,
-            age:    _s.age,
-            gender: _s.gender,
-            activity: _s.activityLabel || '',
-            height: _s.height,
-            weight: _s.weight,
-            neck:   _s.neck,
-            waist:  _s.waist,
-            hip:    _s.hip || '',
-            bmi:          _s.bmi  ? _s.bmi.value    : '',
-            bmiCategory:  _s.bmi  ? _s.bmi.category : '',
-            bmiNote:      _s.bmi  ? _s.bmi.note     : '',
-            ibw:          _s.ibw  ? _s.ibw.point     : '',
-            ibwLow:       _s.ibw  ? _s.ibw.low       : '',
-            ibwHigh:      _s.ibw  ? _s.ibw.high      : '',
-            bfp:          _s.bfp  ? _s.bfp.value    : '',
-            bfpCategory:  _s.bfp  ? _s.bfp.category : '',
-            bfpNote:      _s.bfp  ? _s.bfp.note     : '',
-            tdee:             _s.tdee ? _s.tdee.value    : '',
-            tdeeCategory:     _s.tdee ? _s.tdee.category : '',
-            cutCalories:      _s.tdee ? _s.tdee.cut      : '',
-            maintainCalories: _s.tdee ? _s.tdee.maintain : '',
-            leanBulkCalories: _s.tdee ? _s.tdee.bulk     : '',
+            name: name,
+            email: email,
+            age: store.age,
+            gender: store.gender,
+            activity: store.activityLabel || '',
+            height: store.height,
+            weight: store.weight,
+            neck: store.neck,
+            waist: store.waist,
+            hip: store.hip || '',
+            bmi:          store.bmi  ? store.bmi.value    : '',
+            bmiCategory:  store.bmi  ? store.bmi.category : '',
+            bmiNote:      store.bmi  ? store.bmi.note     : '',
+            ibw:          store.ibw  ? store.ibw.point    : '',
+            ibwLow:       store.ibw  ? store.ibw.low      : '',
+            ibwHigh:      store.ibw  ? store.ibw.high     : '',
+            bfp:          store.bfp  ? store.bfp.value    : '',
+            bfpCategory:  store.bfp  ? store.bfp.category : '',
+            bfpNote:      store.bfp  ? store.bfp.note     : '',
+            tdee:             store.tdee ? store.tdee.value    : '',
+            tdeeCategory:     store.tdee ? store.tdee.category : '',
+            cutCalories:      store.tdee ? store.tdee.cut      : '',
+            maintainCalories: store.tdee ? store.tdee.maintain : '',
+            leanBulkCalories: store.tdee ? store.tdee.bulk     : '',
           };
-          // Straight to Apps Script, which builds the PDF via Slides. The old
-          // wybe-api hop existed only to render the PDF with headless Chrome,
-          // which failed on every submission. form-urlencoded, not JSON:
-          // doPost reads e.parameter.
+          // form-urlencoded, not JSON: doPost reads e.parameter.
           const res = await fetch(GAS_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(payload).toString(),
           });
-          const json = await res.json().catch(function() { return {}; });
+          const json = await res.json().catch(function () { return {}; });
           if (!res.ok || !json.ok) throw new Error(json.error || 'Request failed');
           setSending(false);
-          form.classList.add('hidden');
-          successPanel.classList.remove('hidden');
-          if (typeof window.wybeTrack === 'function') {
-            window.wybeTrack('Calculator Email Report');
+          // Freeze the card at the form's rendered height before swapping,
+          // so the panel does not collapse and the photo column beside it
+          // does not reflow.
+          if (els.confirm) {
+            els.confirm.style.setProperty('--ucalc-panel-h', form.offsetHeight + 'px');
           }
+          form.classList.add('hidden');
+          const sentTo = document.getElementById('ucalc-sent-to');
+          if (sentTo) sentTo.textContent = email;
+          if (els.confirm) els.confirm.classList.remove('hidden');
+          if (typeof window.wybeTrack === 'function') window.wybeTrack('Calculator Submit');
         } catch (_) {
           setSending(false);
-          failPanel.classList.remove('hidden');
+          els.error.innerHTML = 'Something went wrong sending your report. Please try again, or '
+            + '<a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" '
+            + 'style="color:#FF6600;text-decoration:underline;">message me on WhatsApp</a>.';
+          els.error.classList.remove('hidden');
         }
-      };
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        send();
       });
-      if (retryBtn) {
-        retryBtn.addEventListener('click', () => {
-          failPanel.classList.add('hidden');
-          send();
-        });
-      }
     })();
   </script>
   <script src="js/track.js" defer></script>
