@@ -65,12 +65,22 @@
     /* Compact calculator rows so all fields fit within the 640 px
        card without inner scrolling. Reduced padding + smaller value
        font vs the previous LCD variant. */
-    #unified-calc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    /* minmax(0, 1fr) — NOT plain 1fr. A bare 1fr is minmax(auto, 1fr),
+       so any item wider than its share (the nowrap intro line used to be
+       670px) raises that column's floor and the two columns stop being
+       equal. minmax(0, ...) removes the floor so the pairs always match. */
+    #unified-calc-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     #unified-calc-form.hidden { display: none !important; }
+    /* The "* Required" note and the intro line are direct children of the
+       form grid. Without an explicit span they each take a single cell:
+       the note landed in column 1 and squeezed Gender/Height/Neck, and the
+       intro sized the other column off its own content. Span them both. */
     #unified-calc-form .wybe-input-row--full,
+    #unified-calc-form > .wybe-form-note,
+    #unified-calc-form > .ucalc-intro-heading,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
-    @media (max-width: 767px) {
-      #unified-calc-form { grid-template-columns: 1fr; }
+    @media (max-width: 639px) {
+      #unified-calc-form { grid-template-columns: minmax(0, 1fr); }
       #unified-calc-form #ucalc-error { grid-column: auto; }
     }
     .wybe-input-row {

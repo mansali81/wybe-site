@@ -1537,6 +1537,14 @@ button.bg-burgundy:hover {
   color: #FFFFFF;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
 }
+/* Book waitlist: match the note to the .wybe-field-label size and tracking
+   so the form reads as one scale and loses a few pixels of height. */
+#waitlist-form .wybe-form-note {
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
 
 /* ── CLIENT RESULTS ─────────────────────────────────────
    Testimonial cards + before/after transformations strip. Same dark-
@@ -3198,16 +3206,19 @@ li.service-tier.service-tier--info,
    right. Neither state carries a background of its own. */
 #body-composition-section .calc-panels-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-auto-rows: auto;
   gap: 24px;
   align-items: start;
   background: none;
 }
 @media (min-width: 768px) {
-  /* Form LEFT | Image RIGHT — stretch so image col matches form height */
+  /* Form LEFT | Image RIGHT — stretch so image col matches form height.
+     minmax(0, 1fr) on both tracks: a bare 1fr floors each column at its
+     content's min-content width, which let the form grow past half and
+     crush the photo column to ~260px. With a 0 floor the split is even. */
   #body-composition-section .calc-panels-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: stretch;
     gap: 32px;
     align-items: stretch;
@@ -3356,11 +3367,13 @@ li.service-tier.service-tier--info,
   text-transform: none;
   color: #FF6600;
   font-weight: 400;
-  white-space: nowrap;
+  /* No white-space: nowrap. It forced a ~670px min-content width on the
+     form grid, which squeezed the food photo on desktop and pushed the
+     page wider than the viewport on phones (sideways scrolling). */
   margin: 0 0 16px;
   font-size: 14px;
 }
-/* Prevent the note wrapping on narrow phones */
+/* Slightly smaller on the narrowest phones so it wraps to fewer lines. */
 @media (max-width: 390px) {
   .ucalc-intro-heading { font-size: 13px; }
 }
@@ -3671,7 +3684,7 @@ li.service-tier.service-tier--info,
     padding: 0;
   }
   #body-composition-section .calc-panels-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
   /* Mobile: send row stays right-aligned but with a small right
