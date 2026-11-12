@@ -25,6 +25,12 @@ module.exports = {
         'burgundy-dark': '#E65500',
         'charcoal-light': '#FFFFFF',
         charcoal: '#1E1E1E',
+
+        // Accessibility tokens (WCAG 2.2 AA). The brand orange #FF6600 stays
+        // for buttons, badges and accents; these are for TEXT only.
+        'orange-ink': '#C2410C',  // orange text on white/light  — 5.2:1 on #FFF
+        'grey-ink':   '#6B6B6B',  // secondary text on white/light — 5.3:1 on #FFF
+        'grey-soft':  '#A3A3A3',  // secondary text on dark #1E1E1E — 6.6:1
       },
       fontFamily: {
         sans:    ['Raleway', 'Inter', 'sans-serif'],   // body default (Raleway light)

@@ -273,19 +273,20 @@
 
       <div class="max-w-2xl mx-auto">
         <form id="unified-calc-form" data-view="form">
+              <p class="wybe-form-note">* Required</p>
           <div class="wybe-calc-title-rule"></div>
           <p class="ucalc-intro-heading">Fill in your details and I&rsquo;ll email you a personalised report: BMI, ideal weight, body fat % and daily calories.</p>
 
           <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-name">Full name</label>
+            <label for="ucalc-name">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="text" id="ucalc-name" autocomplete="name" required placeholder="">
           </div>
           <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-email-field">Email</label>
+            <label for="ucalc-email-field">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="email" id="ucalc-email-field" autocomplete="email" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-gender">Gender</label>
+            <label for="ucalc-gender">Gender<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <select id="ucalc-gender" required>
               <option value="" selected>Select&hellip;</option>
               <option value="male">Male</option>
@@ -293,23 +294,23 @@
             </select>
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-age">Age</label>
+            <label for="ucalc-age">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-age" min="5" max="120" step="1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-height">Height (cm)</label>
+            <label for="ucalc-height">Height (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-height" min="50" max="260" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-weight">Weight (kg)</label>
+            <label for="ucalc-weight">Weight (kg)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-neck">Neck (cm)</label>
+            <label for="ucalc-neck">Neck (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-waist">Waist (cm)</label>
+            <label for="ucalc-waist">Waist (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
@@ -317,7 +318,7 @@
             <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="">
           </div>
           <div class="wybe-input-row" id="ucalc-activity-wrap">
-            <label for="ucalc-activity">Activity level</label>
+            <label for="ucalc-activity">Activity level<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <select id="ucalc-activity" required>
               <option value="" selected>Select&hellip;</option>
               <option value="1.2">Sedentary</option>
@@ -330,7 +331,7 @@
 
           <div class="wybe-input-row--full calc-consent-row">
             <input type="checkbox" id="ucalc-consent" name="consent" value="yes" required>
-            <label for="ucalc-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+            <label for="ucalc-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.<span class="wybe-field-req" aria-hidden="true">*</span></label>
           </div>
 
           <div class="wybe-input-row--full calc-captcha-row">
@@ -367,7 +368,7 @@
         A nutrition consultation turns these numbers into a real plan, macros, food choices, and weekly adjustments tailored to your body and your life.
       </p>
       <div class="flex flex-col md:flex-row gap-4 justify-center">
-        <a href="services-nutrition.html" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">Book a Nutrition Consultation</a>
+        <a href="services-nutrition.html" class="inline-block bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">Book a Nutrition Consultation</a>
         <a href="services-digital-plans.html" class="inline-block border border-cream/20 text-cream font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy hover:text-white hover:border-burgundy transition-colors">View Digital Plans</a>
       </div>
     </div>
@@ -376,10 +377,10 @@
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25">&middot;</span>
-        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25">&middot;</span>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
+        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
       </p>
     </div>

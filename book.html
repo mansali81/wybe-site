@@ -107,7 +107,7 @@
           <p class="font-heading text-2xl md:text-3xl font-semibold text-cream leading-snug mb-6">
             Five years that shape a lifetime.
           </p>
-          <button type="button" data-waitlist class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors mb-10">
+          <button type="button" data-waitlist class="inline-block bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors mb-10">
             Join the Waitlist
           </button>
           <div class="space-y-6">
@@ -200,7 +200,7 @@
       <p class="font-sans text-sm text-cream/70 max-w-lg mx-auto leading-relaxed mb-8">
         The book is for the next generation of parents. The training and nutrition work is for you, today. Reach out and let&rsquo;s talk about where you want to be.
       </p>
-      <button type="button" data-book-now class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">
+      <button type="button" data-book-now class="inline-block bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">
         Get in Touch
       </button>
     </div>
@@ -209,10 +209,10 @@
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25">&middot;</span>
-        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25">&middot;</span>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
+        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
       </p>
     </div>
@@ -235,19 +235,20 @@
           </p>
 
           <form data-form data-subject="1825 Days, Waitlist" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+              <p class="wybe-form-note">* Required</p>
             <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
             <input type="hidden" name="subject" value="1825 Days, Waitlist">
             <input type="hidden" name="redirect" value="false">
             <div>
-              <label for="waitlist-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name</label>
+              <label for="waitlist-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="text" id="waitlist-name" name="name" required placeholder="Your name" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="waitlist-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email Address</label>
+              <label for="waitlist-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email Address<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="email" id="waitlist-email" name="email" required placeholder="your@email.com" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="waitlist-mobile" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Mobile</label>
+              <label for="waitlist-mobile" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Mobile<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="tel" id="waitlist-mobile" name="mobile" required placeholder="+971 50 000 0000"
                      inputmode="tel" autocomplete="tel" minlength="7"
                      class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
@@ -257,7 +258,7 @@
                  theme rather than the dark one used on index.html. -->
             <p id="waitlist-send-error" class="hidden font-sans text-xs text-red-600 -mt-2" role="alert" aria-live="polite"></p>
             <div>
-              <label for="waitlist-who" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Who Are You?</label>
+              <label for="waitlist-who" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Who Are You?<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="waitlist-who" name="who_you_are" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                 <option value="" disabled selected>Select one</option>
                 <option value="New parents">New parents</option>
@@ -266,7 +267,7 @@
                 <option value="Others">Others</option>
               </select>
             </div>
-            <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
+            <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
               Join the Waitlist
             </button>
           </form>

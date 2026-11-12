@@ -106,37 +106,38 @@
         method="POST"
         class="space-y-5"
       >
+              <p class="wybe-form-note">* Required</p>
         <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
         <input type="hidden" name="subject" value="WYBE, Testimonial Submission">
         <input type="hidden" name="redirect" value="false">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label for="t-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name</label>
+            <label for="t-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="text" id="t-name" name="name" required placeholder="Your full name" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
           </div>
           <div>
-            <label for="t-age" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Age</label>
+            <label for="t-age" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="t-age" name="age" required min="14" max="100" placeholder="e.g. 34" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
           </div>
         </div>
 
         <div>
-          <label for="t-job" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Job Title</label>
+          <label for="t-job" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Job Title<span class="wybe-field-req" aria-hidden="true">*</span></label>
           <input type="text" id="t-job" name="job_title" required placeholder="e.g. Marketing Director" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
         </div>
 
         <div>
-          <label for="t-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email <span class="normal-case text-cream/30">(so we can reach you if needed)</span></label>
+          <label for="t-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email <span class="normal-case text-grey-soft">(so we can reach you if needed)</span><span class="wybe-field-req" aria-hidden="true">*</span></label>
           <input type="email" id="t-email" name="email" required placeholder="your@email.com" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
         </div>
 
         <div>
-          <label for="t-feedback" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Your Feedback</label>
+          <label for="t-feedback" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Your Feedback<span class="wybe-field-req" aria-hidden="true">*</span></label>
           <textarea id="t-feedback" name="feedback" required rows="8" placeholder="Where you started, what you worked on with Mansoor, and what changed. Be honest, specifics help others see themselves in your story." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
         </div>
 
-        <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
+        <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
           Submit Testimonial
         </button>
       </form>
@@ -155,10 +156,10 @@
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25">&middot;</span>
-        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25">&middot;</span>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
+        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
       </p>
     </div>

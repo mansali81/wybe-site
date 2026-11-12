@@ -169,7 +169,7 @@
         <div class="p-8">
           <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Step 04</p>
           <div class="w-6 h-px bg-burgundy mb-4"></div>
-          <p class="font-heading text-lg font-semibold text-cream mb-2">Add a consultation <span class="text-cream/40">(optional)</span></p>
+          <p class="font-heading text-lg font-semibold text-cream mb-2">Add a consultation <span class="text-grey-soft">(optional)</span></p>
           <p class="font-sans text-sm text-cream/60 leading-relaxed">For supplements, training adjustments, or nutrition refinement, add a 1-hour fitness or nutrition consultation. Booked via Calendly, paid in advance.</p>
         </div>
       </div>
@@ -221,7 +221,7 @@
               <span class="font-sans text-sm text-cream/60">Supplements available via separate consultation</span>
             </li>
           </ul>
-          <button type="button" data-questionnaire class="block w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 text-center hover:bg-burgundy-dark transition-colors">
+          <button type="button" data-questionnaire class="block w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 text-center hover:bg-burgundy-dark transition-colors">
             Reserve My Spot &middot; $150
           </button>
           <p class="font-sans text-xs text-cream/50 mt-3 text-center leading-relaxed">
@@ -260,6 +260,7 @@
         method="POST"
         class="space-y-6"
       >
+              <p class="wybe-form-note">* Required</p>
         <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
         <input type="hidden" name="subject" value="WYBE, Intermediate Plan Questionnaire">
         <input type="hidden" name="plan" value="Intermediate ($150, 9 months)">
@@ -270,27 +271,27 @@
           <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">About You</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label for="i-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name</label>
+              <label for="i-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="text" id="i-name" name="name" required placeholder="Your full name" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="i-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email</label>
+              <label for="i-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="email" id="i-email" name="email" required placeholder="your@email.com" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="i-phone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Phone / WhatsApp</label>
+              <label for="i-phone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Phone / WhatsApp<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="tel" id="i-phone" name="phone" required placeholder="+971 50 000 0000" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="i-country" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Country / Timezone</label>
+              <label for="i-country" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Country / Timezone<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="text" id="i-country" name="country" required placeholder="e.g. UAE, GMT+4" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="i-age" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Age</label>
+              <label for="i-age" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="number" id="i-age" name="age" required min="14" max="100" placeholder="e.g. 32" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="i-gender" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Gender</label>
+              <label for="i-gender" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Gender<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="i-gender" name="gender" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                 <option value="" disabled selected>Select one</option>
                 <option value="Male">Male</option>
@@ -299,11 +300,11 @@
               </select>
             </div>
             <div>
-              <label for="i-height" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Height (cm)</label>
+              <label for="i-height" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Height (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="number" id="i-height" name="height_cm" required placeholder="e.g. 178" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="i-weight" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Weight (kg)</label>
+              <label for="i-weight" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Weight (kg)<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="number" step="0.1" id="i-weight" name="weight_kg" required placeholder="e.g. 80.0" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
           </div>
@@ -314,7 +315,7 @@
           <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Training History</p>
           <div class="space-y-4">
             <div>
-              <label for="i-experience" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Years of Consistent Training</label>
+              <label for="i-experience" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Years of Consistent Training<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="i-experience" name="experience" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                 <option value="" disabled selected>Select one</option>
                 <option value="1 year">1 year</option>
@@ -324,16 +325,16 @@
               </select>
             </div>
             <div>
-              <label for="i-current-routine" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Current Routine</label>
+              <label for="i-current-routine" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Current Routine<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="i-current-routine" name="current_routine" required rows="3" placeholder="What does your current training week look like? Split, frequency, sample sessions." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <div>
-              <label for="i-lifts" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Current Numbers</label>
+              <label for="i-lifts" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Current Numbers<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="i-lifts" name="current_lifts" required rows="3" placeholder="Approximate working weights or recent PRs: squat, bench, deadlift, overhead press, pull-up reps, etc." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label for="i-equipment" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Equipment Access</label>
+                <label for="i-equipment" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Equipment Access<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <select id="i-equipment" name="equipment" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                   <option value="" disabled selected>Select one</option>
                   <option value="Full gym">Full commercial gym</option>
@@ -342,7 +343,7 @@
                 </select>
               </div>
               <div>
-                <label for="i-days" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Days Per Week Available</label>
+                <label for="i-days" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Days Per Week Available<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <select id="i-days" name="days_per_week" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                   <option value="" disabled selected>Select one</option>
                   <option value="3">3 days</option>
@@ -353,7 +354,7 @@
               </div>
             </div>
             <div>
-              <label for="i-goal" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Primary Goal Over the Next Nine Months</label>
+              <label for="i-goal" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Primary Goal Over the Next Nine Months<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="i-goal" name="goal" required rows="3" placeholder="Be specific: strength, hypertrophy, body composition, performance milestone." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
           </div>
@@ -368,15 +369,15 @@
               <textarea id="i-medical" name="medical" rows="3" placeholder="List any current or past injuries, medical conditions, or medications. Write 'None' if not applicable." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <div>
-              <label for="i-diet" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Current Nutrition</label>
+              <label for="i-diet" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Current Nutrition<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="i-diet" name="diet" required rows="3" placeholder="A typical day of eating, approximate calories or macros if tracked, preferences, restrictions, allergies." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <div>
-              <label for="i-sleep" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Sleep, Recovery &amp; Schedule</label>
+              <label for="i-sleep" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Sleep, Recovery &amp; Schedule<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="i-sleep" name="sleep_schedule" required rows="3" placeholder="Average hours of sleep, work pattern, stress levels, when you typically train." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <div>
-              <label for="i-notes" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Anything Else <span class="normal-case text-cream/30">(optional)</span></label>
+              <label for="i-notes" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Anything Else <span class="normal-case text-grey-soft">(optional)</span></label>
               <textarea id="i-notes" name="notes" rows="3" placeholder="Past programmes that worked or didn't, anything else relevant to your plan." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
           </div>
@@ -391,7 +392,7 @@
           </p>
           <div class="space-y-4">
             <div>
-              <label for="i-add-consult" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Would you like to add a consultation?</label>
+              <label for="i-add-consult" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Would you like to add a consultation?<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="i-add-consult" name="add_consultation" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                 <option value="No" selected>No, thank you</option>
                 <option value="Yes">Yes, I would like to add a consultation</option>
@@ -422,7 +423,7 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
+        <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
           Submit Questionnaire
         </button>
       </form>
@@ -471,10 +472,10 @@
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25">&middot;</span>
-        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25">&middot;</span>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
+        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
       </p>
     </div>

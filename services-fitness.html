@@ -138,7 +138,7 @@
             </div>
           </div>
 
-          <a href="#fitness-form" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">Book a Session</a>
+          <a href="#fitness-form" class="inline-block bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-8 py-4 hover:bg-burgundy-dark transition-colors">Book a Session</a>
         </div>
         <div>
           <img src="images/Hero.webp" alt="Mansoor Ahamad Ali coaching a dumbbell row in the gym" width="2592" height="1632" loading="lazy" class="w-full h-[500px] object-cover" srcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w" sizes="(min-width: 1200px) 520px, (min-width: 768px) 46vw, 94vw" decoding="async">
@@ -158,30 +158,31 @@
           </div>
           <div>
             <form data-form data-subject="WYBE, Fitness Consultation Enquiry" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+              <p class="wybe-form-note">* Required</p>
               <input type="hidden" name="access_key" value="8611ac93-789d-40d9-b9d8-a15c6af4b94e">
               <input type="hidden" name="subject" value="WYBE, Fitness Consultation Enquiry">
               <input type="hidden" name="redirect" value="false">
               <div>
-                <label for="fc-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name</label>
+                <label for="fc-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <input type="text" id="fc-name" name="name" required placeholder="Your full name" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
               </div>
               <div>
-                <label for="fc-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email</label>
+                <label for="fc-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <input type="email" id="fc-email" name="email" required placeholder="your@email.com" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label for="fc-phone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Phone <span class="normal-case text-cream/30">(optional)</span></label>
+                  <label for="fc-phone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Phone <span class="normal-case text-grey-soft">(optional)</span></label>
                   <input type="tel" id="fc-phone" name="phone" placeholder="+971 50 000 0000" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
                 </div>
                 <div>
-                  <label for="fc-timezone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Timezone</label>
+                  <label for="fc-timezone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Timezone<span class="wybe-field-req" aria-hidden="true">*</span></label>
                   <input type="text" id="fc-timezone" name="timezone" required placeholder="e.g. GMT+4" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
                 </div>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label for="fc-format" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Format</label>
+                  <label for="fc-format" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Format<span class="wybe-field-req" aria-hidden="true">*</span></label>
                   <select id="fc-format" name="format" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                     <option value="" disabled selected>Select one</option>
                     <option value="Online">Online, $150 single / $400 bundle</option>
@@ -189,7 +190,7 @@
                   </select>
                 </div>
                 <div>
-                  <label for="fc-package" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Package</label>
+                  <label for="fc-package" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Package<span class="wybe-field-req" aria-hidden="true">*</span></label>
                   <select id="fc-package" name="package" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                     <option value="" disabled selected>Select one</option>
                     <option value="Single">Single session</option>
@@ -198,10 +199,10 @@
                 </div>
               </div>
               <div>
-                <label for="fc-goal" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Goal / What You Want to Work On</label>
+                <label for="fc-goal" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Goal / What You Want to Work On<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <textarea id="fc-goal" name="goal" required rows="4" placeholder="Tell Mansoor where you are now and what you are working towards." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
               </div>
-              <button type="submit" class="w-full bg-burgundy text-white font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">Send Enquiry</button>
+              <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">Send Enquiry</button>
             </form>
             <div class="hidden py-10 text-center border border-cream/15 mt-4 bg-transparent">
               <div class="w-8 h-px bg-burgundy mx-auto mb-4"></div>
@@ -224,17 +225,17 @@
       <p class="font-sans text-sm text-cream/70 max-w-lg mx-auto leading-relaxed mb-8">
         A single consultation often reveals more about why your training is stalling than years of trial and error. Book a session and let&rsquo;s find what to change.
       </p>
-      <a href="#fitness-form" class="inline-block bg-burgundy text-white font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">Book a Session</a>
+      <a href="#fitness-form" class="inline-block bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase px-10 py-4 hover:bg-burgundy-dark transition-colors">Book a Session</a>
     </div>
   </section>
 
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-white/40">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25">&middot;</span>
-        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25">&middot;</span>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
+        <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
       </p>
     </div>
