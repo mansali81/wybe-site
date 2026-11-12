@@ -40,8 +40,12 @@
   <!-- The hero image is the LCP element. `media` mirrors the <picture>
        breakpoint in the hero so phones never fetch the desktop crop. -->
   <link rel="preload" as="image" href="/images/Hero.webp"
+        imagesrcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w"
+        imagesizes="100vw"
         media="(min-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="/images/hero-mobile.webp"
+        imagesrcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w"
+        imagesizes="100vw"
         media="(max-width: 767px)" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
   <!-- GSAP + ScrollTrigger (hero fixed-window parallax) -->
@@ -126,6 +130,15 @@
       justify-content: center;
     }
     .cert-img {
+      /* width/height attributes now travel with each certificate (they differ
+         per cert), which the UA turns into presentational width/height hints.
+         Those hints would size the box to 1600x1165 and then let max-width and
+         max-height clamp each axis INDEPENDENTLY, stretching the box to the
+         full stage. Forcing both back to auto restores intrinsic ratio-
+         preserving sizing, while the attributes still give the UA the aspect
+         ratio before the image has loaded. */
+      width: auto;
+      height: auto;
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
@@ -223,7 +236,7 @@
     <div class="px-6 md:pl-[51px] md:pr-[45px]">
       <div class="flex items-center justify-between h-[96px]">
         <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
-          <img src="/images/logo-mark-orange.png" alt="" class="wybe-brand__logo">
+          <img src="/images/logo-mark-orange-160.png" alt="" class="wybe-brand__logo" srcset="/images/logo-mark-orange-160.png 1x, /images/logo-mark-orange-320.png 2x" width="160" height="112" decoding="async">
         </a>
         <div class="flex items-center gap-4">
           <a href="/#services" class="wybe-header-cta">Book a Session</a>
@@ -265,11 +278,8 @@
           <!-- Mobile source: a tighter 1350x1080 crop composed for phones.
                The desktop Hero.webp (2592x1632) stays the fallback for
                everything above the 767 px breakpoint. -->
-          <source media="(max-width: 767px)" srcset="/images/hero-mobile.webp" type="image/webp">
-          <img src="/images/Hero.webp"
-               alt="Mansoor Ahamad Ali training — WYBE founder"
-               class="parallax-img hero-bg__img"
-               data-parallax-speed="0.15">
+          <source media="(max-width: 767px)" srcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w" type="image/webp" sizes="100vw" width="1350" height="1080">
+          <img src="/images/Hero.webp" alt="Mansoor Ahamad Ali training — WYBE founder" class="parallax-img hero-bg__img" data-parallax-speed="0.15" srcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w" sizes="100vw" width="2592" height="1632" decoding="async">
         </picture>
       </div>
       <div class="hero-frame">
@@ -304,11 +314,7 @@
 
           <p>It was during these early years that my core philosophy took shape: <strong class="wybe-quote">&ldquo;WE ARE, WHAT WE THINK, EAT, AND DO.&rdquo;</strong></p>
 
-          <img src="/images/wybe-philosophy.svg"
-               alt="The WYBE philosophy: we are what we think, eat, and do"
-               class="about-figure-full"
-               width="2048" height="411"
-               loading="lazy">
+          <img src="/images/wybe-philosophy.svg" alt="The WYBE philosophy: we are what we think, eat, and do" class="about-figure-full" width="2048" height="411" loading="lazy" decoding="async">
 
           <p>Over the next two decades, I had the privilege of working one-on-one with people from every walk of life, background, and culture. Sitting across from so many different individuals taught me a profound truth: while our schedules, stress levels, and daily environments vary, the fundamental mechanics of human performance are universal.</p>
 
@@ -320,11 +326,7 @@
 
           <p>Regardless of where someone begins, we never rely on templates or guesswork. We begin with a deep baseline assessment evaluating movement mechanics, injury history, sleep quality, workload, and nutrition patterns. From there, we continuously revise the plan every 12 to 24 weeks based on real data and direct feedback. And because I&rsquo;ve learned that most people don&rsquo;t lose motivation, they lose focus, we integrate mind coaching, treating focus as a skill that can be trained and mastered.</p>
 
-          <img src="/images/wybe-methodology.svg"
-               alt="The WYBE coaching methodology"
-               class="about-figure-full"
-               width="2048" height="601"
-               loading="lazy">
+          <img src="/images/wybe-methodology.svg" alt="The WYBE coaching methodology" class="about-figure-full" width="2048" height="601" loading="lazy" decoding="async">
 
           <p>As my work evolved, I realized these principles needed to reach beyond individual performance and support the very foundation of our homes: our families. This inspired my forthcoming book, <a href="https://wybe.fit/publication.html">1825 Days</a>.</p>
 
@@ -341,7 +343,7 @@
 
         <div class="cert-show">
           <div class="cert-stage" aria-roledescription="carousel">
-            <img class="cert-img" id="cert-img" src="" alt="" aria-live="polite">
+            <img class="cert-img" id="cert-img" src="" alt="" aria-live="polite" width="1600" height="1165" loading="lazy" decoding="async">
             <button class="cert-zone cert-zone--prev" id="cert-prev" aria-label="Previous certificate">
               <span aria-hidden="true">&#8249;</span>
             </button>
@@ -384,18 +386,18 @@
   <script>
   (function () {
     var CERTS = [
-      { src: 'reps-uae-e-certificate-2027.webp',         alt: 'Level 4 Personal Trainer certificate issued by REPs UAE' },
-      { src: 'k11-reps-certificate.webp',                alt: 'Certificate of Achievement issued by PD Approval' },
-      { src: 'k11-dpt-certificate.webp',                 alt: 'Diploma in Personal Training issued by K11 School of Fitness Sciences' },
-      { src: 'hpn-certificate.webp',                     alt: 'Human Performance Nutritionist certificate issued by K11 School of Fitness Sciences' },
-      { src: 'nsqf-certificate.webp',                    alt: 'NSQF Level 4 certificate issued by NSDC and Skill India' },
-      { src: 'cpr-aed-and-first-aid-certification.webp', alt: 'CPR, AED and First Aid certification issued by Advanced Medical Certification' },
-      { src: 'cpr-aed-and-first-aid-card.webp',          alt: 'CPR, AED and First Aid card issued by Advanced Medical Certification' },
-      { src: 'fitness-instructor-ns.webp',               alt: 'Fitness Instructor certification issued by New Skills Academy' },
-      { src: 'nutrition-and-hydration.webp',             alt: 'Nutrition and Hydration certification issued by New Skills Academy' },
-      { src: 'fitness-and-weight-loss-module-1.webp',    alt: 'Fitness and Weight Loss Module 1 certificate issued by Shaw Academy' },
-      { src: 'fitness-and-weight-loss-module-2.webp',    alt: 'Fitness and Weight Loss Module 2 certificate issued by Shaw Academy' },
-      { src: 'public-speaking-certificate.webp',         alt: 'Public Speaking certificate issued by Flo Akinbiyi' }
+      { src: 'reps-uae-e-certificate-2027.webp',         alt: 'Level 4 Personal Trainer certificate issued by REPs UAE' , w: 1600, h: 1165 },
+      { src: 'k11-reps-certificate.webp',                alt: 'Certificate of Achievement issued by PD Approval' , w: 696, h: 1020 },
+      { src: 'k11-dpt-certificate.webp',                 alt: 'Diploma in Personal Training issued by K11 School of Fitness Sciences' , w: 1040, h: 686 },
+      { src: 'hpn-certificate.webp',                     alt: 'Human Performance Nutritionist certificate issued by K11 School of Fitness Sciences' , w: 828, h: 588 },
+      { src: 'nsqf-certificate.webp',                    alt: 'NSQF Level 4 certificate issued by NSDC and Skill India' , w: 959, h: 648 },
+      { src: 'cpr-aed-and-first-aid-certification.webp', alt: 'CPR, AED and First Aid certification issued by Advanced Medical Certification' , w: 842, h: 595 },
+      { src: 'cpr-aed-and-first-aid-card.webp',          alt: 'CPR, AED and First Aid card issued by Advanced Medical Certification' , w: 1500, h: 496 },
+      { src: 'fitness-instructor-ns.webp',               alt: 'Fitness Instructor certification issued by New Skills Academy' , w: 595, h: 842 },
+      { src: 'nutrition-and-hydration.webp',             alt: 'Nutrition and Hydration certification issued by New Skills Academy' , w: 595, h: 842 },
+      { src: 'fitness-and-weight-loss-module-1.webp',    alt: 'Fitness and Weight Loss Module 1 certificate issued by Shaw Academy' , w: 600, h: 338 },
+      { src: 'fitness-and-weight-loss-module-2.webp',    alt: 'Fitness and Weight Loss Module 2 certificate issued by Shaw Academy' , w: 600, h: 338 },
+      { src: 'public-speaking-certificate.webp',         alt: 'Public Speaking certificate issued by Flo Akinbiyi' , w: 960, h: 540 }
     ];
 
     var BASE    = '/images/Certificates/';
@@ -425,6 +427,9 @@
       setTimeout(function () {
         certImg.src = BASE + c.src;
         certImg.alt = c.alt;
+        // Each certificate has its own aspect ratio, so the intrinsic size
+        // travels with the src. object-fit:contain still does the fitting.
+        certImg.width = c.w; certImg.height = c.h;
         certImg.style.opacity = '1';
       }, 170);
       var thumbs = strip.querySelectorAll('button');
@@ -447,6 +452,7 @@
       img.src = BASE + c.src;
       img.alt = '';
       img.loading = 'lazy';
+      img.decoding = 'async';
       img.width = 70; img.height = 48;
       btn.appendChild(img);
       btn.addEventListener('click', function () { goto(i); });
@@ -458,6 +464,7 @@
       var c = CERTS[0];
       certImg.src = BASE + c.src;
       certImg.alt = c.alt;
+      certImg.width = c.w; certImg.height = c.h;
       certImg.style.opacity = '1';
       strip.querySelectorAll('button')[0].setAttribute('aria-current', 'true');
       preload(0);

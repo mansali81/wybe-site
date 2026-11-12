@@ -5,9 +5,11 @@
   "description": "wybe.fit static site. Tailwind is compiled ahead of time; the Play CDN is no longer loaded in the browser.",
   "scripts": {
     "build:css": "tailwindcss -i ./css/tailwind.input.css -o ./css/tailwind.css --minify",
-    "watch:css": "tailwindcss -i ./css/tailwind.input.css -o ./css/tailwind.css --watch"
+    "watch:css": "tailwindcss -i ./css/tailwind.input.css -o ./css/tailwind.css --watch",
+    "images": "node scripts/resize-images.mjs"
   },
   "devDependencies": {
+    "sharp": "^0.35.5",
     "tailwindcss": "^3.4.17"
   }
 }

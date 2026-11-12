@@ -45,8 +45,12 @@
        the fixed window. `media` mirrors the <picture> breakpoint in the
        hero so phones never fetch the 255 KB desktop crop. -->
   <link rel="preload" as="image" href="/images/Hero.webp"
+        imagesrcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w"
+        imagesizes="100vw"
         media="(min-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="/images/hero-mobile.webp"
+        imagesrcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w"
+        imagesizes="100vw"
         media="(max-width: 767px)" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
@@ -687,7 +691,7 @@
         <!-- Brand: single combined SVG (logo + WYBE + tagline baked in).
              Clicking the lockup routes to #home. -->
         <a href="/" class="wybe-brand" aria-label="WYBE — Wellness You Build Everyday, home">
-          <img src="/images/logo-mark-orange.png" alt="" class="wybe-brand__logo">
+          <img src="/images/logo-mark-orange-160.png" alt="" class="wybe-brand__logo" srcset="/images/logo-mark-orange-160.png 1x, /images/logo-mark-orange-320.png 2x" width="160" height="112" decoding="async">
         </a>
         <!-- Right side: desktop-only Book a Session pill, then the burger
              menu on ALL viewports. The pill is hidden below 768px so the
@@ -742,11 +746,8 @@
              (face + torso + dumbbell prominent, less wall backdrop).
              The desktop Hero.webp (2592x1632) stays the fallback for
              everything above the 767 px breakpoint. -->
-        <source media="(max-width: 767px)" srcset="/images/hero-mobile.webp" type="image/webp">
-        <img src="/images/Hero.webp"
-             alt=""
-             class="parallax-img hero-bg__img"
-             data-parallax-speed="0.15">
+        <source media="(max-width: 767px)" srcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w" type="image/webp" sizes="100vw" width="1350" height="1080">
+        <img src="/images/Hero.webp" alt="" class="parallax-img hero-bg__img" data-parallax-speed="0.15" srcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w" sizes="100vw" width="2592" height="1632" decoding="async">
       </picture>
     </div>
     <!-- Gradient tint — centre-weighted scrim behind the copy so the
@@ -790,9 +791,7 @@
            behind it). Mobile falls back to a 2x2 grid below the image. -->
       <figure class="md:col-span-6 order-first md:order-1 relative flex justify-center md:justify-start m-0">
         <div class="parallax-wrapper about-portrait w-full" data-about-parallax>
-          <img src="images/Profile Pic.webp"
-               alt="Portrait of Mansoor Ahamad Ali, WYBE founder and practitioner"
-               class="parallax-img">
+          <img src="images/Profile Pic.webp" alt="Portrait of Mansoor Ahamad Ali, WYBE founder and practitioner" class="parallax-img" srcset="/images/profile-pic-480.webp 480w, /images/profile-pic-768.webp 768w, /images/profile-pic-1024.webp 1024w, /images/Profile%20Pic.webp 2048w" sizes="(min-width: 1200px) 524px, (min-width: 768px) 46vw, 94vw" width="2048" height="2048" loading="lazy" decoding="async">
         </div>
         <!-- Metrics 2x2 grid — CENTERED over the portrait per ask.
              Absolute-positioned, translated to viewport center of
@@ -933,9 +932,7 @@
 
         <!-- RIGHT column: nutrition image -->
         <div class="ucalc-photo-col">
-          <img src="images/Nutrition%202.webp"
-               alt="Nutrition coaching at WYBE"
-               class="ucalc-photo-img">
+          <img src="images/Nutrition%202.webp" alt="Nutrition coaching at WYBE" class="ucalc-photo-img" srcset="/images/nutrition-2-480.webp 480w, /images/nutrition-2-768.webp 768w, /images/nutrition-2-1080.webp 1080w, /images/Nutrition%202.webp 1696w" sizes="(min-width: 1280px) 306px, (min-width: 768px) 24vw, 719px" width="1696" height="2528" loading="lazy" decoding="async">
         </div>
 
         <!-- Confirmation panel — shown after a successful submit -->
@@ -993,10 +990,7 @@
           </blockquote>
           <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
           <div class="wybe-testimonial__meta">
-            <img src="images/testimonials/amit.webp"
-                 alt="Amit Kumar"
-                 class="wybe-testimonial__avatar wybe-testimonial__avatar--photo"
-                 loading="lazy" decoding="async">
+            <img src="images/testimonials/amit-96.webp" alt="Amit Kumar" class="wybe-testimonial__avatar wybe-testimonial__avatar--photo" loading="lazy" decoding="async" width="40" height="40">
             <div class="wybe-testimonial__id">
               <p class="wybe-testimonial__name">Amit Kumar</p>
               <p class="wybe-testimonial__context">Entrepreneur &middot; Form and Technique, Posture &amp; Flexibility</p>
@@ -1017,10 +1011,7 @@
           </blockquote>
           <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
           <div class="wybe-testimonial__meta">
-            <img src="images/testimonials/zarine.webp"
-                 alt="Zarine Chamas"
-                 class="wybe-testimonial__avatar wybe-testimonial__avatar--photo"
-                 loading="lazy" decoding="async">
+            <img src="images/testimonials/zarine-96.webp" alt="Zarine Chamas" class="wybe-testimonial__avatar wybe-testimonial__avatar--photo" loading="lazy" decoding="async" width="40" height="40">
             <div class="wybe-testimonial__id">
               <p class="wybe-testimonial__name">Zarine Chamas</p>
               <p class="wybe-testimonial__context">Founder, Momentum Uncensored &middot; Nutrition Consultation</p>
@@ -1037,10 +1028,7 @@
           </blockquote>
           <button type="button" class="wybe-testimonial__more" data-testimonial-more>Read More &rarr;</button>
           <div class="wybe-testimonial__meta">
-            <img src="images/testimonials/anahita.webp"
-                 alt="Anahita Kameli"
-                 class="wybe-testimonial__avatar wybe-testimonial__avatar--photo"
-                 loading="lazy" decoding="async">
+            <img src="images/testimonials/anahita-96.webp" alt="Anahita Kameli" class="wybe-testimonial__avatar wybe-testimonial__avatar--photo" loading="lazy" decoding="async" width="40" height="40">
             <div class="wybe-testimonial__id">
               <p class="wybe-testimonial__name">Anahita Kameli</p>
               <p class="wybe-testimonial__context">Sr. Project Manager &middot; Nutrition Consultation</p>
@@ -1069,14 +1057,8 @@
                (swapped in from card 3 per "move the right image to the left"). -->
           <figure class="wybe-transformation wybe-reveal">
             <div class="wybe-transformation__pair">
-              <img src="images/results/bilal-01-before.webp"
-                   alt="Bilal — before"
-                   loading="lazy" decoding="async"
-                   class="wybe-transformation__img">
-              <img src="images/results/bilal-01-after.webp"
-                   alt="Bilal — after 12 weeks"
-                   loading="lazy" decoding="async"
-                   class="wybe-transformation__img">
+              <img src="images/results/bilal-01-before.webp" alt="Bilal — before" loading="lazy" decoding="async" class="wybe-transformation__img" srcset="images/results/bilal-01-before-360.webp 360w, images/results/bilal-01-before.webp 926w" sizes="(min-width: 1280px) 175px, (min-width: 768px) 16vw, 46vw" width="926" height="694">
+              <img src="images/results/bilal-01-after.webp" alt="Bilal — after 12 weeks" loading="lazy" decoding="async" class="wybe-transformation__img" srcset="images/results/bilal-01-after-360.webp 360w, images/results/bilal-01-after.webp 510w" sizes="(min-width: 1280px) 175px, (min-width: 768px) 16vw, 46vw" width="510" height="764">
             </div>
             <figcaption class="wybe-transformation__caption">
               <span class="wybe-transformation__weeks">12 weeks</span>
@@ -1090,14 +1072,8 @@
                existing .wybe-transformation__pair grid keeps working. -->
           <figure class="wybe-transformation wybe-reveal">
             <div class="wybe-transformation__pair">
-              <img src="images/results/rubeena-before.webp"
-                   alt="Dr. Rubeena — before"
-                   loading="lazy" decoding="async"
-                   class="wybe-transformation__img">
-              <img src="images/results/rubeena-after.webp"
-                   alt="Dr. Rubeena — after 24 weeks"
-                   loading="lazy" decoding="async"
-                   class="wybe-transformation__img">
+              <img src="images/results/rubeena-before.webp" alt="Dr. Rubeena — before" loading="lazy" decoding="async" class="wybe-transformation__img" srcset="images/results/rubeena-before-360.webp 360w, images/results/rubeena-before.webp 577w" sizes="(min-width: 1280px) 175px, (min-width: 768px) 16vw, 46vw" width="577" height="698">
+              <img src="images/results/rubeena-after.webp" alt="Dr. Rubeena — after 24 weeks" loading="lazy" decoding="async" class="wybe-transformation__img" srcset="images/results/rubeena-after-360.webp 360w, images/results/rubeena-after.webp 577w" sizes="(min-width: 1280px) 175px, (min-width: 768px) 16vw, 46vw" width="577" height="698">
             </div>
             <figcaption class="wybe-transformation__caption">
               <span class="wybe-transformation__weeks">24 weeks</span>
@@ -1108,14 +1084,8 @@
                (swapped in from card 1 per "move the left image to the right"). -->
           <figure class="wybe-transformation wybe-reveal">
             <div class="wybe-transformation__pair">
-              <img src="images/results/bilal-back-before.webp"
-                   alt="Bilal back — before"
-                   loading="lazy" decoding="async"
-                   class="wybe-transformation__img">
-              <img src="images/results/bilal-back-after.webp"
-                   alt="Bilal back — after 12 weeks"
-                   loading="lazy" decoding="async"
-                   class="wybe-transformation__img">
+              <img src="images/results/bilal-back-before.webp" alt="Bilal back — before" loading="lazy" decoding="async" class="wybe-transformation__img" srcset="images/results/bilal-back-before-360.webp 360w, images/results/bilal-back-before.webp 604w" sizes="(min-width: 1280px) 175px, (min-width: 768px) 16vw, 46vw" width="604" height="764">
+              <img src="images/results/bilal-back-after.webp" alt="Bilal back — after 12 weeks" loading="lazy" decoding="async" class="wybe-transformation__img" srcset="images/results/bilal-back-after-360.webp 360w, images/results/bilal-back-after.webp 572w" sizes="(min-width: 1280px) 175px, (min-width: 768px) 16vw, 46vw" width="572" height="770">
             </div>
             <figcaption class="wybe-transformation__caption">
               <span class="wybe-transformation__weeks">12 weeks</span>
@@ -1295,11 +1265,7 @@
            behaviour — is unchanged. -->
       <div class="text-left order-2 md:order-1">
         <div class="wybe-book-cover-frame">
-          <img src="images/the-1825-days-cover-white.webp"
-               alt="The 1825 Days — the complete nutrition guide for your child"
-               class="wybe-book-cover-img"
-               data-parallax
-               data-parallax-speed="0.20">
+          <img src="images/the-1825-days-cover-white.webp" alt="The 1825 Days — the complete nutrition guide for your child" class="wybe-book-cover-img" data-parallax data-parallax-speed="0.20" srcset="images/the-1825-days-cover-white-480.webp 480w, images/the-1825-days-cover-white-960.webp 960w, images/the-1825-days-cover-white.webp 1188w" sizes="(min-width: 1100px) 480px, (min-width: 768px) 45vw, (min-width: 600px) 380px, 89vw" width="1188" height="1600" loading="lazy" decoding="async">
         </div>
       </div>
 
@@ -1483,7 +1449,7 @@
         <div>
           <!-- Brand block: orange logo mark over address, matching the header. -->
           <a href="/#home" class="mb-3 wybe-footer-wordmark" aria-label="WYBE — Wellness You Build Everyday, home">
-            <img src="/images/logo-mark-orange.png" alt="" class="wybe-footer-wordmark__img">
+            <img src="/images/logo-mark-orange-160.png" alt="" class="wybe-footer-wordmark__img" srcset="/images/logo-mark-orange-160.png 1x, /images/logo-mark-orange-320.png 2x" width="160" height="112" loading="lazy" decoding="async">
           </a>
           <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Build Everyday.<br>UAE &middot; Global</p>
         </div>
