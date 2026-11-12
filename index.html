@@ -322,6 +322,18 @@
                   0 8px 32px rgba(0, 0, 0, 0.45);
     }
     #ucalc-confirm.hidden { display: none !important; }
+    .ucalc-sendnote {
+      font-family: 'Raleway', 'Inter', sans-serif;
+      font-size: 12px; line-height: 1.5;
+      color: rgba(246, 242, 232, 0.55);
+      margin-top: 10px;
+    }
+    /* The confirmation replaces a much taller form. Without a floor the
+       card collapses on submit and the photo column beside it reflows. */
+    #ucalc-confirm {
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: var(--ucalc-panel-h, 0px);
+    }
     @media (min-width: 768px) {
       #unified-calc-form, #ucalc-view-results, #ucalc-confirm { padding: 28px; }
     }
@@ -844,15 +856,15 @@
         <div class="calc-panels-grid">
 
         <form id="unified-calc-form" data-view="form">
-          <p class="ucalc-intro-heading">Get your BMI, IBW, BFP &amp; TDEE results.</p>
+          <p class="ucalc-intro-heading">Fill in your details and I&rsquo;ll email you a personalised report: BMI, ideal weight, body fat % and daily calories.</p>
           <!-- Row 1 & 2: Name and Email, each full-width -->
           <div class="wybe-input-row wybe-input-row--full">
             <label for="ucalc-name">Full name</label>
-            <input type="text" id="ucalc-name" autocomplete="name" placeholder="">
+            <input type="text" id="ucalc-name" autocomplete="name" required placeholder="">
           </div>
           <div class="wybe-input-row wybe-input-row--full">
             <label for="ucalc-email-field">Email</label>
-            <input type="email" id="ucalc-email-field" autocomplete="email" placeholder="">
+            <input type="email" id="ucalc-email-field" autocomplete="email" required placeholder="">
           </div>
           <!-- Row 2: Gender | Age -->
           <div class="wybe-input-row">
@@ -865,25 +877,25 @@
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-age">Age</label>
-            <input type="number" id="ucalc-age" min="5" max="120" step="1" placeholder="">
+            <input type="number" id="ucalc-age" min="5" max="120" step="1" required placeholder="">
           </div>
           <!-- Row 3: Height | Weight -->
           <div class="wybe-input-row">
             <label for="ucalc-height">Height (cm)</label>
-            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" placeholder="">
+            <input type="number" id="ucalc-height" min="50" max="260" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-weight">Weight (kg)</label>
-            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" placeholder="">
+            <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" required placeholder="">
           </div>
           <!-- Row 4: Neck | Waist -->
           <div class="wybe-input-row">
             <label for="ucalc-neck">Neck (cm)</label>
-            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" placeholder="">
+            <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
             <label for="ucalc-waist">Waist (cm)</label>
-            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" placeholder="">
+            <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" required placeholder="">
           </div>
           <!-- Row 5: Hip (female-only) | Activity Level -->
           <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
@@ -912,10 +924,11 @@
           <div class="wybe-input-row--full calc-captcha-row">
             <div class="cf-turnstile" id="ucalc-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="normal"></div>
             <button type="submit" class="wybe-calc-cta ucalc-submit-btn">
-              <span class="ucalc-submit-label">Get Result &rarr;</span>
+              <span class="ucalc-submit-label">Email my report &rarr;</span>
               <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
             </button>
           </div>
+          <p class="wybe-input-row--full ucalc-sendnote">Your report is sent by email. Results are not shown on screen.</p>
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
 
@@ -928,7 +941,9 @@
 
         <!-- Confirmation panel — shown after a successful submit -->
         <div id="ucalc-confirm" class="hidden" data-view="confirm">
-          <p class="font-sans text-lg font-semibold" style="color:#FF6600;">Success! Emailed Report.</p>
+          <p class="font-sans text-xl font-bold mb-3" style="color:#FF6600;">Your report is on its way</p>
+          <p class="font-sans text-sm leading-relaxed mb-4" style="color:rgba(246,242,232,.75);">Sent to <span id="ucalc-sent-to" class="font-semibold" style="color:#F6F2E8;"></span>. It usually arrives within 2 minutes. If you don&rsquo;t see it, check your Spam or Junk folder and mark it as &ldquo;Not spam&rdquo; so you get my future emails.</p>
+          <button type="button" id="ucalc-resend" class="font-sans text-sm underline" style="color:#FF6600;">Wrong email? Send again</button>
         </div>
         </div><!-- /.calc-panels-grid -->
         </div><!-- /.calculator-form-wrapper -->
@@ -2166,6 +2181,9 @@
       const toggleHip = () => {
         const isFemale = els.gender.value === 'female';
         els.hipWrap.classList.toggle('hidden', !isFemale);
+        // Keep the attribute in step with visibility: a hidden `required`
+        // field blocks native submit with an unfocusable control.
+        if (els.hip) { isFemale ? els.hip.setAttribute('required','') : els.hip.removeAttribute('required'); }
         if (els.activityWrap) {
           els.activityWrap.style.gridColumn = isFemale ? '' : '1 / -1';
         }
@@ -2220,13 +2238,55 @@
       const roundKcal = (n) => Math.round(n / 5) * 5;
 
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      const showErr = (msg) => { els.error.textContent = msg; els.error.classList.remove('hidden'); };
-      const clearErr = () => els.error.classList.add('hidden');
+      const showErr = (msg, target) => {
+        els.error.textContent = msg;
+        els.error.classList.remove('hidden');
+        if (target) {
+          target.setAttribute('aria-invalid', 'true');
+          try { target.focus({ preventScroll: false }); } catch (_) { target.focus(); }
+        }
+      };
+      const clearErr = () => {
+        els.error.classList.add('hidden');
+        els.error.textContent = '';
+      };
+      // A field counts as filled only if it parses AND sits inside its range,
+      // so the HTML min/max are enforced in JS too rather than just hinted.
+      const inRange = (el, lo, hi) => {
+        if (!el || el.value === '') return false;
+        const n = parseFloat(el.value);
+        return isFinite(n) && n >= lo && n <= hi;
+      };
       const setSending = (on) => {
         if (els.submitBtn)     els.submitBtn.disabled = on;
         if (els.submitSpinner) els.submitSpinner.classList.toggle('hidden', !on);
         if (els.submitLabel)   els.submitLabel.textContent = on ? 'Sending…' : 'Get Result →';
       };
+
+      // Clear the error the moment the user edits any field. Previously
+      // clearErr() ran only at the start of the next submit, so a message
+      // like "Enter your full name." stayed on screen after it was fixed.
+      ['name','email','gender','age','height','weight','neck','waist','hip','activity']
+        .forEach((k) => {
+          const el = els[k];
+          if (!el) return;
+          ['input','change'].forEach((evt) => el.addEventListener(evt, () => {
+            el.setAttribute('aria-invalid', 'false');
+            clearErr();
+          }));
+        });
+
+      // "Wrong email? Send again" — bring the form back with the
+      // measurements intact and only the address cleared.
+      const resendBtn = document.getElementById('ucalc-resend');
+      if (resendBtn) {
+        resendBtn.addEventListener('click', () => {
+          if (els.confirm) els.confirm.classList.add('hidden');
+          form.classList.remove('hidden');
+          clearErr();
+          if (els.email) { els.email.value = ''; els.email.focus(); }
+        });
+      }
 
       // Timestamp when the IIFE loaded — server rejects elapsed < 3000 ms.
       const CALC_LOAD_TS = Date.now();
@@ -2236,9 +2296,34 @@
         e.preventDefault();
         clearErr();
 
+        const name  = (els.name.value  || '').trim();
+        const email = (els.email.value || '').trim();
+        const gender   = els.gender.value;
+        const isFemale = gender === 'female';
+
+        // Every field is mandatory. Checked here as well as via the HTML
+        // `required` attribute, because the submit handler preventDefault()s
+        // and native validation would otherwise never run. Hip is the one
+        // conditional: it only applies to the female BFP formula.
+        const checks = [
+          [els.name,     name.length >= 2,                      'Enter your full name (at least 2 characters).'],
+          [els.email,    EMAIL_RE.test(email),                  "That email doesn't look right — try name@example.com."],
+          [els.gender,   !!gender,                              'Select your gender.'],
+          [els.age,      inRange(els.age, 5, 120),              'Enter your age (5–120).'],
+          [els.height,   inRange(els.height, 50, 260),          'Enter your height in cm (50–260).'],
+          [els.weight,   inRange(els.weight, 20, 400),          'Enter your weight in kg (20–400).'],
+          [els.neck,     inRange(els.neck, 20, 70),             'Enter your neck measurement in cm (20–70).'],
+          [els.waist,    inRange(els.waist, 40, 200),           'Enter your waist measurement in cm (40–200).'],
+          [els.hip,      !isFemale || inRange(els.hip, 50, 200),'Enter your hip measurement in cm (50–200).'],
+          [els.activity, !!els.activity.value,                  'Select your activity level.'],
+        ];
+        for (const [el, ok, msg] of checks) {
+          if (!ok) { showErr(msg, el); return; }
+        }
+
         // ── Consent guard ─────────────────────────────
-        // The input is `required`, so a native submit is already blocked;
-        // this covers the JS path, which bypasses native validation.
+        // Runs after the field checks: consent is the last item in the
+        // field order, so an empty form should flag the name first.
         const consentEl = document.getElementById('ucalc-consent');
         if (!consentEl || !consentEl.checked) {
           showErr('Please agree to the Privacy Policy before we send your results.');
@@ -2252,22 +2337,14 @@
           return;
         }
 
-        const name  = (els.name.value  || '').trim();
-        const email = (els.email.value || '').trim();
-        if (name.length < 2)         { showErr('Enter your full name.'); return; }
-        if (!EMAIL_RE.test(email))   { showErr("That email doesn't look right — try name@example.com."); return; }
 
-        const gender   = els.gender.value;
-        const isFemale = gender === 'female';
-        const age      = els.age.value ? parseInt(els.age.value, 10) : null;
+        const age      = parseInt(els.age.value, 10);
         const h        = num(els.height);
         const w        = num(els.weight);
         const neck     = num(els.neck);
         const waist    = num(els.waist);
         const hip      = num(els.hip);
-        const mult     = els.activity.value ? parseFloat(els.activity.value) : null;
-
-        if (!h || !w) { showErr('Enter at least your height and weight to get started.'); return; }
+        const mult     = parseFloat(els.activity.value);
 
         const store = {
           gender: gender || null, age,
@@ -2395,13 +2472,24 @@
           // Reset widget — Turnstile tokens are single-use
           if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
           setSending(false);
+          // Freeze the card at the form's rendered height before swapping,
+          // so the panel does not collapse and the photo column beside it
+          // does not reflow.
+          if (els.confirm) {
+            els.confirm.style.setProperty('--ucalc-panel-h', form.offsetHeight + 'px');
+          }
           form.classList.add('hidden');
+          const sentTo = document.getElementById('ucalc-sent-to');
+          if (sentTo) sentTo.textContent = email;
           if (els.confirm) els.confirm.classList.remove('hidden');
           if (typeof window.wybeTrack === 'function') window.wybeTrack('Calculator Submit');
         } catch (_) {
           if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
           setSending(false);
-          showErr('Something went wrong — please try again or contact us directly.');
+          els.error.innerHTML = 'Something went wrong sending your report. Please try again, or '
+            + '<a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" '
+            + 'style="color:#FF6600;text-decoration:underline;">message me on WhatsApp</a>.';
+          els.error.classList.remove('hidden');
         }
       });
     })();
