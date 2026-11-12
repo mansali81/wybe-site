@@ -110,15 +110,14 @@
         <div class="md:col-span-4">
           <p class="font-sans text-xs tracking-widest uppercase text-charcoal-muted mb-4">About the Book</p>
           <div class="w-8 h-px bg-burgundy mb-10"></div>
-          <!-- TODO: When the cover artwork is ready, save it as images/book-cover.jpg and replace this placeholder block with: -->
-          <!-- <img src="images/book-cover.jpg" alt="1825 Days book cover" class="w-full max-w-xs aspect-[2/3] object-cover shadow-lg"> -->
-          <div class="w-full max-w-xs aspect-[2/3] bg-cream-dark border border-charcoal/15 flex flex-col items-center justify-center p-8 shadow-sm">
-            <p class="font-sans text-xs tracking-widest uppercase text-charcoal/40 mb-4">Book Cover</p>
-            <div class="w-8 h-px bg-burgundy mb-4"></div>
-            <p class="font-display text-4xl font-bold text-charcoal/60 text-center mb-1">1825</p>
-            <p class="font-display text-lg text-charcoal/40 text-center mb-8">DAYS</p>
-            <p class="font-sans text-[10px] tracking-widest uppercase text-charcoal/30 text-center leading-relaxed">Drop cover into<br>images/book-cover.jpg</p>
-          </div>
+          <!-- Deliberately NOT aspect-[2/3] + object-cover as the old TODO
+               suggested: the artwork is 1188x1600 (0.743), so a 0.667 frame
+               would crop the top and bottom. h-auto keeps its real shape. -->
+          <img src="images/the-1825-days-cover-white.webp"
+               alt="The 1,825 Days book cover by Mansoor Ahamad Ali Mohamed"
+               width="1188" height="1600"
+               loading="lazy"
+               class="w-full max-w-xs h-auto shadow-lg">
         </div>
         <div class="md:col-span-8">
           <p class="font-display text-2xl md:text-3xl font-semibold text-charcoal leading-snug mb-6">
