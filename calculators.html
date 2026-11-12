@@ -27,6 +27,170 @@
     }
   </script>
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ── CALCULATOR FIELD STYLING ──────────────────────────────────────
+       These rules live in index.html's page-scoped <style> block, not in
+       css/styles.css, so this page used the same .wybe-input-row markup
+       with no matching CSS — which is why the fields rendered as raw
+       browser boxes. Copied verbatim so both calculators look identical.
+       If these ever diverge, lift them into css/styles.css instead. */
+
+    /* This page has an empty <div class="wybe-calc-title-rule"> as the
+       form's first child (index.html has a styled intro <p> there). It has
+       no CSS anywhere in the project, so once the form became a 2-column
+       grid it silently ate cell 1 and pushed Gender into the right column.
+       Span it instead of deleting it, so no markup changes. */
+    #unified-calc-form .wybe-calc-title-rule { grid-column: 1 / -1; }
+    .wybe-calc-card       { display: grid; grid-template-columns: 1fr; gap: 24px; padding: 8px 0; position: relative; }
+    @media (min-width: 768px) {
+      .wybe-calc-card     { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .wybe-calc-card > .wybe-calc-result { border-left: 1px solid rgba(255,255,255,0.15); padding-left: 40px; }
+    }
+    .wybe-calc-motif      {
+      position: absolute; top: -8px; right: 0;
+      width: 44px; height: 44px; color: #FF6600; opacity: 0.85;
+      pointer-events: none;
+    }
+    .wybe-calc-eyebrow    { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+    .wybe-calc-title      { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
+    /* Airy input rows: hairline underline, no box */
+    /* Compact calculator rows so all fields fit within the 640 px
+       card without inner scrolling. Reduced padding + smaller value
+       font vs the previous LCD variant. */
+    #unified-calc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    #unified-calc-form.hidden { display: none !important; }
+    #unified-calc-form .wybe-input-row--full,
+    #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
+    @media (max-width: 767px) {
+      #unified-calc-form { grid-template-columns: 1fr; }
+      #unified-calc-form #ucalc-error { grid-column: auto; }
+    }
+    .wybe-input-row {
+      display: grid; grid-template-columns: 1fr auto; align-items: end;
+      padding: 6px 12px; gap: 2px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 8px;
+      transition: border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
+    }
+    .wybe-input-row:focus-within {
+      border-color: #FF6600;
+      background: rgba(0, 0, 0, 0.55);
+      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
+    }
+    .wybe-input-row label {
+      grid-column: 1 / -1;
+      display: flex; align-items: center;
+      font-family: 'Inter', sans-serif; font-weight: 700;
+      font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); margin-bottom: 0;
+    }
+    .wybe-input-row input,
+    .wybe-input-row select {
+      display: block; width: 100%; background: transparent; border: 0; outline: 0;
+      font-family: 'Raleway', 'Inter', sans-serif; font-weight: 400; font-size: 17px;
+      color: #FFFFFF; padding: 0; letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    /* The whole calculator card — LCD frame with subtle inset shadow. */
+    #unified-calc-form,
+    #ucalc-view-results,
+    #ucalc-confirm {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                  0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+    #ucalc-confirm.hidden { display: none !important; }
+    @media (min-width: 768px) {
+      #unified-calc-form, #ucalc-view-results, #ucalc-confirm { padding: 28px; }
+    }
+    /* Native <select> looks OS-ish and out of place next to the airy
+       inputs. Strip the OS chrome and paint our own chevron (orange,
+       matches the section accent) as a background-image on the right.
+       padding-right leaves room so the value text never runs under it. */
+    .wybe-input-row select {
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      cursor: pointer;
+      padding-right: 28px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF6600' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 2px center;
+      background-size: 18px 18px;
+    }
+    .wybe-input-row select::-ms-expand { display: none; }
+    /* Focus state — the row's underline already flips to orange via
+       :focus-within; also drop the OS blue focus ring on the control. */
+    .wybe-input-row input:focus,
+    .wybe-input-row select:focus { outline: none; box-shadow: none; }
+    /* Placeholder text reads as a hint, not a filled value. Lighter
+       colour + thinner weight + smaller size + italic so it's visually
+       distinct from the 22 px / 900 answer text. */
+    .wybe-input-row input::placeholder {
+      color: rgba(255, 255, 255, 0.32);
+      font-weight: 400;
+      font-size: 15px;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+    /* Empty <select> ("Select…" state) also styled as a hint. */
+    .wybe-input-row select:invalid,
+    .wybe-input-row select:has(option[value=""]:checked) {
+      color: rgba(255, 255, 255, 0.32);
+      font-weight: 400;
+      font-size: 15px;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+    /* Dropdown menu itself — dark background matching the site theme,
+       not the OS cream default. color-scheme:dark asks the browser
+       to render the open menu popup in its own dark UI chrome (helps
+       macOS Safari where <option> bg is ignored). Chrome/Edge/Firefox
+       additionally honor the explicit option bg below. */
+    .wybe-input-row select { color-scheme: dark; }
+    .wybe-input-row select option { color: #FFFFFF; background: #1E1E1E; font-weight: 400; font-style: normal; font-size: 15px; }
+    .wybe-input-row .info-tip { color: rgba(255,255,255,0.4); }
+
+    /* Image-frame heights on the home page. Wrappers are absolutely-
+       positioned inside so they collapse to 0 without an explicit
+       height — set generous mins so the contained images read as
+       full-size features. */
+    /* The 640 px fixed-height rule that used to live here was removed —
+       the form + results panels now size to their own content so the
+       cards / disclaimer / email row never bleed past a hard-capped
+       container. Photo is applied as a section background instead of
+       an image column, so no equal-height guardrail is needed. */
+    /* Contact image — bigger frame per the "enlarge contact image"
+       ask. No max-width; the container's column width governs. */
+    @media (min-width: 768px) {
+    }
+    .wybe-calc-cta        {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #FF6600; color: #000000;
+      font-family: 'Inter', sans-serif; font-weight: 900;
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 999px;
+      border: 0; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.20);
+      transition: transform .25s cubic-bezier(0.19, 1, 0.22, 1),
+                  filter .25s ease,
+                  box-shadow .25s ease,
+                  background-color .25s ease,
+                  color .25s ease;
+      margin-top: 20px;
+    }
+    .wybe-calc-cta:hover  {
+      background: #E65500;
+      color: #FFFFFF;
+      transform: scale(1.05);
+      filter: brightness(1.08);
+      box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
+    }
+  </style>
 </head>
 <body class="bg-cream font-sans">
 
@@ -95,7 +259,7 @@
       <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Calculators</h1>
       <div class="w-12 h-px bg-burgundy mb-6"></div>
       <p class="font-sans text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
-        Your weight tells you very little. Your body fat percentage defines your body aesthetics. Nothing is sent anywhere, every calculation happens in your browser.
+        Your weight tells you very little. Your body fat percentage defines your body aesthetics. Your results are calculated right here in your browser. Your measurements are only sent if you choose to email yourself the results.
       </p>
     </div>
   </section>
