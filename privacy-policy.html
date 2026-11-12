@@ -59,24 +59,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            cream: '#F6F2E8', 'cream-dark': '#EDE7D8',
-            burgundy: '#FF6600', 'burgundy-dark': '#E65500',
-            charcoal: '#1E1E1E', 'charcoal-light': '#FFFFFF',
-          },
-          fontFamily: {
-            sans:    ['Raleway', 'Inter', 'sans-serif'],
-            heading: ['Inter', 'Raleway', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
   <link rel="stylesheet" href="/css/styles.css">
   <style>
     body { background-color: #1E1E1E; color: #F6F2E8; }
@@ -111,6 +93,10 @@
     }
     .legal-callout p { margin: 0; color: rgba(246, 242, 232, 0.95); }
   </style>
+  <!-- Tailwind, compiled ahead of time by `npm run build:css` (was the Play CDN).
+       Loaded last in <head> so the cascade order matches what the CDN produced,
+       which injected its styles at the end of the document. -->
+  <link rel="stylesheet" href="/css/tailwind.css">
 </head>
 <body class="text-cream">
 

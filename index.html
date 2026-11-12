@@ -49,34 +49,6 @@
   <link rel="preload" as="image" href="/images/hero-mobile.webp"
         media="(max-width: 767px)" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            // New brand palette (from Wybe_colorpalette.pdf):
-            //   #000000 dark navy (was 'charcoal'), #F6F2E8 warm off-white (was 'cream'), #FF6600 lime (was 'burgundy').
-            //   Older token names kept so existing class names don't have to be renamed everywhere.
-            cream: '#F6F2E8',
-            'cream-dark': '#EDE7D8',
-            'sage-tint': '#F0EDDF',
-            'sage-mist': '#E9E4CE',
-            'charcoal-muted': '#4A6070',
-            burgundy: '#FF6600',
-            forest: '#001A24',
-            'burgundy-dark': '#E65500',
-            'charcoal-light': '#FFFFFF',
-            charcoal: '#1E1E1E',
-          },
-          fontFamily: {
-            sans:    ['Raleway', 'Inter', 'sans-serif'],   // body default (Raleway light)
-            heading: ['Inter', 'Raleway', 'sans-serif'],   // headings (Inter black)
-          }
-        }
-      }
-    }
-  </script>
   <link rel="stylesheet" href="/css/styles.css">
 
   <!-- Site-level background + stacking. Type is defined in css/styles.css
@@ -694,6 +666,10 @@
     ]
   }
   </script>
+  <!-- Tailwind, compiled ahead of time by `npm run build:css` (was the Play CDN).
+       Loaded last in <head> so the cascade order matches what the CDN produced,
+       which injected its styles at the end of the document. -->
+  <link rel="stylesheet" href="/css/tailwind.css">
 </head>
 <body class="text-cream">
 

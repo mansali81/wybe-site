@@ -1,0 +1,13 @@
+{
+  "name": "wybe-html",
+  "private": true,
+  "version": "1.0.0",
+  "description": "wybe.fit static site. Tailwind is compiled ahead of time; the Play CDN is no longer loaded in the browser.",
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/tailwind.input.css -o ./css/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./css/tailwind.input.css -o ./css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
