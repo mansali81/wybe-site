@@ -2293,7 +2293,7 @@ html:not(.gsap-ready) .wybe-reveal {
    element with .wybe-hover-title. Text lifts 2px, brightens to lime, and
    a lime underline sweeps in left-to-right. Matches the calc-rail feel so
    the whole site reads as reactive. */
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link),
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):not(.wybe-header-cta),
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link),
 .wybe-hover-title {
   display: inline-block;
@@ -2303,7 +2303,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link),
               letter-spacing .3s ease;
   will-change: transform;
 }
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link)::after,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):not(.wybe-header-cta)::after,
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link)::after,
 .wybe-hover-title::after {
   content: '';
@@ -2316,14 +2316,14 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link)::after,
   transition: transform .45s cubic-bezier(0.19, 1, 0.22, 1);
   pointer-events: none;
 }
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):hover,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):not(.wybe-header-cta):hover,
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover,
 .wybe-hover-title:hover {
   color: #FF6600 !important;
   transform: translateY(-2px);
   letter-spacing: 0.01em;
 }
-nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):hover::after,
+nav a:not([class*="bg-burgundy"]):not(.wybe-brand):not(.wybe-mobile-link):not(.wybe-header-cta):hover::after,
 footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
 .wybe-hover-title:hover::after {
   transform: scaleX(1);
@@ -3726,3 +3726,45 @@ li.service-tier.service-tier--info,
   outline: 2px solid #FF6600;
   outline-offset: 2px;
 }
+
+/* ── HEADER CTA + ACCENTED MENU ITEM ─────────────────
+   Desktop-only "Book a Session" pill sitting left of the hamburger, and
+   the matching accent on the in-menu item. Styled from the hero
+   .hero-cta tokens (orange, rounded-full, uppercase, letter-spaced)
+   but sized for the 96px header bar. */
+.wybe-header-cta {
+  display: none;                     /* hidden below md; shown at 768px+ */
+  align-items: center;
+  height: 40px;
+  padding: 0 22px;
+  background: #FF6600;
+  color: #1E1E1E;
+  font-family: var(--font-subhead, 'Inter', sans-serif);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 9999px;
+  white-space: nowrap;               /* never wraps into the hamburger */
+  transition: background-color .3s ease, transform .3s ease;
+}
+@media (min-width: 768px) {
+  .wybe-header-cta { display: inline-flex; }
+}
+.wybe-header-cta:hover {
+  background: #E65500;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+.wybe-header-cta:focus-visible {
+  outline: 2px solid #FF6600;
+  outline-offset: 3px;
+}
+/* The site-wide nav sweep would add its own underline to this pill. */
+nav a.wybe-header-cta::after { content: none; }
+
+/* Accent for the "Book a Session" item inside the dropdown. */
+.wybe-mobile-link--cta { color: #FF6600; }
+.wybe-mobile-link--cta:hover,
+.wybe-mobile-link--cta.is-active { color: #FF6600; }

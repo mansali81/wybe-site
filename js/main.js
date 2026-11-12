@@ -835,15 +835,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // fired). Force the target section to .section-in-view at click
   // time so the arrival lands on visible content.
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]');
+    // Menu links are written "/#about", not "#about", so a [href^="#"]
+    // selector never matched them: they fell through to a native hash jump
+    // with no Lenis easing, often landing on a section still held invisible
+    // by the scroll-reveal. Accept both forms when the path is this page.
+    const a = e.target.closest('a[href^="#"], a[href^="/#"]');
     if (!a) return;
-    const hash = a.getAttribute('href');
-    if (!hash || hash === '#') return;
+    const raw = a.getAttribute('href');
+    if (!raw || raw === '#' || raw === '/#') return;
+    const hash = raw.slice(raw.indexOf('#'));
+    // "/#x" only counts as same-page when we are actually on "/".
+    if (raw.charAt(0) === '/' && location.pathname !== '/' && location.pathname !== '/index.html') return;
     let target = null;
     try { target = document.querySelector(hash); } catch { return; }
     if (!target) return;
+
     target.classList.remove('section-pre-animate');
     target.classList.add('section-in-view');
+
+    // Own the scroll so it eases through Lenis and clears the fixed header.
+    e.preventDefault();
+    const navH = parseInt(
+      getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10
+    ) || 0;
+    const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - navH);
+    if (window.__lenis) {
+      // A NUMBER, never the node — see the scrollToHash note below for why.
+      window.__lenis.scrollTo(top, { duration: 0.9, force: true });
+    } else {
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+    if (history.replaceState) history.replaceState(null, '', hash);
   });
 
   // ── SCROLL-IN ANIMATIONS ──────────────────────────────
