@@ -598,15 +598,52 @@ document.addEventListener('DOMContentLoaded', () => {
     return { ok: true, digits: digits };
   }
 
-  // Clear the phone error as soon as the user edits the field.
-  ['wl-mobile-num', 'waitlist-mobile'].forEach(function (id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener('input', function () {
-      var errEl = document.getElementById('waitlist-send-error');
-      if (errEl) errEl.classList.add('hidden');
-      delete el.dataset.wybeDigits;
-    });
+  // ── FORM ERROR STATE ─────────────────────────────────────────────
+  // One place that answers "where does this form show its errors?", so the
+  // submit handler and the live-clearing below cannot disagree.
+  function wybeFormErrorEl(form) {
+    if (!form) return null;
+    var subj = form.dataset.subject || '';
+    var id = subj === 'WYBE, Quick Contact' ? 'contact-send-error'
+           : subj === '1825 Days, Waitlist' ? 'waitlist-send-error' : null;
+    if (id) {
+      var byId = document.getElementById(id);
+      if (byId) return byId;
+    }
+    // Fallback for forms that carry their own alert element.
+    return form.querySelector('[role="alert"], [aria-live="assertive"]');
+  }
+
+  function wybeClearFormError(form) {
+    var el = wybeFormErrorEl(form);
+    if (el) el.classList.add('hidden');
+    if (form) {
+      form.querySelectorAll('[aria-invalid="true"]').forEach(function (f) {
+        f.setAttribute('aria-invalid', 'false');
+      });
+    }
+  }
+
+  // Clear a form's error the moment the user edits ANY of its fields, and
+  // hide the contact confirmation once they start typing again. Delegated at
+  // document level so it covers every data-form on every page, including
+  // fields inside modals that are added or revealed later.
+  ['input', 'change'].forEach(function (evt) {
+    document.addEventListener(evt, function (e) {
+      var field = e.target;
+      if (!field || !field.closest) return;
+      var form = field.closest('form[data-form]');
+      if (!form) return;
+      wybeClearFormError(form);
+      field.setAttribute('aria-invalid', 'false');
+      // The phone validator stashes normalised digits; stale once retyped.
+      if (field.dataset && field.dataset.wybeDigits) delete field.dataset.wybeDigits;
+      // Contact confirmation stays up until the next keystroke.
+      if ((form.dataset.subject || '') === 'WYBE, Quick Contact') {
+        var confirmEl = document.getElementById('contact-confirm');
+        if (confirmEl) confirmEl.classList.add('hidden');
+      }
+    }, true);
   });
 
   // Timestamp when the script loaded — used for the time-trap.
@@ -623,8 +660,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
 
-      // Hide any previous error for this form
+      // Wipe ALL previous error state before re-validating, so only errors
+      // from THIS attempt can be on screen.
       var errElId = subj === 'WYBE, Quick Contact' ? 'contact-send-error' : subj === '1825 Days, Waitlist' ? 'waitlist-send-error' : null;
+      wybeClearFormError(form);
       if (errElId) { var prevErr = document.getElementById(errElId); if (prevErr) prevErr.classList.add('hidden'); }
 
       // ── BOT CHECKS (waitlist + contact) ──────────────────────────────
@@ -730,16 +769,25 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           if (!gasOk) throw new Error('server_error');
           if (btn) { btn.textContent = originalText; btn.disabled = false; }
+
+          // Capture what they typed BEFORE reset() wipes the fields.
+          var cName  = (raw.name  || '').trim();
+          var cEmail = (raw.email || '').trim();
+          var cFirst = cName.split(' ')[0] || cName;
           form.reset();
-          var tick = document.getElementById('contact-tick');
-          if (tick) {
-            tick.classList.remove('hidden');
-            tick.classList.add('visible');
-            setTimeout(function() {
-              tick.classList.add('hidden');
-              tick.classList.remove('visible');
-            }, 3000);
+
+          var confirmEl = document.getElementById('contact-confirm');
+          if (confirmEl) {
+            // textContent, not innerHTML: the name and email are user input
+            // and must never be parsed as markup.
+            var nameSlot  = document.getElementById('contact-confirm-name');
+            var emailSlot = document.getElementById('contact-confirm-email');
+            if (nameSlot)  nameSlot.textContent  = cFirst;
+            if (emailSlot) emailSlot.textContent = cEmail;
+            confirmEl.classList.remove('hidden');
           }
+          // No auto-hide timer: the confirmation stays until the user starts
+          // typing again (wired below), so it cannot vanish before it is read.
 
         } else {
           raw.access_key = '9dd51d8a-998b-4b71-bda2-fd22eb6a752a';
@@ -757,7 +805,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
       } catch (err) {
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
-        if (errElId) { var errEl = document.getElementById(errElId); if (errEl) errEl.classList.remove('hidden'); }
+        if (errElId) {
+          var errEl = document.getElementById(errElId);
+          if (errEl) {
+            // Fields are deliberately NOT reset on failure, so nothing the
+            // user typed is lost.
+            if (errElId === 'contact-send-error') {
+              errEl.innerHTML = 'Your message didn\u2019t send. Check your connection and try again, or '
+                + '<a href="https://wa.me/971527530530" target="_blank" rel="noopener" '
+                + 'style="color:#FF6600;text-decoration:underline;">message me on WhatsApp</a>.';
+            } else if (!errEl.textContent.trim()) {
+              errEl.textContent = 'Connection error \u2014 check your network and try again.';
+            }
+            errEl.classList.remove('hidden');
+          }
+        }
       }
     });
   });

@@ -322,6 +322,26 @@
                   0 8px 32px rgba(0, 0, 0, 0.45);
     }
     #ucalc-confirm.hidden { display: none !important; }
+    /* ── CONTACT CONFIRMATION ──────────────────────────────────────
+       min-height reserves the tallest state (the two-line confirmation)
+       so showing success or error never shifts the card. */
+    .contact-status-row {
+      display: flex; align-items: flex-start; justify-content: center;
+      min-height: 80px;   /* fits the two-line confirmation without shifting */
+    }
+    #contact-confirm { display: flex; align-items: flex-start; gap: 10px; text-align: left; }
+    #contact-confirm.hidden { display: none !important; }
+    #contact-tick { flex: 0 0 auto; line-height: 0; margin-top: 1px; }
+    .contact-confirm__title {
+      font-family: 'Raleway', 'Inter', sans-serif; font-weight: 700;
+      font-size: 14px; color: #F6F2E8; margin: 0 0 2px;
+    }
+    .contact-confirm__body {
+      font-family: 'Raleway', 'Inter', sans-serif;
+      font-size: 12px; line-height: 1.5;
+      color: rgba(246, 242, 232, 0.75); margin: 0; max-width: 42ch;
+    }
+    .contact-confirm__body a { color: #FF6600; text-decoration: underline; }
     .ucalc-sendnote {
       font-family: 'Raleway', 'Inter', sans-serif;
       font-size: 12px; line-height: 1.5;
@@ -1427,12 +1447,21 @@
                   </svg>
                 </button>
               </div>
-              <!-- Tick + error sit below the row -->
-              <div class="flex items-center gap-2 mt-2">
-                <span id="contact-tick" class="hidden" aria-live="polite" aria-label="Message sent">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 15.5 9.5"/></svg>
-                </span>
-                <span id="contact-send-error" class="hidden font-sans text-xs text-red-300" role="alert">Connection error — check your network and try again.</span>
+              <!-- Confirmation + error sit below the row. The wrapper keeps a
+                   floor so showing either one cannot shift the card. -->
+              <div class="contact-status-row mt-2">
+                <!-- role="status" + aria-live announce the result; the tick is
+                     decorative now that the text carries the same meaning. -->
+                <div id="contact-confirm" class="hidden" role="status" aria-live="polite">
+                  <span id="contact-tick" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 15.5 9.5"/></svg>
+                  </span>
+                  <div class="contact-confirm__text">
+                    <p class="contact-confirm__title">Message sent</p>
+                    <p class="contact-confirm__body">Thanks, <span id="contact-confirm-name"></span>. I&rsquo;ll reply to <span id="contact-confirm-email"></span> within 24 hours. Need me sooner? <a href="https://wa.me/971527530530" target="_blank" rel="noopener">Message me on WhatsApp</a>.</p>
+                  </div>
+                </div>
+                <span id="contact-send-error" class="hidden font-sans text-xs text-red-300" role="alert" aria-live="assertive"></span>
               </div>
             </form>
           </div>
