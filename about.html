@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Analytics — Plausible (privacy-friendly, cookieless). The queue shim
+       right after captures any wybeTrack() calls that fire before the
+       script finishes loading; they are replayed once plausible() exists.
+       Must sit before any other script so nothing is missed. -->
+  <script defer data-domain="wybe.fit"
+          src="https://plausible.io/js/script.tagged-events.outbound-links.js"></script>
+  <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
   <link rel="icon" type="image/svg+xml" href="/images/Logo.svg">
   <link rel="apple-touch-icon" href="/images/Logo.svg">
   <title>About Mansoor Ahamad Ali — WYBE</title>
@@ -495,5 +502,6 @@
   <script src="/js/wybe-cursor.js" defer></script>
   <script src="/js/main.js"></script>
   <script src="/js/site-chrome.js"></script>
+  <script src="/js/track.js" defer></script>
 </body>
 </html>

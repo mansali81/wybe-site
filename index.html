@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Analytics — Plausible (privacy-friendly, cookieless, no banner
-       required in the EU/GCC). Single async script, no layout shift.
-       REPLACE `wybe.fit` below with your actual Plausible site
-       identifier if it differs. The queue shim right after captures
-       any wybeTrack() calls that fire before the script finishes
-       loading (they're replayed once plausible() is defined).
-
-       Google Analytics 4 is intentionally NOT added — it requires a
-       cookie banner in most jurisdictions. Remove any pre-existing
-       gtag / GA snippet if you find one. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Analytics — Plausible (privacy-friendly, cookieless). The queue shim
+       right after captures any wybeTrack() calls that fire before the
+       script finishes loading; they are replayed once plausible() exists.
+       Must sit before any other script so nothing is missed. -->
   <script defer data-domain="wybe.fit"
           src="https://plausible.io/js/script.tagged-events.outbound-links.js"></script>
   <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Favicon (SVG logo mark; modern browsers use SVG directly, iOS uses apple-touch-icon) -->
   <link rel="icon" type="image/svg+xml" href="/images/Logo.svg">
   <link rel="apple-touch-icon" href="/images/Logo.svg">
