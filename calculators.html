@@ -233,6 +233,11 @@
               </div>
               <p id="ucalc-email-hint" class="sr-only">Enter a valid email address, for example name@example.com.</p>
               <p id="ucalc-email-error" class="hidden font-sans text-xs text-red-300 -mt-1" role="alert" aria-live="polite"></p>
+              <!-- Consent — required before the measurements are processed. -->
+              <div class="calc-consent-row">
+                <input type="checkbox" id="ucalc-email-consent" name="consent" value="yes" required>
+                <label for="ucalc-email-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+              </div>
               <button type="submit" class="wybe-calc-cta" data-submit>
                 <span data-btn-label>Email Results</span>
                 <span class="wybe-spinner hidden" data-btn-spinner aria-hidden="true"></span>
@@ -628,6 +633,14 @@
           return;
         }
 
+        // Consent guard — the input is `required`, but this form carries
+        // novalidate, so native validation never runs and the JS must check.
+        const consentEl = document.getElementById('ucalc-email-consent');
+        if (!consentEl || !consentEl.checked) {
+          showError('Please agree to the Privacy Policy before we send your results.', consentEl);
+          return;
+        }
+
         const _s = CalcStore.unified;
         if (!_s) {
           showError('Calculate your numbers first, then send the report.');
@@ -639,6 +652,7 @@
         try {
           const payload = {
             source: 'calculator',
+            consent: 'yes',
             name:   name,
             email:  email,
             age:    _s.age,

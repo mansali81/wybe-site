@@ -902,6 +902,12 @@
             </select>
           </div>
 
+          <!-- Consent — required before the measurements are processed. -->
+          <div class="wybe-input-row--full calc-consent-row">
+            <input type="checkbox" id="ucalc-consent" name="consent" value="yes" required>
+            <label for="ucalc-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+          </div>
+
           <!-- Turnstile + submit on one row, spanning both grid columns -->
           <div class="wybe-input-row--full calc-captcha-row">
             <div class="cf-turnstile" id="ucalc-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="normal"></div>
@@ -2229,6 +2235,15 @@
         e.preventDefault();
         clearErr();
 
+        // ── Consent guard ─────────────────────────────
+        // The input is `required`, so a native submit is already blocked;
+        // this covers the JS path, which bypasses native validation.
+        const consentEl = document.getElementById('ucalc-consent');
+        if (!consentEl || !consentEl.checked) {
+          showErr('Please agree to the Privacy Policy before we send your results.');
+          return;
+        }
+
         // ── Turnstile guard ───────────────────────────
         const tsToken = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
         if (!tsToken) {
@@ -2342,6 +2357,7 @@
         try {
           const payload = {
             source: 'calculator',
+            consent: 'yes',
             name: name,
             email: email,
             age: store.age,
