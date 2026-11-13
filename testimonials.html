@@ -136,6 +136,15 @@
           <textarea id="t-feedback" name="feedback" required rows="8" placeholder="Where you started, what you worked on with Mansoor, and what changed. Be honest, specifics help others see themselves in your story." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
         </div>
 
+        <!-- Publishing consent. Reuses .calc-consent-row so the checkbox,
+             text size and colour match the homepage calculator exactly, and
+             so it inherits that row's 44px tap area on mobile. -->
+        <div class="calc-consent-row">
+          <input type="checkbox" id="testimonial-consent" name="publish_consent" value="Yes, I agree" required>
+          <label for="testimonial-consent">I agree that WYBE may publish my testimonial, with my name and job title, on wybe.fit and WYBE&rsquo;s social media. I can ask for it to be edited or removed at any time.<span class="wybe-field-req" aria-hidden="true">*</span></label>
+        </div>
+        <p id="testimonial-consent-error" class="hidden font-sans text-xs text-red-300" role="alert">Please tick the box to let us publish your testimonial.</p>
+
         <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">
           Submit Testimonial
         </button>

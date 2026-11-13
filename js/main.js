@@ -666,6 +666,28 @@ document.addEventListener('DOMContentLoaded', () => {
       wybeClearFormError(form);
       if (errElId) { var prevErr = document.getElementById(errElId); if (prevErr) prevErr.classList.add('hidden'); }
 
+      // ── PUBLISHING CONSENT ───────────────────────────────────────────
+      // Any form carrying a required publish_consent checkbox must have it
+      // ticked. `required` already blocks a real submit, but this handler
+      // can also be reached programmatically, so the rule is enforced here
+      // too and the form's own error element is shown.
+      var consentBox = form.querySelector('input[type="checkbox"][name="publish_consent"]');
+      if (consentBox && consentBox.required && !consentBox.checked) {
+        if (btn) { btn.textContent = originalText; btn.disabled = false; }
+        // Focus FIRST. Moving focus blurs whichever field the user was in,
+        // which fires its change event, and the delegated "clear the error
+        // as soon as they edit anything" listener would wipe the message we
+        // are about to show. Showing it after the blur keeps it on screen.
+        consentBox.focus();
+        var cErr = document.getElementById('testimonial-consent-error');
+        if (cErr) cErr.classList.remove('hidden');
+        return;
+      }
+      if (consentBox) {
+        var cOk = document.getElementById('testimonial-consent-error');
+        if (cOk) cOk.classList.add('hidden');
+      }
+
       // ── BOT CHECKS (waitlist + contact) ──────────────────────────────
       // The hCaptcha widget was rendered by Web3Forms' own script against
       // THEIR sitekey, so its token is only verifiable by Web3Forms. Now
