@@ -4030,25 +4030,43 @@ li.service-tier.service-tier--info,
   footer .grid > .wybe-footer-meta {
     grid-column: 1 / -1;
   }
+  /* Follow and Contact stack full width, each heading directly above
+     its own icon row, both left-aligned with Navigate. */
   .wybe-footer-meta {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    align-items: start;
+    display: block;
   }
   .wybe-footer-group {
     display: block;
   }
-  /* Footer link lists: the 44px tap box stays, but a negative block
-     margin pulls it back so the VISIBLE rhythm is ~10px between links
-     instead of the 44px boxes' full height. */
-  .wybe-footer-nav a {
-    /* 44px box, 30px pitch: ~10px of visible space between the 20px
-       text lines. The boxes therefore overlap by 14px — deliberate,
-       and the reason the brief asked for negative margins. */
-    margin-block: -13px;
+  /* The Follow icon row carries Tailwind's mb-6 (24px); zero it so the
+     gap between Follow's icons and the Contact heading is exactly the
+     20px below and not 44px. */
+  .wybe-footer-meta .wybe-social-row {
+    margin-bottom: 0;
+  }
+  .wybe-footer-group + .wybe-footer-group {
+    margin-top: 20px;
+  }
+  /* Footer link lists read as a compact list rather than a stack of
+     44px boxes. The whole row is the target: display:block + width:100%
+     means the 28px tap area spans the column, which clears the WCAG 2.2
+     target-size (minimum) floor of 24px. Font size, colour and hover
+     are untouched. */
+  footer .wybe-footer-nav a:not(.wybe-footer-link) {
+    display: block;
+    width: 100%;
+    min-height: 28px;
+    line-height: 28px;
+    padding: 0;
+    margin: 0;
   }
   .wybe-footer-nav li + li { margin-top: 0; }
+  /* Icon rows keep their 44x44 targets, spaced 8px apart. Scoped to the
+     footer column so it outranks Tailwind's .gap-5, which is 20px and
+     loads from tailwind.css after this file. */
+  .wybe-footer-meta .wybe-social-row {
+    gap: 8px;
+  }
   .wybe-footer-legal { row-gap: 8px; }
 
   /* Header and primary CTAs that sit just under 44px. */
