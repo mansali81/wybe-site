@@ -3418,7 +3418,7 @@ li.service-tier.service-tier--info,
 /* ── CALCULATOR SUBHEADING ──────────────────────────────── */
 .ucalc-intro-heading {
   text-transform: none;
-  color: #FF6600;
+  color: #FFFFFF;
   font-weight: 400;
   /* No white-space: nowrap. It forced a ~670px min-content width on the
      form grid, which squeezed the food photo on desktop and pushed the
