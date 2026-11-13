@@ -180,6 +180,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // ~line 358; that one is independent and stays where it is.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ── SCROLLPORT RE-MEASURE (single entry point) ────────
+  // Lenis caches the document height; ScrollTrigger caches every
+  // start/end. Both go stale when a lazy image lands, a font swaps or
+  // --nav-h is rewritten, and a STALE LENIS LIMIT is what lets a fast
+  // fling run past the real end of the page and then snap back.
+  // Everything that can change page height routes through here.
+  // Debounced, so a burst of image loads costs one re-measure, not one
+  // per image. Works with or without Lenis (not every page loads it).
+  let settleTimer = null;
+  const settleScroll = () => {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      settleTimer = null;
+      if (window.__lenis) window.__lenis.resize();
+      if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === 'function') {
+        window.ScrollTrigger.refresh();
+      }
+    }, 150);
+  };
+  window.__settleScroll = settleScroll;
+
+  // Every image still decoding can change the document height when it
+  // lands. once:true per image; the debounce collapses the burst.
+  document.querySelectorAll('img').forEach((img) => {
+    if (img.complete) return;
+    img.addEventListener('load', settleScroll, { once: true });
+    img.addEventListener('error', settleScroll, { once: true });
+  });
+
   // ── SMOOTH SCROLL (Lenis) ─────────────────────────────
   // Lenis scrolls the REAL window — its setScroll() calls
   // window.scrollTo({behavior:'instant'}) — so window.scrollY stays
@@ -233,12 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // preventDefault()s wheel and the two fight.
     if (window.ScrollTrigger) lenis.on('scroll', window.ScrollTrigger.update);
 
-    // Document height changes must reach Lenis's dimensions cache. Same
-    // milestones main.js already uses for ScrollTrigger.refresh().
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => lenis.resize());
-    }
-    window.addEventListener('load', () => lenis.resize(), { once: true });
+    // Document-height changes reach Lenis's dimensions cache through
+    // settleScroll() above, which is wired to load, fonts.ready, every
+    // late image and resize. Nothing re-measures Lenis anywhere else.
   })();
 
   // Single scroll subscription point for every module below. Under
@@ -292,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // measured against it. ScrollTrigger debounces its own resize
         // refresh, but its ordering against this synchronous write is
         // not guaranteed, so be explicit.
-        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+        settleScroll();
       }
     };
     write();
@@ -1348,11 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // cannot change its height, but --nav-h is rewritten on
       // document.fonts.ready and .hero's padding reads it; and sections
       // below can shift total document height once images land.
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => ScrollTrigger.refresh());
-      }
       window.addEventListener('load', () => {
-        ScrollTrigger.refresh();
         // A fresh load with a hash (/#contact) gets re-scrolled by the
         // HASH ANCHOR module below, which runs at load -> fonts.ready ->
         // +120 ms. Both refreshes above fire BEFORE that, so the hero
@@ -1600,23 +1622,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // once on window.load (all assets in) and again on resize +
   // font-face ready. `invalidateOnRefresh: true` on the individual
   // triggers means start/end positions get recomputed each time.
-  const refreshST = () => {
-    if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === 'function') {
-      window.ScrollTrigger.refresh();
-    }
-  };
-  window.addEventListener('load', refreshST, { once: true });
+  window.addEventListener('load', settleScroll, { once: true });
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(refreshST);
+    document.fonts.ready.then(settleScroll);
   }
-  let rzST;
-  window.addEventListener('resize', () => {
-    clearTimeout(rzST);
-    rzST = setTimeout(refreshST, 150);
-  });
+  window.addEventListener('resize', settleScroll);
   // Also refresh when the URL fragment changes (e.g. #services jump
   // from another page) — the browser scroll re-lands after fragment
   // navigation and triggers may need re-measuring.
-  window.addEventListener('hashchange', refreshST);
+  window.addEventListener('hashchange', settleScroll);
 
 });
