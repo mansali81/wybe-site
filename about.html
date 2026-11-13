@@ -297,9 +297,12 @@
       <div class="about-column">
 
         <div class="mb-4">
-          <!-- Page h1. The handle below keeps its exact look but is a <p>:
-               a social handle is not the page's heading for search. -->
-          <h1 class="font-heading text-2xl md:text-3xl font-bold leading-tight text-cream mb-2">Mansoor Ahamad Ali &mdash; Personal Trainer &amp; Nutritionist in Dubai</h1>
+          <!-- Page h1, visually hidden. It stays in the document for search
+               engines and screen readers; sr-only takes it out of flow, so the
+               handle below is the first visible line with no gap above it, the
+               way this block looked before the h1 existed. A social handle is
+               not the page's heading for search, so it remains a <p>. -->
+          <h1 class="sr-only">Mansoor Ahamad Ali &mdash; Personal Trainer &amp; Nutritionist in Dubai</h1>
           <p class="font-bold mb-4 about-heading">@wybewithmansoor</p>
           <div class="w-14 h-px bg-burgundy mb-0"></div>
         </div>
