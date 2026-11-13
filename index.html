@@ -42,18 +42,14 @@
        once they arrive, so a slow CDN is a visible delay. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <!-- The hero image is the LCP element and the first thing painted in
-       the fixed window. `media` mirrors the <picture> breakpoint in the
-       hero so phones never fetch the 255 KB desktop crop. -->
+       the fixed window. Phones now show the SAME full photo as desktop,
+       so one preload serves every width; imagesizes="100vw" still lets
+       a 390px phone pick hero-1280.webp rather than the 2592px original. -->
   <link rel="preload" as="image" href="/images/Hero.webp"
         imagesrcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w"
-        imagesizes="100vw"
-        media="(min-width: 768px)" fetchpriority="high">
-  <link rel="preload" as="image" href="/images/hero-mobile.webp"
-        imagesrcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w"
-        imagesizes="100vw"
-        media="(max-width: 767px)" fetchpriority="high">
+        imagesizes="100vw" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=f8264040">
+  <link rel="stylesheet" href="/css/styles.css?v=73c96641">
 
   <!-- Site-level background + stacking. Type is defined in css/styles.css
        via the --font-header / --font-subhead / --font-body variables. -->
@@ -260,9 +256,15 @@
     #unified-calc-form .wybe-input-row--full,
     #unified-calc-form > .ucalc-intro-heading,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
-    @media (max-width: 639px) {
-      #unified-calc-form { grid-template-columns: minmax(0, 1fr); }
-      #unified-calc-form #ucalc-error { grid-column: auto; }
+    /* MOBILE: keep two columns rather than collapsing to one, so the
+       measurements read as pairs — Gender|Age, Height|Weight,
+       Neck|Waist. Everything that needs the full measure already
+       carries .wybe-input-row--full; Activity level is the one field
+       that pairs on desktop but must span here, and Hip (shown only for
+       Female) is left to take a half cell on a row of its own. */
+    @media (max-width: 767px) {
+      #unified-calc-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      #unified-calc-form .wybe-input-row:has(#ucalc-activity) { grid-column: 1 / -1; }
     }
     .wybe-input-row {
       display: grid; grid-template-columns: 1fr auto; align-items: end;
@@ -746,11 +748,12 @@
          the right side of the frame, copy overlaid on the left. -->
     <div class="hero-bg parallax-wrapper" aria-hidden="true">
       <picture>
-        <!-- Mobile source: a tighter 1350x1080 crop composed for phones
-             (face + torso + dumbbell prominent, less wall backdrop).
-             The desktop Hero.webp (2592x1632) stays the fallback for
-             everything above the 767 px breakpoint. -->
-        <source media="(max-width: 767px)" srcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w" type="image/webp" sizes="100vw" width="1350" height="1080">
+        <!-- Mobile now shows the WHOLE photo, not the old 1350x1080
+             phone crop: same files as desktop, laid out with
+             object-fit: contain below the 767px breakpoint so nothing
+             is cut off. width/height carry the 2592x1632 ratio so the
+             box is reserved before the bytes land. -->
+        <source media="(max-width: 767px)" srcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w" type="image/webp" sizes="100vw" width="2592" height="1632">
         <img src="/images/Hero.webp" alt="" class="parallax-img hero-bg__img" data-parallax-speed="0.15" srcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w" sizes="100vw" width="2592" height="1632" decoding="async">
       </picture>
     </div>
@@ -1500,7 +1503,8 @@
             <li><a href="/#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Personal Training</a></li>
           </ul>
         </div>
-        <div>
+        <div class="wybe-footer-meta">
+          <div class="wybe-footer-group">
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
           <div class="flex gap-5 mb-6 wybe-social-row">
             <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-burgundy hover:text-burgundy-dark transition-colors">
@@ -1513,6 +1517,8 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
           </div>
+          </div>
+          <div class="wybe-footer-group">
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
           <div class="flex gap-5 wybe-social-row">
             <a href="#" data-email data-user="hello" data-domain="wybe.fit" aria-label="Email WYBE" class="text-burgundy hover:text-burgundy-dark transition-colors">
@@ -1522,6 +1528,7 @@
             <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-burgundy hover:text-burgundy-dark transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
             </a>
+          </div>
           </div>
         </div>
       </div>
@@ -3444,6 +3451,6 @@
   <!-- Web3Forms hCaptcha integration — covers waitlist + contact forms -->
   <script src="https://web3forms.com/client/script.js" async defer></script>
   <!-- CANONICAL CHROME — replaces header/footer with single-source versions from js/site-chrome.js -->
-  <script src="/js/site-chrome.js?v=25c982e7"></script>
+  <script src="/js/site-chrome.js?v=824002e3"></script>
 </body>
 </html>

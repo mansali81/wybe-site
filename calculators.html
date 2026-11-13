@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=f8264040">
+  <link rel="stylesheet" href="/css/styles.css?v=73c96641">
   <style>
     body { background-color: #1E1E1E; color: #FFFFFF; }
     /* ── CALCULATOR FIELD STYLING ──────────────────────────────────────
@@ -77,9 +77,15 @@
     #unified-calc-form .wybe-input-row--full,
     #unified-calc-form > .ucalc-intro-heading,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
-    @media (max-width: 639px) {
-      #unified-calc-form { grid-template-columns: minmax(0, 1fr); }
-      #unified-calc-form #ucalc-error { grid-column: auto; }
+    /* MOBILE: keep two columns rather than collapsing to one, so the
+       measurements read as pairs — Gender|Age, Height|Weight,
+       Neck|Waist. Everything that needs the full measure already
+       carries .wybe-input-row--full; Activity level is the one field
+       that pairs on desktop but must span here, and Hip (shown only for
+       Female) is left to take a half cell on a row of its own. */
+    @media (max-width: 767px) {
+      #unified-calc-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      #unified-calc-form .wybe-input-row:has(#ucalc-activity) { grid-column: 1 / -1; }
     }
     .wybe-input-row {
       display: grid; grid-template-columns: 1fr auto; align-items: end;

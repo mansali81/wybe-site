@@ -791,20 +791,6 @@ h1[class*='tracking-widest'][class*='uppercase'] {
    image with only text-shadow for legibility (see the .hero-tagline
    and .hero-sub blocks below). Kept a mobile-scoped block for the
    hero image crop + copy anchoring on narrow screens. */
-@media (max-width: 767px) {
-  .hero-frame {
-    align-items: flex-end;
-    padding-bottom: 48px;
-  }
-  /* Mobile source is /images/hero-mobile.webp (1350x1080, subject
-     left-of-centre). Bias the crop 40 % from the left so the face +
-     dumbbell stay in frame on portrait phone containers without
-     hitting the desktop 75 % 15 % anchor. */
-  .hero-bg .parallax-img {
-    object-position: 40% 50%;
-  }
-}
-
 /* ══ HERO FIXED-WINDOW PARALLAX ═══════════════════════════
    Reproduces the danielrama.com/#intro model: the hero image lives in
    a viewport-locked window that does NOT scroll away, the image drifts
@@ -923,6 +909,57 @@ body > footer {
   position: relative;
   background-color: #1E1E1E;
 }
+
+/* ── MOBILE HERO: photo in flow, copy beneath it ───────
+   Below 768px the hero stops being a full-viewport image with copy
+   overlaid. The photo leaves absolute positioning and becomes a normal
+   block at its own aspect ratio (object-fit: contain, nothing cropped),
+   and the heading, tagline and button sit under it on the flat #1E1E1E
+   background. The fixed header still floats over the top of the photo
+   because .hero keeps padding-top: 0.
+   .hero.is-fixed is JS-gated to >= 768px, so none of the fixed-window
+   parallax applies here; the transform reset is belt-and-braces. */
+@media (max-width: 767px) {
+  .hero {
+    min-height: 0;
+    padding: 0 0 24px;
+    overflow: visible;
+  }
+  .hero-bg {
+    position: static;
+    inset: auto;
+    height: auto;
+    overflow: visible;
+    /* the radial vignette would fade the edges of a photo we now want
+       shown whole */
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+  .hero-bg > picture {
+    height: auto;
+  }
+  .hero-bg .parallax-img {
+    position: static;
+    top: auto;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    transform: none !important;
+  }
+  .hero-tint {
+    display: none;
+  }
+  .hero-frame {
+    min-height: 0;
+    display: block;
+    padding: 24px;
+  }
+  .hero-content {
+    max-width: none;
+  }
+}
+
 /* Hero copy is visible by default — no scroll or JS required. Pre-JS
    and no-JS both paint the headline / tagline / CTA above the fold. */
 .hero-tagline,
@@ -2407,9 +2444,10 @@ html:not(.gsap-ready) .wybe-reveal {
   }
 }
 @media (max-width: 767px) {
-  /* Cover sits first and takes ~60% of the column, centred. */
+  /* Cover sits first and fills the content width, same measure as the
+     copy beneath it. */
   .wybe-book-cover-frame {
-    max-width: 60%;
+    max-width: 100%;
     width: 100%;
     margin-inline: auto;
   }
@@ -3492,7 +3530,7 @@ li.service-tier.service-tier--info,
   text-decoration-skip-ink: none;
 }
 @media (max-width: 767px) {
-  .ucalc-quote { height: auto; font-size: clamp(40px, 13vw, 64px); margin-top: 32px; }
+  .ucalc-quote { height: auto; font-size: clamp(52px, 16.5vw, 72px); margin-top: 32px; }
 }
 
 /* ── DESKTOP: the quote spans the card edge to edge ──────────────
@@ -3862,6 +3900,14 @@ li.service-tier.service-tier--info,
    wybe-link style used in About body copy: static border-bottom that intensifies
    on hover. Excluded from the footer sweep animation via :not(.wybe-footer-link)
    selectors above. */
+/* Follow / Contact wrappers. display:contents means they do not exist
+   as boxes above 768px, so the desktop footer grid is untouched; the
+   mobile block below turns them back into real boxes to sit them side
+   by side. */
+.wybe-footer-group {
+  display: contents;
+}
+
 .wybe-footer-wordmark {
   display: inline-block;
   text-decoration: none;
@@ -3972,9 +4018,37 @@ li.service-tier.service-tier--info,
     min-width: 44px;
     min-height: 44px;
   }
-  /* Stacked footer lists: 44px tall each, 8px clear between them, so
-     no two targets touch or overlap. */
-  .wybe-footer-nav li + li { margin-top: 8px; }
+  /* ── Footer columns: Navigate | Services, then Follow | Contact ──
+     The grid has four children: brand, Navigate, Services, and the
+     Follow+Contact column. The first and last span the full width; the
+     two link columns pair up in the middle. Group gap 48px -> 24px. */
+  footer .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  footer .grid > div:first-child,
+  footer .grid > .wybe-footer-meta {
+    grid-column: 1 / -1;
+  }
+  .wybe-footer-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+  .wybe-footer-group {
+    display: block;
+  }
+  /* Footer link lists: the 44px tap box stays, but a negative block
+     margin pulls it back so the VISIBLE rhythm is ~10px between links
+     instead of the 44px boxes' full height. */
+  .wybe-footer-nav a {
+    /* 44px box, 30px pitch: ~10px of visible space between the 20px
+       text lines. The boxes therefore overlap by 14px — deliberate,
+       and the reason the brief asked for negative margins. */
+    margin-block: -13px;
+  }
+  .wybe-footer-nav li + li { margin-top: 0; }
   .wybe-footer-legal { row-gap: 8px; }
 
   /* Header and primary CTAs that sit just under 44px. */
@@ -4010,8 +4084,17 @@ li.service-tier.service-tier--info,
      leaving the visible spacing of the copyright row unchanged. */
   .wybe-footer-link {
     display: inline-block;
+    /* Equal padding + matching negative margin: a 45px hit box that
+       occupies the same 15px of line as the text around it, so "WYBE"
+       stays on the baseline of "(c) 2026" and "All rights reserved". */
     padding-block: 15px;
     margin-block: -15px;
+    /* A border-bottom sits at the PADDING edge, which the line above put
+       15px below the word. text-decoration draws on the text itself. */
+    border-bottom: none;
+    text-decoration: underline;
+    text-decoration-color: #FF6600;
+    text-underline-offset: 3px;
   }
 
   /* Mobile menu entries: 44px tall each. padding grows the hit area;
