@@ -944,14 +944,15 @@
         </form>
 
         <!-- RIGHT column: quote panel. Replaced the nutrition photo; the
-             image files are still on the server and still referenced by
-             other pages. -->
-        <blockquote class="ucalc-quote" aria-label="We are what we think, eat, and do.">
+             image files are kept on the server. -->
+        <blockquote class="ucalc-quote" aria-label="We are what we think, eat, do.">
           <span>&ldquo;WE ARE</span>
           <span>WHAT WE</span>
-          <span>THINK</span>
-          <span>EAT</span>
-          <span>AND DO.&rdquo;</span>
+          <span><span class="ucalc-quote__u">THINK</span></span>
+          <span><span class="ucalc-quote__u">EAT</span></span>
+          <!-- The closing quote mark sits outside the underlined span so the
+               rule stops after the full stop. -->
+          <span><span class="ucalc-quote__u">DO.</span>&rdquo;</span>
         </blockquote>
 
         <!-- Confirmation panel — shown after a successful submit -->

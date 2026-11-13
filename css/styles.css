@@ -3398,39 +3398,48 @@ li.service-tier.service-tier--info,
    Replaced the nutrition photo that used to sit in column 2. The
    blockquote is a grid item in .calc-panels-grid, which is
    repeat(2, minmax(0,1fr)) with align-items:stretch — so this box is
-   already exactly as tall as the calculator card beside it. Laying the
-   five lines out with space-between then spreads them from the card's
-   top edge to its bottom edge. */
+   already exactly as tall as the calculator card beside it. The five
+   lines are then centred as one tight group against that height. */
 .ucalc-quote {
   margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;      /* group centred vertically on the card */
+  align-items: center;          /* and centred horizontally in the column */
   height: 100%;
   min-width: 0;                 /* never widen the track */
   font-family: 'Inter', sans-serif;
   font-weight: 900;
   font-style: normal;
   text-transform: uppercase;
-  text-align: left;
+  text-align: center;
   letter-spacing: -0.02em;
-  line-height: 0.95;
+  line-height: 0.95;            /* tight: the only gap between lines */
   color: #FF6600;
-  /* Sized so the longest line ("WHAT WE") nearly fills the column. The
-     column stops growing at 536px once max-w-6xl caps the section, but
-     7vw keeps growing with the viewport — so the ceiling is what stops
-     "WHAT WE" wrapping on very wide screens. "WHAT WE" measures ~4.73x
-     the font size, so 104px needs ~492px of the 536px track. */
-  font-size: clamp(48px, 7vw, 104px);
+  /* Sized so the longest line ("WHAT WE") is ~90% of the column.
+     "WHAT WE" renders at 4.975x the font size, and the column is
+     min((100vw - 80px) / 2, 536px) — it stops growing once max-w-6xl
+     caps the section at 1152px, which is what the 97px ceiling matches.
+     0.9 * ((100vw - 80px)/2) / 4.975  ->  9.045vw - 7.236px. */
+  font-size: clamp(48px, calc(9.045vw - 7.236px), 97px);
 }
-.ucalc-quote span { display: block; }
+.ucalc-quote > span { display: block; }
+/* THINK / EAT / DO. are underlined; "WE ARE", "WHAT WE" and the closing
+   quote mark are not. skip-ink:none keeps the rule unbroken under the
+   descenders and the full stop. */
+.ucalc-quote__u {
+  text-decoration: underline;
+  text-decoration-color: #FF6600;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.12em;
+  text-decoration-skip-ink: none;
+}
 
 /* Mobile: the grid collapses to one column, so the quote falls below the
-   calculator card in DOM order. No fixed height here — it is just a block
-   of text, set smaller and with normal line spacing. */
+   calculator card in DOM order. Same centring and underlines, no fixed
+   height, and the size it already had. */
 @media (max-width: 767px) {
   .ucalc-quote {
-    display: block;
     height: auto;
     line-height: 1.05;
     font-size: clamp(40px, 14vw, 64px);
