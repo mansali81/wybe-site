@@ -3032,7 +3032,7 @@ li.service-tier.service-tier--info,
    the uppercase label so type inherits the system rather than
    redefining sizes locally. */
 .stat-badge {
-  background: #FF6600;
+  background: #C2410C;          /* deeper orange so white text clears AA (5.2:1) */
   color: #FFFFFF;
   padding: 22px 20px 26px;
   border-radius: 10px;
@@ -3043,7 +3043,7 @@ li.service-tier.service-tier--info,
 }
 .stat-badge:hover {
   transform: translateY(-3px);
-  background-color: #E65500;
+  background-color: #9A3412;    /* 7.3:1 — #E65500 was only 3.7:1 on white */
   box-shadow: 0 14px 32px rgba(255, 102, 0, 0.45);
 }
 .stat-badge__number {
@@ -3052,7 +3052,7 @@ li.service-tier.service-tier--info,
   font-size: clamp(24px, 2.8vw, 32px);
   line-height: 1;
   letter-spacing: -0.02em;
-  color: #1E1E1E;
+  color: #FFFFFF;
   margin: 0;
 }
 .stat-badge__label {
@@ -3062,7 +3062,7 @@ li.service-tier.service-tier--info,
   letter-spacing: 0.12em;
   text-transform: uppercase;
   line-height: 1.35;
-  color: #1E1E1E;
+  color: #FFFFFF;
   margin: 8px 0 0;
 }
 /* Smaller variant used on the About portrait overlap and on mobile.
