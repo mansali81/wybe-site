@@ -254,12 +254,10 @@
        equal. minmax(0, ...) removes the floor so the pairs always match. */
     #unified-calc-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     #unified-calc-form.hidden { display: none !important; }
-    /* The "* Required" note and the intro line are direct children of the
-       form grid. Without an explicit span they each take a single cell:
-       the note landed in column 1 and squeezed Gender/Height/Neck, and the
-       intro sized the other column off its own content. Span them both. */
+    /* The intro line is a direct child of the form grid. Without an explicit
+       span it takes a single cell and sizes that column off its own content,
+       which squeezed Gender/Height/Neck. Span it across both columns. */
     #unified-calc-form .wybe-input-row--full,
-    #unified-calc-form > .wybe-form-note,
     #unified-calc-form > .ucalc-intro-heading,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
     @media (max-width: 639px) {
@@ -863,7 +861,6 @@
         <div class="calc-panels-grid">
 
         <form id="unified-calc-form" data-view="form">
-              <p class="wybe-form-note">* Required</p>
           <p class="ucalc-intro-heading">Fill in your details and I&rsquo;ll email you a personalised report: BMI, ideal weight, body fat % and daily calories.</p>
           <!-- Row 1 & 2: Name and Email, each full-width -->
           <div class="wybe-input-row wybe-input-row--full">
@@ -940,10 +937,16 @@
           <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
         </form>
 
-        <!-- RIGHT column: nutrition image -->
-        <div class="ucalc-photo-col">
-          <img src="images/Nutrition%202.webp" alt="Nutrition coaching at WYBE" class="ucalc-photo-img" srcset="/images/nutrition-2-480.webp 480w, /images/nutrition-2-768.webp 768w, /images/nutrition-2-1080.webp 1080w, /images/Nutrition%202.webp 1696w" sizes="(min-width: 1280px) 306px, (min-width: 768px) 24vw, 719px" width="1696" height="2528" loading="lazy" decoding="async">
-        </div>
+        <!-- RIGHT column: quote panel. Replaced the nutrition photo; the
+             image files are still on the server and still referenced by
+             other pages. -->
+        <blockquote class="ucalc-quote" aria-label="We are what we think, eat, and do.">
+          <span>&ldquo;WE ARE</span>
+          <span>WHAT WE</span>
+          <span>THINK</span>
+          <span>EAT</span>
+          <span>AND DO.&rdquo;</span>
+        </blockquote>
 
         <!-- Confirmation panel — shown after a successful submit -->
         <div id="ucalc-confirm" class="hidden" data-view="confirm">
@@ -1267,13 +1270,13 @@
       </div>
       <!-- 2-column layout: left = Coming Soon + cover, right = form.
            Mobile stacks naturally: Coming Soon → cover → form. -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-stretch">
       <!-- LEFT block: cover image with parallax.
            order-2 on mobile puts the cover BELOW the form; md:order-1 restores
            it to the left column from 768px up. Reordered in CSS only so the
            DOM order — and therefore the parallax lookup and desktop
            behaviour — is unchanged. -->
-      <div class="text-left order-2 md:order-1 md:sticky md:top-[120px]">
+      <div class="text-left order-2 md:order-1">
         <div class="wybe-book-cover-frame">
           <img src="images/the-1825-days-cover-white.webp" alt="The 1825 Days — the complete nutrition guide for your child" class="wybe-book-cover-img" data-parallax data-parallax-speed="0.20" srcset="images/the-1825-days-cover-white-480.webp 480w, images/the-1825-days-cover-white-960.webp 960w, images/the-1825-days-cover-white.webp 1188w" sizes="(min-width: 1100px) 480px, (min-width: 768px) 45vw, (min-width: 600px) 380px, 89vw" width="1188" height="1600" loading="lazy" decoding="async">
         </div>
@@ -1281,15 +1284,14 @@
 
       <!-- RIGHT block: waitlist form. order-1 on mobile lifts the copy and
            form above the cover; md:order-2 restores the right column. -->
-      <div class="text-left order-1 md:order-2">
+      <div class="text-left order-1 md:order-2 md:flex md:flex-col md:justify-between">
         <p class="font-sans font-bold text-sm tracking-widest uppercase" style="color:#FF6600; margin-bottom: 4px;">Book in Progress</p>
         <h3 class="font-heading text-2xl md:text-3xl leading-tight text-cream mt-3 mb-3">The first five years, made simple.</h3>
-        <p class="font-sans text-sm md:text-base text-cream/70 leading-relaxed mb-5 max-w-[46ch]">Every child has 1,825 days between birth and their fifth birthday. That&rsquo;s the window when nutrition shapes growth, brain development and lifelong eating habits more than at any other time. THE 1,825 DAYS is a practical, evidence-based guide that takes the guesswork out of feeding your child, from first milk and first solids to toddler plates and preschool lunchboxes. It cuts through conflicting advice with clear, research-backed guidance, stage-by-stage meal ideas and 36 simple recipes, so you can feed with confidence, not guilt.</p>
+        <p class="font-sans text-sm md:text-base text-cream/70 leading-relaxed mb-5 max-w-[46ch]">Every child has 1,825 days between birth and their fifth birthday. That&rsquo;s the window when nutrition shapes growth, brain development and lifelong eating habits more than at any other time. THE 1,825 DAYS is a practical, evidence-based guide that takes the guesswork out of feeding your child, from first milk and first solids to toddler plates and preschool lunchboxes. It cuts through conflicting advice with clear, research-backed guidance and stage-by-stage meal ideas, so you can feed with confidence, not guilt.</p>
         <p class="font-sans text-sm" style="color:#F6F2E8; margin-bottom: 24px;">Written for parents and parents-to-be.</p>
         <form id="waitlist-form" data-form data-subject="1825 Days, Waitlist" action="https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec" method="POST" class="max-w-md space-y-3">
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
 
-          <p class="wybe-form-note">* Required</p>
           <div>
             <label for="wl-name" class="wybe-field-label">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="text" id="wl-name" name="name" required placeholder="e.g. Sara Ahmed" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-grey-soft">
@@ -1303,6 +1305,7 @@
           </div>
 
           <!-- Mobile: searchable dial-code dropdown + number input -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <label for="wl-mobile-num" class="wybe-field-label">Mobile / WhatsApp<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <div class="wl-mobile-wrap flex border border-cream/25 focus-within:border-burgundy transition-colors">
@@ -1346,6 +1349,7 @@
               <ul id="wl-country-list" data-lenis-prevent role="listbox" style="max-height:190px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
             </div>
             </div>
+          </div>
           </div>
 
           <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
@@ -1392,7 +1396,6 @@
 
             <form data-form data-subject="WYBE, Quick Contact" action="https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec" method="POST" class="space-y-2.5">
               <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
-              <p class="wybe-form-note wybe-form-note--on-photo">* Required</p>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                 <div>
                   <label for="contact-name" class="wybe-field-label wybe-field-label--on-photo">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>

@@ -71,12 +71,10 @@
        equal. minmax(0, ...) removes the floor so the pairs always match. */
     #unified-calc-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     #unified-calc-form.hidden { display: none !important; }
-    /* The "* Required" note and the intro line are direct children of the
-       form grid. Without an explicit span they each take a single cell:
-       the note landed in column 1 and squeezed Gender/Height/Neck, and the
-       intro sized the other column off its own content. Span them both. */
+    /* The intro line is a direct child of the form grid. Without an explicit
+       span it takes a single cell and sizes that column off its own content,
+       which squeezed Gender/Height/Neck. Span it across both columns. */
     #unified-calc-form .wybe-input-row--full,
-    #unified-calc-form > .wybe-form-note,
     #unified-calc-form > .ucalc-intro-heading,
     #unified-calc-form #ucalc-error { grid-column: 1 / -1; }
     @media (max-width: 639px) {
@@ -283,7 +281,6 @@
 
       <div class="max-w-2xl mx-auto">
         <form id="unified-calc-form" data-view="form">
-              <p class="wybe-form-note">* Required</p>
           <div class="wybe-calc-title-rule"></div>
           <p class="ucalc-intro-heading">Fill in your details and I&rsquo;ll email you a personalised report: BMI, ideal weight, body fat % and daily calories.</p>
 

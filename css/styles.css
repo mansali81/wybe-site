@@ -1537,14 +1537,30 @@ button.bg-burgundy:hover {
   color: #FFFFFF;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
 }
-/* Book waitlist: match the note to the .wybe-field-label size and tracking
-   so the form reads as one scale and loses a few pixels of height. */
-#waitlist-form .wybe-form-note {
-  font-size: 9px;
-  letter-spacing: 0.20em;
-  font-weight: 700;
-  margin-bottom: 8px;
+/* ── BOOK WAITLIST — COMPACT FORM ───────────────────────────────
+   The book row is a 2-column grid: cover left, copy + form right. The
+   form is sized so the right column lands on the same height as the
+   cover, which is what makes the two columns align top and bottom.
+   Scoped to #waitlist-form so no other form on the site is affected. */
+#waitlist-form .wybe-field-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;   /* 0.20em is too wide once the label is 11px */
+  margin-bottom: 4px;
 }
+/* One uniform control height. border-box so the 1px borders are inside
+   the 44px and every field lines up with its neighbour on the same row. */
+#waitlist-form input[type="text"],
+#waitlist-form input[type="email"],
+#waitlist-form .wl-mobile-wrap,
+#waitlist-form #wl-country-btn {
+  height: 44px;
+  box-sizing: border-box;
+}
+/* The mobile field is a flex wrapper around the dial-code button and the
+   number input; both stretch to the wrapper's 44px rather than setting
+   their own padding-derived height. */
+#waitlist-form .wl-mobile-wrap > * { height: 100%; }
+#waitlist-form .wl-mobile-wrap input { padding-top: 0; padding-bottom: 0; }
 
 /* ── CLIENT RESULTS ─────────────────────────────────────
    Testimonial cards + before/after transformations strip. Same dark-
@@ -3378,38 +3394,47 @@ li.service-tier.service-tier--info,
   .ucalc-intro-heading { font-size: 13px; }
 }
 
-/* ── CALCULATOR PHOTO COLUMN ────────────────────────────── */
-/* Mobile: explicit height so object-fit/position work correctly; image
-   fills the box, bottom-anchored so any crop comes from the top only. */
-.ucalc-photo-col {
-  position: relative;
-  height: 360px;
-  overflow: hidden;
-  border-radius: 16px;
-}
-/* Desktop: image is absolutely positioned so it contributes ZERO content
-   size to the grid track-sizing phase — the form alone drives the row
-   height. align-self:stretch then makes the photo col fill that height
-   exactly, and the absolute image fills the col. min-height:0 kept as
-   belt-and-suspenders in case any UA still uses min-height:auto floor. */
-@media (min-width: 768px) {
-  .ucalc-photo-col {
-    height: auto;
-    min-height: 0;
-    align-self: stretch;
-  }
-  .ucalc-photo-img {
-    position: absolute;
-    inset: 0;
-  }
-}
-.ucalc-photo-img {
-  width: 100%;
+/* ── CALCULATOR QUOTE PANEL ──────────────────────────────
+   Replaced the nutrition photo that used to sit in column 2. The
+   blockquote is a grid item in .calc-panels-grid, which is
+   repeat(2, minmax(0,1fr)) with align-items:stretch — so this box is
+   already exactly as tall as the calculator card beside it. Laying the
+   five lines out with space-between then spreads them from the card's
+   top edge to its bottom edge. */
+.ucalc-quote {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 100%;
-  display: block;
-  border-radius: 0;
+  min-width: 0;                 /* never widen the track */
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  text-transform: uppercase;
+  text-align: left;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: #FF6600;
+  /* Sized so the longest line ("WHAT WE") nearly fills the column. The
+     column stops growing at 536px once max-w-6xl caps the section, but
+     7vw keeps growing with the viewport — so the ceiling is what stops
+     "WHAT WE" wrapping on very wide screens. "WHAT WE" measures ~4.73x
+     the font size, so 104px needs ~492px of the 536px track. */
+  font-size: clamp(48px, 7vw, 104px);
+}
+.ucalc-quote span { display: block; }
+
+/* Mobile: the grid collapses to one column, so the quote falls below the
+   calculator card in DOM order. No fixed height here — it is just a block
+   of text, set smaller and with normal line spacing. */
+@media (max-width: 767px) {
+  .ucalc-quote {
+    display: block;
+    height: auto;
+    line-height: 1.05;
+    font-size: clamp(40px, 14vw, 64px);
+  }
 }
 
 /* Stat grid inside the results panel — 2x2 grid, sizes to content,
