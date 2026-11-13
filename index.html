@@ -52,7 +52,7 @@
         imagesrcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w"
         imagesizes="100vw"
         media="(max-width: 767px)" fetchpriority="high">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
 
   <!-- Site-level background + stacking. Type is defined in css/styles.css
@@ -60,7 +60,7 @@
   <style>
     body {
       background-color: #1E1E1E;   /* Navy field */
-      color: #F6F2E8;
+      color: #FFFFFF;
     }
     /* .wybe-header is excluded so its own `position: fixed; z-index: 2000`
        rule wins — otherwise this wildcard forced the fixed header back to
@@ -77,8 +77,8 @@
 
     /* 2. Vision + Mission breathing ambient wash */
     .wybe-breathe-bg {
-      background: radial-gradient(circle at 20% 30%, rgba(90,122,101,0.18) 0%, transparent 55%),
-                  radial-gradient(circle at 80% 70%, rgba(90,122,101,0.12) 0%, transparent 55%);
+      background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04) 0%, transparent 55%);
       animation: wybe-breathe 14s ease-in-out infinite;
     }
     @keyframes wybe-breathe {
@@ -160,7 +160,7 @@
       transform: translateY(-16px);
     }
     .wybe-story-progress-btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease; opacity: 0.55; }
-    .wybe-story-progress-btn.is-active { opacity: 1; background-color: #FF6600; color: #000000; border-color: #FF6600; }
+    .wybe-story-progress-btn.is-active { opacity: 1; background-color: #FF6600; color: #1E1E1E; border-color: #FF6600; }
 
     /* 6b. Left-rail (Style 1: big lime text + side bar).
        Sticky column of 4 label rows. Inactive rows are small, muted, no bar.
@@ -211,7 +211,7 @@
     .wybe-rail-row:not(.is-active):hover             { opacity: 0.95; padding-left: 22px; }
     .wybe-rail-row:not(.is-active):hover::before     { transform: scaleY(0.55); background: rgba(255, 102, 0, 0.7); }
     .wybe-rail-row:not(.is-active):hover .wybe-rail-num   { color: #FF6600; }
-    .wybe-rail-row:not(.is-active):hover .wybe-rail-label { color: #F6F2E8; font-size: 22px; letter-spacing: -0.02em; transform: translateX(4px); }
+    .wybe-rail-row:not(.is-active):hover .wybe-rail-label { color: #FFFFFF; font-size: 22px; letter-spacing: -0.02em; transform: translateX(4px); }
     .wybe-rail-row .wybe-rail-label { transform: translateX(0); }
 
     /* Progress-pill hover (Services + any future tab-mode story): same idea
@@ -267,14 +267,14 @@
     .wybe-input-row {
       display: grid; grid-template-columns: 1fr auto; align-items: end;
       padding: 6px 12px; gap: 2px;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(30, 30, 30, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.10);
       border-radius: 8px;
       transition: border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
     }
     .wybe-input-row:focus-within {
       border-color: #FF6600;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(30, 30, 30, 0.55);
       box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
     }
     /* Layout only. Type AND the 6px gap come from the shared .wybe-label
@@ -299,7 +299,7 @@
       border-radius: 16px;
       padding: 20px;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
-                  0 8px 32px rgba(0, 0, 0, 0.45);
+                  0 8px 32px rgba(30, 30, 30, 0.45);
     }
     #ucalc-confirm.hidden { display: none !important; }
     /* ── CONTACT CONFIRMATION ──────────────────────────────────────
@@ -319,13 +319,13 @@
     #contact-confirm.hidden { display: none !important; }
     #contact-tick { flex: 0 0 auto; line-height: 0; margin-top: 1px; }
     .contact-confirm__title {
-      font-family: 'Raleway', 'Inter', sans-serif; font-weight: 700;
-      font-size: 14px; color: #F6F2E8; margin: 0 0 2px;
+      font-family: 'Raleway', 'Inter', sans-serif; font-weight: 600;
+      font-size: 14px; color: #FFFFFF; margin: 0 0 2px;
     }
     .contact-confirm__body {
       font-family: 'Raleway', 'Inter', sans-serif;
       font-size: 12px; line-height: 1.5;
-      color: rgba(246, 242, 232, 0.75); margin: 0; max-width: 42ch;
+      color: rgba(255, 255, 255, 0.75); margin: 0; max-width: 42ch;
     }
     .contact-confirm__body a { color: #FF6600; text-decoration: underline; }
     /* The confirmation replaces a much taller form. Without a floor the
@@ -403,7 +403,7 @@
     }
     .wybe-calc-cta        {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #FF6600; color: #000000;
+      background: #FF6600; color: #1E1E1E;
       font-family: 'Inter', sans-serif; font-weight: 900;
       font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
       padding: 14px 28px; border-radius: 999px;
@@ -417,7 +417,7 @@
       margin-top: 20px;
     }
     .wybe-calc-cta:hover  {
-      background: #E65500;
+      background: #FF6600;
       color: #FFFFFF;
       transform: scale(1.05);
       filter: brightness(1.08);
@@ -822,7 +822,7 @@
       </figure>
       <div class="md:col-span-6 order-last md:order-2 relative z-10 about-text-col">
         <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-4">Trainer, Coach &amp; Nutritionist</p>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
+        <h2 class="font-heading text-3xl md:text-4xl font-black text-white leading-tight mb-4">Mansoor Ahamad Ali</h2>
         <div class="w-12 h-px bg-burgundy mb-5"></div>
 
         <p class="font-sans text-base text-white/85 leading-relaxed mb-4">
@@ -930,7 +930,7 @@
               <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
             </button>
           </div>
-          <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+          <p id="ucalc-error" class="hidden font-sans text-xs text-burgundy mt-3"></p>
         </form>
 
         <!-- RIGHT column: quote panel. Replaced the nutrition photo; the
@@ -945,8 +945,8 @@
 
         <!-- Confirmation panel — shown after a successful submit -->
         <div id="ucalc-confirm" class="hidden" data-view="confirm">
-          <p class="font-sans text-xl font-bold mb-3" style="color:#FF6600;">Your report is on its way</p>
-          <p class="font-sans text-sm leading-relaxed mb-4" style="color:rgba(246,242,232,.75);">Sent to <span id="ucalc-sent-to" class="font-semibold" style="color:#F6F2E8;"></span>. It usually arrives within 2 minutes. If you don&rsquo;t see it, check your Spam or Junk folder and mark it as &ldquo;Not spam&rdquo; so you get my future emails.</p>
+          <p class="font-sans text-xl font-semibold mb-3" style="color:#FF6600;">Your report is on its way</p>
+          <p class="font-sans text-sm leading-relaxed mb-4" style="color:rgba(255,255,255,.75);">Sent to <span id="ucalc-sent-to" class="font-semibold" style="color:#FFFFFF;"></span>. It usually arrives within 2 minutes. If you don&rsquo;t see it, check your Spam or Junk folder and mark it as &ldquo;Not spam&rdquo; so you get my future emails.</p>
           <button type="button" id="ucalc-resend" class="font-sans text-sm underline" style="color:#FF6600;">Wrong email? Send again</button>
         </div>
         </div><!-- /.calc-panels-grid -->
@@ -1280,10 +1280,10 @@
       <!-- RIGHT block: waitlist form. order-1 on mobile lifts the copy and
            form above the cover; md:order-2 restores the right column. -->
       <div class="text-left order-1 md:order-2 md:flex md:flex-col md:justify-between">
-        <p class="font-sans font-bold text-sm tracking-widest uppercase" style="color:#FF6600; margin-bottom: 4px;">Book in Progress</p>
-        <h3 class="font-heading text-2xl md:text-3xl leading-tight text-cream mt-3 mb-3">The first five years, made simple.</h3>
+        <p class="font-sans font-semibold text-sm tracking-widest uppercase" style="color:#FF6600; margin-bottom: 4px;">Book in Progress</p>
+        <h3 class="font-sans font-semibold text-2xl md:text-3xl leading-tight text-cream mt-3 mb-3">The first five years, made simple.</h3>
         <p class="font-sans text-sm md:text-base text-cream/70 leading-relaxed mb-5 max-w-[46ch]">Every child has 1,825 days between birth and their fifth birthday. That&rsquo;s the window when nutrition shapes growth, brain development and lifelong eating habits more than at any other time. THE 1,825 DAYS is a practical, evidence-based guide that takes the guesswork out of feeding your child, from first milk and first solids to toddler plates and preschool lunchboxes. It cuts through conflicting advice with clear, research-backed guidance and stage-by-stage meal ideas, so you can feed with confidence, not guilt.</p>
-        <p class="font-sans text-sm" style="color:#F6F2E8; margin-bottom: 24px;">Written for parents and parents-to-be.</p>
+        <p class="font-sans text-sm" style="color:#FFFFFF; margin-bottom: 24px;">Written for parents and parents-to-be.</p>
         <form id="waitlist-form" data-form data-subject="1825 Days, Waitlist" action="https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec" method="POST" class="max-w-md space-y-3">
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
 
@@ -1296,7 +1296,7 @@
             <label for="wl-email-input" class="wybe-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input id="wl-email-input" type="email" name="email" required placeholder="you@example.com" autocomplete="email"
                    class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-grey-soft">
-            <p id="wl-email-error" class="hidden font-sans text-xs text-red-300 mt-1" role="alert">Please enter a valid email address (e.g. name@example.com).</p>
+            <p id="wl-email-error" class="hidden font-sans text-xs text-burgundy mt-1" role="alert">Please enter a valid email address (e.g. name@example.com).</p>
           </div>
 
           <!-- Mobile: searchable dial-code dropdown + number input -->
@@ -1304,16 +1304,16 @@
           <div>
             <label for="wl-mobile-num" class="wybe-label">Mobile / WhatsApp<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <div class="wl-mobile-wrap flex border border-cream/25 focus-within:border-burgundy transition-colors">
-              <div id="wl-dialcode-wrap" class="relative flex-shrink-0" style="border-right:1px solid rgba(246,242,232,0.25);">
+              <div id="wl-dialcode-wrap" class="relative flex-shrink-0" style="border-right:1px solid rgba(255,255,255,0.25);">
                 <button type="button" id="wl-dialcode-btn" aria-label="Country code" aria-haspopup="listbox" aria-expanded="false"
                         class="flex items-center gap-1 px-3 py-3 text-cream font-sans text-sm focus:outline-none cursor-pointer whitespace-nowrap h-full">
                   <span id="wl-dialcode-label" class="text-cream/50">+?</span>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
-                <div id="wl-dialcode-dropdown" class="hidden absolute left-0 bottom-full z-50 shadow-xl" style="background:#1a1a1a;border:1px solid rgba(246,242,232,0.2);min-width:220px;margin-bottom:2px;">
-                  <div style="padding:7px;border-bottom:1px solid rgba(246,242,232,0.1);">
+                <div id="wl-dialcode-dropdown" class="hidden absolute left-0 bottom-full z-50 shadow-xl" style="background:#1E1E1E;border:1px solid rgba(255,255,255,0.2);min-width:220px;margin-bottom:2px;">
+                  <div style="padding:7px;border-bottom:1px solid rgba(255,255,255,0.1);">
                     <input id="wl-dialcode-search" type="text" placeholder="Search country or code…" autocomplete="off" aria-label="Search dial code"
-                           style="width:100%;box-sizing:border-box;background:transparent;color:#F6F2E8;font-size:12px;border:1px solid rgba(246,242,232,0.2);padding:5px 8px;outline:none;font-family:inherit;">
+                           style="width:100%;box-sizing:border-box;background:transparent;color:#FFFFFF;font-size:12px;border:1px solid rgba(255,255,255,0.2);padding:5px 8px;outline:none;font-family:inherit;">
                   </div>
                   <ul id="wl-dialcode-list" data-lenis-prevent role="listbox" style="max-height:160px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
                 </div>
@@ -1336,10 +1336,10 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <input type="hidden" name="country" id="wl-country-hidden">
-            <div id="wl-country-dropdown" class="hidden absolute left-0 right-0 z-50 shadow-xl" style="background:#1a1a1a;border:1px solid rgba(246,242,232,0.2);bottom:100%;margin-bottom:2px;">
-              <div style="padding:8px;border-bottom:1px solid rgba(246,242,232,0.1);">
+            <div id="wl-country-dropdown" class="hidden absolute left-0 right-0 z-50 shadow-xl" style="background:#1E1E1E;border:1px solid rgba(255,255,255,0.2);bottom:100%;margin-bottom:2px;">
+              <div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.1);">
                 <input id="wl-country-search" type="text" placeholder="Search country…" autocomplete="off" aria-label="Search country"
-                       style="width:100%;box-sizing:border-box;background:transparent;color:#F6F2E8;font-size:13px;border:1px solid rgba(246,242,232,0.2);padding:6px 10px;outline:none;font-family:inherit;">
+                       style="width:100%;box-sizing:border-box;background:transparent;color:#FFFFFF;font-size:13px;border:1px solid rgba(255,255,255,0.2);padding:6px 10px;outline:none;font-family:inherit;">
               </div>
               <ul id="wl-country-list" data-lenis-prevent role="listbox" style="max-height:190px;overflow-y:auto;list-style:none;margin:0;padding:4px 0;"></ul>
             </div>
@@ -1350,14 +1350,14 @@
           <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
           <input type="hidden" name="form_elapsed_ms" id="wl-elapsed-ms" value="0">
           <div class="captcha-row">
-            <button type="submit" class="bg-burgundy text-charcoal font-sans font-bold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
+            <button type="submit" class="bg-burgundy text-charcoal font-sans font-semibold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
           </div>
         </form>
         <div class="hidden mt-4">
           <p class="font-sans text-lg font-semibold mb-2" style="color:#FF6600;">Success! You&rsquo;re on the list.</p>
           <p class="font-sans text-sm text-cream/70 leading-relaxed">Thank you for joining the waitlist for The 1825 Days. You&rsquo;ll be the first to know when the guide is ready. Keep an eye on your inbox for early updates!</p>
         </div>
-        <p id="waitlist-send-error" class="hidden font-sans text-xs text-red-300 mt-2" role="alert">Connection error — check your network and try again.</p>
+        <p id="waitlist-send-error" class="hidden font-sans text-xs text-burgundy mt-2" role="alert">Connection error — check your network and try again.</p>
       </div>
 
       </div><!-- /.grid -->
@@ -1387,7 +1387,7 @@
         <div class="relative z-10 p-6 md:p-10 flex flex-col">
           <!-- FORM GROUP -->
           <div>
-            <h2 class="font-sans text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
+            <h2 class="font-heading text-2xl md:text-3xl font-black text-white mb-3 leading-tight drop-shadow-md text-center">Let&rsquo;s WYBE</h2>
 
             <form data-form data-subject="WYBE, Quick Contact" action="https://script.google.com/macros/s/AKfycbwnUAj4Casd_hvkBuLpYaJYaHeq7VXU0wdZZ1YvaPqXtwonbYPqILYhGr-uSwbyLBa29Q/exec" method="POST" class="space-y-2.5">
               <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -1409,7 +1409,7 @@
               <input type="hidden" name="form_elapsed_ms" id="contact-elapsed-ms" value="0">
               <div class="captcha-row">
                 <button type="submit"
-                        class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans font-bold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
+                        class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans font-semibold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
                   Send Message
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -1431,14 +1431,14 @@
                     <p class="contact-confirm__body">Thanks, <span id="contact-confirm-name"></span>. I&rsquo;ll reply to <span id="contact-confirm-email"></span> within 24 hours. Need me sooner? <a href="https://wa.me/971527530530" target="_blank" rel="noopener">Message me on WhatsApp</a>.</p>
                   </div>
                 </div>
-                <span id="contact-send-error" class="hidden font-sans text-xs text-red-300" role="alert" aria-live="assertive"></span>
+                <span id="contact-send-error" class="hidden font-sans text-xs text-burgundy" role="alert" aria-live="assertive"></span>
               </div>
             </form>
           </div>
 
           <!-- BOTTOM: DM icons -->
           <div class="pt-6 text-center">
-            <p class="font-sans text-xs font-bold tracking-widest uppercase text-white mb-3 drop-shadow-md">Or DM directly</p>
+            <p class="font-sans text-xs font-semibold tracking-widest uppercase text-white mb-3 drop-shadow-md">Or DM directly</p>
             <div class="flex justify-center gap-6">
               <a href="https://wa.me/971527530530" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="text-burgundy hover:text-burgundy-dark transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
@@ -1520,7 +1520,7 @@
         </div>
       </div>
       <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-        <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+        <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-semibold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
         <!-- Legal page links + author site. Legal pages are drafts —
              see the LAWYER-REVIEW banner at the top of each. -->
         <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
@@ -2592,18 +2592,18 @@
           if (lo && c[0].toLowerCase().indexOf(lo) === -1 && c[1].indexOf(q) === -1) return;
           var li = document.createElement('li');
           li.setAttribute('role','option');
-          li.style.cssText = 'padding:7px 12px;cursor:pointer;font-size:13px;font-family:inherit;color:#F6F2E8;display:flex;justify-content:space-between;align-items:center;';
-          li.innerHTML = '<span>' + flag(c[2]) + ' ' + c[0] + '</span><span style="color:rgba(246,242,232,0.5);font-size:12px;">' + c[1] + '</span>';
+          li.style.cssText = 'padding:7px 12px;cursor:pointer;font-size:13px;font-family:inherit;color:#FFFFFF;display:flex;justify-content:space-between;align-items:center;';
+          li.innerHTML = '<span>' + flag(c[2]) + ' ' + c[0] + '</span><span style="color:rgba(255,255,255,0.5);font-size:12px;">' + c[1] + '</span>';
           li.addEventListener('mousedown', function(e) {
             e.preventDefault();
             dialValue.value = c[1];
             dialLabel.textContent = flag(c[2]) + ' ' + c[1];
-            dialLabel.style.color = '#F6F2E8';
+            dialLabel.style.color = '#FFFFFF';
             dialDropdown.classList.add('hidden');
             dialBtn.setAttribute('aria-expanded','false');
             dialSearch.value = '';
           });
-          li.addEventListener('mouseover', function(){ this.style.background='rgba(140,30,60,0.35)'; });
+          li.addEventListener('mouseover', function(){ this.style.background='rgba(255,102,0,0.35)'; });
           li.addEventListener('mouseout',  function(){ this.style.background=''; });
           frag.appendChild(li);
         });
@@ -2645,18 +2645,18 @@
           if (lo && c[0].toLowerCase().indexOf(lo) === -1) return;
           var li = document.createElement('li');
           li.setAttribute('role','option');
-          li.style.cssText = 'padding:8px 14px;cursor:pointer;font-size:13px;font-family:inherit;color:#F6F2E8;';
+          li.style.cssText = 'padding:8px 14px;cursor:pointer;font-size:13px;font-family:inherit;color:#FFFFFF;';
           li.textContent = flag(c[2]) + ' ' + c[0];
           li.addEventListener('mousedown', function(e) {
             e.preventDefault();
             countryHidden.value = c[0];
             countryLabel.textContent = flag(c[2]) + ' ' + c[0];
-            countryLabel.style.color = '#F6F2E8';
+            countryLabel.style.color = '#FFFFFF';
             countryDropdown.classList.add('hidden');
             countryBtn.setAttribute('aria-expanded','false');
             countrySearch.value = '';
           });
-          li.addEventListener('mouseover', function(){ this.style.background='rgba(140,30,60,0.35)'; });
+          li.addEventListener('mouseover', function(){ this.style.background='rgba(255,102,0,0.35)'; });
           li.addEventListener('mouseout',  function(){ this.style.background=''; });
           frag.appendChild(li);
         });
@@ -2729,13 +2729,13 @@
         if (dialValue && !dialValue.value) {
           dialValue.value = match[1];
           dialLabel.textContent = flag(match[2]) + ' ' + match[1];
-          dialLabel.style.color = '#F6F2E8';
+          dialLabel.style.color = '#FFFFFF';
         }
         // Country
         if (countryHidden && !countryHidden.value) {
           countryHidden.value = match[0];
           countryLabel.textContent = flag(match[2]) + ' ' + match[0];
-          countryLabel.style.color = '#F6F2E8';
+          countryLabel.style.color = '#FFFFFF';
         }
       }
       fetch('https://ipapi.co/json/').then(function(r){ return r.json(); }).then(function(d){
@@ -2852,7 +2852,7 @@
             </button>
           </h3>
           <div id="faq-a7" role="region" aria-labelledby="faq-q7" class="wybe-faq__answer" hidden>
-            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+            <p><a href="about.html" class="text-burgundy font-semibold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="pt">
@@ -2988,7 +2988,7 @@
             </button>
           </h3>
           <div id="faq-a19" role="region" aria-labelledby="faq-q19" class="wybe-faq__answer" hidden>
-            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+            <p><a href="about.html" class="text-burgundy font-semibold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="nc">
@@ -3113,7 +3113,7 @@
             </button>
           </h3>
           <div id="faq-a30" role="region" aria-labelledby="faq-q30" class="wybe-faq__answer" hidden>
-            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+            <p><a href="about.html" class="text-burgundy font-semibold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="fc">
@@ -3251,7 +3251,7 @@
             </button>
           </h3>
           <div id="faq-a42" role="region" aria-labelledby="faq-q42" class="wybe-faq__answer" hidden>
-            <p><a href="about.html" class="text-burgundy font-bold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
+            <p><a href="about.html" class="text-burgundy font-semibold underline decoration-burgundy/60 underline-offset-4 hover:decoration-burgundy hover:text-burgundy-dark transition-colors">Click here</a> to see all my certifications.</p>
           </div>
         </li>
         <li class="wybe-faq__item" data-services="wop">

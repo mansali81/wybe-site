@@ -22,21 +22,21 @@
   z-index: 10000;
   padding: 12px 20px;
   background: #FF6600;
-  color: #000000;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  color: #1E1E1E;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
   border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 18px rgba(30, 30, 30, 0.35);
   transition: top 0.15s ease;
 }
 .wybe-skip-link:focus,
 .wybe-skip-link:focus-visible {
   top: 1rem;
-  outline: 2px solid #000000;
+  outline: 2px solid #1E1E1E;
   outline-offset: 2px;
 }
 
@@ -100,14 +100,20 @@ section[id] {
 }
 
 /* ── GLOBAL TYPE SYSTEM ──────────────────────────
-   Three roles across the whole site:
-     --font-header   Inter Black 900 for H1..H3
-     --font-subhead  Inter SemiBold 600 for H4..H6, eyebrow labels, buttons
-     --font-body     Raleway Regular 400 for paragraphs and body copy
-   Colors and layout are unchanged; only typography is unified here. */
+   The brand guide names three type roles. Only four faces are loaded
+   (Inter 600/900, Raleway 400/600), so nothing can fall back to a weight
+   the browser would have to synthesise:
+     --font-header   Inter Black 900      headers: H1..H3, display numbers
+     --font-subhead  Raleway SemiBold 600 sub-headings: lead lines, card subtitles
+     --font-body     Raleway Regular 400  paragraphs and body copy
+   --font-ui is the fourth, non-brand-facing role: Inter SemiBold 600 for the
+   small uppercase furniture (section titles, eyebrows, form labels, buttons,
+   nav links). It used to be called --font-subhead, which conflated it with
+   the Raleway sub-heading role above. */
 :root {
   --font-header:  'Inter', sans-serif;
-  --font-subhead: 'Inter', sans-serif;
+  --font-subhead: 'Raleway', 'Inter', sans-serif;
+  --font-ui:      'Inter', sans-serif;
   --font-body:    'Raleway', 'Inter', sans-serif;
 }
 
@@ -148,20 +154,26 @@ h4, h5, h6, .wybe-subhead {
 }
 /* Eyebrow labels — the small uppercase tags that sit above section titles.
    We target them by their common utility signature so we don't have to
-   touch every hand-authored eyebrow one at a time. */
+   touch every hand-authored eyebrow one at a time. These are the brand's
+   "small lead lines", so they take the Raleway SemiBold sub-heading face,
+   not the Inter UI face used by buttons, nav links and form labels. */
 .font-sans.tracking-widest.uppercase,
 [class*='tracking-widest'][class*='uppercase'] {
   font-family: var(--font-subhead);
   font-weight: 600;
 }
+/* ...except on faq.html, where the page's only H1 is styled as an eyebrow.
+   It is still a header, so it keeps the header face at its existing size
+   and colour. 0,2,1 beats the 0,2,0 rule above. */
+h1[class*='tracking-widest'][class*='uppercase'] {
+  font-family: var(--font-header);
+  font-weight: 900;
+}
 
 .hairline {
   height: 1px;
-  background-color: #5A7A65;
+  background-color: rgba(255, 255, 255, 0.33);
 }
-
-/* Ensure Playfair Display loads for font-display class */
-.font-display { font-family: 'Playfair Display', serif; }
 
 /* ── HEADER / NAVBAR ─────────────────────────────
    Sticky at the top with a solid navy background. Once the user scrolls
@@ -205,7 +217,7 @@ h4, h5, h6, .wybe-subhead {
   background-color: transparent;
   -webkit-backdrop-filter: none;
           backdrop-filter: none;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgba(30, 30, 30, 0);
   box-shadow: none;
   transition: background-color 0.25s ease, border-color 0.25s ease,
               box-shadow 0.25s ease, backdrop-filter 0.25s ease,
@@ -247,7 +259,7 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   display: inline-flex;
   align-items: center;
-  color: #F6F2E8;
+  color: #FFFFFF;
   text-decoration: none;
   cursor: pointer;
   padding: 6px 2px;
@@ -267,7 +279,7 @@ h4, h5, h6, .wybe-subhead {
   display: block;
   height: 52px;
   width: auto;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 2px 8px rgba(30, 30, 30, 0.45));
   transition: filter 0.3s ease;
 }
 .wybe-header.is-scrolled .wybe-brand__logo {
@@ -302,15 +314,15 @@ h4, h5, h6, .wybe-subhead {
    (0.11em ≈ 2 px at 18 px) mirrors the modern-landing-page aesthetic. */
 .wybe-nav-link {
   position: relative;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 14px;                      /* reduced 18 → 16 → 14 (two more pt) */
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #F6F2E8;
+  color: #FFFFFF;
   text-decoration: none;
   padding: 6px 2px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  text-shadow: 0 2px 8px rgba(30, 30, 30, 0.45);
   transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 .wybe-header.is-scrolled .wybe-nav-link {
@@ -346,8 +358,8 @@ h4, h5, h6, .wybe-subhead {
   align-items: center;
   justify-content: center;
   background: #FF6600;
-  color: #000000;
-  font-family: var(--font-subhead);
+  color: #1E1E1E;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.14em;
@@ -364,7 +376,7 @@ h4, h5, h6, .wybe-subhead {
   box-shadow: 0 8px 22px rgba(255, 102, 0, 0.30);
 }
 .wybe-cta:focus-visible {
-  outline: 2px solid #F6F2E8;
+  outline: 2px solid #FFFFFF;
   outline-offset: 3px;
 }
 .wybe-cta--full {
@@ -390,7 +402,7 @@ h4, h5, h6, .wybe-subhead {
   display: block;
   width: 22px;
   height: 2px;
-  background: #F6F2E8;
+  background: #FFFFFF;
   border-radius: 1px;
   transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.2s ease;
 }
@@ -418,7 +430,7 @@ h4, h5, h6, .wybe-subhead {
                                   the hamburger button */
   min-width: 220px;
   padding: 10px 14px;
-  background: rgba(40, 40, 40, 0.92);
+  background: rgba(30, 30, 30, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 2px solid #FF6600;
@@ -431,18 +443,18 @@ h4, h5, h6, .wybe-subhead {
   text-align: center;
 }
 .wybe-mobile-link {
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 15px;
   letter-spacing: 0.11em;
   text-transform: none;
-  color: #F6F2E8;
+  color: #FFFFFF;
   text-decoration: none;
   padding: 8px 4px;
   border: 0;
   text-align: center;
   width: 100%;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75), 0 0 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 8px rgba(30, 30, 30, 0.75), 0 0 3px rgba(30, 30, 30, 0.6);
   transition: color 0.2s ease;
 }
 .wybe-mobile-link:hover,
@@ -661,7 +673,7 @@ h4, h5, h6, .wybe-subhead {
   position: relative;
   z-index: 4;
   max-width: 46rem;
-  color: #F6F2E8;
+  color: #FFFFFF;
   text-align: center;                   /* center-align the copy stack */
 }
 /* Left-side gradient tint — dark on the left so the hero copy stays
@@ -932,16 +944,16 @@ body > footer {
    fades halo-style, so text stays readable on both dark and busy
    image regions. */
 .hero-tagline {
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 900;
   font-size: 70px;                      /* was 72, -2 pt */
   line-height: 70px;
   letter-spacing: -1px;
   color: #FFFFFF;
   margin: 0 0 clamp(20px, 2.2vw, 30px);
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.55),
-    0 4px 18px rgba(0, 0, 0, 0.50);
+    0 1px 2px rgba(30, 30, 30, 0.55),
+    0 4px 18px rgba(30, 30, 30, 0.50);
 }
 @media (max-width: 640px) {
   .hero-tagline {
@@ -959,16 +971,16 @@ body > footer {
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.55),
-    0 3px 14px rgba(0, 0, 0, 0.50);
+    0 1px 2px rgba(30, 30, 30, 0.55),
+    0 3px 14px rgba(30, 30, 30, 0.50);
 }
 .hero-cta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   background: #FF6600;
-  color: #000000;
-  font-family: var(--font-subhead);
+  color: #1E1E1E;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.14em;
@@ -991,7 +1003,7 @@ body > footer {
   transform: scale(1.05);
   filter: brightness(1.08);
   box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
-  background: #E65500;                    /* brand deep orange, matches every other CTA hover */
+  background: #FF6600;                    /* brand deep orange, matches every other CTA hover */
   color: #FFFFFF;
 }
 
@@ -1014,13 +1026,13 @@ a.bg-burgundy:hover,
 button.bg-burgundy:hover {
   transform: scale(1.05);
   filter: brightness(1.08);
-  background-color: #E65500 !important;   /* wins over Tailwind's hover:bg-burgundy-dark */
+  background-color: #FF6600 !important;   /* wins over Tailwind's hover:bg-burgundy-dark */
   color: #FFFFFF !important;
   box-shadow: 0 10px 28px rgba(255, 102, 0, 0.40);
 }
 .hero-cta:hover .hero-cta__arrow { transform: translateX(4px); }
 .hero-cta:focus-visible {
-  outline: 2px solid #F6F2E8;
+  outline: 2px solid #FFFFFF;
   outline-offset: 4px;
 }
 
@@ -1081,14 +1093,14 @@ button.bg-burgundy:hover {
   display: flex;
   flex-direction: column;
   padding: 18px 18px 20px;
-  background: rgba(0, 26, 36, 0.45) !important;
+  background: rgba(30, 30, 30, 0.45) !important;
   border: 1px solid rgba(255, 102, 0, 0.25);
   border-radius: 8px;
-  color: #F6F2E8 !important;
+  color: #FFFFFF !important;
 }
 .wybe-tier-card__eyebrow {
   font-family: var(--font-subhead);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -1100,29 +1112,29 @@ button.bg-burgundy:hover {
   font-weight: 900;
   font-size: clamp(26px, 3.4vw, 34px);
   line-height: 1;
-  color: #F6F2E8 !important;
+  color: #FFFFFF !important;
   margin: 0 0 12px;
 }
 .wybe-tier-card__strike {
   font-family: var(--font-header);
-  font-weight: 700;
+  font-weight: 900;
   font-size: 0.55em;
-  color: rgba(246, 242, 232, 0.45) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
   text-decoration: line-through;
   margin-left: 6px;
 }
 .wybe-tier-card__unit {
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.4em;
-  color: rgba(246, 242, 232, 0.65) !important;
+  color: rgba(255, 255, 255, 0.65) !important;
 }
 .wybe-tier-card__list {
   list-style: none;
   margin: 0 0 16px;
   padding: 0;
   flex: 1;
-  color: rgba(246, 242, 232, 0.82) !important;
+  color: rgba(255, 255, 255, 0.82) !important;
   font-family: var(--font-body);
   font-size: 12.5px;
   line-height: 1.55;
@@ -1147,9 +1159,9 @@ button.bg-burgundy:hover {
   justify-content: center;
   gap: 8px;
   background: #FF6600 !important;
-  color: #000000 !important;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  color: #1E1E1E !important;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1168,7 +1180,7 @@ button.bg-burgundy:hover {
 }
 .wybe-tier-cta:focus { outline: none; }
 .wybe-tier-cta:focus-visible {
-  outline: 2px solid #F6F2E8;
+  outline: 2px solid #FFFFFF;
   outline-offset: 3px;
 }
 .wybe-tier-cta[aria-disabled="true"] {
@@ -1188,7 +1200,7 @@ button.bg-burgundy:hover {
   font-family: var(--font-body);
   font-size: 12px;
   line-height: 1.5;
-  color: rgba(246, 242, 232, 0.75) !important;
+  color: rgba(255, 255, 255, 0.75) !important;
   text-align: center;
   margin: 18px 0 6px;
 }
@@ -1196,7 +1208,7 @@ button.bg-burgundy:hover {
   font-family: var(--font-body);
   font-size: 12px;
   line-height: 1.5;
-  color: rgba(246, 242, 232, 0.55) !important;
+  color: rgba(255, 255, 255, 0.55) !important;
   text-align: center;
   margin: 0;
 }
@@ -1233,7 +1245,7 @@ button.bg-burgundy:hover {
   width: 14px;
   height: 14px;
   border: 2px solid currentColor;
-  border-top-color: transparent;
+  border-top-color: rgba(30, 30, 30, 0);
   border-radius: 50%;
   animation: wybe-spin 0.7s linear infinite;
   vertical-align: -2px;
@@ -1327,7 +1339,7 @@ button.bg-burgundy:hover {
 
 /* ── Waitlist: custom searchable dropdowns ───────────── */
 .wl-mobile-wrap { position: relative; }
-#wl-dialcode-btn { background: transparent; border: none; color: #F6F2E8; }
+#wl-dialcode-btn { background: transparent; border: none; color: #FFFFFF; }
 #wl-dialcode-btn:focus { outline: none; }
 #wl-dialcode-btn:focus-visible {
   /* :focus clears the ring for mouse users; keyboard users still
@@ -1343,17 +1355,17 @@ button.bg-burgundy:hover {
 #wl-dialcode-search,
 #wl-country-search {
   font-family: var(--font-body) !important;
-  color: #F6F2E8 !important;
+  color: #FFFFFF !important;
 }
 #wl-dialcode-search::placeholder,
-#wl-country-search::placeholder { color: rgba(246,242,232,0.4); }
+#wl-country-search::placeholder { color: rgba(255,255,255,0.4); }
 #wl-dialcode-list::-webkit-scrollbar,
 #wl-country-list::-webkit-scrollbar { width: 4px; }
 #wl-dialcode-list::-webkit-scrollbar-track,
 #wl-country-list::-webkit-scrollbar-track { background: transparent; }
 #wl-dialcode-list::-webkit-scrollbar-thumb,
-#wl-country-list::-webkit-scrollbar-thumb { background: rgba(246,242,232,0.2); border-radius: 2px; }
-#wl-country-btn { background: transparent; color: #F6F2E8; cursor: pointer; }
+#wl-country-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+#wl-country-btn { background: transparent; color: #FFFFFF; cursor: pointer; }
 #wl-country-btn:focus { outline: none; }
 #wl-country-btn:focus-visible {
   /* :focus clears the ring for mouse users; keyboard users still
@@ -1387,7 +1399,7 @@ button.bg-burgundy:hover {
 */
 .wybe-faq {
   background: #1E1E1E;
-  color: #F6F2E8;
+  color: #FFFFFF;
 }
 .wybe-faq__list {
   list-style: none;
@@ -1395,10 +1407,10 @@ button.bg-burgundy:hover {
   padding: 0;
 }
 .wybe-faq__item {
-  border-bottom: 1px solid rgba(246, 242, 232, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 .wybe-faq__item:first-child {
-  border-top: 1px solid rgba(246, 242, 232, 0.14);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 .wybe-faq__q { margin: 0; }
 .wybe-faq__trigger {
@@ -1410,9 +1422,9 @@ button.bg-burgundy:hover {
   padding: 16px 4px 16px 18px;
   background: transparent;
   border: 0;
-  border-left: 3px solid transparent;
-  color: #F6F2E8;
-  font-family: var(--font-subhead);
+  border-left: 3px solid rgba(30, 30, 30, 0);
+  color: #FFFFFF;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: clamp(15px, 1.4vw, 17px);
   line-height: 1.35;
@@ -1464,7 +1476,7 @@ button.bg-burgundy:hover {
 
 .wybe-faq__answer {
   padding: 0 20px 4px 23px; /* left = 20 + border-left 3, aligned with trigger */
-  color: rgba(246, 242, 232, 0.85);
+  color: rgba(255, 255, 255, 0.85);
   font-family: var(--font-body);
   font-weight: 400;
   font-size: clamp(14px, 1.15vw, 16px);
@@ -1512,16 +1524,16 @@ button.bg-burgundy:hover {
 .wybe-label {
   display: block;
   font-family: 'Inter', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-align: left;
   margin-bottom: 6px;
-  color: #A3A3A3;                 /* grey-soft — 6.6:1 on #1E1E1E */
+  color: rgba(255, 255, 255, 0.65);                 /* grey-soft — 6.6:1 on #1E1E1E */
 }
 /* On a light panel the same grey would fail; grey-ink is 5.3:1 on white. */
-.wybe-label--on-light { color: #6B6B6B; }
+.wybe-label--on-light { color: rgba(30, 30, 30, 0.65); }
 /* The required marker inherits the label's size so the two always match. */
 .wybe-field-req {
   color: #FF6600;                 /* 5.7:1 on #1E1E1E */
@@ -1533,12 +1545,12 @@ button.bg-burgundy:hover {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #A3A3A3;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 12px;
 }
 .wybe-form-note--on-photo {
   color: #FFFFFF;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 1px 3px rgba(30, 30, 30, 0.75);
 }
 /* ── BOOK WAITLIST — COMPACT FORM ───────────────────────────────
    The book row is a 2-column grid: cover left, copy + form right. The
@@ -1567,7 +1579,7 @@ button.bg-burgundy:hover {
    image so there's no CLS on load. */
 .wybe-results {
   background: #1E1E1E;
-  color: #F6F2E8;
+  color: #FFFFFF;
 }
 
 /* Testimonials — native horizontal scroll + click-drag. No GSAP
@@ -1629,7 +1641,7 @@ button.bg-burgundy:hover {
   border: 1px solid rgba(30, 30, 30, 0.10);
   border-top: 3px solid #FF6600;
   border-radius: 8px;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 22px rgba(30, 30, 30, 0.25);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -1641,7 +1653,7 @@ button.bg-burgundy:hover {
   font-weight: 900;
   font-size: 40px;
   line-height: 1;
-  color: #C2410C;
+  color: #FF6600;
   opacity: 0.55;
   user-select: none;
 }
@@ -1676,17 +1688,17 @@ button.bg-burgundy:hover {
   border: 0;
   padding: 6px 0 0;
   margin: 0 0 12px;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: #C2410C;
+  color: #1E1E1E;
   cursor: pointer;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 .wybe-testimonial__more:hover {
-  color: #E65500;
+  color: #FF6600;
   transform: translateX(2px);
 }
 .wybe-testimonial__body.is-truncated + .wybe-testimonial__more {
@@ -1750,7 +1762,7 @@ button.bg-burgundy:hover {
 .faq-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(30, 30, 30, 0.45);
   backdrop-filter: blur(10px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
   cursor: pointer;
@@ -1774,12 +1786,12 @@ button.bg-burgundy:hover {
   background: rgba(30, 30, 30, 0.35);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
-  color: #F6F2E8;
+  color: #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-top: 3px solid #FF6600;
   border-radius: 10px;
   padding: 48px 32px 32px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 24px 64px rgba(30, 30, 30, 0.65);
   opacity: 0;
   transform: scale(0.96);
   transition: opacity 200ms ease, transform 200ms cubic-bezier(0.19, 1, 0.22, 1);
@@ -1794,13 +1806,13 @@ button.bg-burgundy:hover {
    fully opaque via their own colour rules. */
 .faq-modal__card .wybe-faq__answer,
 .faq-modal__card .wybe-faq__answer p {
-  color: #F6F2E8;
+  color: #FFFFFF;
 }
 .faq-modal__card .wybe-faq__item {
-  border-bottom-color: rgba(246, 242, 232, 0.22);
+  border-bottom-color: rgba(255, 255, 255, 0.22);
 }
 .faq-modal__card .wybe-faq__item:first-child {
-  border-top-color: rgba(246, 242, 232, 0.22);
+  border-top-color: rgba(255, 255, 255, 0.22);
 }
 .faq-modal__close {
   position: absolute;
@@ -1808,7 +1820,7 @@ button.bg-burgundy:hover {
   width: 36px; height: 36px;
   border: 0;
   background: transparent;
-  color: #F6F2E8;
+  color: #FFFFFF;
   cursor: pointer;
   border-radius: 50%;
   display: inline-flex;
@@ -1822,7 +1834,7 @@ button.bg-burgundy:hover {
 }
 .faq-modal__loading {
   text-align: center;
-  color: rgba(246, 242, 232, 0.55);
+  color: rgba(255, 255, 255, 0.55);
   font-family: var(--font-body);
   padding: 40px 0;
 }
@@ -1832,7 +1844,7 @@ button.bg-burgundy:hover {
 .testimonial-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(30, 30, 30, 0.72);
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
   cursor: pointer;
@@ -1848,7 +1860,7 @@ button.bg-burgundy:hover {
   border-top: 3px solid #FF6600;
   border-radius: 10px;
   padding: 48px 32px 32px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 24px 64px rgba(30, 30, 30, 0.55);
 }
 .testimonial-modal__close {
   position: absolute;
@@ -1907,8 +1919,8 @@ button.bg-burgundy:hover {
   border-radius: 50%;
   background: #FF6600;
   color: #FFFFFF;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.04em;
 }
@@ -1926,8 +1938,8 @@ button.bg-burgundy:hover {
 }
 .wybe-testimonial__id { min-width: 0; }
 .wybe-testimonial__name {
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 13px;
   color: #1E1E1E;
   margin: 0 0 2px;
@@ -1945,8 +1957,8 @@ button.bg-burgundy:hover {
 /* Transformations grid — 2-up on tablet, 4-up on desktop, 1 on mobile */
 .wybe-transformation {
   margin: 0;
-  background: rgba(0, 26, 36, 0.35);
-  border: 1px solid rgba(246, 242, 232, 0.12);
+  background: rgba(30, 30, 30, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -1970,19 +1982,20 @@ button.bg-burgundy:hover {
   align-items: baseline;
   gap: 10px;
   padding: 12px 14px;
-  font-family: var(--font-subhead);
+  font-family: var(--font-ui);
 }
 .wybe-transformation__weeks {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #FF6600;
 }
 .wybe-transformation__detail {
+  font-family: var(--font-body);
   font-weight: 400;
   font-size: 12px;
-  color: rgba(246, 242, 232, 0.8);
+  color: rgba(255, 255, 255, 0.8);
   text-align: right;
 }
 
@@ -2043,13 +2056,13 @@ html:not(.gsap-ready) .wybe-reveal {
   position: relative;
   padding: 18px 20px 20px;
   border-radius: 8px;
-  background: rgba(0, 26, 36, 0.35);
-  border: 1px solid rgba(246, 242, 232, 0.14);
+  background: rgba(30, 30, 30, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   transition: background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-  color: #F6F2E8;
+  color: #FFFFFF;
 }
 .ucalc-tile.is-locked   { opacity: 0.55; }
-.ucalc-tile.is-unlocked { border-color: rgba(255, 102, 0, 0.35); background: rgba(0, 0, 0, 0.55); }
+.ucalc-tile.is-unlocked { border-color: rgba(255, 102, 0, 0.35); background: rgba(30, 30, 30, 0.55); }
 
 .ucalc-tile-eyebrow {
   font-family: var(--font-subhead);
@@ -2065,19 +2078,19 @@ html:not(.gsap-ready) .wybe-reveal {
   font-weight: 900;
   font-size: clamp(30px, 3.4vw, 42px);
   line-height: 1;
-  color: #F6F2E8;
+  color: #FFFFFF;
   margin: 0 0 6px;
 }
 .ucalc-tile-unit {
   font-family: var(--font-header);
   font-weight: 900;
   font-size: 0.55em;
-  color: rgba(246, 242, 232, 0.55);
+  color: rgba(255, 255, 255, 0.55);
   margin-left: 2px;
 }
 .ucalc-tile-cat {
   font-family: var(--font-subhead);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.06em;
   color: #FF6600;
@@ -2089,7 +2102,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-weight: 400;
   font-size: 12px;
   line-height: 1.45;
-  color: rgba(246, 242, 232, 0.8);
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
 }
 .ucalc-tile-hint {
@@ -2097,7 +2110,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-weight: 400;
   font-size: 12px;
   line-height: 1.5;
-  color: rgba(246, 242, 232, 0.55);
+  color: rgba(255, 255, 255, 0.55);
   margin: 6px 0 0;
 }
 
@@ -2113,8 +2126,8 @@ html:not(.gsap-ready) .wybe-reveal {
   gap: 8px;
   width: 100%;
   background: #FF6600;
-  color: #000000;
-  font-family: var(--font-subhead);
+  color: #1E1E1E;
+  font-family: var(--font-ui);
   font-weight: 900;
   font-size: 12px;
   letter-spacing: 0.18em;
@@ -2131,7 +2144,7 @@ html:not(.gsap-ready) .wybe-reveal {
               color 0.25s ease;
 }
 .wybe-calc-cta:hover {
-  background: #E65500;
+  background: #FF6600;
   color: #FFFFFF;
   transform: scale(1.03);
   filter: brightness(1.08);
@@ -2155,7 +2168,7 @@ html:not(.gsap-ready) .wybe-reveal {
   background: #FFFFFF !important;                     /* white card surface */
   color: #1E1E1E !important;
   border: 1px solid rgba(30, 30, 30, 0.10);           /* subtle dark border */
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 22px rgba(30, 30, 30, 0.25);
 }
 /* Headings inside a service card — dark on white. */
 .service-panel h2,
@@ -2247,7 +2260,7 @@ html:not(.gsap-ready) .wybe-reveal {
 .wybe-scene__inner {
   max-width: 1200px;
   width: 100%;
-  color: #F6F2E8;
+  color: #FFFFFF;
 }
 
 /* Line-mask reveal machinery: each visible line of text is wrapped in a
@@ -2285,7 +2298,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-size: clamp(44px, 7.5vw, 108px);
   line-height: 0.95;
   letter-spacing: -0.03em;
-  color: #F6F2E8;
+  color: #FFFFFF;
   margin: 0 0 clamp(40px, 5vw, 72px);
   text-transform: uppercase;
 }
@@ -2294,7 +2307,7 @@ html:not(.gsap-ready) .wybe-reveal {
   font-weight: 400;
   font-size: clamp(17px, 1.5vw, 22px);
   line-height: 1.55;
-  color: rgba(246, 242, 232, 0.85);
+  color: rgba(255, 255, 255, 0.85);
   max-width: 640px;
   margin: 0 auto;
 }
@@ -2345,8 +2358,8 @@ html:not(.gsap-ready) .wybe-reveal {
      though 480px is below the column width at every desktop size measured. */
   max-width: min(100%, 480px);
   border-radius: 12px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.70),
-              0 4px 16px rgba(0, 0, 0, 0.40);
+  box-shadow: 0 24px 64px rgba(30, 30, 30, 0.70),
+              0 4px 16px rgba(30, 30, 30, 0.40);
 }
 .wybe-book-cover-img {
   width: 100%;
@@ -2534,7 +2547,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
    charcoal text on white so the open dropdown menu stays readable. */
 .service-panel select option,
 #calculators select option {
-  color: #1A2E22;
+  color: #1E1E1E;
   background: #FFFFFF;
 }
 
@@ -2560,7 +2573,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   pointer-events: auto;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 24px rgba(30, 30, 30, 0.45);
 }
 /* On very narrow screens where "half outside" would push the
    badges off the viewport, fall back to a horizontal band pinned
@@ -2632,8 +2645,8 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
    each tier are placeholders — swap before publishing. */
 .services-offer-banner {
   display: inline-block;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2653,12 +2666,12 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   border-top: 3px solid #FF6600;
   border-radius: 10px;
   padding: 22px 20px 60px;                 /* pb reserves space for FAQ */
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 22px rgba(30, 30, 30, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .service-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 32px rgba(30, 30, 30, 0.35);
 }
 .service-card__title {
   font-family: var(--font-header);
@@ -2675,7 +2688,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #6B6B6B;
+  color: rgba(30, 30, 30, 0.65);
   margin: 0 0 14px;
 }
 .service-card__tiers {
@@ -2710,8 +2723,8 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2726,7 +2739,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   font-size: 10px;
   letter-spacing: 0;
   text-transform: none;
-  color: #6B6B6B;
+  color: rgba(30, 30, 30, 0.65);
   margin-top: 2px;
 }
 /* "(+$49)" price token inside the add-on title — matches the
@@ -2735,7 +2748,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   font-family: var(--font-header);
   font-weight: 900;
   font-size: 12px;
-  color: #C2410C;
+  color: #1E1E1E;
   margin-left: 4px;
   letter-spacing: -0.01em;
 }
@@ -2748,7 +2761,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 11px;
-  color: #6B6B6B;
+  color: rgba(30, 30, 30, 0.65);
   text-decoration: line-through;
 }
 /* Discount badge — takes the same slot as .service-tier__was for
@@ -2756,10 +2769,10 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
    of a struck-through old price. Same size so the row heights stay
    aligned across tiers; orange to read as promotional. */
 .service-tier__discount {
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 11px;
-  color: #C2410C;
+  color: #1E1E1E;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -2767,7 +2780,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   font-family: var(--font-header);
   font-weight: 900;
   font-size: 14px;
-  color: #C2410C;
+  color: #1E1E1E;
   letter-spacing: -0.01em;
 }
 .service-card__faq {
@@ -2777,12 +2790,12 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #C2410C;
+  color: #1E1E1E;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -2804,11 +2817,11 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
 }
 .service-card__upsell a {
   color: #FF6600;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.service-card__upsell a:hover { color: #E65500; }
+.service-card__upsell a:hover { color: rgba(255, 102, 0, 0.85); }
 /* Price tokens INSIDE the upsell copy — bumped to tabular Inter
    Black so "USD 69" and "USD 108" read cleanly (previous inherit
    from body font made "69" look mushy on some screens). */
@@ -2827,11 +2840,11 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
 .service-subgroup { margin-top: 4px; }
 .service-subgroup__label {
   font-family: var(--font-subhead);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #C2410C;
+  color: #1E1E1E;
   margin: 0 0 6px;
 }
 .service-subgroup__note {
@@ -2842,7 +2855,7 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 11px;
-  color: #6B6B6B;
+  color: rgba(30, 30, 30, 0.65);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -2876,8 +2889,8 @@ footer a:not([class*="bg-burgundy"]):not(.wybe-footer-link):hover::after,
   min-width: 0;
 }
 .service-addon__title {
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 12px;
   color: #1E1E1E;
   line-height: 1.35;
@@ -2930,7 +2943,7 @@ li.service-tier.service-tier--info,
 }
 .service-pt-list li {
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 13px;
   color: #1E1E1E;
   line-height: 1.4;
@@ -2945,17 +2958,17 @@ li.service-tier.service-tier--info,
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #C2410C;
+  color: #1E1E1E;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 .service-pt-cta:hover {
-  color: #E65500;
+  color: #FF6600;
   transform: translateX(2px);
 }
 
@@ -2975,7 +2988,7 @@ li.service-tier.service-tier--info,
   transition: color 0.2s ease, transform 0.2s ease;
 }
 .service-book-now:hover {
-  color: #E65500;
+  color: rgba(255, 102, 0, 0.85);
   transform: translateX(3px);
 }
 /* Note block for services with no direct price (Personal Training). */
@@ -2994,7 +3007,7 @@ li.service-tier.service-tier--info,
   line-height: 1.45;
   color: #1E1E1E;
 }
-.service-card__note strong { color: #1E1E1E; font-weight: 700; }
+.service-card__note strong { color: #1E1E1E; font-weight: 600; }
 /* CTA-style tier row (e.g. Personal Training "Book Now / Enquire"). */
 .service-tier--cta {
   background: #FF6600;
@@ -3006,8 +3019,8 @@ li.service-tier.service-tier--info,
   color: #1E1E1E;
 }
 .service-tier--cta:hover {
-  background: #E65500;
-  border-color: #E65500;
+  background: #FF6600;
+  border-color: #FF6600;
 }
 .service-card__faq {
   /* Baseline transition on the resting state so the hover state animates
@@ -3018,7 +3031,7 @@ li.service-tier.service-tier--info,
               text-shadow 0.25s ease;
 }
 .service-card__faq:hover {
-  color: #9A3412;
+  color: #FF6600;
   transform: scale(1.08);
   text-shadow: 0 0 12px rgba(255, 102, 0, 0.55);
 }
@@ -3039,11 +3052,11 @@ li.service-tier.service-tier--info,
   clip-path: polygon(0 0, 100% 0, 100% 100%, 26px 100%, 0 calc(100% - 26px));
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   cursor: default;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 18px rgba(30, 30, 30, 0.35);
 }
 .stat-badge:hover {
   transform: translateY(-3px);
-  background-color: #E65500;
+  background-color: #FF6600;
   box-shadow: 0 14px 32px rgba(255, 102, 0, 0.45);
 }
 .stat-badge__number {
@@ -3056,8 +3069,8 @@ li.service-tier.service-tier--info,
   margin: 0;
 }
 .stat-badge__label {
-  font-family: var(--font-subhead);
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-weight: 900;
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3142,7 +3155,7 @@ li.service-tier.service-tier--info,
   transform: translateX(-50%);
   width: max-content;
   max-width: 260px;
-  background: #000000;
+  background: #1E1E1E;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   font-size: 11px;
@@ -3160,7 +3173,7 @@ li.service-tier.service-tier--info,
   transition: opacity 0.15s ease;
   z-index: 30;
   white-space: pre-line;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 6px 22px rgba(30, 30, 30, 0.55);
 }
 .info-tip::before {
   content: '';
@@ -3168,7 +3181,7 @@ li.service-tier.service-tier--info,
   bottom: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
-  border: 5px solid transparent;
+  border: 5px solid rgba(30, 30, 30, 0);
   border-top-color: rgba(255, 102, 0, 0.5);
   opacity: 0;
   visibility: hidden;
@@ -3243,7 +3256,7 @@ li.service-tier.service-tier--info,
 /* Form panel keeps its dark glass + orange border chrome so the input
    fields stay readable. */
 #body-composition-section .calc-panels-grid #unified-calc-form {
-  background: rgba(0,0,0,0.55);
+  background: rgba(30,30,30,0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 2px solid #ff6600;
@@ -3253,10 +3266,10 @@ li.service-tier.service-tier--info,
   min-height: 0;
 }
 /* Results panel — same glass card chrome as the calculator form.
-   Background matches rgba(0,0,0,0.55) so tiles and form sit on the
+   Background matches rgba(30,30,30,0.55) so tiles and form sit on the
    same dark surface as the input side. */
 #body-composition-section .calc-panels-grid #ucalc-view-results {
-  background: rgba(0,0,0,0.55);
+  background: rgba(30,30,30,0.55);
   border: 2px solid #FF6600;
   border-radius: 16px;
   box-shadow: 0 0 25px rgba(255, 102, 0, 0.15);
@@ -3313,7 +3326,7 @@ li.service-tier.service-tier--info,
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  color: #F6F2E8;
+  color: #FFFFFF;
   padding: 22px 16px;
   height: 100%;
   overflow: visible;
@@ -3348,11 +3361,11 @@ li.service-tier.service-tier--info,
 /* Abbreviation — bold white, primary visual anchor on the stroke */
 .ucalc-intro-abbr {
   font-family: var(--font-header);
-  font-weight: 700;
+  font-weight: 900;
   font-size: clamp(26px, 3.2vw, 40px);
   letter-spacing: -0.01em;
   line-height: 1;
-  color: #ffffff;
+  color: #FFFFFF;
   display: block;
 }
 /* Full name — lighter white, secondary label */
@@ -3361,7 +3374,7 @@ li.service-tier.service-tier--info,
   font-weight: 400;
   font-size: clamp(12px, 1.1vw, 14px);
   line-height: 1.3;
-  color: #ffffff;
+  color: #FFFFFF;
   opacity: 0.85;
   display: block;
   text-align: center;
@@ -3510,7 +3523,7 @@ li.service-tier.service-tier--info,
 #body-composition-section .ucalc-tile-value {
   font-size: 20px;
   font-weight: 900;
-  color: #fff;
+  color: #FFFFFF;
   line-height: 1.15;
   margin: 0 0 6px;
 }
@@ -3524,14 +3537,14 @@ li.service-tier.service-tier--info,
 #body-composition-section .ucalc-tile-cat {
   font-size: 13px;
   color: #FF6600;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.02em;
   margin: 4px 0 8px;
   min-height: 0;
 }
 #body-composition-section .ucalc-tile-note {
   font-size: 13px;
-  color: rgba(246, 242, 232, 0.8);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.5;
   margin: 0;
 }
@@ -3588,9 +3601,9 @@ li.service-tier.service-tier--info,
   border: 1px solid rgba(255,255,255,0.18);
   border-radius: 8px;
   padding: 10px 12px;
-  background: rgba(0,0,0,0.35);
+  background: rgba(30,30,30,0.35);
   width: 100%;
-  color: #fff;
+  color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
 }
@@ -3621,7 +3634,7 @@ li.service-tier.service-tier--info,
   gap: 7px;
   font-family: var(--font-body);
   font-size: 12px;
-  color: rgba(246,242,232,0.75);
+  color: rgba(255,255,255,0.75);
   line-height: 1.3;
 }
 #body-composition-section #ucalc-email-success.hidden {
@@ -3858,7 +3871,7 @@ li.service-tier.service-tier--info,
   font-family: var(--font-body, inherit);
   font-size: 12.5px;
   line-height: 1.5;
-  color: rgba(246, 242, 232, 0.75);
+  color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
 }
 .calc-consent-row a {
@@ -3866,7 +3879,7 @@ li.service-tier.service-tier--info,
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.calc-consent-row a:hover { color: #E65500; }
+.calc-consent-row a:hover { color: rgba(255, 102, 0, 0.85); }
 .calc-consent-row input[type="checkbox"]:focus-visible {
   outline: 2px solid #FF6600;
   outline-offset: 2px;

@@ -47,13 +47,13 @@
         imagesrcset="/images/hero-mobile-480.webp 480w, /images/hero-mobile-828.webp 828w, /images/hero-mobile.webp 1350w"
         imagesizes="100vw"
         media="(max-width: 767px)" fetchpriority="high">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
   <!-- GSAP + ScrollTrigger (hero fixed-window parallax) -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <link rel="stylesheet" href="/css/styles.css">
   <style>
-    body { background-color: #1E1E1E; color: #F6F2E8; }
+    body { background-color: #1E1E1E; color: #FFFFFF; }
     .about-heading { font-size: 22px !important; line-height: 1.3 !important; color: #FF6600 !important; text-transform: none; }
     /* Single 900px column governs heading, full-width images, and prose together.
        Do NOT put a matching cap on .about-prose — one constraint, one container. */
@@ -66,7 +66,7 @@
     .about-prose p {
       font-family: 'Raleway', sans-serif; font-weight: 400;
       font-size: 16px; line-height: 1.7;
-      color: rgba(246, 242, 232, 0.88); margin: 0 0 16px;
+      color: rgba(255, 255, 255, 0.88); margin: 0 0 16px;
       text-align: justify;
       hyphens: auto;
       -webkit-hyphens: auto;
@@ -77,7 +77,7 @@
       -webkit-hyphenate-limit-after: 4;
       -webkit-hyphenate-limit-lines: 2;
     }
-    .about-prose strong { color: #FFFFFF; font-weight: 700; }
+    .about-prose strong { color: #FFFFFF; font-weight: 600; }
     /* Block display breaks the line before the quote without a <br>.
        text-align:left overrides the parent justify so the quote line
        doesn't stretch — a standalone quote shouldn't fill the measure. */
@@ -85,11 +85,11 @@
       display: block;
       margin-top: 6px;
       color: #FF6600;
-      font-weight: 700;
+      font-weight: 600;
       text-align: left;
     }
     .about-prose a { color: #FF6600; text-decoration: underline; text-underline-offset: 3px; }
-    .about-prose a:hover { color: #E65500; }
+    .about-prose a:hover { color: rgba(255, 102, 0, 0.85); }
     .about-prose a.wybe-link { color: #FF6600; text-decoration: none; border-bottom: 1px solid rgba(255,102,0,.4); }
     .about-prose a.wybe-link:hover { border-bottom-color: #FF6600; }
     /* Full-width content images (philosophy, methodology). */
@@ -115,7 +115,7 @@
     }
     /* ── CERTIFICATE SHOWCASE ──────────────────────── */
     .cert-show {
-      border-top: 1px solid rgba(246,242,232,.12);
+      border-top: 1px solid rgba(255,255,255,.12);
       padding-top: 36px;
     }
     /* No background, no border, no padding, no radius.
@@ -191,7 +191,7 @@
       padding: 0;
       border-radius: 5px;
       overflow: hidden;
-      border: 1px solid rgba(246,242,232,.16);
+      border: 1px solid rgba(255,255,255,.16);
       background: transparent;
       cursor: pointer;
       opacity: .35;
@@ -302,8 +302,8 @@
                handle below is the first visible line with no gap above it, the
                way this block looked before the h1 existed. A social handle is
                not the page's heading for search, so it remains a <p>. -->
-          <h1 class="sr-only">Mansoor Ahamad Ali &mdash; Personal Trainer &amp; Nutritionist in Dubai</h1>
-          <p class="font-bold mb-4 about-heading">@wybewithmansoor</p>
+          <h1 class="sr-only font-heading font-black">Mansoor Ahamad Ali &mdash; Personal Trainer &amp; Nutritionist in Dubai</h1>
+          <p class="font-semibold mb-4 about-heading">@wybewithmansoor</p>
           <div class="w-14 h-px bg-burgundy mb-0"></div>
         </div>
 
@@ -358,10 +358,10 @@
       </div>
 
       <div class="mt-16 md:mt-20 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <a href="/" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
+        <a href="/" class="inline-flex items-center gap-2 font-sans text-xs font-semibold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
           <span aria-hidden="true">&larr;</span> Back to Home
         </a>
-        <a href="/#services" class="inline-flex items-center gap-2 font-sans text-xs font-bold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
+        <a href="/#services" class="inline-flex items-center gap-2 font-sans text-xs font-semibold tracking-widest uppercase text-burgundy hover:text-cream transition-colors">
           Explore Services <span aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -372,7 +372,7 @@
 
   <footer class="text-white border-t border-cream/10 mt-8">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-semibold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
       <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a>
         <span class="text-white/25" aria-hidden="true">&middot;</span>

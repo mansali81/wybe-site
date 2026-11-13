@@ -52,16 +52,16 @@ function buildResultsHtml(name, email, s) {
 
   const metricCard = (label, valueLarge, valueSuffix, category, noteText, method, whatTodo) =>
     '<td width="50%" style="padding:6px;" valign="top">'
-    + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#1c1c1c;border:1px solid #2e2e2e;border-radius:6px;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.14);border-radius:6px;">'
     + '<tr><td style="padding:18px;">'
     + '<p style="margin:0 0 8px;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6600;">' + label + '</p>'
     + '<p style="margin:0 0 4px;line-height:1;"><span style="font-size:40px;font-weight:900;color:#FFFFFF;">' + valueLarge + '</span>'
-      + (valueSuffix ? '<span style="font-size:15px;font-weight:400;color:#AAAAAA;"> ' + valueSuffix + '</span>' : '') + '</p>'
+      + (valueSuffix ? '<span style="font-size:15px;font-weight:400;color:#FFFFFF;color:rgba(255,255,255,0.75);"> ' + valueSuffix + '</span>' : '') + '</p>'
     + '<p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#FF6600;">' + category + '</p>'
-    + (noteText ? '<p style="margin:0 0 12px;font-size:12px;color:#BBBBBB;line-height:1.5;">' + noteText + '</p>' : '')
-    + '<div style="height:1px;background:#2e2e2e;margin:10px 0;"></div>'
-    + '<p style="margin:0 0 8px;font-size:11px;color:#888888;line-height:1.5;"><strong style="color:#AAAAAA;">Method:</strong> ' + method + '</p>'
-    + (whatTodo ? '<p style="margin:0;font-size:12px;color:#CCCCCC;line-height:1.5;"><strong style="color:#FFFFFF;">What to do:</strong> ' + whatTodo + '</p>' : '')
+    + (noteText ? '<p style="margin:0 0 12px;font-size:12px;color:#FFFFFF;color:rgba(255,255,255,0.8);line-height:1.5;">' + noteText + '</p>' : '')
+    + '<div style="height:1px;background:rgba(255,255,255,0.14);margin:10px 0;"></div>'
+    + '<p style="margin:0 0 8px;font-size:11px;color:#FFFFFF;color:rgba(255,255,255,0.65);line-height:1.5;"><strong style="color:#FFFFFF;color:rgba(255,255,255,0.75);">Method:</strong> ' + method + '</p>'
+    + (whatTodo ? '<p style="margin:0;font-size:12px;color:#FFFFFF;color:rgba(255,255,255,0.85);line-height:1.5;"><strong style="color:#FFFFFF;">What to do:</strong> ' + whatTodo + '</p>' : '')
     + '</td></tr></table>'
     + '</td>';
 
@@ -83,21 +83,21 @@ function buildResultsHtml(name, email, s) {
     : '<td width="50%"></td>';
 
   const calTargets = s.tdee
-    ? '<tr><td style="background:#0f0f0f;border-left:1px solid #222;border-right:1px solid #222;padding:4px 24px 20px;">'
-      + '<p style="margin:0 0 10px;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888888;">CALORIE TARGETS</p>'
-      + '<div style="height:1px;background:#2e2e2e;margin-bottom:14px;"></div>'
-      + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#1c1c1c;border:1px solid #2e2e2e;border-radius:6px;">'
+    ? '<tr><td style="background:#1E1E1E;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:4px 24px 20px;">'
+      + '<p style="margin:0 0 10px;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;color:rgba(255,255,255,0.65);">CALORIE TARGETS</p>'
+      + '<div style="height:1px;background:rgba(255,255,255,0.14);margin-bottom:14px;"></div>'
+      + '<table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.14);border-radius:6px;">'
       + '<tr>'
-      + '<td width="33%" style="padding:14px 10px;text-align:center;border-right:1px solid #2e2e2e;" valign="top">'
-        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888888;">CUT (FAT LOSS)</p>'
+      + '<td width="33%" style="padding:14px 10px;text-align:center;border-right:1px solid rgba(255,255,255,0.14);" valign="top">'
+        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FFFFFF;color:rgba(255,255,255,0.65);">CUT (FAT LOSS)</p>'
         + '<p style="margin:0;font-size:20px;font-weight:900;color:#FFFFFF;">' + s.tdee.cut.toLocaleString() + ' kcal</p>'
       + '</td>'
-      + '<td width="34%" style="padding:14px 10px;text-align:center;border-right:1px solid #2e2e2e;" valign="top">'
-        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888888;">MAINTAIN</p>'
+      + '<td width="34%" style="padding:14px 10px;text-align:center;border-right:1px solid rgba(255,255,255,0.14);" valign="top">'
+        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FFFFFF;color:rgba(255,255,255,0.65);">MAINTAIN</p>'
         + '<p style="margin:0;font-size:20px;font-weight:900;color:#FF6600;">' + s.tdee.maintain.toLocaleString() + ' kcal</p>'
       + '</td>'
       + '<td width="33%" style="padding:14px 10px;text-align:center;" valign="top">'
-        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888888;">LEAN BULK</p>'
+        + '<p style="margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FFFFFF;color:rgba(255,255,255,0.65);">LEAN BULK</p>'
         + '<p style="margin:0;font-size:20px;font-weight:900;color:#FFFFFF;">' + s.tdee.bulk.toLocaleString() + ' kcal</p>'
       + '</td>'
       + '</tr>'
@@ -107,19 +107,19 @@ function buildResultsHtml(name, email, s) {
 
   return '<!DOCTYPE html>'
     + '<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WYBE Body Composition Report</title></head>'
-    + '<body style="margin:0;padding:0;background:#0a0a0a;font-family:Helvetica,Arial,sans-serif;">'
-    + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;"><tr><td align="center" style="padding:20px 10px;">'
+    + '<body style="margin:0;padding:0;background:#1E1E1E;font-family:Helvetica,Arial,sans-serif;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#1E1E1E;"><tr><td align="center" style="padding:20px 10px;">'
     + '<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">'
 
     // Header
-    + '<tr><td style="background:#1A2E22;padding:18px 24px;border-radius:6px 6px 0 0;">'
+    + '<tr><td style="background:rgba(255,255,255,0.08);padding:18px 24px;border-radius:6px 6px 0 0;">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
-    + '<td style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#F6F2E8;">BODY COMPOSITION REPORT</td>'
+    + '<td style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;">BODY COMPOSITION REPORT</td>'
     + '<td align="right" style="font-size:26px;font-weight:900;letter-spacing:0.05em;color:#FF6600;">WYBE</td>'
     + '</tr></table></td></tr>'
 
     // User info
-    + '<tr><td style="background:#111111;padding:16px 24px 4px;border:1px solid #222222;border-top:none;">'
+    + '<tr><td style="background:#1E1E1E;padding:16px 24px 4px;border:1px solid rgba(255,255,255,0.1);border-top:none;">'
     + '<table cellpadding="0" cellspacing="0"><tr>'
     + infoCell('Name', name)
     + infoCell('Age', s.age ? String(s.age) : '')
@@ -135,27 +135,27 @@ function buildResultsHtml(name, email, s) {
     + '</tr></table></td></tr>'
 
     // YOUR RESULTS heading
-    + '<tr><td style="background:#0f0f0f;padding:20px 24px 10px;border-left:1px solid #222;border-right:1px solid #222;">'
+    + '<tr><td style="background:#1E1E1E;padding:20px 24px 10px;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
-    + '<td style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888888;padding-right:14px;white-space:nowrap;">YOUR RESULTS</td>'
-    + '<td style="border-top:1px solid #2e2e2e;"></td>'
+    + '<td style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;color:rgba(255,255,255,0.65);padding-right:14px;white-space:nowrap;">YOUR RESULTS</td>'
+    + '<td style="border-top:1px solid rgba(255,255,255,0.14);"></td>'
     + '</tr></table></td></tr>'
 
     // Row 1: BMI + IBW
-    + '<tr><td style="background:#0f0f0f;padding:0 18px;border-left:1px solid #222;border-right:1px solid #222;">'
+    + '<tr><td style="background:#1E1E1E;padding:0 18px;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>' + bmiCard + ibwCard + '</tr></table></td></tr>'
 
     // Row 2: BFP + TDEE
-    + '<tr><td style="background:#0f0f0f;padding:0 18px 16px;border-left:1px solid #222;border-right:1px solid #222;">'
+    + '<tr><td style="background:#1E1E1E;padding:0 18px 16px;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>' + bfpCard + tdeeCard + '</tr></table></td></tr>'
 
     // Calorie targets
     + calTargets
 
     // Next step CTA
-    + '<tr><td style="background:#151515;border:1px solid #222;border-top:none;padding:20px 24px;border-radius:0 0 6px 6px;">'
+    + '<tr><td style="background:#1E1E1E;border:1px solid rgba(255,255,255,0.1);border-top:none;padding:20px 24px;border-radius:0 0 6px 6px;">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
-    + '<td valign="middle" style="font-size:13px;color:#CCCCCC;line-height:1.5;padding-right:16px;">'
+    + '<td valign="middle" style="font-size:13px;color:#FFFFFF;color:rgba(255,255,255,0.85);line-height:1.5;padding-right:16px;">'
     + '<strong style="color:#FFFFFF;">Next step:</strong> book a session with Mansoor to translate these numbers into a concrete training and nutrition plan.'
     + '</td>'
     + '<td valign="middle" align="right" style="white-space:nowrap;">'
@@ -165,8 +165,8 @@ function buildResultsHtml(name, email, s) {
     // Footer
     + '<tr><td style="padding:16px 0;">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
-    + '<td style="font-size:10px;color:#555555;">Generated at wybe.fit &mdash; for educational reference only. All figures are estimates.</td>'
-    + '<td align="right" style="font-size:10px;color:#555555;white-space:nowrap;">WYBE &copy; 2026</td>'
+    + '<td style="font-size:10px;color:#FFFFFF;color:rgba(255,255,255,0.6);">Generated at wybe.fit &mdash; for educational reference only. All figures are estimates.</td>'
+    + '<td align="right" style="font-size:10px;color:#FFFFFF;color:rgba(255,255,255,0.6);white-space:nowrap;">WYBE &copy; 2026</td>'
     + '</tr></table></td></tr>'
 
     + '</table></td></tr></table>'

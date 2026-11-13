@@ -92,7 +92,7 @@
     '</div>',
     '<div class="border-t border-white/10">',
     '  <div class="max-w-6xl mx-auto px-6 pt-6 pb-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">',
-    '    <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>',
+    '    <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-semibold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>',
     '    <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">',
     '      <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a>',
     '      <span class="text-white/25" aria-hidden="true">&middot;</span>',

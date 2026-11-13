@@ -32,10 +32,10 @@
   <meta name="twitter:image" content="https://wybe.fit/images/og-image.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   <style>
-    body { background-color: #1E1E1E; color: #F6F2E8; }
+    body { background-color: #1E1E1E; color: #FFFFFF; }
     /* ── CALCULATOR FIELD STYLING ──────────────────────────────────────
        These rules live in index.html's page-scoped <style> block, not in
        css/styles.css, so this page used the same .wybe-input-row markup
@@ -84,14 +84,14 @@
     .wybe-input-row {
       display: grid; grid-template-columns: 1fr auto; align-items: end;
       padding: 6px 12px; gap: 2px;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(30, 30, 30, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.10);
       border-radius: 8px;
       transition: border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
     }
     .wybe-input-row:focus-within {
       border-color: #FF6600;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(30, 30, 30, 0.55);
       box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
     }
     /* Layout only. Type AND the 6px gap come from the shared .wybe-label
@@ -116,7 +116,7 @@
       border-radius: 16px;
       padding: 20px;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
-                  0 8px 32px rgba(0, 0, 0, 0.45);
+                  0 8px 32px rgba(30, 30, 30, 0.45);
     }
     #ucalc-confirm.hidden { display: none !important; }
     /* The confirmation replaces a much taller form. Without a floor the
@@ -191,7 +191,7 @@
     }
     .wybe-calc-cta        {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #FF6600; color: #000000;
+      background: #FF6600; color: #1E1E1E;
       font-family: 'Inter', sans-serif; font-weight: 900;
       font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
       padding: 14px 28px; border-radius: 999px;
@@ -205,7 +205,7 @@
       margin-top: 20px;
     }
     .wybe-calc-cta:hover  {
-      background: #E65500;
+      background: #FF6600;
       color: #FFFFFF;
       transform: scale(1.05);
       filter: brightness(1.08);
@@ -254,9 +254,9 @@
   <section class="bg-charcoal pt-16">
     <div class="max-w-6xl mx-auto px-6 py-24">
       <p class="font-sans text-xs tracking-widest uppercase text-cream/50 mb-6">Free Tools</p>
-      <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6">Calculators</h1>
+      <h1 class="font-heading text-4xl md:text-6xl font-black text-white mb-6">Calculators</h1>
       <div class="w-12 h-px bg-burgundy mb-6"></div>
-      <p class="font-sans text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
+      <p class="font-sans font-semibold text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
         Your weight tells you very little. Your body fat percentage defines your body aesthetics. Enter your measurements and your personalised report lands in your inbox within minutes.
       </p>
     </div>
@@ -268,7 +268,7 @@
     <div class="w-full max-w-6xl mx-auto px-6">
       <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
         <div class="w-10 h-px bg-burgundy mx-auto mb-5"></div>
-        <h2 class="font-sans text-3xl md:text-4xl font-bold text-cream leading-tight">Know Your Numbers</h2>
+        <h2 class="font-sans text-3xl md:text-4xl font-semibold text-cream leading-tight">Know Your Numbers</h2>
       </div>
 
       <div class="max-w-2xl mx-auto">
@@ -339,13 +339,13 @@
               <span class="wybe-spinner hidden ucalc-submit-spinner" aria-hidden="true"></span>
             </button>
           </div>
-          <p id="ucalc-error" class="hidden font-sans text-xs text-red-300 mt-3"></p>
+          <p id="ucalc-error" class="hidden font-sans text-xs text-burgundy mt-3"></p>
         </form>
 
         <!-- Confirmation panel — shown after a successful submit -->
         <div id="ucalc-confirm" class="hidden" data-view="confirm">
-          <p class="font-sans text-xl font-bold mb-3" style="color:#FF6600;">Your report is on its way</p>
-          <p class="font-sans text-sm leading-relaxed mb-4" style="color:rgba(246,242,232,.75);">Sent to <span id="ucalc-sent-to" class="font-semibold" style="color:#F6F2E8;"></span>. It usually arrives within 2 minutes. If you don&rsquo;t see it, check your Spam or Junk folder and mark it as &ldquo;Not spam&rdquo; so you get my future emails.</p>
+          <p class="font-sans text-xl font-semibold mb-3" style="color:#FF6600;">Your report is on its way</p>
+          <p class="font-sans text-sm leading-relaxed mb-4" style="color:rgba(255,255,255,.75);">Sent to <span id="ucalc-sent-to" class="font-semibold" style="color:#FFFFFF;"></span>. It usually arrives within 2 minutes. If you don&rsquo;t see it, check your Spam or Junk folder and mark it as &ldquo;Not spam&rdquo; so you get my future emails.</p>
           <button type="button" id="ucalc-resend" class="font-sans text-sm underline" style="color:#FF6600;">Wrong email? Send again</button>
         </div>
           <!-- Footer CTA -->
@@ -358,10 +358,10 @@
   </section>
 
   <!-- CTA: Want help applying this? -->
-  <section class="bg-[#262626] py-20">
+  <section class="bg-white/[0.035] py-20">
     <div class="max-w-4xl mx-auto px-6 text-center">
       <p class="font-sans text-xs tracking-widest uppercase text-cream/50 mb-4">Next Step</p>
-      <h2 class="font-heading text-2xl md:text-3xl font-bold text-cream mb-6">Numbers are only useful if you act on them.</h2>
+      <h2 class="font-heading text-2xl md:text-3xl font-black text-cream mb-6">Numbers are only useful if you act on them.</h2>
       <p class="font-sans text-sm text-cream/70 max-w-lg mx-auto leading-relaxed mb-8">
         A nutrition consultation turns these numbers into a real plan, macros, food choices, and weekly adjustments tailored to your body and your life.
       </p>
@@ -375,7 +375,7 @@
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-semibold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
       <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>

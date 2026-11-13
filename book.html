@@ -32,10 +32,10 @@
   <meta name="twitter:image" content="https://wybe.fit/images/og-book.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   <style>
-    body { background-color: #1E1E1E; color: #F6F2E8; }
+    body { background-color: #1E1E1E; color: #FFFFFF; }
   </style>
   <!-- Tailwind, compiled ahead of time by `npm run build:css` (was the Play CDN).
        Loaded last in <head> so the cascade order matches what the CDN produced,
@@ -84,7 +84,7 @@
         <h1 class="font-heading font-black text-[80px] md:text-[130px] leading-none text-white relative z-10">1825<span class="sr-only"> Days: The Complete Nutrition Guide for Your Child, from First Breath to Fifth Birthday</span></h1>
       </div>
       <div class="w-12 h-px bg-burgundy mx-auto mb-8"></div>
-      <p class="font-heading text-xl md:text-2xl text-white/80 max-w-xl mx-auto leading-relaxed">
+      <p class="font-sans font-semibold text-xl md:text-2xl text-white/80 max-w-xl mx-auto leading-relaxed">
         The Complete Nutrition Guide for Your Child, From First Breath to Fifth Birthday
       </p>
     </div>
@@ -157,7 +157,7 @@
   </section>
 
   <!-- SECTION 3: WHO IT'S FOR -->
-  <section class="bg-[#262626] py-20">
+  <section class="bg-white/[0.035] py-20">
     <div class="max-w-6xl mx-auto px-6">
       <p class="font-sans text-xs tracking-widest uppercase text-cream/50 mb-12 text-center">Who It's For</p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-cream/15">
@@ -190,10 +190,10 @@
   </section>
 
   <!-- START HERE CTA -->
-  <section class="bg-[#262626] py-20">
+  <section class="bg-white/[0.035] py-20">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xs tracking-widest uppercase text-cream/50 mb-4">Start Here</p>
-      <h2 class="font-heading text-3xl md:text-4xl font-bold text-cream mb-6">
+      <h2 class="font-heading text-3xl md:text-4xl font-black text-cream mb-6">
         Want training or nutrition support while you wait?
       </h2>
       <p class="font-sans text-sm text-cream/70 max-w-lg mx-auto leading-relaxed mb-8">
@@ -208,7 +208,7 @@
   <!-- CANONICAL FOOTER — edit js/site-chrome.js as the single source of truth and mirror here -->
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
+      <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-semibold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
       <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
@@ -228,7 +228,7 @@
         <div class="px-6 md:px-8 pt-12 pb-8">
           <p class="font-sans text-xs tracking-widest uppercase text-cream/50 mb-3">Join the Waitlist</p>
           <div class="w-8 h-px bg-burgundy mb-5"></div>
-          <h2 id="waitlist-modal-title" class="font-heading text-2xl font-bold text-cream mb-3">Be the first to know.</h2>
+          <h2 id="waitlist-modal-title" class="font-heading text-2xl font-black text-cream mb-3">Be the first to know.</h2>
           <p class="font-sans text-sm text-cream/70 leading-relaxed mb-6">
             The book is in progress. Register your interest now and you will be among the first to hear when it is ready, with early access and any pre-launch offers.
           </p>
@@ -254,7 +254,7 @@
             <!-- This form had no error element; the shared handler in main.js
                  looks for #waitlist-send-error. Styled for this page's light
                  theme rather than the dark one used on index.html. -->
-            <p id="waitlist-send-error" class="hidden font-sans text-xs text-red-600 -mt-2" role="alert" aria-live="polite"></p>
+            <p id="waitlist-send-error" class="hidden font-sans text-xs text-burgundy -mt-2" role="alert" aria-live="polite"></p>
             <div>
               <label for="waitlist-who" class="wybe-label">Who Are You?<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="waitlist-who" name="who_you_are" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
