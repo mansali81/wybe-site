@@ -17,7 +17,7 @@ function buildResultsHtml(name, email, s) {
 
   const M_BMI  = 'Weight (kg) &divide; height&sup2; (m&sup2;). BMI screens for weight class, not body composition.';
   const M_IBW  = 'Broca\'s Index (height in cm &minus; 100), &plusmn;5&thinsp;kg band.';
-  const M_BFP  = 'U.S. Navy circumference method (neck, waist, height), ~&plusmn;4&ndash;5% of DEXA/BIA. This method is not fully accurate but gives a rough idea &mdash; DEXA or BIA remain the gold standard for body fat testing.';
+  const M_BFP  = 'U.S. Navy circumference method (neck, waist, height), ~&plusmn;4 to 5% of DEXA/BIA. This method is not fully accurate but gives a rough idea. DEXA or BIA remain the gold standard for body fat testing.';
   const M_TDEE = 'Mifflin-St&thinsp;Jeor equation, adjusted for activity level.';
 
   const WHAT = {
@@ -28,15 +28,15 @@ function buildResultsHtml(name, email, s) {
       'Obese':         'A structured plan combining progressive training and a supervised calorie deficit is strongly recommended.',
     },
     bfp: {
-      'Essential fat':          'Maintain your fat levels — they are at the essential minimum for bodily function.',
-      'Athletic':               'A strong, athletic range — maintain it with consistent training and balanced nutrition.',
-      'Fitness':                'A healthy fitness range — keep up consistent training and balanced nutrition.',
+      'Essential fat':          'Maintain your fat levels. They are at the essential minimum for bodily function.',
+      'Athletic':               'A strong, athletic range. Maintain it with consistent training and balanced nutrition.',
+      'Fitness':                'A healthy fitness range. Keep up consistent training and balanced nutrition.',
       'Acceptable / Average':   'Focus on resistance training and a balanced diet to move toward the fitness range.',
       'Obese':                  'A combination of regular training and a supervised calorie deficit is strongly recommended.',
       'Outside plausible range':'Please double-check your measurements and recalculate.',
     },
     tdee: {
-      'Low energy needs, careful with cuts':  'Be careful with further calorie cuts — eating too little can impair recovery and hormonal health.',
+      'Low energy needs, careful with cuts':  'Be careful with further calorie cuts. Eating too little can impair recovery and hormonal health.',
       'Moderate metabolic range':             'Your intake is in a healthy range. Adjust slightly depending on your goal.',
       'High energy needs':                    'A calorie deficit diet refers to replacing certain nutrients that are effective for body functions. Strongly recommend for nutrition consultation.',
       'Very high energy needs, athlete tier': 'Your calorie needs are at an athletic level. Work with a nutritionist to fuel training and recovery optimally.',
@@ -165,7 +165,7 @@ function buildResultsHtml(name, email, s) {
     // Footer
     + '<tr><td style="padding:16px 0;">'
     + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
-    + '<td style="font-size:10px;color:#FFFFFF;color:rgba(255,255,255,0.6);">Generated at wybe.fit &mdash; for educational reference only. All figures are estimates.</td>'
+    + '<td style="font-size:10px;color:#FFFFFF;color:rgba(255,255,255,0.6);">Generated at wybe.fit, for educational reference only. All figures are estimates.</td>'
     + '<td align="right" style="font-size:10px;color:#FFFFFF;color:rgba(255,255,255,0.6);white-space:nowrap;">WYBE &copy; 2026</td>'
     + '</tr></table></td></tr>'
 
@@ -870,7 +870,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 + '<a href="https://wa.me/971527530530" target="_blank" rel="noopener" '
                 + 'style="color:#FF6600;text-decoration:underline;">message me on WhatsApp</a>.';
             } else if (!errEl.textContent.trim()) {
-              errEl.textContent = 'Connection error \u2014 check your network and try again.';
+              errEl.textContent = 'Connection error: check your network and try again.';
             }
             errEl.classList.remove('hidden');
           }
