@@ -3389,6 +3389,13 @@ li.service-tier.service-tier--info,
   margin: 0 0 16px;
   font-size: 14px;
 }
+/* The abbreviations carry a title for hover and screen readers, but the
+   browser's default dotted underline would change how the line looks, so
+   it is removed; the help cursor is the only visible affordance. */
+.ucalc-intro-heading abbr {
+  text-decoration: none;
+  cursor: help;
+}
 /* Slightly smaller on the narrowest phones so it wraps to fewer lines. */
 @media (max-width: 390px) {
   .ucalc-intro-heading { font-size: 13px; }
