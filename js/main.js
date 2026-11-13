@@ -372,10 +372,43 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMenu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => setOpen(false));
     });
-    // Close on Escape when open
+    // Close on Escape when open, and put focus back on the hamburger so the
+    // keyboard user is not dropped at the top of the document.
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') setOpen(false);
+      if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        menuBtn.focus();
+      }
     });
+    // ── HOVER TO OPEN (mouse devices only) ──────────────────────────
+    // Guarded on a real pointer: on touch, `mouseenter` is synthesised
+    // after a tap, which would fight the tap-to-toggle handler above.
+    // The button and the panel are not adjacent — the panel hangs 4px
+    // below a 96px bar — so they cannot be one DOM hover region without
+    // restructuring the header. Instead both share one close timer: the
+    // gap between them is crossed well inside the 250ms grace, and
+    // re-entering either element cancels the pending close.
+    if (window.matchMedia
+        && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let closeTimer = null;
+      const cancelClose = () => {
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+      };
+      const scheduleClose = () => {
+        cancelClose();
+        closeTimer = setTimeout(() => { closeTimer = null; setOpen(false); }, 250);
+      };
+      [menuBtn, mobileMenu].forEach((el) => {
+        el.addEventListener('mouseenter', () => { cancelClose(); setOpen(true); });
+        el.addEventListener('mouseleave', scheduleClose);
+      });
+      // A link click closes immediately; drop any pending timer so it
+      // cannot fire a second setOpen(false) after the page has moved on.
+      mobileMenu.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', cancelClose);
+      });
+    }
+
     // Close when clicking/tapping anywhere outside the menu or button
     document.addEventListener('pointerdown', (e) => {
       if (menuBtn.getAttribute('aria-expanded') === 'true'
