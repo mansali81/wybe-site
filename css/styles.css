@@ -1270,6 +1270,11 @@ button.bg-burgundy:hover {
 }
 .calc-captcha-row {
   display: flex;
+  flex-wrap: wrap;   /* the Turnstile box is a fixed width and the button is
+                        nowrap, so neither can shrink; without this they
+                        overflow the card between about 768 and 880px, where
+                        the column is narrowest. Wrapping drops the button
+                        onto its own line instead. */
   align-items: center;
   gap: 12px;
   margin-top: 10px;
@@ -3269,10 +3274,17 @@ li.service-tier.service-tier--info,
   #body-composition-section .calc-panels-grid #unified-calc-form.hidden {
     display: grid !important;
   }
-  /* Confirm panel: sit in col 1 row 1 (same cell as the form on the left).
-     When confirm is visible, actually hide the form so only one shows. */
+  /* Quote LEFT, calculator RIGHT. Done with order rather than by moving
+     the markup: the DOM keeps the form first, so mobile still stacks
+     calculator-then-quote and the reading/tab order still reaches the
+     form before the decorative quote. */
+  #body-composition-section .calc-panels-grid .ucalc-quote { order: -1; }
+
+  /* Confirm panel: sit in col 2 row 1 — the cell the form now occupies —
+     so it replaces the form rather than the quote. When confirm is
+     visible, actually hide the form so only one shows. */
   #body-composition-section .calc-panels-grid #ucalc-confirm {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
   }
   #body-composition-section .calc-panels-grid:has(#ucalc-confirm:not(.hidden)) #unified-calc-form.hidden {
