@@ -3477,6 +3477,13 @@ li.service-tier.service-tier--info,
 }
 .ucalc-quote .q-line { display: block; white-space: nowrap; }
 .ucalc-quote .q-line + .q-line { margin-top: 0.12em; }
+/* EAT is the one word carried by colour instead of a rule. text-decoration
+   is paint-only, so dropping the underline cannot move the line or change
+   the gaps above and below it. */
+.ucalc-quote .q-eat {
+  color: #FF6600;
+  text-decoration: none;
+}
 .ucalc-quote .q-ul {
   text-decoration: underline;
   text-decoration-color: #FF6600;
