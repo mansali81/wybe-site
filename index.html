@@ -1266,20 +1266,21 @@
       <!-- 2-column layout: left = Coming Soon + cover, right = form.
            Mobile stacks naturally: Coming Soon → cover → form. -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-stretch">
-      <!-- LEFT block: cover image with parallax.
-           order-2 on mobile puts the cover BELOW the form; md:order-1 restores
-           it to the left column from 768px up. Reordered in CSS only so the
-           DOM order — and therefore the parallax lookup and desktop
-           behaviour — is unchanged. -->
-      <div class="text-left order-2 md:order-1">
+      <!-- LEFT block: book cover. DOM order is the display order at every
+           width: cover first on mobile, left column from 768px up. The cover
+           no longer carries data-parallax; the transform moved the artwork
+           inside its own frame, which made aligning it to the copy column
+           impossible (and the offset changed as you scrolled). -->
+      <div class="text-left wybe-book-cover-col">
         <div class="wybe-book-cover-frame">
-          <img src="images/the-1825-days-cover-white.webp" alt="The 1825 Days, the complete nutrition guide for your child" class="wybe-book-cover-img" data-parallax data-parallax-speed="0.20" srcset="images/the-1825-days-cover-white-480.webp 480w, images/the-1825-days-cover-white-960.webp 960w, images/the-1825-days-cover-white.webp 1188w" sizes="(min-width: 1100px) 480px, (min-width: 768px) 45vw, (min-width: 600px) 380px, 89vw" width="1188" height="1600" loading="lazy" decoding="async">
+          <img src="images/the-1825-days-cover-white.webp" alt="The 1825 Days, the complete nutrition guide for your child" class="wybe-book-cover-img" srcset="images/the-1825-days-cover-white-480.webp 480w, images/the-1825-days-cover-white-960.webp 960w, images/the-1825-days-cover-white.webp 1188w" sizes="(min-width: 768px) 45vw, 60vw" width="1188" height="1600" loading="lazy" decoding="async">
         </div>
       </div>
 
-      <!-- RIGHT block: waitlist form. order-1 on mobile lifts the copy and
-           form above the cover; md:order-2 restores the right column. -->
-      <div class="text-left order-1 md:order-2 md:flex md:flex-col md:justify-between">
+      <!-- RIGHT block: copy + waitlist form. Flex column with
+           space-between from 768px up, so the lead line sits on the top edge
+           and the submit button on the bottom edge of the shared row. -->
+      <div class="text-left md:flex md:flex-col md:justify-between">
         <p class="font-sans font-semibold text-sm tracking-widest uppercase" style="color:#FF6600; margin-bottom: 4px;">Book in Progress</p>
         <h3 class="font-sans font-semibold text-2xl md:text-3xl leading-tight text-cream mt-3 mb-3">The first five years, made simple.</h3>
         <p class="font-sans text-sm md:text-base text-cream/70 leading-relaxed mb-5 max-w-[46ch]">Every child has 1,825 days between birth and their fifth birthday. That&rsquo;s the window when nutrition shapes growth, brain development and lifelong eating habits more than at any other time. <em>The 1,825 Days</em> is a practical, evidence-based guide that takes the guesswork out of feeding your child, from first milk and first solids to toddler plates and preschool lunchboxes. It cuts through conflicting advice with clear, research-backed guidance and stage-by-stage meal ideas, so you can feed with confidence, not guilt.</p>

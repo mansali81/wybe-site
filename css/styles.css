@@ -2367,15 +2367,33 @@ html:not(.gsap-ready) .wybe-reveal {
   display: block;
   border-radius: 12px;
 }
-@media (max-width: 767px) {
-  /* Fill the column instead of a fixed 260px cap, which left the cover at
-     247px in a column that is 311-372px wide on phones. The 380px ceiling
-     only binds above ~448px viewport, so it never clips a phone; it just
-     stops the cover ballooning just under the 768px breakpoint.
-     .wybe-book-cover-img stays width:100%/height:auto, so the aspect ratio,
-     radius and shadow are untouched. */
+@media (min-width: 768px) {
+  /* The cover fills the column width, so its height is the column width
+     divided by the 1188:1600 cover ratio. That makes it the taller of the
+     two columns, so it sets the row height and the copy column -- already
+     flex/space-between -- spreads "Book in Progress" to the top edge and
+     the submit button to the bottom edge of that same row. Top and bottom
+     therefore meet exactly.
+     The <img> stays width:100% / height:auto, so its box IS the artwork:
+     never squashed, never letterboxed, and the frame's radius and shadow
+     always wrap the art precisely. Where the column is too narrow for the
+     cover to reach the copy's height (below ~1100px the copy wraps to more
+     lines than the cover can match) the cover is simply shorter and is
+     centred in its column, which is the documented fallback. */
+  .wybe-book-cover-col {
+    display: flex;
+    align-items: center;
+  }
   .wybe-book-cover-frame {
-    max-width: min(100%, 380px);
+    width: 100%;
+    max-width: none;
+    margin-inline: auto;
+  }
+}
+@media (max-width: 767px) {
+  /* Cover sits first and takes ~60% of the column, centred. */
+  .wybe-book-cover-frame {
+    max-width: 60%;
     width: 100%;
     margin-inline: auto;
   }
@@ -3713,29 +3731,29 @@ li.service-tier.service-tier--info,
    above this breakpoint stay untouched. Scoped to three sections
    with narrow, unique selectors so nothing leaks. */
 @media (max-width: 767px) {
-  /* 1) ABOUT ME — put the stat stack back on the right edge of the
-        portrait (matching the desktop treatment) but scaled down so
-        it only covers ~30-35 % of the image width and the face/torso
-        remain mostly visible. A single vertical column, not a 2x2
-        grid, mirrors the desktop stack layout. */
-  .about-metrics {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    bottom: auto;
-    /* Mostly-inside overlap: 20 % of the stack sits over the section
-       background outside the image, 80 % overlaps the portrait — so
-       on a 352 px image the outside ledge is ~23 px, fitting inside
-       the container's px-6 (24 px) side padding. */
-    transform: translate(20%, -50%);
-    display: flex;
+  /* 1) ABOUT ME — the badges no longer sit over the portrait at all. They
+        drop out of absolute positioning into a 2x2 grid directly below the
+        photo, so nothing covers the face or torso. The figure becomes a
+        column so the grid lands under the image rather than beside it.
+        Badge styling (colour, cut corner, type sizes) is unchanged; only
+        the position and the box width differ. */
+  #about figure {
     flex-direction: column;
-    flex-wrap: nowrap;
-    width: 32%;
-    max-width: 130px;
-    margin: 0;
-    gap: 8px;
-    pointer-events: none;
+    align-items: stretch;
+  }
+  .about-metrics {
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    transform: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    max-width: none;
+    margin: 16px 0 0;
+    gap: 10px;
+    pointer-events: auto;
   }
   .about-metrics .stat-badge {
     flex: 0 0 auto;
@@ -3947,7 +3965,31 @@ li.service-tier.service-tier--info,
 
   /* Calculator consent: the whole label row is the target, not just the
      Privacy Policy link inside it. */
-  .calc-consent-row { min-height: 44px; align-items: center; }
+  .calc-consent-row { min-height: 44px; align-items: center; position: relative; }
+  /* The whole row is the tap area, not just the 16px checkbox and the
+     label glyphs. The label already drives the checkbox via for=, so an
+     inset overlay on it turns every pixel of the row into the same target.
+     The Privacy Policy link is lifted above the overlay so it stays
+     separately clickable. */
+  .calc-consent-row label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+  .calc-consent-row a {
+    position: relative;
+    z-index: 1;
+  }
+  /* "(c) 2026 WYBE" is an inline link inside a sentence, so it cannot be
+     given a height directly. Vertical padding grows the hit box to 45px and
+     the matching negative margin pulls the line box back to where it was,
+     leaving the visible spacing of the copyright row unchanged. */
+  .wybe-footer-link {
+    display: inline-block;
+    padding-block: 15px;
+    margin-block: -15px;
+  }
 
   /* Mobile menu entries: 44px tall each. padding grows the hit area;
      the 15px text is untouched. */
