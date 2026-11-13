@@ -198,7 +198,7 @@
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
       <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
@@ -227,27 +227,27 @@
             <input type="hidden" name="subject" value="WYBE, Personal Training Application">
             <input type="hidden" name="redirect" value="false">
             <div>
-              <label for="pt-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-1">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="pt-name" class="wybe-label">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="text" id="pt-name" name="name" required placeholder="Your full name" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="pt-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-1">Email Address<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="pt-email" class="wybe-label">Email Address<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="email" id="pt-email" name="email" required placeholder="your@email.com" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="pt-phone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-1">Phone Number<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="pt-phone" class="wybe-label">Phone Number<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="tel" id="pt-phone" name="phone" required placeholder="+971 50 000 0000" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="pt-location" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-1">City / Country<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="pt-location" class="wybe-label">City / Country<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="text" id="pt-location" name="location" required placeholder="e.g. Dubai, UAE" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="pt-goals" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-1">Your Goals<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="pt-goals" class="wybe-label">Your Goals<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="pt-goals" name="goals" required rows="4" placeholder="Describe what you are hoping to achieve and any relevant background." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <div>
-              <label for="pt-contact" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-1">Preferred Contact Method<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="pt-contact" class="wybe-label">Preferred Contact Method<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="pt-contact" name="preferred_contact" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                 <option value="" disabled selected>Select one</option>
                 <option value="Email">Email</option>

@@ -94,12 +94,11 @@
       background: rgba(0, 0, 0, 0.55);
       box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
     }
+    /* Layout only. Type AND the 6px gap come from the shared .wybe-label
+       in styles.css so this form matches every other form on the site. */
     .wybe-input-row label {
       grid-column: 1 / -1;
       display: flex; align-items: center;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
-      color: rgba(255,255,255,0.55); margin-bottom: 0;
     }
     .wybe-input-row input,
     .wybe-input-row select {
@@ -285,15 +284,15 @@
           <p class="ucalc-intro-heading">Get your personalised report: <abbr title="Body Mass Index">BMI</abbr>, <abbr title="Ideal Body Weight">IBW</abbr>, <abbr title="Body Fat Percentage">BF%</abbr> and <abbr title="Total Daily Energy Expenditure (daily calories)">TDEE</abbr></p>
 
           <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-name">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-name" class="wybe-label">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="text" id="ucalc-name" autocomplete="name" required placeholder="">
           </div>
           <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-email-field">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-email-field" class="wybe-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="email" id="ucalc-email-field" autocomplete="email" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-gender">Gender<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-gender" class="wybe-label">Gender<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <select id="ucalc-gender" required>
               <option value="" selected>Select&hellip;</option>
               <option value="male">Male</option>
@@ -301,31 +300,31 @@
             </select>
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-age">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-age" class="wybe-label">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-age" min="5" max="120" step="1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-height">Height (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-height" class="wybe-label">Height (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-height" min="50" max="260" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-weight">Weight (kg)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-weight" class="wybe-label">Weight (kg)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-neck">Neck (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-neck" class="wybe-label">Neck (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-waist">Waist (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-waist" class="wybe-label">Waist (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
-            <label for="ucalc-hip">Hip (cm)</label>
+            <label for="ucalc-hip" class="wybe-label">Hip (cm)</label>
             <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="">
           </div>
           <div class="wybe-input-row" id="ucalc-activity-wrap">
-            <label for="ucalc-activity">Activity level<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-activity" class="wybe-label">Activity level<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <select id="ucalc-activity" required>
               <option value="" selected>Select&hellip;</option>
               <option value="1.2">Sedentary</option>
@@ -385,7 +384,7 @@
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
       <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>

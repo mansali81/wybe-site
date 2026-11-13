@@ -277,12 +277,11 @@
       background: rgba(0, 0, 0, 0.55);
       box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
     }
+    /* Layout only. Type AND the 6px gap come from the shared .wybe-label
+       in styles.css so this form matches every other form on the site. */
     .wybe-input-row label {
       grid-column: 1 / -1;
       display: flex; align-items: center;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 9px; letter-spacing: 0.20em; text-transform: uppercase;
-      color: rgba(255,255,255,0.55); margin-bottom: 0;
     }
     .wybe-input-row input,
     .wybe-input-row select {
@@ -870,16 +869,16 @@
           <p class="ucalc-intro-heading">Get your personalised report: <abbr title="Body Mass Index">BMI</abbr>, <abbr title="Ideal Body Weight">IBW</abbr>, <abbr title="Body Fat Percentage">BF%</abbr> and <abbr title="Total Daily Energy Expenditure (daily calories)">TDEE</abbr></p>
           <!-- Row 1 & 2: Name and Email, each full-width -->
           <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-name">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-name" class="wybe-label">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="text" id="ucalc-name" autocomplete="name" required placeholder="">
           </div>
           <div class="wybe-input-row wybe-input-row--full">
-            <label for="ucalc-email-field">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-email-field" class="wybe-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="email" id="ucalc-email-field" autocomplete="email" required placeholder="">
           </div>
           <!-- Row 2: Gender | Age -->
           <div class="wybe-input-row">
-            <label for="ucalc-gender">Gender<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-gender" class="wybe-label">Gender<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <select id="ucalc-gender" required>
               <option value="" selected>Select&hellip;</option>
               <option value="male">Male</option>
@@ -887,34 +886,34 @@
             </select>
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-age">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-age" class="wybe-label">Age<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-age" min="5" max="120" step="1" required placeholder="">
           </div>
           <!-- Row 3: Height | Weight -->
           <div class="wybe-input-row">
-            <label for="ucalc-height">Height (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-height" class="wybe-label">Height (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-height" min="50" max="260" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-weight">Weight (kg)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-weight" class="wybe-label">Weight (kg)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-weight" min="20" max="400" step="0.1" required placeholder="">
           </div>
           <!-- Row 4: Neck | Waist -->
           <div class="wybe-input-row">
-            <label for="ucalc-neck">Neck (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-neck" class="wybe-label">Neck (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-neck" min="20" max="70" step="0.1" required placeholder="">
           </div>
           <div class="wybe-input-row">
-            <label for="ucalc-waist">Waist (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-waist" class="wybe-label">Waist (cm)<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="number" id="ucalc-waist" min="40" max="200" step="0.1" required placeholder="">
           </div>
           <!-- Row 5: Hip (female-only) | Activity Level -->
           <div class="wybe-input-row hidden" id="ucalc-hip-wrap">
-            <label for="ucalc-hip">Hip (cm)</label>
+            <label for="ucalc-hip" class="wybe-label">Hip (cm)</label>
             <input type="number" id="ucalc-hip" min="50" max="200" step="0.1" placeholder="">
           </div>
           <div class="wybe-input-row" id="ucalc-activity-wrap">
-            <label for="ucalc-activity">Activity level<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-activity" class="wybe-label">Activity level<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <select id="ucalc-activity" required>
               <option value="" selected>Select&hellip;</option>
               <option value="1.2">Sedentary</option>
@@ -1300,12 +1299,12 @@
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
 
           <div>
-            <label for="wl-name" class="wybe-field-label">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="wl-name" class="wybe-label">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input type="text" id="wl-name" name="name" required placeholder="e.g. Sara Ahmed" class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-grey-soft">
           </div>
           <!-- Email with real-time format validation -->
           <div>
-            <label for="wl-email-input" class="wybe-field-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="wl-email-input" class="wybe-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <input id="wl-email-input" type="email" name="email" required placeholder="you@example.com" autocomplete="email"
                    class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm text-cream w-full focus:outline-none focus:border-burgundy placeholder:text-grey-soft">
             <p id="wl-email-error" class="hidden font-sans text-xs text-red-300 mt-1" role="alert">Please enter a valid email address (e.g. name@example.com).</p>
@@ -1314,7 +1313,7 @@
           <!-- Mobile: searchable dial-code dropdown + number input -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label for="wl-mobile-num" class="wybe-field-label">Mobile / WhatsApp<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="wl-mobile-num" class="wybe-label">Mobile / WhatsApp<span class="wybe-field-req" aria-hidden="true">*</span></label>
             <div class="wl-mobile-wrap flex border border-cream/25 focus-within:border-burgundy transition-colors">
               <div id="wl-dialcode-wrap" class="relative flex-shrink-0" style="border-right:1px solid rgba(246,242,232,0.25);">
                 <button type="button" id="wl-dialcode-btn" aria-label="Country code" aria-haspopup="listbox" aria-expanded="false"
@@ -1340,7 +1339,7 @@
 
           <!-- Country: button-triggered dropdown with search bar at top -->
           <div>
-            <label for="wl-country-btn" class="wybe-field-label">Country</label>
+            <label for="wl-country-btn" class="wybe-label">Country</label>
             <div id="wl-country-wrap" class="relative">
             <button type="button" id="wl-country-btn" aria-haspopup="listbox" aria-expanded="false"
                     class="border border-cream/25 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-burgundy transition-colors flex justify-between items-center text-left">
@@ -1405,16 +1404,16 @@
               <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                 <div>
-                  <label for="contact-name" class="wybe-field-label wybe-field-label--on-photo">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
+                  <label for="contact-name" class="wybe-label">Full name<span class="wybe-field-req" aria-hidden="true">*</span></label>
                   <input type="text" id="contact-name" name="name" required placeholder="e.g. Sara Ahmed" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 drop-shadow-md">
                 </div>
                 <div>
-                  <label for="contact-email" class="wybe-field-label wybe-field-label--on-photo">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
+                  <label for="contact-email" class="wybe-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
                   <input type="email" id="contact-email" name="email" required placeholder="you@example.com" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 drop-shadow-md">
                 </div>
               </div>
               <div>
-                <label for="contact-message" class="wybe-field-label wybe-field-label--on-photo">What are you looking for?<span class="wybe-field-req" aria-hidden="true">*</span></label>
+                <label for="contact-message" class="wybe-label">What are you looking for?<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <textarea id="contact-message" name="message" required rows="3" placeholder="e.g. 1:1 coaching, nutrition plan…" class="border border-white/60 bg-transparent px-3 py-2.5 font-sans text-sm text-white w-full focus:outline-none focus:border-white placeholder:text-white/60 resize-none drop-shadow-md"></textarea>
               </div>
               <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
@@ -1492,7 +1491,7 @@
         </div>
         <div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>
-          <ul class="space-y-0">
+          <ul class="space-y-0 wybe-footer-nav">
             <li><a href="/" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Home</a></li>
             <li><a href="/#about" class="font-sans text-sm text-white/70 hover:text-white transition-colors">About me</a></li>
             <li><a href="/#book" class="font-sans text-sm text-white/70 hover:text-white transition-colors">My Book</a></li>
@@ -1500,7 +1499,7 @@
         </div>
         <div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Services</p>
-          <ul class="space-y-0">
+          <ul class="space-y-0 wybe-footer-nav">
             <li><a href="/#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Workout Program</a></li>
             <li><a href="/#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Fitness Consultation</a></li>
             <li><a href="/#services" class="font-sans text-sm text-white/70 hover:text-white transition-colors">Nutrition Consultation</a></li>
@@ -1509,7 +1508,7 @@
         </div>
         <div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Follow</p>
-          <div class="flex gap-5 mb-6">
+          <div class="flex gap-5 mb-6 wybe-social-row">
             <a href="https://instagram.com/wybewithmansoor" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-burgundy hover:text-burgundy-dark transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             </a>
@@ -1521,7 +1520,7 @@
             </a>
           </div>
           <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Contact</p>
-          <div class="flex gap-5">
+          <div class="flex gap-5 wybe-social-row">
             <a href="#" data-email data-user="mansoor" data-domain="wybe.fit" aria-label="Email Mansoor" class="text-burgundy hover:text-burgundy-dark transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
             </a>
@@ -1535,7 +1534,7 @@
         <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
         <!-- Legal page links + author site. Legal pages are drafts —
              see the LAWYER-REVIEW banner at the top of each. -->
-        <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+        <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
           <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a>
           <span class="text-white/25" aria-hidden="true">&middot;</span>
           <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>

@@ -120,7 +120,7 @@
 
         <!-- 3-Session Bundle (Most Popular) -->
         <div class="relative border-2 border-burgundy bg-[#262626] p-8 md:p-10 flex flex-col shadow-md md:-mt-3 md:mb-3">
-          <p class="absolute -top-3 left-1/2 -translate-x-1/2 bg-burgundy text-charcoal font-sans text-[10px] tracking-widest uppercase px-4 py-1">Most Popular</p>
+          <p class="absolute -top-3 left-1/2 -translate-x-1/2 bg-burgundy text-charcoal font-sans text-[11px] md:text-[10px] tracking-widest uppercase px-4 py-1">Most Popular</p>
           <div class="w-8 h-px bg-burgundy mb-6"></div>
           <p class="font-sans text-xs tracking-widest uppercase text-burgundy mb-3">Discounted Rate</p>
           <h3 class="font-heading text-2xl font-semibold text-cream mb-5 leading-snug">3-Session Bundle</h3>
@@ -166,7 +166,7 @@
   <footer class="text-white border-t border-cream/10 mt-4">
     <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
       <p class="font-sans text-xs text-grey-soft">&copy; 2026 <a href="/#home" class="text-burgundy font-bold wybe-footer-link">WYBE</a> &middot; Mansoor Ahamad Ali Mohamed &middot; All rights reserved &middot; Dubai, UAE</p>
-      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1">
+      <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
@@ -195,25 +195,25 @@
             <input type="hidden" name="subject" value="WYBE, Nutrition Consultation Enquiry">
             <input type="hidden" name="redirect" value="false">
             <div>
-              <label for="nc-name" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="nc-name" class="wybe-label">Full Name<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="text" id="nc-name" name="name" required placeholder="Your full name" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div>
-              <label for="nc-email" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="nc-email" class="wybe-label">Email<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <input type="email" id="nc-email" name="email" required placeholder="your@email.com" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label for="nc-phone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Phone <span class="normal-case text-grey-soft">(optional)</span></label>
+                <label for="nc-phone" class="wybe-label">Phone <span class="normal-case text-grey-soft">(optional)</span></label>
                 <input type="tel" id="nc-phone" name="phone" placeholder="+971 50 000 0000" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
               </div>
               <div>
-                <label for="nc-timezone" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Timezone<span class="wybe-field-req" aria-hidden="true">*</span></label>
+                <label for="nc-timezone" class="wybe-label">Timezone<span class="wybe-field-req" aria-hidden="true">*</span></label>
                 <input type="text" id="nc-timezone" name="timezone" required placeholder="e.g. GMT+4" class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30">
               </div>
             </div>
             <div>
-              <label for="nc-tier" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">Package<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="nc-tier" class="wybe-label">Package<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <select id="nc-tier" name="tier" required class="border border-cream/20 bg-transparent px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 appearance-none cursor-pointer">
                 <option value="" disabled selected>Select one</option>
                 <option value="Single Session">Single session</option>
@@ -222,7 +222,7 @@
               </select>
             </div>
             <div>
-              <label for="nc-goal" class="font-sans text-xs tracking-widest uppercase text-cream/50 block mb-2">What You Want to Work On<span class="wybe-field-req" aria-hidden="true">*</span></label>
+              <label for="nc-goal" class="wybe-label">What You Want to Work On<span class="wybe-field-req" aria-hidden="true">*</span></label>
               <textarea id="nc-goal" name="goal" required rows="4" placeholder="Current nutrition, goals, and anything Mansoor should know about your relationship with food." class="border border-cream/20 px-4 py-3 font-sans text-sm w-full focus:outline-none focus:border-charcoal/60 placeholder:text-cream/30 resize-none"></textarea>
             </div>
             <button type="submit" class="w-full bg-burgundy text-charcoal font-sans text-sm tracking-widest uppercase py-4 hover:bg-burgundy-dark transition-colors">Send Enquiry</button>

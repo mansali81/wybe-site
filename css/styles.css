@@ -1497,33 +1497,31 @@ button.bg-burgundy:hover {
 }
 
 
-/* ── VISIBLE FORM LABELS (WCAG 2.2 AA — 3.3.2 Labels or Instructions) ──
-   Same treatment as the homepage calculator labels: Inter, 9px, heavy
-   tracking, uppercase. Two colour variants, one per form background.
-   The placeholder stays in the field as an EXAMPLE; the label carries
-   the field's name so it survives once the user starts typing. */
-.wybe-field-label {
+/* ── FORM LABELS — ONE STYLE SITE-WIDE ──────────────────────────
+   WCAG 2.2 AA 3.3.2. Every form field label on every page uses this one
+   class: the calculator, the book waitlist, the contact form, and the
+   enquiry forms on the services, testimonials and plan pages all used to
+   have their own size, colour and alignment. The placeholder stays in the
+   field as an EXAMPLE; the label carries the field's name so it survives
+   once the user starts typing. */
+.wybe-label {
   display: block;
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 0.20em;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-align: left;
   margin-bottom: 6px;
   color: #A3A3A3;                 /* grey-soft — 6.6:1 on #1E1E1E */
 }
-/* The contact form sits on a photograph, where a flat grey cannot be
-   guaranteed against the pixels behind it. White plus a shadow matches
-   the inputs already there and stays legible over any part of the image. */
-.wybe-field-label--on-photo {
-  color: #FFFFFF;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
-}
+/* On a light panel the same grey would fail; grey-ink is 5.3:1 on white. */
+.wybe-label--on-light { color: #6B6B6B; }
+/* The required marker inherits the label's size so the two always match. */
 .wybe-field-req {
   color: #FF6600;                 /* 5.7:1 on #1E1E1E */
   margin-left: 2px;
 }
-.wybe-field-label--on-photo .wybe-field-req { color: #FFFFFF; }
 .wybe-form-note {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -1542,11 +1540,6 @@ button.bg-burgundy:hover {
    form is sized so the right column lands on the same height as the
    cover, which is what makes the two columns align top and bottom.
    Scoped to #waitlist-form so no other form on the site is affected. */
-#waitlist-form .wybe-field-label {
-  font-size: 11px;
-  letter-spacing: 0.12em;   /* 0.20em is too wide once the label is 11px */
-  margin-bottom: 4px;
-}
 /* One uniform control height. border-box so the 1px borders are inside
    the 44px and every field lines up with its neighbour on the same row. */
 #waitlist-form input[type="text"],
@@ -3079,9 +3072,10 @@ li.service-tier.service-tier--info,
   font-size: 20px;
 }
 .stat-badge--sm .stat-badge__label {
-  font-size: 8px;
-  letter-spacing: 0.10em;
+  font-size: 11px;              /* 11px floor — was 8px */
+  letter-spacing: 0.06em;
   margin-top: 5px;
+  line-height: 1.25;
 }
 
 /* Vertical stack of stat badges overlapping the About portrait's
@@ -3662,9 +3656,11 @@ li.service-tier.service-tier--info,
   justify-content: center;
 }
 
+/* The card itself stays centred; the fields read left so they line up
+   under their left-aligned labels. */
 #contact-us-section .contact-card input,
 #contact-us-section .contact-card textarea {
-  text-align: center;
+  text-align: left;
 }
 
 /* ── MOBILE-ONLY LAYOUT FIXES (max-width: 767px) ────────────────────
@@ -3706,10 +3702,13 @@ li.service-tier.service-tier--info,
   .about-metrics .stat-badge__number {
     font-size: 17px;
   }
+  /* 11px floor for readability. The caption may now wrap to two lines;
+     the badge grows to fit rather than the text shrinking. */
   .about-metrics .stat-badge__label {
-    font-size: 7px;
-    letter-spacing: 0.08em;
-    margin-top: 3px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    line-height: 1.25;
   }
 
   /* 2) BODY COMPOSITION — no background photo on mobile; results panel
@@ -3882,3 +3881,85 @@ nav a.wybe-header-cta::after { content: none; }
 .wybe-mobile-link--cta { color: #FF6600; }
 .wybe-mobile-link--cta:hover,
 .wybe-mobile-link--cta.is-active { color: #FF6600; }
+
+/* ══ MOBILE READABILITY AND TAP TARGETS (<768px) ══════════════════
+   Two rules apply below 768px: no visible text under 11px, and every
+   standalone link or button is at least 44px tall. Targets grow by
+   padding or min-height only — never by changing the text size — and
+   adjacent targets are kept at least 8px apart so none of them overlap.
+   Links that sit inside a sentence are left alone: padding them would
+   break the line box, and WCAG 2.5.8 exempts targets in a block of
+   text (axe-core's target-size agrees). */
+@media (max-width: 767px) {
+
+  /* ── 11px text floor ─────────────────────────────────────── */
+  .service-card__hint,
+  .service-tier__length { font-size: 12px; }
+
+  /* ── 44px tap targets ────────────────────────────────────── */
+  /* Shared shape: a 44px-tall box that centres the existing text. */
+  .wybe-footer-nav a,
+  .wybe-footer-legal a,
+  .wybe-social-row a,
+  .wybe-footer-wordmark,
+  .service-card__faq,
+  .service-pt-cta,
+  .wybe-testimonial__more,
+  .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  /* Icon rows: a 44x44 square around an unchanged 24px icon. */
+  .wybe-social-row a,
+  #contact .flex.justify-center a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /* Stacked footer lists: 44px tall each, 8px clear between them, so
+     no two targets touch or overlap. */
+  .wybe-footer-nav li + li { margin-top: 8px; }
+  .wybe-footer-legal { row-gap: 8px; }
+
+  /* Header and primary CTAs that sit just under 44px. */
+  .wybe-hamburger { width: 44px; height: 44px; }
+  .wybe-calc-cta,
+  .ucalc-submit-btn { min-height: 44px; }
+
+  /* The book waitlist dial-code button. (The About certificate strip is
+     sized in that page's own stylesheet, where its 42px lived.) */
+  #wl-dialcode-btn { min-height: 44px; }
+
+  /* Calculator consent: the whole label row is the target, not just the
+     Privacy Policy link inside it. */
+  .calc-consent-row { min-height: 44px; align-items: center; }
+
+  /* Mobile menu entries: 44px tall each. padding grows the hit area;
+     the 15px text is untouched. */
+  .wybe-mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* A lone link in a definition list (legal notice) is a standalone
+     target, unlike the ones sitting in a sentence next to other text. */
+  dd > a:only-child {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Standalone CTAs and wordmark links that sat just under 44px. */
+  a.inline-block.bg-burgundy,
+  a.inline-flex.items-center,
+  .wybe-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
