@@ -3429,6 +3429,44 @@ li.service-tier.service-tier--info,
   .ucalc-quote { height: auto; font-size: clamp(40px, 13vw, 64px); margin-top: 32px; }
 }
 
+/* ── DESKTOP: the quote spans the card edge to edge ──────────────
+   container-type goes on the blockquote and the size on .q-line, so cqi
+   resolves against the quote COLUMN. That is the point: the column stops
+   growing at 536px while the viewport does not, so a vw-based size would
+   keep growing and overflow on a wide monitor. cqi tracks the column.
+   (cqi inside the container itself would query an ancestor, which is why
+   the font-size sits on the children rather than on .ucalc-quote.) */
+@media (min-width: 768px) {
+  .ucalc-quote {
+    container-type: inline-size;
+    justify-content: space-between;   /* spread the 5 lines edge to edge */
+    align-items: center;
+    height: 100%;
+  }
+  .ucalc-quote .q-line {
+    font-size: 18.5cqi;               /* "WHAT WE" ~95% of the column */
+    line-height: 0.9;
+  }
+  /* space-between owns the spacing now. */
+  .ucalc-quote .q-line + .q-line { margin-top: 0; }
+  /* Trim the leading above the caps so the letter tops, not the line box,
+     sit on the card's top edge. */
+  .ucalc-quote .q-line:first-child { text-box: trim-start cap alphabetic; }
+  /* space-between pins the last line's BOX bottom to the card's bottom, so
+     this padding sets how far the underline sits above that edge. Measured
+     against the painted pixels: 0.2em left the rule 8.5px short at 1280 and
+     7.5px short at 1024 — both 0.086em — so 0.114em puts it on the edge at
+     every width. */
+  .ucalc-quote .q-line:last-child { padding-bottom: 0.114em; }
+}
+/* Firefox has no text-box yet; a negative margin gets the cap top to the
+   same place to within a few px. */
+@supports not (text-box: trim-start cap alphabetic) {
+  @media (min-width: 768px) {
+    .ucalc-quote .q-line:first-child { margin-top: -0.1em; }
+  }
+}
+
 /* Stat grid inside the results panel — 2x2 grid, sizes to content,
    row-mates equalise via align-items:stretch. Grid container never
    caps shorter than its children (min-height:0 + auto rows).
