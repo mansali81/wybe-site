@@ -304,12 +304,18 @@
     }
     #ucalc-confirm.hidden { display: none !important; }
     /* ── CONTACT CONFIRMATION ──────────────────────────────────────
-       min-height reserves the tallest state (the two-line confirmation)
-       so showing success or error never shifts the card. */
+       No min-height. Reserving a floor for the confirmation left 80px of
+       empty space under the button on every page load, pushing "OR DM
+       DIRECTLY" down. Both children are .hidden (display:none) until a
+       result arrives, so this row collapses to height 0; the mt-2 + the
+       pt-6 below it give the same 32px gap the section had before.
+       The card shifts a little when a message appears — that is fine. */
     .contact-status-row {
       display: flex; align-items: flex-start; justify-content: center;
-      min-height: 80px;   /* fits the two-line confirmation without shifting */
     }
+    /* Deliberately NOT display:none when empty. display:none would drop the
+       row's own mt-2 as well and leave a 24px gap; the pre-audit section had
+       32px (8px mt-2 + 24px pt-6). Collapsing to height 0 keeps that exactly. */
     #contact-confirm { display: flex; align-items: flex-start; gap: 10px; text-align: left; }
     #contact-confirm.hidden { display: none !important; }
     #contact-tick { flex: 0 0 auto; line-height: 0; margin-top: 1px; }
@@ -1422,8 +1428,8 @@
                   </svg>
                 </button>
               </div>
-              <!-- Confirmation + error sit below the row. The wrapper keeps a
-                   floor so showing either one cannot shift the card. -->
+              <!-- Confirmation + error sit below the row. The wrapper has no
+                   reserved height: it collapses until one of them is shown. -->
               <div class="contact-status-row mt-2">
                 <!-- role="status" + aria-live announce the result; the tick is
                      decorative now that the text carries the same meaning. -->
