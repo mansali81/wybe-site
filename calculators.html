@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=bc41ceff">
+  <link rel="stylesheet" href="/css/styles.css?v=15e77ceb">
   <style>
     body { background-color: #1E1E1E; color: #FFFFFF; }
     /* ── CALCULATOR FIELD STYLING ──────────────────────────────────────
@@ -335,8 +335,10 @@
           </div>
 
           <div class="wybe-input-row--full calc-consent-row">
-            <input type="checkbox" id="ucalc-consent" name="consent" value="yes" required>
-            <label for="ucalc-consent">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.<span class="wybe-field-req" aria-hidden="true">*</span></label>
+            <label for="ucalc-consent">
+              <input type="checkbox" id="ucalc-consent" name="consent" value="yes" required>
+              <span class="calc-consent-text">I agree to WYBE processing my body measurements to send my results, as described in the <a href="/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>.<span class="wybe-field-req" aria-hidden="true">*</span></span>
+            </label>
           </div>
 
           <div class="wybe-input-row--full calc-captcha-row">

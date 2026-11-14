@@ -3941,6 +3941,10 @@ li.service-tier.service-tier--info,
    replacing it, which keeps the control keyboard- and
    screen-reader-native. */
 .calc-consent-row {
+  /* testimonials.html reuses this row with the checkbox as a SIBLING of
+     the label, so the row keeps its own flex layout for that case. On the
+     calculator the label wraps the checkbox and is the only child, where
+     these three properties are inert. */
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -3954,6 +3958,24 @@ li.service-tier.service-tier--info,
   accent-color: #FF6600;
   cursor: pointer;
 }
+/* The label wraps the checkbox AND the sentence, so clicking anywhere in
+   the row toggles the box — at every width, not just on mobile. Per the
+   HTML spec a label's activation behaviour does nothing when the event
+   targets an interactive descendant, so the Privacy Policy link inside
+   opens the policy WITHOUT ticking the box; no JS needed. */
+.calc-consent-row label:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 0;
+  font-family: var(--font-body, inherit);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+}
+/* Type styles for every consent label, wrapped or not. */
 .calc-consent-row label {
   font-family: var(--font-body, inherit);
   font-size: 12.5px;
@@ -3961,7 +3983,14 @@ li.service-tier.service-tier--info,
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
 }
+/* The sentence's line box is 18.75px (12.5px x 1.5), so the 12px of
+   padding in the brief yields 42.75px — a pixel short of the 44px it
+   asks for. 13px lands on 44.75px. The matching negative margin keeps
+   the line box exactly where it was, so no text moves. */
 .calc-consent-row a {
+  display: inline-block;
+  padding: 13px 0;
+  margin: -13px 0;
   color: #FF6600;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -4069,6 +4098,22 @@ li.service-tier.service-tier--info,
   }
   .wybe-footer-legal { row-gap: 8px; }
 
+  /* Consent rows whose label does NOT wrap the checkbox (testimonials)
+     keep the inset overlay that made the whole row one tap target. The
+     calculator no longer needs it: its label wraps the checkbox and is
+     the target by itself, at every width. */
+  .calc-consent-row:not(:has(label > input[type="checkbox"])) {
+    min-height: 44px;
+    align-items: center;
+    position: relative;
+  }
+  .calc-consent-row:not(:has(label > input[type="checkbox"])) label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+
   /* Header and primary CTAs that sit just under 44px. */
   .wybe-hamburger { width: 44px; height: 44px; }
   .wybe-calc-cta,
@@ -4080,22 +4125,6 @@ li.service-tier.service-tier--info,
 
   /* Calculator consent: the whole label row is the target, not just the
      Privacy Policy link inside it. */
-  .calc-consent-row { min-height: 44px; align-items: center; position: relative; }
-  /* The whole row is the tap area, not just the 16px checkbox and the
-     label glyphs. The label already drives the checkbox via for=, so an
-     inset overlay on it turns every pixel of the row into the same target.
-     The Privacy Policy link is lifted above the overlay so it stays
-     separately clickable. */
-  .calc-consent-row label::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-  }
-  .calc-consent-row a {
-    position: relative;
-    z-index: 1;
-  }
   /* "(c) 2026 WYBE" is an inline link inside a sentence, so it cannot be
      given a height directly. Vertical padding grows the hit box to 45px and
      the matching negative margin pulls the line box back to where it was,
