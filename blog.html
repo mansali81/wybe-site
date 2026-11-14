@@ -10,6 +10,28 @@
   <script defer data-domain="wybe.fit"
           src="https://plausible.io/js/script.tagged-events.outbound-links.js"></script>
   <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
+  <!-- Analytics - Google Analytics 4, alongside Plausible. Consent Mode v2
+       denies every storage type up front, so nothing is written and no _ga
+       cookie exists until the visitor clicks Accept on the banner
+       (js/consent.js). A stored 'granted' choice is replayed here, before
+       gtag('config'), so returning visitors are measured from the first hit.
+       wait_for_update holds the first hit for 500ms to let that run. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied', ad_storage: 'denied',
+      ad_user_data: 'denied', ad_personalization: 'denied',
+      wait_for_update: 500
+    });
+    try { var c = localStorage.getItem('wybe_consent');
+          if (c === 'granted') gtag('consent', 'update', {
+            analytics_storage: 'granted', ad_storage: 'granted',
+            ad_user_data: 'granted', ad_personalization: 'granted' }); } catch(e) {}
+    gtag('js', new Date());
+    gtag('config', 'G-LSYVFQXV0M');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSYVFQXV0M"></script>
   <!-- Favicon (SVG logo mark; modern browsers use SVG directly, iOS uses apple-touch-icon) -->
   <link rel="icon" type="image/svg+xml" href="/images/Logo.svg">
   <link rel="apple-touch-icon" href="/images/Logo.svg">
@@ -34,7 +56,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=15e77ceb">
+  <link rel="stylesheet" href="/css/styles.css?v=d5fdf2cd">
   <style>
     body { background-color: #1E1E1E; color: #FFFFFF; }
   </style>
@@ -215,14 +237,14 @@
       <p class="font-sans text-xs text-grey-soft flex flex-wrap items-center gap-x-3 gap-y-1 wybe-footer-legal">
         <a href="/" class="hover:text-white transition-colors">Home</a><span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a><span class="text-white/25" aria-hidden="true">&middot;</span>
-        <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a><span class="text-white/25" aria-hidden="true">&middot;</span><button type="button" class="wybe-cookie-settings hover:text-white transition-colors" data-cookie-settings>Cookie settings</button>
       </p>
     </div>
   </footer>
   <script src="/js/wybe-cursor.js?v=0dfb5eca" defer></script>
 
 
-  <script src="/js/main.js?v=6c9e622e"></script>
+  <script src="/js/main.js?v=d0e0a25f"></script>
   <script>
     // Category filter
     (function() {
@@ -251,6 +273,7 @@
       });
     })();
   </script>
-  <script src="/js/track.js?v=f76c1420" defer></script>
+  <script src="/js/track.js?v=ea3bc4d4" defer></script>
+  <script src="/js/consent.js?v=873549ed" defer></script>
 </body>
 </html>

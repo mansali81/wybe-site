@@ -35,6 +35,28 @@
   <script defer data-domain="wybe.fit"
           src="https://plausible.io/js/script.tagged-events.outbound-links.js"></script>
   <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
+  <!-- Analytics - Google Analytics 4, alongside Plausible. Consent Mode v2
+       denies every storage type up front, so nothing is written and no _ga
+       cookie exists until the visitor clicks Accept on the banner
+       (js/consent.js). A stored 'granted' choice is replayed here, before
+       gtag('config'), so returning visitors are measured from the first hit.
+       wait_for_update holds the first hit for 500ms to let that run. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied', ad_storage: 'denied',
+      ad_user_data: 'denied', ad_personalization: 'denied',
+      wait_for_update: 500
+    });
+    try { var c = localStorage.getItem('wybe_consent');
+          if (c === 'granted') gtag('consent', 'update', {
+            analytics_storage: 'granted', ad_storage: 'granted',
+            ad_user_data: 'granted', ad_personalization: 'granted' }); } catch(e) {}
+    gtag('js', new Date());
+    gtag('config', 'G-LSYVFQXV0M');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSYVFQXV0M"></script>
   <link rel="icon" type="image/svg+xml" href="/images/Logo.svg">
   <link rel="apple-touch-icon" href="/images/Logo.svg">
   <title>Privacy Policy | WYBE</title>
@@ -59,7 +81,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=15e77ceb">
+  <link rel="stylesheet" href="/css/styles.css?v=d5fdf2cd">
   <style>
     body { background-color: #1E1E1E; color: #FFFFFF; }
     .legal-prose { max-width: 100%; }
@@ -136,7 +158,7 @@
     <div class="max-w-6xl mx-auto px-6">
 
       <h1 class="font-heading text-3xl md:text-5xl font-black text-cream leading-tight mb-2">Privacy Policy</h1>
-      <p class="font-sans text-sm text-cream/60 mb-10">Last updated: 12 November 2026</p>
+      <p class="font-sans text-sm text-cream/60 mb-10">Last updated: 14 November 2026</p>
 
       <div class="legal-prose">
 
@@ -176,7 +198,7 @@
         <p>To provide our service, WYBE engages a limited number of third-party processors. Each of them is a data processor in its own right, and processes data under its own privacy policy:</p>
         <ul>
           <li><strong>Vercel Inc.</strong> provides website hosting and content-delivery services to WYBE; processes data strictly necessary for the functioning of the website (notably, your IP address and request logs).</li>
-          <li><strong>Google LLC</strong> provides font-rendering services (Google Fonts) and, on a limited number of pages, Google Analytics 4 web analytics services (see section 9 below).</li>
+          <li><strong>Google LLC</strong> and <strong>Google Ireland Limited</strong> provide font-rendering services (Google Fonts) and <strong>Google Analytics 4</strong> web analytics. Google Analytics collects pseudonymous usage data (pages viewed, approximate location, device and browser type, and the actions listed in section 9) together with your IP address, which is truncated before storage. It runs only after you select Accept on the cookie banner, and nothing is stored and no cookie is set until you do. Data is retained for 14 months. See section 9 below.</li>
           <li><strong>Web3Forms</strong> provides contact-form processing services; forwards your message to the WYBE email address.</li>
           <li><strong>Plausible Insights O&Uuml;</strong> (Estonia, EU) provides privacy-friendly, cookie-free website statistics; no personal data or cookies are used, and IP addresses are not stored.</li>
           <li><strong>Kloudend, Inc.</strong> (ipapi.co, USA) receives your IP address to detect your country, used only to pre-fill the phone country code on our forms; no other data is sent.</li>
@@ -236,8 +258,15 @@
 
         <h2>9. Cookies and similar technologies</h2>
         <p>WYBE does not use cookies or similar technologies to track your browsing habits or behavioural patterns, nor do we use any advertising cookies, retargeting pixels or other advertising technologies. We do not share your browsing data with third parties. Our website uses strictly necessary cookies such as session or preference cookies to ensure the website works correctly and remembers your choices (e.g. mobile menu being open). You do not need to give consent for these cookies.</p>
-        <p>Website statistics are provided primarily by <strong>Plausible Analytics</strong>, which is cookie-free: it sets no cookies, collects no personal data and does not store IP addresses, so no consent is required for it.</p>
-        <p>A limited number of pages also load <strong>Google Analytics 4</strong>, which does set a first-party cookie in order to differentiate users in an aggregated manner. You can opt out of Analytics cookies by disabling cookies in your browser or using an opt-out browser add-on, if available.</p>
+        <p>Website statistics are provided primarily by <strong>Plausible Analytics</strong>, which is cookie-free: it sets no cookies, collects no personal data and does not store IP addresses, so no consent is required for it. Plausible therefore runs on every visit, whatever you choose on the cookie banner.</p>
+        <p><strong>Google Analytics 4</strong> is also loaded, and it does set cookies. On your first visit a banner asks you to Accept or Decline, and until you select Accept every category of storage is denied, so no Google Analytics cookie is written. If you select Decline, no cookie is ever set and you are not identified or tracked across visits; Google still receives an anonymous, cookieless signal that a page was viewed, which carries no identifier and cannot be linked to you or to any other visit.</p>
+        <p>If you select Accept, Google Analytics sets the following first-party cookies:</p>
+        <ul>
+          <li><strong>_ga</strong>, used to distinguish one visitor from another, lifetime up to 2 years (most browsers cap this at about 13 months).</li>
+          <li><strong>_ga_LSYVFQXV0M</strong> (the property-specific cookie, in the form _ga_&lt;container id&gt;), used to keep session state, lifetime up to 2 years (most browsers cap this at about 13 months).</li>
+        </ul>
+        <p>Your choice is stored in your browser and is remembered for 12 months, after which the banner asks again. You can change it at any time: select <strong>Cookie settings</strong> in the footer of any page and the banner reappears. Choosing Decline there stops any further Google Analytics measurement. Clearing your browser storage for this site has the same effect and will make the banner appear again on your next visit.</p>
+        <p>You can also opt out independently of the banner by disabling cookies in your browser or using an opt-out browser add-on, if available.</p>
 
         <h2>10. Children</h2>
         <p>WYBE services are intended for adults only. We do not knowingly collect personal data from children. If you are aware that a child has provided us with personal data, please notify us so we can delete such data. If you are a parent or guardian and you wish to consent to a child accessing our service, you may contact us via the form on the website or DM us on any of the social media platforms.</p>
@@ -260,13 +289,14 @@
         <span class="text-white/25" aria-hidden="true">&middot;</span>
         <a href="terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
         <span class="text-white/25" aria-hidden="true">&middot;</span>
-        <a href="legal-notice.html" class="hover:text-white transition-colors">Legal Notice</a>
+        <a href="legal-notice.html" class="hover:text-white transition-colors">Legal Notice</a><span class="text-white/25" aria-hidden="true">&middot;</span><button type="button" class="wybe-cookie-settings hover:text-white transition-colors" data-cookie-settings>Cookie settings</button>
       </p>
     </div>
   </footer>
 
   <script src="/js/wybe-cursor.js?v=0dfb5eca" defer></script>
-  <script src="/js/main.js?v=6c9e622e"></script>
-  <script src="/js/site-chrome.js?v=824002e3"></script>
+  <script src="/js/main.js?v=d0e0a25f"></script>
+  <script src="/js/consent.js?v=873549ed" defer></script>
+  <script src="/js/site-chrome.js?v=866bbe33"></script>
 </body>
 </html>

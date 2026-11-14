@@ -884,6 +884,16 @@ document.addEventListener('DOMContentLoaded', () => {
           if (successEl) successEl.classList.remove('hidden');
         }
 
+        // Only reached when no branch above threw, i.e. the submission
+        // really succeeded. js/track.js listens for this to fire the GA4
+        // conversion; the Plausible event still fires at submit time and
+        // is untouched. Carries the form's subject only, never a field.
+        try {
+          document.dispatchEvent(new CustomEvent('wybe:form-success', {
+            detail: { subject: subj || '' }
+          }));
+        } catch (_) {}
+
       } catch (err) {
         if (btn) { btn.textContent = originalText; btn.disabled = false; }
         if (errElId) {

@@ -1,8 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/blog.html", "destination": "/", "permanent": false },
-    { "source": "/blog",      "destination": "/", "permanent": false }
+    {
+      "source": "/blog.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/blog",
+      "destination": "/",
+      "permanent": false
+    }
   ],
   "headers": [
     {
@@ -66,7 +74,7 @@
         },
         {
           "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdn.jsdelivr.net https://challenges.cloudflare.com https://web3forms.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://www.google-analytics.com; connect-src 'self' https://plausible.io https://ipapi.co https://script.google.com https://script.googleusercontent.com https://api.web3forms.com https://challenges.cloudflare.com https://www.google-analytics.com https://www.googletagmanager.com; frame-src https://challenges.cloudflare.com; form-action 'self' https://script.google.com https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdn.jsdelivr.net https://challenges.cloudflare.com https://web3forms.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://plausible.io https://ipapi.co https://script.google.com https://script.googleusercontent.com https://api.web3forms.com https://challenges.cloudflare.com https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://challenges.cloudflare.com; form-action 'self' https://script.google.com https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
         }
       ]
     }

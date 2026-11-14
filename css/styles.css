@@ -4170,3 +4170,115 @@ li.service-tier.service-tier--info,
     min-height: 44px;
   }
 }
+
+/* ── COOKIE CONSENT BANNER ───────────────────────────
+   Built by js/consent.js on first visit only. A fixed bar at the bottom
+   that does NOT cover the page: it has no backdrop and the page stays
+   scrollable and clickable behind it. Brand surface, Raleway body type,
+   and the two buttons are deliberately the SAME size so neither choice
+   is nudged. */
+.wybe-consent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9000;
+  background: #1E1E1E;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.wybe-consent__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.wybe-consent__text {
+  flex: 1 1 auto;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #FFFFFF;
+}
+.wybe-consent__link {
+  color: #FF6600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  /* 44px hit box around a 19.5px line, pulled back so the sentence does
+     not reflow. */
+  display: inline-block;
+  padding: 12px 0;
+  margin: -12px 0;
+}
+.wybe-consent__link:hover { color: rgba(255, 102, 0, 0.85); }
+.wybe-consent__actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 10px;
+}
+/* Equal footprint for both choices: same padding, same min-width, same
+   min-height. Only the fill differs. */
+.wybe-consent__btn {
+  min-width: 116px;
+  min-height: 44px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.wybe-consent__btn--accept {
+  background: #FF6600;
+  color: #1E1E1E;
+  border: 1px solid #FF6600;
+}
+.wybe-consent__btn--decline {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+.wybe-consent__btn--accept:hover  { filter: brightness(1.08); }
+.wybe-consent__btn--decline:hover { border-color: #FFFFFF; }
+.wybe-consent__btn:focus-visible {
+  outline: 2px solid #FF6600;
+  outline-offset: 3px;
+}
+@media (max-width: 767px) {
+  .wybe-consent__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  }
+  /* Buttons stay side by side and share the width evenly. */
+  .wybe-consent__actions { gap: 8px; }
+  .wybe-consent__btn { flex: 1 1 0; min-width: 0; }
+}
+
+/* The footer's "Cookie settings" control is a <button> (it performs an
+   action, it does not navigate) but must read as one of the legal links
+   beside it, so the button chrome is reset to inherit. */
+.wybe-cookie-settings {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  /* same 44px row target as the links it sits with */
+  .wybe-footer-legal .wybe-cookie-settings {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

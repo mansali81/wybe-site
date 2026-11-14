@@ -34,9 +34,38 @@
 (function () {
   'use strict';
 
+  // ── GA4 mirror ────────────────────────────────────────
+  // gtag() exists on every page (the <head> snippet defines it before
+  // gtag.js loads), but Consent Mode holds everything until the visitor
+  // accepts, so calling it before consent is safe and sends nothing.
+  // NEVER pass a name, email, phone number or body measurement here.
+  function ga(name, params) {
+    if (!name) return;
+    try {
+      if (typeof window.gtag === 'function') {
+        params ? window.gtag('event', name, params) : window.gtag('event', name);
+      }
+    } catch (_) { /* analytics must never break the page */ }
+  }
+  window.wybeGA = ga;
+
+  // Plausible event name -> GA4 event. Only events that ALREADY fire at
+  // success or on a click belong here. The three Web3Forms-style submits
+  // fire their Plausible event at submit time, so their GA4 conversions
+  // are sent from the wybe:form-success listener further down instead.
+  var GA_FROM_PLAUSIBLE = {
+    'Calculator Submit':       function () { return ['generate_lead', { lead_source: 'calculator' }]; },
+    'Calculator Email Report': function () { return ['generate_lead', { lead_source: 'calculator' }]; },
+    'WhatsApp Click':          function (p) { return ['whatsapp_click', { location: (p && p.location) || 'other' }]; },
+  };
+
   // Public helper: window.wybeTrack('Event Name', { prop: 'value' })
   window.wybeTrack = function (name, props) {
     if (!name) return;
+    try {
+      var map = GA_FROM_PLAUSIBLE[name];
+      if (map) { var spec = map(props); ga(spec[0], spec[1]); }
+    } catch (_) {}
     try {
       if (typeof window.plausible === 'function') {
         props ? window.plausible(name, { props: props }) : window.plausible(name);
@@ -108,6 +137,69 @@
       window.wybeTrack(named, props);
     }
   });
+
+  // ── GA4 conversions that must fire ONLY on a successful submit.
+  //    js/main.js dispatches wybe:form-success after the network call
+  //    resolves; the detail carries the form's subject and nothing else.
+  var GA_FROM_SUBJECT = {
+    '1825 Days, Waitlist':          ['generate_lead', { lead_source: 'book_waitlist' }],
+    'WYBE, Quick Contact':          ['generate_lead', { lead_source: 'contact_form' }],
+    'WYBE, Testimonial Submission': ['testimonial_submit', null],
+  };
+  document.addEventListener('wybe:form-success', function (e) {
+    var subject = (e && e.detail && e.detail.subject) || '';
+    var spec = GA_FROM_SUBJECT[subject];
+    if (spec) ga(spec[0], spec[1]);
+  });
+
+  // ── GA4-only clicks. Plausible's own events are deliberately NOT
+  //    touched here: these two are new to GA4 and add no Plausible call.
+  var SOCIAL = [
+    [/instagram\.com/i, 'instagram'],
+    [/tiktok\.com/i,    'tiktok'],
+    [/youtube\.com|youtu\.be/i, 'youtube'],
+  ];
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+
+    // Stripe Payment Links -> begin_checkout
+    if (/^https:\/\/buy\.stripe\.com\//i.test(href)) {
+      ga('begin_checkout', {
+        item_name: checkoutName(a),
+        value: checkoutValue(a),
+        currency: 'USD'
+      });
+      return;
+    }
+    for (var i = 0; i < SOCIAL.length; i++) {
+      if (SOCIAL[i][0].test(href)) { ga('social_click', { platform: SOCIAL[i][1] }); return; }
+    }
+  });
+
+  // "<card title>, <tier>" where the markup offers both, e.g.
+  // "Fitness Consultation, 2 sessions". Falls back to the link's own text.
+  function checkoutName(a) {
+    var card = a.closest('.service-card');
+    var title = card && card.querySelector('.service-card__title');
+    var tier = a.querySelector('.service-tier__level') || a.querySelector('.wybe-tier-card__eyebrow');
+    var parts = [];
+    if (title) parts.push(clean(title.textContent));
+    if (tier) parts.push(clean(tier.textContent));
+    if (!parts.length) parts.push(clean(a.dataset.tier || a.textContent) || 'unknown');
+    return parts.join(', ').slice(0, 100);
+  }
+
+  // The charged price, i.e. the "now" figure, never the struck-through one.
+  function checkoutValue(a) {
+    var now = a.querySelector('.service-tier__now');
+    var text = now ? now.textContent : a.textContent;
+    var m = String(text).replace(/,/g, '').match(/\$\s*(\d+(?:\.\d{1,2})?)/);
+    return m ? Number(m[1]) : undefined;
+  }
+
+  function clean(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
 
   // ── Quiz completion is announced elsewhere via wybe:quiz-end;
   //    that event carries the recommended plan on detail.plan.

@@ -107,6 +107,8 @@
     '      <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>',
     '      <span class="text-white/25" aria-hidden="true">&middot;</span>',
     '      <a href="/legal-notice.html" class="hover:text-white transition-colors">Legal Notice</a>',
+    '      <span class="text-white/25" aria-hidden="true">&middot;</span>',
+    '      <button type="button" class="wybe-cookie-settings hover:text-white transition-colors" data-cookie-settings>Cookie settings</button>',
     '    </p>',
     '  </div>',
     '</div>'
