@@ -46,7 +46,7 @@
     '      <a href="/#home" class="mb-3 wybe-footer-wordmark" aria-label="WYBE, Wellness You Build Everyday, home">',
     '        <img src="/images/logo-mark-orange-160.png" alt="" class="wybe-footer-wordmark__img" srcset="/images/logo-mark-orange-160.png 1x, /images/logo-mark-orange-320.png 2x" width="160" height="112" loading="lazy" decoding="async">',
     '      </a>',
-    '      <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Build Everyday.</p>',
+    '      <p class="font-sans text-sm text-white/70 leading-relaxed">Wellness You Build Everyday.<br>Dubai, UAE</p>',
     '    </div>',
     '    <div>',
     '      <p class="font-sans text-xs tracking-widest uppercase text-white/50 mb-4">Navigate</p>',
