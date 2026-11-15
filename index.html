@@ -724,7 +724,7 @@
   <!-- Tailwind, compiled ahead of time by `npm run build:css` (was the Play CDN).
        Loaded last in <head> so the cascade order matches what the CDN produced,
        which injected its styles at the end of the document. -->
-  <link rel="stylesheet" href="/css/tailwind.css?v=08900bee">
+  <link rel="stylesheet" href="/css/tailwind.css?v=f6f60cda">
 </head>
 <body class="text-cream">
 
@@ -890,13 +890,10 @@
   <!-- CALCULATORS — one unified form → one report. Fill what you know
        and the results panel unlocks whichever metrics your inputs
        support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
-  <section id="calculators" class="wybe-story relative overflow-visible pt-2 pb-8 md:pt-4 md:pb-12">
+  <section id="calculators" class="wybe-story relative overflow-visible py-8 md:py-12">
     <div id="body-composition-section" class="w-full max-w-6xl mx-auto px-6">
       <!-- Section header — single heading, no eyebrow, no subtext. -->
-      <div class="text-center mb-8 md:mb-10 max-w-2xl mx-auto">
-        <h2 class="section-title">Calculator</h2>
-        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
-      </div>
+      <h2 class="sr-only">Calculator</h2>
 
       <!-- Form LEFT | Nutrition image RIGHT on desktop; stack vertically on mobile. -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch">
@@ -1023,10 +1020,7 @@
     <div class="max-w-6xl mx-auto px-6">
 
       <!-- Header -->
-      <div class="text-center mb-10 md:mb-12 max-w-2xl mx-auto">
-        <h2 class="section-title">Success Stories</h2>
-        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
-      </div>
+      <h2 class="sr-only">Success Stories</h2>
 
       <!-- Testimonial track — horizontal scroll on desktop, natural
            single-column stack on mobile. .testimonials-container is the
@@ -1163,10 +1157,7 @@
        content, no scroll-jack. -->
   <section id="services" class="relative py-8 md:py-12">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-6 md:mb-8">
-        <h2 class="section-title">Services</h2>
-        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
-      </div>
+      <h2 class="sr-only">Services</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 items-stretch">
         <!-- 1. Work Out Program — 3 tiers. Level labels shortened
              to keep price on same line at narrow widths. -->
@@ -1307,10 +1298,7 @@
     <div class="max-w-6xl mx-auto px-6">
       <!-- Centered section title (matches Body Composition /
            Success Stories / Services / Transformations). -->
-      <div class="text-center mb-8 md:mb-10">
-        <h2 class="section-title">Book</h2>
-        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
-      </div>
+      <h2 class="sr-only">Book</h2>
       <!-- 2-column layout: left = Coming Soon + cover, right = form.
            Mobile stacks naturally: Coming Soon → cover → form. -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-stretch">
@@ -1422,10 +1410,7 @@
     <div class="max-w-6xl mx-auto px-6">
       <!-- Centered section title (matches Body Composition /
            Success Stories / Services / Book). -->
-      <div class="text-center mb-8 md:mb-10">
-        <h2 class="section-title">Contact us</h2>
-        <div class="w-10 h-px bg-burgundy mx-auto mt-4"></div>
-      </div>
+      <h2 class="sr-only">Contact us</h2>
     </div>
     <div id="contact-us-section">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
