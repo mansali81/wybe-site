@@ -2400,11 +2400,6 @@ html:not(.gsap-ready) .wybe-reveal {
    (~350 px tall) AND main.js halves the speed on mobile, so the swing is
    only about +/- 17 px, which the existing py-8 (2rem) already clears.
    Applying the headroom there would just add dead space on phones. */
-@media (min-width: 768px) {
-  #book {
-    padding-bottom: calc(3rem + 60px);
-  }
-}
 
 .wybe-book-cover-frame {
   /* min() so the cover can never outgrow its column at any viewport, even
@@ -3530,7 +3525,7 @@ li.service-tier.service-tier--info,
   text-decoration-skip-ink: none;
 }
 @media (max-width: 767px) {
-  .ucalc-quote { height: auto; font-size: clamp(52px, 16.5vw, 72px); margin-top: 32px; }
+  .ucalc-quote { height: auto; font-size: clamp(52px, 16.5vw, 72px); margin-top: 32px; padding-bottom: 0.13em; }
 }
 
 /* ── DESKTOP: the quote spans the card edge to edge ──────────────
@@ -4280,5 +4275,22 @@ li.service-tier.service-tier--info,
     display: inline-flex;
     align-items: center;
     min-height: 44px;
+  }
+}
+
+/* ── EVEN SECTION RHYTHM ─────────────────────────────
+   One rule owns the vertical padding of every homepage section, so the
+   gap between any two of them is simply padding-bottom + padding-top and
+   is the same everywhere: 96px from 768px up, 64px below. Replaces the
+   per-section py-8 / md:py-12 utilities, which were identical in value
+   but had to be kept in sync by hand in six places. */
+.wybe-section {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+@media (min-width: 768px) {
+  .wybe-section {
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 }

@@ -91,7 +91,7 @@
         imagesrcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w"
         imagesizes="100vw" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=d5fdf2cd">
+  <link rel="stylesheet" href="/css/styles.css?v=1f338c7b">
 
   <!-- Site-level background + stacking. Type is defined in css/styles.css
        via the --font-header / --font-subhead / --font-body variables. -->
@@ -827,7 +827,7 @@
     </div>
   </section>
 
-  <section id="about" class="relative text-white overflow-hidden py-8 md:py-12">
+  <section id="about" class="relative text-white overflow-hidden wybe-section">
     <div class="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
       <!-- Portrait — LEFT column now (was right). Uncapped width so
            the image reads as a full portrait, not a thumbnail. Full
@@ -890,7 +890,7 @@
   <!-- CALCULATORS — one unified form → one report. Fill what you know
        and the results panel unlocks whichever metrics your inputs
        support (BMI, BFP, TDEE, IBW). Combined PDF at the end. -->
-  <section id="calculators" class="wybe-story relative overflow-visible py-8 md:py-12">
+  <section id="calculators" class="wybe-story relative overflow-visible wybe-section">
     <div id="body-composition-section" class="w-full max-w-6xl mx-auto px-6">
       <!-- Section header — single heading, no eyebrow, no subtext. -->
       <h2 class="sr-only">Calculator</h2>
@@ -1016,7 +1016,7 @@
        is on file. Cards reveal via the generic .wybe-reveal
        IntersectionObserver (main.js), same fade+slide used elsewhere,
        gated by prefers-reduced-motion. -->
-  <section id="results" class="wybe-results relative py-8 md:py-12">
+  <section id="results" class="wybe-results relative wybe-section">
     <div class="max-w-6xl mx-auto px-6">
 
       <!-- Header -->
@@ -1152,7 +1152,7 @@
   <!-- #SERVICES — normal-flow tabbed UI. The tabs on the left swap the
        visible service panel; the section is a single screenful of
        content, no scroll-jack. -->
-  <section id="services" class="relative py-8 md:py-12">
+  <section id="services" class="relative wybe-section">
     <div class="max-w-6xl mx-auto px-6">
       <h2 class="sr-only">Services</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 items-stretch">
@@ -1291,7 +1291,7 @@
   <!-- #BOOK 1825 Days — shared .wybe-scene sticky-snap on the intro,
        then the waitlist form flows normally below so it stays fully
        usable (a pinned form would strand the submit button). -->
-  <section id="book" class="py-8 md:py-12">
+  <section id="book" class="wybe-section">
     <div class="max-w-6xl mx-auto px-6">
       <!-- Centered section title (matches Body Composition /
            Success Stories / Services / Transformations). -->
@@ -1403,7 +1403,7 @@
 
 
   <!-- #CONTACT — form panel over the animated canvas. -->
-  <section id="contact" class="py-8 md:py-12">
+  <section id="contact" class="wybe-section">
     <div class="max-w-6xl mx-auto px-6">
       <!-- Centered section title (matches Body Composition /
            Success Stories / Services / Book). -->
