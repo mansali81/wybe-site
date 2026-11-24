@@ -1,16 +1,34 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// WYBE Fitness — Google Apps Script endpoint  (replace ALL existing code)
-// Deploy: Execute as Me | Access: Anyone
+// ──────────────────────────────────────────────────────────────────────────────
+// WYBE — Google Apps Script endpoint for all three homepage forms
+// (book waitlist, quick contact, body-composition calculator).
 //
-// Script Properties (File → Project Settings → Script Properties):
-//   TURNSTILE_SECRET  — Cloudflare Turnstile secret key (never in source)
-//   EMAIL_TO          — destination address (default: mans_ali@hotmail.com)
-//   SPREADSHEET_ID    — Google Sheet ID; falls back to bound spreadsheet
+// Paste this over EVERYTHING in the Apps Script editor, then
+// Deploy → Manage deployments → Edit → Version: New version → Deploy.
+// Editing the existing deployment keeps the SAME /exec URL, which is what
+// index.html and js/main.js post to.
 //
-// NOTE: this file replaces any previous doPost. If the old script had other
-// functions (report builders, Slides generators, etc.) keep them in a
-// separate .gs file — do not add them back to this one.
-// ─────────────────────────────────────────────────────────────────────────────
+// Deploy settings: Execute as = Me, Who has access = Anyone.
+//
+// Script Properties (Project Settings → Script Properties):
+//   TURNSTILE_SECRET  — REQUIRED. Cloudflare dashboard → Turnstile → the
+//                       wybe.fit widget → Secret key. Set this BEFORE you
+//                       deploy: with no secret every submission is rejected,
+//                       by design, so a missing property can never become an
+//                       open door.
+//   EMAIL_TO          — optional, where the owner notification goes.
+//   SPREADSHEET_ID    — optional, falls back to the bound spreadsheet.
+//
+// Response shape is { ok: true } / { ok: false, error: "..." }, which is what
+// postToGas() in js/main.js and the calculator handler in index.html read.
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Hostnames the Turnstile token may have been solved on. The token carries the
+// page's hostname and Cloudflare echoes it back, so a token farmed on some
+// other site cannot be replayed here. Add "www.wybe.fit" or a Vercel preview
+// domain to this list if those ever serve the forms.
+var ALLOWED_HOSTNAMES = ['wybe.fit'];
+
+var MIN_ELAPSED_MS = 3000;
 
 var DISPOSABLE_DOMAINS = [
   'mailinator.com','guerrillamail.com','guerrillamail.net','guerrillamail.org',
@@ -23,15 +41,23 @@ var DISPOSABLE_DOMAINS = [
   'spamspot.com','getnada.com','mailnesia.com','tempr.email',
 ];
 
+// Exactly the keys each form sends. Anything else is a hand-rolled POST, so
+// the request is dropped. Verified against the live payloads, which is why the
+// calculator list is long: it posts its computed results so the sheet and the
+// notification email do not have to recompute them.
 var SOURCE_FIELDS = {
-  waitlist:   ['source','name','email','mobile','country',
-               'form_elapsed_ms','turnstile_token'],
-  contact:    ['source','name','email','message',
-               'form_elapsed_ms','turnstile_token'],
-  calculator: ['source','name','email','age','gender','activity',
-               'height','weight','neck','waist','hip',
-               'bmi','bfp','ibw','tdee',
-               'form_elapsed_ms','turnstile_token'],
+  waitlist: ['source', 'name', 'email', 'mobile', 'country',
+             'form_elapsed_ms', 'cf-turnstile-response'],
+  contact:  ['source', 'name', 'email', 'message',
+             'form_elapsed_ms', 'cf-turnstile-response'],
+  calculator: ['source', 'consent', 'name', 'email', 'age', 'gender', 'activity',
+               'height', 'weight', 'neck', 'waist', 'hip',
+               'bmi', 'bmiCategory', 'bmiNote',
+               'ibw', 'ibwLow', 'ibwHigh',
+               'bfp', 'bfpCategory', 'bfpNote',
+               'tdee', 'tdeeCategory',
+               'cutCalories', 'maintainCalories', 'leanBulkCalories',
+               'form_elapsed_ms', 'cf-turnstile-response'],
 };
 
 // ── ENTRY POINT ───────────────────────────────────────────────────────────────
@@ -50,13 +76,44 @@ function _handlePost(e) {
   var source = String(params.source || '').toLowerCase();
   var ts     = new Date().toISOString();
 
-  // 1. Unknown source
+  // ── GATE A: HONEYPOT ──────────────────────────────────────────
+  // "botcheck" is a hidden checkbox no human can see or tick. Browsers omit
+  // unchecked boxes entirely, so any value at all means a bot filled the form.
+  // Answer with the normal success JSON and save nothing: a bot that is told
+  // "ok" stops, where one told "rejected" retries with the field cleared.
+  if (params.botcheck) {
+    Logger.log(ts + ' REJECT honeypot source=' + source);
+    return _ok(true);
+  }
+
+  // ── GATE B: TIME-TRAP ────────────────────────────────────────
+  // Nobody reads and fills one of these forms in under three seconds. A
+  // missing or unparseable value counts as a failure, so stripping the field
+  // is not a way around this. Saves nothing; also silent.
+  var elapsed = parseInt(String(params.form_elapsed_ms || '0'), 10);
+  if (isNaN(elapsed) || elapsed < MIN_ELAPSED_MS) {
+    Logger.log(ts + ' REJECT time_trap elapsed=' + elapsed + ' source=' + source);
+    return _ok(true);
+  }
+
+  // ── GATE C: TURNSTILE ────────────────────────────────────────
+  // Verified server-side against Cloudflare. This is the check a POST sent
+  // straight at this URL cannot forge. ok:false here, not ok:true, so the
+  // front end can tell the user to complete the check and try again.
+  if (!_verifyTurnstile(String(params['cf-turnstile-response'] || ''), ts)) {
+    Logger.log(ts + ' REJECT turnstile source=' + source);
+    return _ok(false, 'turnstile');
+  }
+
+  // Everything from here on runs only for a request that cleared all three.
+
+  // Unknown source
   if (!SOURCE_FIELDS[source]) {
     Logger.log(ts + ' REJECT unknown_source source=' + source);
     return _ok(true);
   }
 
-  // 2. Extra fields — replay / fuzzing guard
+  // Unexpected fields — replay / fuzzing guard
   var allowed  = SOURCE_FIELDS[source];
   var incoming = Object.keys(params);
   for (var i = 0; i < incoming.length; i++) {
@@ -66,50 +123,34 @@ function _handlePost(e) {
     }
   }
 
-  // 3. Turnstile
-  var token = String(params.turnstile_token || '');
-  if (!_verifyTurnstile(token)) {
-    Logger.log(ts + ' REJECT turnstile source=' + source);
-    // Calculator reads the JSON; return failure so the UI can prompt retry.
-    // Waitlist/contact use no-cors and ignore the body — same response is fine.
-    return _ok(false, 'turnstile');
-  }
-
-  // 4. Time-trap
-  var elapsed = parseInt(String(params.form_elapsed_ms || '0'), 10);
-  if (isNaN(elapsed) || elapsed < 3000) {
-    Logger.log(ts + ' REJECT time_trap elapsed=' + elapsed + ' source=' + source);
-    return _ok(true);
-  }
-
-  // 5. Name
+  // Name
   var name = String(params.name || '').trim();
   if (!_validName(name)) {
     Logger.log(ts + ' REJECT name source=' + source);
     return _ok(true);
   }
 
-  // 6. Email + disposable-domain
+  // Email + disposable-domain
   var email = String(params.email || '').trim().toLowerCase();
   if (!_validEmail(email)) {
     Logger.log(ts + ' REJECT email=' + email + ' source=' + source);
     return _ok(true);
   }
 
-  // 7. Rate limit (per email, two windows)
+  // Rate limit (per email, two windows)
   var rlReason = _rateLimited(email);
   if (rlReason) {
     Logger.log(ts + ' REJECT rate_limit=' + rlReason + ' email=' + email);
     return _ok(true);
   }
 
-  // 8. Physical plausibility (calculator only)
+  // Physical plausibility (calculator only)
   if (source === 'calculator' && !_plausible(params)) {
     Logger.log(ts + ' REJECT plausibility source=calculator');
     return _ok(true);
   }
 
-  // 9. Accepted — write row and send notification
+  // Accepted — write the row, then notify
   Logger.log(ts + ' ACCEPT source=' + source + ' email=' + email);
   try {
     _appendRow(source, params, name, email);
@@ -131,15 +172,16 @@ function doGet() {
 }
 
 // ── TURNSTILE ─────────────────────────────────────────────────────────────────
-function _verifyTurnstile(token) {
+function _verifyTurnstile(token, ts) {
   if (!token) return false;
   var secret = PropertiesService.getScriptProperties()
                  .getProperty('TURNSTILE_SECRET');
   if (!secret) {
-    Logger.log('WYBE: TURNSTILE_SECRET not configured in Script Properties');
-    // If the secret hasn't been set yet, let submissions through so the site
-    // isn't broken during setup — remove this line once TURNSTILE_SECRET is set.
-    return true;
+    // Deliberately a hard failure. An earlier draft of this file let
+    // submissions through when the property was unset "so the site is not
+    // broken during setup", which is an open door that survives setup.
+    Logger.log(ts + ' TURNSTILE_SECRET missing from Script Properties — rejecting');
+    return false;
   }
   try {
     var res = UrlFetchApp.fetch(
@@ -151,12 +193,18 @@ function _verifyTurnstile(token) {
       }
     );
     var data = JSON.parse(res.getContentText());
-    if (!data.success) {
-      Logger.log('WYBE: Turnstile rejected, codes=' + JSON.stringify(data['error-codes'] || []));
+    if (data.success !== true) {
+      Logger.log(ts + ' turnstile failed codes=' + JSON.stringify(data['error-codes'] || []));
+      return false;
     }
-    return data.success === true;
+    // A valid token still has to have been solved on our own site.
+    if (ALLOWED_HOSTNAMES.indexOf(String(data.hostname || '')) === -1) {
+      Logger.log(ts + ' turnstile wrong hostname=' + data.hostname);
+      return false;
+    }
+    return true;
   } catch (err) {
-    Logger.log('WYBE: Turnstile fetch error: ' + err.message);
+    Logger.log(ts + ' turnstile fetch error: ' + err.message);
     return false;
   }
 }
@@ -259,14 +307,16 @@ function _notify(source, p, name, email) {
   MailApp.sendEmail(to, subj, body);
 }
 
-// ── RESPONSE HELPERS ──────────────────────────────────────────────────────────
-// Always HTTP 200 — bots learn nothing from the status code.
-// success=false on Turnstile failure only: the calculator client reads the body
-// and prompts the user to retry the widget. All other rejections return true
-// so the form confirms silently (avoiding UX confusion for edge-case users).
-function _ok(success, errorCode) {
-  var payload = success ? { success: true }
-                        : { success: false, error: errorCode || 'error' };
+// ── RESPONSE HELPERS ────────────────────────────────────────────────
+// The key is "ok", not "success": postToGas() in js/main.js returns
+// json.ok === true, and the calculator handler throws on !json.ok. An earlier
+// draft of this file answered { success: true }, which both would have read
+// as a failure — every submission would have shown the connection error even
+// though the row had been written.
+//
+// Always HTTP 200, so a bot learns nothing from the status code.
+function _ok(ok, errorCode) {
+  var payload = ok ? { ok: true } : { ok: false, error: errorCode || 'error' };
   return ContentService
     .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);

@@ -805,6 +805,26 @@ document.addEventListener('DOMContentLoaded', () => {
         phoneEl.dataset.wybeDigits = phoneCheck.digits;
       }
 
+      // ── TURNSTILE GUARD ──────────────────────────────────────────────
+      // Read the hidden cf-turnstile-response input Turnstile writes INSIDE
+      // this form, exactly as the calculator's handler does. Not
+      // turnstile.getResponse(): with no widget id that call is ambiguous
+      // once a page carries more than one widget, and this page carries
+      // three. Scoping the query to `form` is what keeps them independent.
+      var tsEl    = form.querySelector('.cf-turnstile');
+      var tsToken = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
+      if (tsEl && !tsToken) {
+        if (btn) { btn.textContent = originalText; btn.disabled = false; }
+        if (errElId) {
+          var tsErr = document.getElementById(errElId);
+          if (tsErr) {
+            tsErr.textContent = 'Please complete the security check.';
+            tsErr.classList.remove('hidden');
+          }
+        }
+        return;
+      }
+
       try {
         var elapsed = String(Date.now() - PAGE_LOAD_TS);
 
@@ -832,6 +852,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: raw.name || '', email: raw.email || '',
             mobile: mobileVal, country: countryVal,
             form_elapsed_ms: elapsed,
+            'cf-turnstile-response': tsToken,
           });
           if (!gasOk) throw new Error('server_error');
           if (btn) { btn.textContent = originalText; btn.disabled = false; }
@@ -847,6 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: raw.name || '', email: raw.email || '',
             message: raw.message || '',
             form_elapsed_ms: elapsed,
+            'cf-turnstile-response': tsToken,
           });
           if (!gasOk) throw new Error('server_error');
           if (btn) { btn.textContent = originalText; btn.disabled = false; }
@@ -910,6 +932,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             errEl.classList.remove('hidden');
           }
+        }
+      } finally {
+        // Turnstile tokens are single-use, so a new one is needed for the
+        // next attempt whether this one succeeded or failed. Runs for the
+        // Web3Forms branch too, where tsEl is null and this is a no-op.
+        if (tsEl && window.turnstile) {
+          try { window.turnstile.reset(tsEl); } catch (_) {}
         }
       }
     });

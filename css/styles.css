@@ -1355,7 +1355,12 @@ button.bg-burgundy:hover {
   position: relative;
   top: 1px;
 }
-#ucalc-turnstile {
+/* All three homepage widgets: calculator, book waitlist, quick contact.
+   Turnstile renders a fixed 300x65 box, so it is scaled down and the layout
+   box is pinned to the scaled footprint (transform does not resize it). */
+#ucalc-turnstile,
+#wl-turnstile,
+#qc-turnstile {
   transform: scale(0.78);
   transform-origin: left top;
   width: 234px;  /* 300px × 0.78 = 234 */
@@ -1378,6 +1383,24 @@ button.bg-burgundy:hover {
   width: auto;
 }
 
+/* The same row outside #body-composition-section: the book waitlist and the
+   quick-contact form. Two classes (0,2,0) beat the base .wybe-calc-cta (0,1,0)
+   whose width:100%/padding this has to override. font-size is spelled out
+   because the 11px the calculator button uses comes from its own
+   #body-composition-section rule, which does not reach these two.
+   Inside the calculator the ID-scoped rule above still wins, so that
+   button's computed style is untouched. */
+.calc-captcha-row .ucalc-submit-btn {
+  flex: 1 1 auto;
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 11px;
+  margin: 0;
+  justify-content: center;
+  white-space: nowrap;
+  width: auto;
+}
+
 @media (max-width: 480px) {
   .captcha-row,
   .calc-captcha-row {
@@ -1386,8 +1409,9 @@ button.bg-burgundy:hover {
     gap: 10px;
   }
   .captcha-row button[type="submit"],
-  #body-composition-section .calc-captcha-row .ucalc-submit-btn { width: 100%; }
-  .h-captcha, #ucalc-turnstile { top: 0; }
+  #body-composition-section .calc-captcha-row .ucalc-submit-btn,
+  .calc-captcha-row .ucalc-submit-btn { width: 100%; }
+  .h-captcha, #ucalc-turnstile, #wl-turnstile, #qc-turnstile { top: 0; }
 }
 
 /* ── Waitlist: custom searchable dropdowns ───────────── */

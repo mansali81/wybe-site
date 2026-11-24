@@ -91,7 +91,7 @@
         imagesrcset="/images/hero-1280.webp 1280w, /images/hero-1920.webp 1920w, /images/Hero.webp 2592w"
         imagesizes="100vw" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=1f338c7b">
+  <link rel="stylesheet" href="/css/styles.css?v=4c881240">
 
   <!-- Site-level background + stacking. Type is defined in css/styles.css
        via the --font-header / --font-subhead / --font-body variables. -->
@@ -1383,8 +1383,14 @@
 
           <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
           <input type="hidden" name="form_elapsed_ms" id="wl-elapsed-ms" value="0">
-          <div class="captcha-row">
-            <button type="submit" class="bg-burgundy text-charcoal font-sans font-semibold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">Join waitlist</button>
+          <!-- Turnstile + submit on one row. Same markup, classes and order
+               as the calculator's .calc-captcha-row, so the box and the
+               button are pixel-identical to the ones in #calculators.
+               Rendered implicitly by api.js, which renders every
+               .cf-turnstile on the page as its own independent widget. -->
+          <div class="calc-captcha-row">
+            <div class="cf-turnstile" id="wl-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="normal"></div>
+            <button type="submit" class="wybe-calc-cta ucalc-submit-btn">Join waitlist</button>
           </div>
         </form>
         <div class="hidden mt-4">
@@ -1438,15 +1444,14 @@
               </div>
               <!-- Time-trap: elapsed ms since page load, set by JS on submit -->
               <input type="hidden" name="form_elapsed_ms" id="contact-elapsed-ms" value="0">
-              <div class="captcha-row">
-                <button type="submit"
-                        class="inline-flex items-center gap-2 bg-burgundy text-charcoal font-sans font-semibold tracking-widest uppercase rounded-full hover:bg-burgundy-dark transition-colors shadow-md">
-                  Send Message
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </button>
+              <!-- Turnstile + submit on one row, identical to the
+                   calculator's. The arrow is a text glyph like the
+                   calculator's, not an SVG: the submit handler swaps
+                   button.textContent to "Sending…", which used to delete the
+                   SVG for good after the first attempt. -->
+              <div class="calc-captcha-row">
+                <div class="cf-turnstile" id="qc-turnstile" data-sitekey="0x4AAAAAAE1TvilpE8304pH3" data-theme="dark" data-size="normal"></div>
+                <button type="submit" class="wybe-calc-cta ucalc-submit-btn">Send message &rarr;</button>
               </div>
               <!-- Confirmation + error sit below the row. The wrapper has no
                    reserved height: it collapses until one of them is shown. -->
@@ -1575,7 +1580,7 @@
   </footer>
 
   <script src="js/wybe-cursor.js?v=0dfb5eca" defer></script>
-  <script src="js/main.js?v=d0e0a25f"></script>
+  <script src="js/main.js?v=3c41c4eb"></script>
   <script src="js/track.js?v=ea3bc4d4" defer></script>
   <script src="/js/consent.js?v=873549ed" defer></script>
   <script src="js/scenes.js?v=7d6dac20" defer></script>
@@ -2498,6 +2503,12 @@
             cutCalories:      store.tdee ? store.tdee.cut      : '',
             maintainCalories: store.tdee ? store.tdee.maintain : '',
             leanBulkCalories: store.tdee ? store.tdee.bulk     : '',
+            // The time-trap and the Turnstile token the server now checks on
+            // every source. CALC_LOAD_TS was declared for exactly this and
+            // had never been read; without these two the hardened doPost
+            // would silently drop every calculator submission.
+            form_elapsed_ms: String(Date.now() - CALC_LOAD_TS),
+            'cf-turnstile-response': tsToken,
           };
           // form-urlencoded, not JSON: doPost reads e.parameter.
           const res = await fetch(GAS_URL, {
