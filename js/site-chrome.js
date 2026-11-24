@@ -30,7 +30,7 @@
     '    <a href="/#services"                 class="wybe-mobile-link" role="menuitem">Services</a>',
     '    <a href="/#services"                 class="wybe-mobile-link wybe-mobile-link--cta" role="menuitem">Book a Session</a>',
     '    <a href="/#calculators"              class="wybe-mobile-link" role="menuitem">Calculator</a>',
-    '    <a href="/book.html"                 class="wybe-mobile-link" role="menuitem">My Book</a>',
+    '    <a href="/#book"                     class="wybe-mobile-link" role="menuitem">My Book</a>',
     '    <a href="/faq.html"                  class="wybe-mobile-link" role="menuitem">FAQ</a>',
     '    <a href="/about.html#certifications" class="wybe-mobile-link" role="menuitem">Certifications</a>',
     '    <a href="/#contact"                  class="wybe-mobile-link" role="menuitem">Contact</a>',

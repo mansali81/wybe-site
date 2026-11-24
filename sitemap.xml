@@ -66,12 +66,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://wybe.fit/book.html</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
   <!-- publication.html removed while page is in holding state (noindex).
        Re-add this <url> block when publication content goes live. -->
   <url>

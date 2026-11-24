@@ -10,6 +10,16 @@
       "source": "/blog",
       "destination": "/",
       "permanent": false
+    },
+    {
+      "source": "/book.html",
+      "destination": "/#book",
+      "permanent": true
+    },
+    {
+      "source": "/book",
+      "destination": "/#book",
+      "permanent": true
     }
   ],
   "headers": [

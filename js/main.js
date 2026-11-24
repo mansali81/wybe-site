@@ -774,15 +774,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // ── PHONE VALIDATION (both waitlists) ────────────────────────────
+      // ── PHONE VALIDATION (waitlist) ──────────────────────────────────
       // Runs BEFORE the try block, so nothing is sent on a bad number.
-      // Two shapes share this branch: index.html splits the number across a
-      // dial-code picker (#wl-dialcode-value) and a national box
-      // (#wl-mobile-num); book.html has one combined field (#waitlist-mobile)
-      // that the assembly below already falls back to via raw.mobile.
+      // The homepage waitlist splits the number across a dial-code picker
+      // (#wl-dialcode-value) and a national box (#wl-mobile-num).
       var phoneEl = null, dialForCheck = '';
       if (subj === '1825 Days, Waitlist') {
-        phoneEl = document.getElementById('wl-mobile-num') || document.getElementById('waitlist-mobile');
+        phoneEl = document.getElementById('wl-mobile-num');
         var dialProbe = document.getElementById('wl-dialcode-value');
         dialForCheck = dialProbe ? dialProbe.value : '';
       }
@@ -835,16 +833,10 @@ document.addEventListener('DOMContentLoaded', () => {
           // Prefer the normalised digits stashed by the validator above, so
           // "050 123 4567" with +971 saves as +971501234567, not
           // +9710501234567. Falls back to the raw value if absent.
-          var numSrc    = numEl || document.getElementById('waitlist-mobile');
-          var numClean  = numSrc && numSrc.dataset.wybeDigits
-                            ? numSrc.dataset.wybeDigits
+          var numClean  = numEl && numEl.dataset.wybeDigits
+                            ? numEl.dataset.wybeDigits
                             : (numEl ? numEl.value.trim() : (raw.mobile || ''));
-          // With no dial-code picker (book.html) the field holds the whole
-          // number, so keep a leading "+" the user typed — otherwise
-          // "+971 50 123 4567" would be stored as bare "971501234567" and
-          // lose the international-format marker.
-          var plusPrefix = (!dialEl && numSrc && /^\s*\+/.test(numSrc.value)) ? '+' : '';
-          var mobileVal  = (dialEl ? dialEl.value : plusPrefix) + numClean;
+          var mobileVal  = (dialEl ? dialEl.value : '') + numClean;
           var countryVal = (cHidEl && cHidEl.value) ? cHidEl.value : (raw.country || '');
           // Field names must match what doPost reads: name, email, mobile, country.
           var gasOk = await postToGas({
