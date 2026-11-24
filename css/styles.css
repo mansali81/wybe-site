@@ -4318,3 +4318,64 @@ li.service-tier.service-tier--info,
     padding-bottom: 48px;
   }
 }
+
+
+/* ── BOOK WAITLIST: bottom edges on the cover's bottom edge ──────────────
+   Goal: at md and wider, the bottom of the Cloudflare box and the bottom of
+   the "Join waitlist" button both land on the bottom edge of the book cover.
+
+   Why it was off: the shared #ucalc/#wl/#qc-turnstile rule gives the element
+   a 234x51 box and then scales the whole element by 0.78. Turnstile fills
+   that 234px width with a widget that is 72px tall, so the painted box is
+   234x72 scaled = 182.5x56.2 while the element only RESERVES 234x51. The
+   widget therefore hangs 5.2px below its own layout box -- and below the
+   form, and below the cover's bottom edge. Scoped to #wl-turnstile: the
+   calculator and quick-contact widgets are untouched.
+
+   Fix: reserve the height the widget actually paints (72px, less the 22%
+   the scale takes back), so the element's measured box IS the box you see.
+   The width is left alone so the row's reserved width -- and therefore the
+   flex:1 button's width -- does not change. */
+/* The 24px this line used to carry as an inline style, moved into CSS so the
+   two rules below can override it. Unchanged at every width below 768px. */
+.wl-lead-line { margin-bottom: 24px; }
+
+@media (min-width: 768px) {
+  #wl-turnstile {
+    /* --wl-ts-h is the height Turnstile actually gives its wrapper at this
+       column width, measured in Chrome at 72px for both a live widget and
+       the error state. One number to change if Cloudflare ever resizes it. */
+    --wl-ts-h: 72px;
+    height: var(--wl-ts-h);
+    /* The scale paints 78% of the box, so hand back the other 22%: the
+       footprint the row reserves then equals the box you can see. */
+    margin-bottom: calc(var(--wl-ts-h) * -0.22);
+    top: 0;                   /* the shared rule's 1px nudge would land 1px low */
+  }
+  /* Both items now end on the row's bottom edge. The row is the form's last
+     child, the form is the copy column's last child under
+     justify-between, and that column is the grid row -- so the row's bottom
+     edge IS the cover's bottom edge whenever the cover is the taller column. */
+  #waitlist-form .calc-captcha-row { align-items: flex-end; }
+  /* The row grew 5.2px by reserving the widget's real height. Give that back
+     above the form so the copy column's total height is unchanged and the
+     label, heading and paragraphs above it stay exactly where they were. */
+  .wl-lead-line { margin-bottom: 19px; }
+}
+
+/* Below ~1102px the cover is SHORTER than the copy column, so the column
+   sets the grid row's height and the cover is centred in its own column --
+   its bottom edge then sits above the form's. Compress the form, and only
+   the form, until the column is no taller than the cover, which is what
+   brings the two bottom edges together. The column has no free space at
+   these widths, so nothing above the form moves. Above 1102px the cover is
+   the taller column and none of this applies, which is why the form keeps
+   its roomier spacing at 1280px and wider. */
+@media (min-width: 1024px) and (max-width: 1101px) {
+  .wl-lead-line { margin-bottom: 2px; }
+  /* Flex + gap rather than smaller margins: space-y-3 also puts 12px above
+     the first field, after the display:none honeypot, and a flex gap does
+     not produce that dead space at all. */
+  #waitlist-form { display: flex; flex-direction: column; gap: 4px; }
+  #waitlist-form > * { margin-top: 0; }
+}
